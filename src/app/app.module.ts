@@ -39,7 +39,6 @@ import { NotificationService } from '@progress/kendo-angular-notification';
     MatInputModule,
     ReactiveFormsModule,
     TextBoxModule,
-    
   ],
   providers: [
     {

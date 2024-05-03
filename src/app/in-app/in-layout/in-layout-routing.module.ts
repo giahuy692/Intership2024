@@ -14,7 +14,7 @@ const routes: Routes = [
     path: '',
     component: LayoutDefaultComponent,
     children: In_LayOutHelper.GetRoutes(ModuleDataAdmin)
-  },
+  }
 ];
 
 @NgModule({

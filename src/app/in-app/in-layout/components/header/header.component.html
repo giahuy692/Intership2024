@@ -1,0 +1,31 @@
+<div class="header-container">
+    <div class="modules-container">
+        <ng-container *ngIf="moduleList.length > 0">
+            <div class="modules-block" *ngFor="let module of moduleList">
+                <div class="module">
+                    <!--   -->
+                    <div class="module-text" title="{{module.Name | uppercase}}" [ngClass]="{'active': selectedModule === module.Code}" routerLink="{{module.Path}}" >{{module.Name}}</div> 
+                    <div class="module-active-bar" *ngIf="selectedModule === module.Code"></div>
+                </div>
+                <div class="seperate-bar"></div>
+            </div>
+        </ng-container>
+        
+    </div>
+    
+    <div class="func-container">
+        <div class="func-block">       
+           <kendo-svg-icon [icon]="icons.searchIcon" title="Search"></kendo-svg-icon>
+        </div>
+        <div class="func-block">       
+            <kendo-svg-icon [icon]="icons.bellIcon" title="Notify"></kendo-svg-icon>
+            <div class="noti-block" >
+                <div class="noti-text" title="15">15</div>
+            </div>
+        </div>  
+        <div class="avt-block">       
+            <img src="{{kendokaAvatar}}" alt="">
+        </div>        
+            
+    </div>
+</div>
