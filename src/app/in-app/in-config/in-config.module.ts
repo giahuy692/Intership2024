@@ -15,7 +15,7 @@ import { HamberButtons } from './pages/shared/directives/HamberButtons.directive
   ],
   imports: [
     PConfigRoutingModule,
-    InLayoutModule,
+    InLayoutModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

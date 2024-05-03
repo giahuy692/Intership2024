@@ -1,0 +1,112 @@
+.header-container {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    background-color: #FFFFFF;
+    justify-content: space-between;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+
+    .modules-container {
+        display: flex;
+        overflow-x: auto;
+
+        .modules-block {
+            display: flex;
+            height: 100%;
+            align-items: center;
+            text-wrap: nowrap;
+
+            .module {
+                position: relative;
+                display: flex;
+                width: fit-content;
+                height: 100%;
+                justify-content: center;
+                align-items: center;
+                margin-left: 10px;
+                margin-right: 10px;
+
+                .module-text {
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: #BBBBBB;
+                    text-transform: uppercase;
+                    user-select: none;
+                    cursor: pointer;
+                    
+                    &.active{
+                        color: #008000;
+                    }
+                }
+
+                .module-active-bar {
+                    position: absolute;
+                    bottom: 0;
+                    width: 100%;
+                    height: 3px;
+                    border-radius: 3px;
+                    background-color: #008000;
+                }
+            }
+
+            .seperate-bar{
+                width: 2px;
+                height: 30px;
+                border-radius: 3px;
+                background-color: #C4C4C4;
+            }
+
+        }
+    }
+
+    .func-container{
+        display: flex;
+        height: 100%;
+        align-items: center;
+        gap: 0.5rem;
+
+        .func-block{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 35px;
+            height: 35px;
+            position: relative;
+            cursor: pointer;
+            fill: #5A6276;
+            kendo-svg-icon{
+                display: block;
+                width: 20px !important;
+                height: 20px !important;
+            }
+
+            .noti-block{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                position: absolute;
+                color: #FFFFFF;
+                background-color: #F1802E;
+                width: 18px;
+                height: 18px;
+                border-radius: 20px;
+                top: 0;
+                right: 0;
+            }
+        }
+
+        .avt-block {  
+            width: 35px;
+            height: 35px; 
+            cursor: pointer;  
+            margin-right: 10px;  
+
+            img {
+                width: 100%;
+                height: 100%;
+            }    
+        }
+    }
+
+}
