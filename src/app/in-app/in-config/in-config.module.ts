@@ -3,25 +3,19 @@ import { InLayoutModule } from '../in-layout/in-layout.module';
 import { PConfigRoutingModule } from './in-config-routing.module';
 import { InConfigComponent } from './in-config.component';
 import { Config001HamperDetailComponent } from './pages/config001-hamper-detail/config001-hamper-detail.component';
-<<<<<<< HEAD
 import { Config004HamperDetailComponent } from './pages/config004-hamper-detail/config004-hamper-detail.component';
 import { ItemCompanyComponent } from './pages/shared/components/item-company/item-company.component';
-=======
 import { Config003HamberDetailComponent } from './pages/config003-hamber-detail/config003-hamber-detail.component';
 import { HamberButtons } from './pages/shared/directives/HamberButtons.directive';
->>>>>>> dev
 
 @NgModule({
   declarations: [
     InConfigComponent,
     Config001HamperDetailComponent,
-<<<<<<< HEAD
     Config004HamperDetailComponent,
     ItemCompanyComponent,
-=======
     Config003HamberDetailComponent,
     HamberButtons
->>>>>>> dev
   ],
   imports: [
     PConfigRoutingModule,
