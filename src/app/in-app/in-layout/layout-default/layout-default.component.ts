@@ -11,5 +11,6 @@ export class LayoutDefaultComponent {
   
   modules :ModuleDataItem[] = ModuleDataAdmin
   constructor(){
+
   }
 }
