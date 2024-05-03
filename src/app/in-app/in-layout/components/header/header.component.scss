@@ -9,12 +9,14 @@
     .modules-container {
         display: flex;
         overflow-x: auto;
+        transform: rotate(180deg);
 
         .modules-block {
             display: flex;
             height: 100%;
             align-items: center;
             text-wrap: nowrap;
+            transform: rotate(180deg);
 
             .module {
                 position: relative;
@@ -73,7 +75,7 @@
             height: 35px;
             position: relative;
             cursor: pointer;
-            fill: #5A6276;
+            color: #5A6276;
             kendo-svg-icon{
                 display: block;
                 width: 20px !important;
