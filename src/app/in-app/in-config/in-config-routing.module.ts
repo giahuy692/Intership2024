@@ -4,24 +4,24 @@ import { InConfigComponent } from './in-config.component';
 import { Config001HamperDetailComponent } from './pages/config001-hamper-detail/config001-hamper-detail.component';
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     component: InConfigComponent,
     children: [
       {
         path: '',
-        component: InConfigComponent,
+        redirectTo: 'config001-hamper-detail',
+        pathMatch: 'full',
       },
       {
-        path: "config001-hamper-detail",
+        path: 'config001-hamper-detail',
         component: Config001HamperDetailComponent,
       },
-    ]
+    ],
   },
-
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class PConfigRoutingModule { }
+export class PConfigRoutingModule {}
