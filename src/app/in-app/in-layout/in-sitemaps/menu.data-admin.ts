@@ -9,7 +9,7 @@ export const ModuleDataAdmin: Array<any> = [
         Link: 'config/config001-hamper-request',
         Path: 'config',
         LoadChildren: () => import('../../in-config/in-config.module').then(m => m.InConfigModule),
-        component: LayoutDefaultComponent,
+        // component: LayoutDefaultComponent,
         ListMenu: [
             {
                 Name: "Cấu hình",

@@ -11,7 +11,7 @@ import { Config001HamperDetailComponent } from './pages/config001-hamper-detail/
   ],
   imports: [
     PConfigRoutingModule,
-    InLayoutModule,
+    InLayoutModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
