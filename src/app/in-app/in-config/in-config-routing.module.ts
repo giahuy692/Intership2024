@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { InConfigComponent } from './in-config.component';
 import { Config001HamperDetailComponent } from './pages/config001-hamper-detail/config001-hamper-detail.component';
+import { Config004HamperDetailComponent } from './pages/config004-hamper-detail/config004-hamper-detail.component';
 import { Config003HamberDetailComponent } from './pages/config003-hamber-detail/config003-hamber-detail.component';
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
       {
         path: 'config003-hamper-detail',//Le Thanh Hoang
         component: Config003HamberDetailComponent,
+      },
+      {
+        path: 'config004-hamper-detail', //Luong Van Phu
+        component: Config004HamperDetailComponent,
       },
     ],
   },
