@@ -1,0 +1,74 @@
+<div class="container">
+    <ol>
+        <h3>Đây là phiên bản mới đã tổ chức lại cấu trúc folder</h3>
+        <li>Tất cả các component sẽ được khai báo trong laymodule</li>
+        <li>Đặt tên component theo số: mới số do một bạn đảm nhiệm
+            <p>Ví dụ: config0001-hamper-detail là bản hamper do Hoàng làm thì các bạn sẽ test bài tập của hoàng trong component này</p>
+            <p>Ví dụ: config0002-hamper-detail là bản hamper do Thành làm thì các bạn sẽ test bài tập của hoàng trong component này</p>
+            <p>...Các bạn tự quyết định con số với nhau</p>
+        </li>
+        <li>in-config-routing.module sẽ là nơi để các bạn khai báo routing cho một loại layout</li>
+        <li>Ngoài ra các file routing của một module sẽ là nơi các bạn khai báo routing của trang của mình
+            <p>Ví dụ: config001 thì khai báo routing cho nó ở file in-config-routing.module</p>
+        </li>
+        <li>Các thành phần giống nhau trong 1 module thì các tạo component để dùng chung và khai báo nó component đó trong folder components của module đó</li>
+        <li>Task của mỗi bạn sẽ là tường page trong folder pages của một module (không tạo ra mỗi bạn 1 module)</li>
+        <li>Đặt tên page tăng dẫn
+            <p>Ví dụ: đã có config001 rồi thì component được tạo tiếp theo sẽ là config002</p>
+        </li>
+        <li class="text-danger">
+            <h4>Đây là component test có thể xóa khi các bạn đã rõ thất cả thông tin hoặc ẩn nó đi (không hiển thị trên browser)</h4>
+        </li>
+        <li>
+            Khi khởi động server phải luôn hiển thị ra page nhất định (Không được để trống rồi phải gõ URL )
+        </li>
+        <li>
+            Tổ chức menu trái như sau: 
+                <p>
+                    Ví dụ: task là làm trang chi tiết đề nghiệp hamper
+                    menu trái: Tên group là đề nghiệp hamper -> các function bên trong sẽ là từng task của các bạn. 
+                </p>
+                <p>Ở cuối trang mà các bạn làm task viết tên của các bạn với đó</p>
+        </li>
+        <li>NPM When First Pull:
+          npm i --legacy-peer-deps</li>
+    </ol>
+    <div class="d-flex justify-content-around">
+      <p>Default Buttons</p>
+      <p class="pl-2 d-flex justify-content-around">
+        <button class="pl-2" kendoButton (click)="onButtonClick()">Browse</button>
+        <button class="pl-2" kendoButton (click)="onButtonClick()" [svgIcon]="folderSVG">
+          Browse
+        </button>
+        <button class="pl-2"
+          kendoButton
+          (click)="onButtonClick()"
+          [svgIcon]="folderSVG"
+          title="Browse"
+        ></button>
+      </p>
+      <p class="pl-2 d-flex justify-content-around">
+        <button class="pl-2" kendoButton (click)="onButtonClick()" [disabled]="true">
+          Browse
+        </button>
+        <button class="pl-2"
+          kendoButton
+          (click)="onButtonClick()"
+          [svgIcon]="folderSVG"
+          [disabled]="true"
+        >
+          Browse
+        </button>
+        <button class="pl-2"
+          kendoButton
+          (click)="onButtonClick()"
+          [svgIcon]="folderSVG"
+          title="Browse"
+          [disabled]="true"
+        ></button>
+      </p>
+    </div>    
+</div>
+<div class="d-flex justify-content-end bg-light">
+    <span class="pr-4">© Gia Huy</span>
+</div>
