@@ -1,2 +1,3 @@
 <!-- <p>config004-hamper-detail works!</p> -->
-<app-item-company></app-item-company>
+<app-item-company [important]="true" [totalPrice]="200" (itemCompany)="handleItemCompanySelected($event)">></app-item-company>
+<button>click</button>
