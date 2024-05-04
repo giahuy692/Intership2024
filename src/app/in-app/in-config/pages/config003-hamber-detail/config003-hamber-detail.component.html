@@ -1,3 +1,11 @@
 <div class="hamber-003">
-    <button type='button' HamberButtons data-type='danger'>Content</button>
+  <button type="button" HamberButtons data-type="danger">Content</button>
+  <button kendoButton SetClassSVGIcon [svgIcon]="rotateIcon" (click)="refreshBreadCrumb()">
+    Refresh breadcrumb
+  </button>
+  <kendo-breadcrumb
+    [collapseMode]="collapseMode"
+    [items]="items"
+    (itemClick)="onItemClick($event)"
+  ></kendo-breadcrumb>
 </div>

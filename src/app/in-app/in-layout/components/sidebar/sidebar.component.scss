@@ -1,0 +1,56 @@
+.sidebar-container{
+    height: 100%;
+    margin-right: 7px;
+    
+
+    kendo-drawer-container{
+        height: 100%;
+        .drawer{
+            background-color: #5A6276;
+        }
+        .sidebar-header{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 48px;
+            width: 100%;
+            margin-top: 1px;
+            margin-bottom: 1px;
+            background-color: #FFFFFF;
+            
+            color: #1A6634;
+
+            .icon-block{
+                display: flex;
+                width: 50px;
+                align-items: center;
+                justify-content: center;
+
+                .company-icon{
+                    width: 20px;
+                    height: 20px;
+                }
+                .expand-icon{
+                    width: 20px;
+                    height: 20px;
+                    color: #959DB3;
+                }
+            }
+
+            
+            .text-holder{
+                width: calc(100% - 100px);
+                text-align: center;
+                .company-text{
+                    font-size: 14px;
+                    font-weight: 700;
+                    overflow: hidden;
+                }
+            }
+            
+
+            
+        }
+    }
+    
+}
