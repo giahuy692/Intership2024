@@ -1,16 +1,25 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { itemConpany } from '../../dtos/item-company';
 import { Company } from '../../dtos/company';
+import { Observable, BehaviorSubject } from 'rxjs'; 
+import { companyData } from '../../../config004-hamper-detail/data-test';
+
 
 @Component({
   selector: 'app-item-company',
   templateUrl: './item-company.component.html',
   styleUrls: ['./item-company.component.scss']
 })
-export class ItemCompanyComponent {
-  companyImportant: boolean = true
-  totalPrice: number = 0
-  isSelectedCompany: boolean = false
+export class ItemCompanyComponent{
+  isSelectedCompany: boolean = true
+  private itemCompanySelectedSubject = new BehaviorSubject<any[]>([]);
+  itemCompanySelected$ = this.itemCompanySelectedSubject.asObservable();
+  // @Input() company: Array<Company> = []
+  @Input() important: boolean = false
+  @Input() totalPrice: number = 0
+  @Output() itemCompany = new EventEmitter<any[]>();
+  company: Array<Company> = companyData
+
   typeOfMoney: Array<String> = [
     "VND"
   ]
@@ -25,225 +34,25 @@ export class ItemCompanyComponent {
     "Volleyball",
   ];
 
-  company: Array<Company> = [
-    {
-      code: 1,
-      name: "Áp dụng tại công ty TNHH Việt Hạ Chí",
-      itemConpany: [
-        {
-          id: 1,
-          name: 'Thức uống',
-          child: [
-            {
-              id: 11,
-              name: 'Thức uống có ga',
-              child: [
-                {
-                  id: 111,
-                  name: 'Nước ngọt',
-                  child: [
-                    {
-                      id: 1111,
-                      name: 'Nước ngọt cola',
-                      child: [
-                        {
-                          id: 11111,
-                          name: 'Coca Cola',
-                          child: []
-                        },
-                        {
-                          id: 11112,
-                          name: 'Pepsi',
-                          child: []
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              id: 12,
-              name: 'Thức uống không ga',
-              child: [
-                {
-                  id: 121,
-                  name: 'Nước sữa chua',
-                  child: [
-                    {
-                      id: 1211,
-                      name: 'Sữa chua Vinamilk',
-                      child: []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 2,
-          name: 'Đồ ăn',
-          child: [
-            {
-              id: 21,
-              name: 'Món chính',
-              child: [
-                {
-                  id: 211,
-                  name: 'Mì',
-                  child: [
-                    {
-                      id: 2111,
-                      name: 'Mì xào',
-                      child: []
-                    },
-                    {
-                      id: 2112,
-                      name: 'Mì hủ tiếu',
-                      child: []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              id: 22,
-              name: 'Tráng miệng',
-              child: [
-                {
-                  id: 221,
-                  name: 'Kem',
-                  child: [
-                    {
-                      id: 2211,
-                      name: 'Kem vani',
-                      child: []
-                    },
-                    {
-                      id: 2212,
-                      name: 'Kem dâu',
-                      child: []
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-
-  // foodCategories: Array<itemConpany> = [
-  //   {
-  //     id: 1,
-  //     name: 'Thức uống',
-  //     child: [
-  //       {
-  //         id: 11,
-  //         name: 'Thức uống có ga',
-  //         child: [
-  //           {
-  //             id: 111,
-  //             name: 'Nước ngọt',
-  //             child: [
-  //               {
-  //                 id: 1111,
-  //                 name: 'Nước ngọt cola',
-  //                 child: [
-  //                   {
-  //                     id: 11111,
-  //                     name: 'Coca Cola',
-  //                     child: []
-  //                   },
-  //                   {
-  //                     id: 11112,
-  //                     name: 'Pepsi',
-  //                     child: []
-  //                   }
-  //                 ]
-  //               }
-  //             ]
-  //           }
-  //         ]
-  //       },
-  //       {
-  //         id: 12,
-  //         name: 'Thức uống không ga',
-  //         child: [
-  //           {
-  //             id: 121,
-  //             name: 'Nước sữa chua',
-  //             child: [
-  //               {
-  //                 id: 1211,
-  //                 name: 'Sữa chua Vinamilk',
-  //                 child: []
-  //               }
-  //             ]
-  //           }
-  //         ]
-  //       }
-  //     ]
-  //   },
-  //   {
-  //     id: 2,
-  //     name: 'Đồ ăn',
-  //     child: [
-  //       {
-  //         id: 21,
-  //         name: 'Món chính',
-  //         child: [
-  //           {
-  //             id: 211,
-  //             name: 'Mì',
-  //             child: [
-  //               {
-  //                 id: 2111,
-  //                 name: 'Mì xào',
-  //                 child: []
-  //               },
-  //               {
-  //                 id: 2112,
-  //                 name: 'Mì hủ tiếu',
-  //                 child: []
-  //               }
-  //             ]
-  //           }
-  //         ]
-  //       },
-  //       {
-  //         id: 22,
-  //         name: 'Tráng miệng',
-  //         child: [
-  //           {
-  //             id: 221,
-  //             name: 'Kem',
-  //             child: [
-  //               {
-  //                 id: 2211,
-  //                 name: 'Kem vani',
-  //                 child: []
-  //               },
-  //               {
-  //                 id: 2212,
-  //                 name: 'Kem dâu',
-  //                 child: []
-  //               }
-  //             ]
-  //           }
-  //         ]
-  //       }
-  //     ]
-  //   }
-  // ];
-
+  
   selectedItem1: any
   selectedItem2: any
   selectedItem3: any
   selectedItem4: any
   selectedItem5: any
+  
+
+  handleSelectedItem(selectedItem1: any, selectedItem2: any, selectedItem3: any, selectedItem4: any, selectedItem5: any){
+    const selectedItems = [{level1: selectedItem1}, {level2: selectedItem2}, {level3: selectedItem3},{level4: selectedItem4},{level5: selectedItem5}];
+    this.itemCompanySelectedSubject.next(selectedItems);
+    console.log(selectedItems);
+  }
+
+  onSelectionChange(event: any, itemChange: number) {
+    const selectedValue = event.selected ? event.selected : null;
+    this.onItemChange(selectedValue, itemChange);
+  }
+
 
   onItemChange(event: any, itemchange:number) {
     switch (itemchange){
@@ -273,14 +82,16 @@ export class ItemCompanyComponent {
         this.selectedItem5 = event;
         break
     }
+    this.handleSelectedItem(this.selectedItem1, this.selectedItem2, this.selectedItem3, this.selectedItem4, this.selectedItem5)
 
   }
 
-  public searchType1: Array<{ id:number, name:string, child:any }>;
-  public searchType2: Array<{ id:number, name:string, child:any }>;
-  public searchType3: Array<{ id:number, name:string, child:any }>;
-  public searchType4: Array<{ id:number, name:string, child:any }>;
-  public searchType5: Array<{ id:number, name:string, child:any }>;
+  defaultItem = { id: -1, name: "--- Chọn ---"};
+  searchType1: Array<{ id:number, name:string, child:any }>;
+  searchType2: Array<{ id:number, name:string, child:any }>;
+  searchType3: Array<{ id:number, name:string, child:any }>;
+  searchType4: Array<{ id:number, name:string, child:any }>;
+  searchType5: Array<{ id:number, name:string, child:any }>;
 
   constructor() {
       this.searchType1 = this.company[0].itemConpany.slice();
@@ -303,7 +114,8 @@ export class ItemCompanyComponent {
         case 5:
           this.searchType5 = this.selectedItem4?.child.filter((s: { name: string }) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
           break;
-      }
+    }
+    
   }
 
   handleClear():void{
