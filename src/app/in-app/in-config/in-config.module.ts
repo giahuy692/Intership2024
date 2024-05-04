@@ -7,6 +7,7 @@ import { Config004HamperDetailComponent } from './pages/config004-hamper-detail/
 import { ItemCompanyComponent } from './pages/shared/components/item-company/item-company.component';
 import { Config003HamberDetailComponent } from './pages/config003-hamber-detail/config003-hamber-detail.component';
 import { HamberButtons } from './pages/shared/directives/HamberButtons.directive';
+import { SetClassSVGIcon } from './pages/shared/directives/SetClassSVGIcon.directive';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { HamberButtons } from './pages/shared/directives/HamberButtons.directive
     Config004HamperDetailComponent,
     ItemCompanyComponent,
     Config003HamberDetailComponent,
-    HamberButtons
+    HamberButtons,
+    SetClassSVGIcon
   ],
   imports: [
     PConfigRoutingModule,

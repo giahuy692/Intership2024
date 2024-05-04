@@ -1,0 +1,29 @@
+<div class="sidebar-container">
+    <kendo-drawer-container>
+        <kendo-drawer 
+        #drawer
+        [items]="items"
+        [mode]="'push'"
+        [mini]="true"
+        [(expanded)]="expanded"
+        [width]="270"
+        class="drawer">
+
+        <ng-template kendoDrawerHeaderTemplate>
+            <div class="sidebar-header" (click)="drawer.toggle()">
+                <div class="k-icon icon-block"><kendo-svg-icon [icon]="icons.dataIcon" class="company-icon"></kendo-svg-icon></div>                     
+                <div class="text-holder"><span class="company-text" *ngIf="expanded == true">Dữ liệu doanh nghiệp</span></div>
+                <div class="icon-block expand-block" *ngIf="expanded == true"><kendo-svg-icon [icon]="icons.chevronDownIcon" class="expand-icon"></kendo-svg-icon></div>
+            </div>
+        </ng-template>
+
+        <!-- <ng-template kendoDrawerItemTemplate let-item>
+            <div class="k-drawer-link" [routerLink]="item.path">
+                <span class="k-icon {{ item.icon }}"></span>
+                <span class="k-item-text" *ngIf="expanded">{{ item.text }}</span>
+            </div>
+        </ng-template> -->
+
+        </kendo-drawer>
+    </kendo-drawer-container>
+</div>
