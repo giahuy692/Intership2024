@@ -4,3 +4,19 @@
   margin: 0;
   font-family: "Mulish", sans-serif;
 }
+::-webkit-scrollbar {
+  z-index: 2;
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #008000;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #008000;
+}

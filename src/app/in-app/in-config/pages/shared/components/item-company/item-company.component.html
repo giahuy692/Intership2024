@@ -1,0 +1,78 @@
+<div class="body">
+    <div class="header">
+        <input (change)="handleClear()" type="checkbox" id="terms" kendoCheckBox [(ngModel)]="isSelectedCompany" />
+        <div class="name-company">
+            <label class="k-checkbox-label" for="terms"
+            >Áp dụng tại công ty TNHH Việt Hạ Chí</label>
+            <div *ngIf="companyImportant == true" class="conpany-important">(*)</div>
+        </div>
+    </div>
+
+    <div class="group">
+        <div class="kendo-label">
+            Phân nhóm cấp 1
+        </div>
+        <kendo-dropdownlist [disabled]="isSelectedCompany == false"     
+        (filterChange)="handleFilter($event, 1)" 
+        [filterable]="true" textField="name" 
+        valueField="id" [data]="data" (valueChange)="onItemChange($event, 1)">
+        </kendo-dropdownlist>
+    </div>
+    
+    
+    
+    <div class="group">
+        <div class="kendo-label">
+            Phân nhóm cấp 2
+        </div>
+        <kendo-dropdownlist [disabled]="!selectedCategory1 || isSelectedCompany == false" 
+        (filterChange)="handleFilter($event, 2)" [filterable]="true"  
+        textField="name" valueField="id" [(ngModel)]="selectedCategory2" 
+        [data]="selectedCategory1?.child" (valueChange)="onItemChange($event, 2)" >
+        </kendo-dropdownlist>
+    </div>
+    
+    <div class="group">
+        <div class="kendo-label">
+            Phân nhóm cấp 3
+        </div>
+        <kendo-dropdownlist [disabled]="!selectedCategory2 || isSelectedCompany == false" 
+        textField="name" valueField="id" [(ngModel)]="selectedCategory3" [data]="selectedCategory2?.child" 
+        (valueChange)="onItemChange($event, 3)">
+        </kendo-dropdownlist>
+    </div>
+    
+    <div class="group">
+        <div class="kendo-label">
+            Phân nhóm cấp 4
+        </div>
+        <kendo-dropdownlist [disabled]="!selectedCategory3 || isSelectedCompany == false" 
+        textField="name" valueField="id" [(ngModel)]="selectedCategory4" [data]="selectedCategory3?.child" 
+        (valueChange)="onItemChange($event, 4)">
+        </kendo-dropdownlist>
+    </div>
+    
+    <div class="group">
+        <div class="kendo-label">
+            Phân nhóm cấp 5
+        </div>
+        <kendo-dropdownlist [disabled]="!selectedCategory4 || isSelectedCompany == false" 
+        textField="name" valueField="id" [(ngModel)]="selectedCategory5" [data]="selectedCategory4?.child" 
+        (valueChange)="onItemChange($event, 5)">
+        </kendo-dropdownlist>
+    </div>
+    
+
+    <div class="price">
+        <div  class="kendo-label">
+            Giá bán lẻ (bao gồm VAT)
+        </div>
+        <div class="input">
+            <div class="inputTotalPrice">
+                <input [disabled]="true" class="inputPrice" [value]="totalPrice"/>
+            </div>
+            <kendo-dropdownlist [disabled]="true" [data]="typeOfMoney" value="VND">
+            </kendo-dropdownlist>
+        </div>
+    </div>
+</div>

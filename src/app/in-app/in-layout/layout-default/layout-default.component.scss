@@ -1,0 +1,16 @@
+.layout-container{
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+
+    .left-container{
+        height: 100%;
+        
+    }
+
+    .right-container{
+        height: 100%;
+        width: 100%;
+    }
+}
