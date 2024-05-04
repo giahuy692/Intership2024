@@ -9,6 +9,7 @@ import { Config003HamberDetailComponent } from './pages/config003-hamber-detail/
 import { HamberButtons } from './pages/shared/directives/HamberButtons.directive';
 import { SetClassSVGIcon } from './pages/shared/directives/SetClassSVGIcon.directive';
 import { ImportImageComponent } from './pages/shared/components/import-image/import-image.component';
+import { HamberBreadcrumb } from './pages/shared/directives/HamberBreadcrumb.directive';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ImportImageComponent } from './pages/shared/components/import-image/imp
     Config003HamberDetailComponent,
     HamberButtons,
     SetClassSVGIcon,
-    ImportImageComponent
+    ImportImageComponent,
+    HamberBreadcrumb
   ],
   imports: [
     PConfigRoutingModule,
