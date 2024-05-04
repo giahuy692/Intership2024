@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { itemConpany } from '../../dtos/item-company';
+import { Company } from '../../dtos/company';
 
 @Component({
   selector: 'app-item-company',
@@ -24,31 +25,54 @@ export class ItemCompanyComponent {
     "Volleyball",
   ];
 
-  foodCategories: Array<itemConpany> = [
+  company: Array<Company> = [
     {
-      id: 1,
-      name: 'Thức uống',
-      child: [
+      code: 1,
+      name: "Áp dụng tại công ty TNHH Việt Hạ Chí",
+      itemConpany: [
         {
-          id: 11,
-          name: 'Thức uống có ga',
+          id: 1,
+          name: 'Thức uống',
           child: [
             {
-              id: 111,
-              name: 'Nước ngọt',
+              id: 11,
+              name: 'Thức uống có ga',
               child: [
                 {
-                  id: 1111,
-                  name: 'Nước ngọt cola',
+                  id: 111,
+                  name: 'Nước ngọt',
                   child: [
                     {
-                      id: 11111,
-                      name: 'Coca Cola',
-                      child: []
-                    },
+                      id: 1111,
+                      name: 'Nước ngọt cola',
+                      child: [
+                        {
+                          id: 11111,
+                          name: 'Coca Cola',
+                          child: []
+                        },
+                        {
+                          id: 11112,
+                          name: 'Pepsi',
+                          child: []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              id: 12,
+              name: 'Thức uống không ga',
+              child: [
+                {
+                  id: 121,
+                  name: 'Nước sữa chua',
+                  child: [
                     {
-                      id: 11112,
-                      name: 'Pepsi',
+                      id: 1211,
+                      name: 'Sữa chua Vinamilk',
                       child: []
                     }
                   ]
@@ -58,67 +82,50 @@ export class ItemCompanyComponent {
           ]
         },
         {
-          id: 12,
-          name: 'Thức uống không ga',
+          id: 2,
+          name: 'Đồ ăn',
           child: [
             {
-              id: 121,
-              name: 'Nước sữa chua',
+              id: 21,
+              name: 'Món chính',
               child: [
                 {
-                  id: 1211,
-                  name: 'Sữa chua Vinamilk',
-                  child: []
+                  id: 211,
+                  name: 'Mì',
+                  child: [
+                    {
+                      id: 2111,
+                      name: 'Mì xào',
+                      child: []
+                    },
+                    {
+                      id: 2112,
+                      name: 'Mì hủ tiếu',
+                      child: []
+                    }
+                  ]
                 }
               ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 2,
-      name: 'Đồ ăn',
-      child: [
-        {
-          id: 21,
-          name: 'Món chính',
-          child: [
+            },
             {
-              id: 211,
-              name: 'Mì',
+              id: 22,
+              name: 'Tráng miệng',
               child: [
                 {
-                  id: 2111,
-                  name: 'Mì xào',
-                  child: []
-                },
-                {
-                  id: 2112,
-                  name: 'Mì hủ tiếu',
-                  child: []
-                }
-              ]
-            }
-          ]
-        },
-        {
-          id: 22,
-          name: 'Tráng miệng',
-          child: [
-            {
-              id: 221,
-              name: 'Kem',
-              child: [
-                {
-                  id: 2211,
-                  name: 'Kem vani',
-                  child: []
-                },
-                {
-                  id: 2212,
-                  name: 'Kem dâu',
-                  child: []
+                  id: 221,
+                  name: 'Kem',
+                  child: [
+                    {
+                      id: 2211,
+                      name: 'Kem vani',
+                      child: []
+                    },
+                    {
+                      id: 2212,
+                      name: 'Kem dâu',
+                      child: []
+                    }
+                  ]
                 }
               ]
             }
@@ -126,71 +133,184 @@ export class ItemCompanyComponent {
         }
       ]
     }
-  ];
+  ]
 
-  selectedCategory1: any
-  selectedCategory2: any
-  selectedCategory3: any
-  selectedCategory4: any
-  selectedCategory5: any
+  // foodCategories: Array<itemConpany> = [
+  //   {
+  //     id: 1,
+  //     name: 'Thức uống',
+  //     child: [
+  //       {
+  //         id: 11,
+  //         name: 'Thức uống có ga',
+  //         child: [
+  //           {
+  //             id: 111,
+  //             name: 'Nước ngọt',
+  //             child: [
+  //               {
+  //                 id: 1111,
+  //                 name: 'Nước ngọt cola',
+  //                 child: [
+  //                   {
+  //                     id: 11111,
+  //                     name: 'Coca Cola',
+  //                     child: []
+  //                   },
+  //                   {
+  //                     id: 11112,
+  //                     name: 'Pepsi',
+  //                     child: []
+  //                   }
+  //                 ]
+  //               }
+  //             ]
+  //           }
+  //         ]
+  //       },
+  //       {
+  //         id: 12,
+  //         name: 'Thức uống không ga',
+  //         child: [
+  //           {
+  //             id: 121,
+  //             name: 'Nước sữa chua',
+  //             child: [
+  //               {
+  //                 id: 1211,
+  //                 name: 'Sữa chua Vinamilk',
+  //                 child: []
+  //               }
+  //             ]
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   },
+  //   {
+  //     id: 2,
+  //     name: 'Đồ ăn',
+  //     child: [
+  //       {
+  //         id: 21,
+  //         name: 'Món chính',
+  //         child: [
+  //           {
+  //             id: 211,
+  //             name: 'Mì',
+  //             child: [
+  //               {
+  //                 id: 2111,
+  //                 name: 'Mì xào',
+  //                 child: []
+  //               },
+  //               {
+  //                 id: 2112,
+  //                 name: 'Mì hủ tiếu',
+  //                 child: []
+  //               }
+  //             ]
+  //           }
+  //         ]
+  //       },
+  //       {
+  //         id: 22,
+  //         name: 'Tráng miệng',
+  //         child: [
+  //           {
+  //             id: 221,
+  //             name: 'Kem',
+  //             child: [
+  //               {
+  //                 id: 2211,
+  //                 name: 'Kem vani',
+  //                 child: []
+  //               },
+  //               {
+  //                 id: 2212,
+  //                 name: 'Kem dâu',
+  //                 child: []
+  //               }
+  //             ]
+  //           }
+  //         ]
+  //       }
+  //     ]
+  //   }
+  // ];
+
+  selectedItem1: any
+  selectedItem2: any
+  selectedItem3: any
+  selectedItem4: any
+  selectedItem5: any
 
   onItemChange(event: any, itemchange:number) {
     switch (itemchange){
       case 1:
-        this.selectedCategory1 = event; 
-        this.selectedCategory2 = null;
-        this.selectedCategory3 = null;
-        this.selectedCategory4 = null;
-        this.selectedCategory5 = null;
+        this.selectedItem1 = event; 
+        this.selectedItem2 = null;
+        this.selectedItem3 = null;
+        this.selectedItem4 = null;
+        this.selectedItem5 = null;
         break
       case 2:
-        this.selectedCategory2 = event;
-        this.selectedCategory3 = null;
-        this.selectedCategory4 = null;
-        this.selectedCategory5 = null;
+        this.selectedItem2 = event;
+        this.selectedItem3 = null;
+        this.selectedItem4 = null;
+        this.selectedItem5 = null;
         break
       case 3:
-        this.selectedCategory3 = event;
-        this.selectedCategory4 = null;
-        this.selectedCategory5 = null;
+        this.selectedItem3 = event;
+        this.selectedItem4 = null;
+        this.selectedItem5 = null;
         break
       case 4:
-        this.selectedCategory4 = event;
-        this.selectedCategory5 = null;
+        this.selectedItem4 = event;
+        this.selectedItem5 = null;
         break
       case 5:
-        this.selectedCategory5 = event;
+        this.selectedItem5 = event;
         break
     }
 
   }
 
-  public data: Array<{ id:number, name:string, child:any }>;
+  public searchType1: Array<{ id:number, name:string, child:any }>;
+  public searchType2: Array<{ id:number, name:string, child:any }>;
+  public searchType3: Array<{ id:number, name:string, child:any }>;
+  public searchType4: Array<{ id:number, name:string, child:any }>;
+  public searchType5: Array<{ id:number, name:string, child:any }>;
 
   constructor() {
-      this.data = this.foodCategories.slice();
+      this.searchType1 = this.company[0].itemConpany.slice();
   }
 
   handleFilter(value: string, level: number) {
     switch (level) {
         case 1:
-          this.data = this.foodCategories.filter((s) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+          this.searchType1 = this.company[0].itemConpany.filter((s) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
           break;
         case 2:
-          this.data = this.selectedCategory1?.child.filter((s: { name: string }) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+          this.searchType2 = this.selectedItem1?.child.filter((s: { name: string }) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
           break;
-        default:
-            break;
+        case 3:
+          this.searchType3 = this.selectedItem2?.child.filter((s: { name: string }) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+          break;
+        case 4:
+          this.searchType4 = this.selectedItem3?.child.filter((s: { name: string }) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+          break;
+        case 5:
+          this.searchType5 = this.selectedItem4?.child.filter((s: { name: string }) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+          break;
       }
   }
 
   handleClear():void{
-    this.selectedCategory1 = null;
-    this.selectedCategory2 = null;
-    this.selectedCategory3 = null;
-    this.selectedCategory4 = null;
-    this.selectedCategory5 = null;
+    this.selectedItem1 = null;
+    this.selectedItem2 = null;
+    this.selectedItem3 = null;
+    this.selectedItem4 = null;
+    this.selectedItem5 = null;
   }
-
-  
 }
