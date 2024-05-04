@@ -12,7 +12,6 @@ export class Config003HamberDetailComponent {
    defaultItems: BreadCrumbItem[] = [
     {
       text: "Home",
-      svgIcon: homeIcon,
     },
     {
       text: "Products",
