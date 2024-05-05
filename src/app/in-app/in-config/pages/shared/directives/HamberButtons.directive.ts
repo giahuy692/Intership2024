@@ -6,8 +6,8 @@ import { Directive, ElementRef, OnInit } from '@angular/core';
 /**
  * Using for css button in hamber-page
  * Type button : danger, success, cancel, return
- * Using default example <button type='button' HamberButtons data-type='danger'>Content</button>
- * Using with modified css example <button type='button' HamberButtons data-type='danger' data-css='paddig: 10px'>Content</button>
+ * Using default example <button type='button' HamberButtons data-type='danger'>Content <kendo-svg-icon [icon]="rotateIcon"></kendo-svg-icon></button>
+ * Using with modified css example <button type='button' HamberButtons data-type='danger' data-css='paddig: 10px'>Content <kendo-svg-icon [icon]="rotateIcon"></kendo-svg-icon></button>
  */
 export class HamberButtons implements OnInit {
   csStyle =
@@ -15,19 +15,41 @@ export class HamberButtons implements OnInit {
   constructor(private element: ElementRef) {}
   ngOnInit(): void {
     this.element.nativeElement.style = this.csStyle;
+    let svgIcons =
+      this.element.nativeElement.querySelectorAll('kendo-svg-icon svg');
     let type = this.element.nativeElement.dataset.type;
     if (type) {
       if (type == 'danger') {
         this.element.nativeElement.style.backgroundColor = '#EB273A';
+        if (svgIcons) {
+          svgIcons.forEach((icon: HTMLElement) => {
+            icon.style.fill = 'white';
+          });
+        }
       } else if (type == 'return') {
         this.element.nativeElement.style.backgroundColor = 'white';
         this.element.nativeElement.style.borderColor = '#EB273A';
         this.element.nativeElement.style.color = '#EB273A';
+        if (svgIcons) {
+          svgIcons.forEach((icon: HTMLElement) => {
+            icon.style.fill = '#EB273A';
+          });
+        }
       } else if (type == 'success') {
         this.element.nativeElement.style.backgroundColor = '#008000';
+        if (svgIcons) {
+          svgIcons.forEach((icon: HTMLElement) => {
+            icon.style.fill = '#EB273A';
+          });
+        }
       } else if (type == 'cancel') {
         this.element.nativeElement.style.backgroundColor = 'white';
         this.element.nativeElement.style.color = '#008000';
+        if (svgIcons) {
+          svgIcons.forEach((icon: HTMLElement) => {
+            icon.style.fill = '#008000';
+          });
+        }
       }
     }
     let css = this.element.nativeElement.dataset.css;
