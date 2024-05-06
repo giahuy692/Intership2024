@@ -28,7 +28,7 @@ import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/
     SetClassSVGIcon,
     ImportImageComponent,
     ProductListComponent,
-    HamperBreadcrumb
+    HamperBreadcrumb,
     FileSelected,
     ProductListComponent,
     Necessary,
