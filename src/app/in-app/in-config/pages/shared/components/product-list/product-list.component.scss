@@ -1,0 +1,42 @@
+.product-list {
+  width: 100%;
+  overflow: auto;
+  header {
+    width: 100%;
+    min-width: 1000px;
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 30px;
+      .title {
+        text-wrap: nowrap;
+      }
+      .search {
+        width: 450px;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        kendo-textbox {
+          width: 375px;
+          padding: 0 10px;
+          background-color: white;
+          input::placeholder {
+            color: #a8a9ab;
+          }
+        }
+      }
+      .actions {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+    }
+  }
+  main {
+    table {
+      width: 100%;
+      min-width: 1000px;
+    }
+  }
+}
