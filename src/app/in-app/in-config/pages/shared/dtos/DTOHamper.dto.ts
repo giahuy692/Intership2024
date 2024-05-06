@@ -1,6 +1,6 @@
 import { DTOProduct } from "./DTOProduct.dto"
 
-export class DTOHamber{
+export class DTOHamper{
     CompanyList?: any[]
     TotalPrice?: number
     Currency?: string
