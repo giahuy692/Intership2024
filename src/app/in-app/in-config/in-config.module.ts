@@ -15,6 +15,7 @@ import { ProductListComponent } from './pages/shared/components/product-list/pro
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { LabelModule } from '@progress/kendo-angular-label';
 import { Necessary } from './pages/shared/directives/Necessary.directive';
+import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/config002-hamper-detail.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { Necessary } from './pages/shared/directives/Necessary.directive';
     HamperBreadcrumb
     FileSelected,
     ProductListComponent,
-    Necessary
+    Necessary,
+    Config002HamperDetailComponent
   ],
   imports: [
     PConfigRoutingModule,
