@@ -12,6 +12,8 @@ import { ImportImageComponent } from './pages/shared/components/import-image/imp
 import { HamberBreadcrumb } from './pages/shared/directives/HamberBreadcrumb.directive';
 import { FileSelected } from './pages/shared/directives/FileSelected.directive';
 import { ProductListComponent } from './pages/shared/components/product-list/product-list.component';
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { LabelModule } from '@progress/kendo-angular-label';
 import { Necessary } from './pages/shared/directives/Necessary.directive';
 import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/config002-hamper-detail.component';
 
@@ -34,6 +36,9 @@ import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/
   imports: [
     PConfigRoutingModule,
     InLayoutModule,
+    InputsModule,
+    LabelModule
+    
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
