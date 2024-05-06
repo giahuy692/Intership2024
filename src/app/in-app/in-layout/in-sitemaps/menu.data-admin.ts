@@ -64,6 +64,17 @@ export const ModuleDataAdmin: Array<any> = [
                         LstChild: [],
                         Actived: false,
                         disabled: false,
+                    },
+                    {
+                        Name: "Chi tiết hamper",
+                        Code: "config005-hamper-detail",
+                        Link: "/config/config005-hamper-detail",
+                        Type: 'function',
+                        ModuleID: "config005-hamper-detail",
+                        Parent: "Quản lý sản phẩm",
+                        LstChild: [],
+                        Actived: false,
+                        disabled: false,
                     }
                 ]
                 
