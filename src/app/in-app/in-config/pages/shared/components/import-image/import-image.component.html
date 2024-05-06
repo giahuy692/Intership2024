@@ -3,7 +3,7 @@
         <div class="text-image">Hình ảnh</div>
         <div style="display: flex;">
             <kendo-fileselect [restrictions]="fileRestrictions" (select)="select($event)" FileSelected></kendo-fileselect>
-            <div class="important">(*)</div>
+            <span Necessary></span>
         </div>
     </div>
     <div class="image-container" *ngIf="imagePreview">
