@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { companyVietHaTri, companyMotThanhVien, company3PS } from './data-test';
 import { DTOCompany } from '../shared/dtos/DTOCompany.dto';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-config004-hamper-detail',
@@ -32,6 +33,21 @@ export class Config004HamperDetailComponent {
     console.log(this.receivedCPN1);
     console.log(this.receivedCPN2);
     console.log(this.receivedCPN3);
+
+    console.log(this.formHamper);
   }
+
+  formHamper = new FormGroup({
+    barcode: new FormControl,
+    nameVietNames: new FormControl,
+    nameEnglish: new FormControl,
+    nameJapan: new FormControl,
+    made: new FormControl,
+    materialVietnames: new FormControl,
+    materialEnglish: new FormControl,
+    materialJapan: new FormControl
+
+  })
+  
 
 }

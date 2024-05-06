@@ -1,6 +1,6 @@
 <div class="body">
     <div class="header">
-        <input (change)="handleClear()" type="checkbox" id="terms" kendoCheckBox [(ngModel)]="isSelectedCompany" />
+        <input (change)="handleClear()" type="checkbox" id="terms" kendoCheckBox [(ngModel)]="isSelectedCompany"  />
         <div class="name-company">
             <label class="k-checkbox-label" for="terms"
             >Áp dụng tại công ty {{setValue[0].name}}</label>
@@ -12,15 +12,23 @@
         <div class="kendo-label">
             Phân nhóm cấp 1
         </div>
-        <kendo-dropdownlist iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="isSelectedCompany == false"     
-        (filterChange)="handleFilter($event, 1)" 
-        [filterable]="true" textField="name" [(ngModel)]="selectedItem1" 
-        valueField="id" [data]="searchType1" (valueChange)="onItemChange($event, 1)"
-        SetClassSVGIcon icon
-        [classList]="'selectedItem'"
-        >
-        
+        <kendo-dropdownlist
+            iconClass="fa-solid fa-angle-down"
+            [defaultItem]="defaultItem"
+            [disabled]="isSelectedCompany == false"
+            (filterChange)="handleFilter($event, 1)"
+            [filterable]="true"
+            textField="name"
+            [(ngModel)]="selectedItem1"
+            valueField="id"
+            [data]="searchType1"
+            (valueChange)="onItemChange($event, 1)"
+            SetClassSVGIcon
+            [filterInput]="false"
+            [closeOnClick]="false"
+            > 
         </kendo-dropdownlist>
+      
     </div>
     
     
