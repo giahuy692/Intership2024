@@ -12,37 +12,36 @@ export class HamperService {
     ProductList: [
       {
         Barcode: '0001',
-        Name: 'Product01',
+        Name: 'daudhahdoahdahdaljdaldhaldhaldaljbckhabvaihgcaousdh adhuahdkadakdadhadaldjaljdlajdlajdaldja',
+        Brand: 'Brand01',
+        Origin: 'Origin01',
+        Price: 15000000,
+        Quantity: 3,
+      },
+      {
+        Barcode: '0002',
+        Name: 'daudhahdoahdahdaljdaldhaldhaldaljbckhabvaihgcaousdh adhuahdkadakdadhadaldjaljdlajdlajdaldja',
         Brand: 'Brand01',
         Origin: 'Origin01',
         Price: 15,
         Quantity: 3,
-      },
-      {
-        Barcode: '0001',
-        Name: 'Product01',
+      },{
+        Barcode: '0003',
+        Name: 'daudhahdoahdahdaljdaldhaldhaldaljbckhabvaihgcaousdh adhuahdkadakdadhadaldjaljdlajdlajdaldja',
         Brand: 'Brand01',
         Origin: 'Origin01',
         Price: 15,
         Quantity: 3,
-      },
-      {
-        Barcode: '0001',
-        Name: 'Product01',
-        Brand: 'Brand01',
-        Origin: 'Origin01',
-        Price: 15,
-        Quantity: 3,
-      },
-      {
-        Barcode: '0001',
-        Name: 'Product01',
+      },{
+        Barcode: '0004',
+        Name: 'daudhahdoahdahdaljdaldhaldhaldaljbckhabvaihgcaousdh adhuahdkadakdadhadaldjaljdlajdlajdaldja',
         Brand: 'Brand01',
         Origin: 'Origin01',
         Price: 15,
         Quantity: 3,
       },
     ],
+    State:'Đang soạn thảo'
   };
   private hamberSubject = new BehaviorSubject<DTOHamper>(this.hamberDummy);
   hamberSubject$: Observable<DTOHamper> = this.hamberSubject.asObservable();

@@ -16,6 +16,7 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { LabelModule } from '@progress/kendo-angular-label';
 import { Necessary } from './pages/shared/directives/Necessary.directive';
 import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/config002-hamper-detail.component';
+import { PricePipe } from './pages/shared/directives/PricePipe.pipe';
 
 @NgModule({
   declarations: [
@@ -28,11 +29,12 @@ import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/
     SetClassSVGIcon,
     ImportImageComponent,
     ProductListComponent,
-    HamperBreadcrumb
+    HamperBreadcrumb,
     FileSelected,
     ProductListComponent,
     Necessary,
-    Config002HamperDetailComponent
+    Config002HamperDetailComponent,
+    PricePipe
   ],
   imports: [
     PConfigRoutingModule,

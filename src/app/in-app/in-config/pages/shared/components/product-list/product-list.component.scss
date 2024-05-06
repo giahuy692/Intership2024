@@ -1,42 +1,153 @@
 .product-list {
   width: 100%;
   overflow: auto;
-  header {
-    width: 100%;
-    min-width: 1000px;
-    .header-content {
+  .product-content {
+    .btn-upload{
       display: flex;
-      justify-content: space-between;
+      height: 30px;
+      justify-content: center;
       align-items: center;
-      gap: 30px;
-      .title {
-        text-wrap: nowrap;
-      }
-      .search {
-        width: 450px;
+      gap: 5px;
+      background-color: white;
+      border: none;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      text-wrap: nowrap;
+      padding: 0 5px;
+    }
+    .btn{
+      height: 30px;
+      text-wrap: nowrap;
+    }
+    header {
+      width: 100%;
+      .header-content {
         display: flex;
-        justify-content: center;
-        gap: 10px;
-        kendo-textbox {
-          width: 375px;
-          padding: 0 10px;
-          background-color: white;
-          input::placeholder {
-            color: #a8a9ab;
+        justify-content: space-between;
+        align-items: center;
+        gap: 30px;
+        .title {
+          text-wrap: nowrap;
+          display: flex;
+          gap: 5px;
+          span{
+            font-size: 20px;
+          }
+        }
+        .search {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+          kendo-textbox {
+            width: 500px;
+            padding: 0 10px;
+            background-color: white;
+            input::placeholder {
+              color: #a8a9ab;
+            }
+          }
+        }
+        .actions {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 10px;
+        }
+      }
+    }
+    main {
+      table {
+        min-width: 1300px;
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0px 10px;
+        text-align: start;
+        thead {
+          th {
+            padding: 0 10px;
+          }
+        }
+        tbody {
+          tr {
+            background-color: white;
+            td {
+              background-color: white;
+              padding: 0 10px;
+              &.product-td-width {
+                width: 100px;
+              }
+              &.product-img {
+                width: 40px;
+                height: 40px;
+              }
+              &.product-name {
+                width: 400px;
+                text-wrap: wrap;
+              }
+              &.product-quantity {
+                text-align: center;
+              }
+              &.actions {
+                padding-left: 70px;
+                .action-content {
+                  cursor: pointer;
+                  position: relative;
+                  padding: 10px;
+                  width: 30px;
+                  height: 30px;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  &.active {
+                    border-top-right-radius: 5px;
+                    border-top-left-radius: 5px;
+                    background-color: #959db3;
+                    .action-list {
+                      display: block;
+                    }
+                  }
+                  .action-list {
+                    display: none;
+                    z-index: 5;
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    background-color: #959db3;
+                    border-radius: 5px;
+                    border-top-right-radius: 0px;
+                    min-width: 130px;
+                    button {
+                      display: flex;
+                      width: 100%;
+                      background-color: #959db3;
+                      border: none;
+                      padding: 5px 10px;
+                      justify-content: start;
+                      gap: 10px;
+                      align-items: center;
+                      color: white;
+                      border-radius: 5px;
+                      cursor: pointer;
+                      &:hover {
+                        background-color: #bdc2d2;
+                        border-radius: 0px;
+                        &:first-of-type {
+                          border-top-left-radius: 5px;
+                        }
+                        &:last-of-type {
+                          border-bottom-left-radius: 5px;
+                        }
+                      }
+                      span {
+                        text-wrap: nowrap;
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
-      .actions {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-      }
-    }
-  }
-  main {
-    table {
-      width: 100%;
-      min-width: 1000px;
     }
   }
 }
