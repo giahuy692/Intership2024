@@ -1,11 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+
 * {
   padding: 0;
   margin: 0;
   font-family: "Mulish", sans-serif;
   @import "@progress/kendo-font-icons/dist/index.css";
-}
 
+}
 $dark-green: #1A6634;
 $text-grey: #959DB3;
 $text-dark-grey: #5A6276;
@@ -22,6 +23,7 @@ $box-shadow-green: rgba(26, 102, 52, 0.4) 0px 7px 15px 0px;
 .k-font-icon{
   font-family: "WebComponentsIcons" !important;
 }
+
 
 
 ::-webkit-scrollbar {

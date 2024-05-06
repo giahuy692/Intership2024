@@ -5,4 +5,147 @@
     <app-item-company [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
     <app-item-company [setValue]="motThanhCom" (getValue)="getValueCompany2($event)" [important]="false" [totalPrice]="200" >></app-item-company>
     <app-item-company [setValue]="PSCom" (getValue)="getValueCompany3($event)" [important]="false" [totalPrice]="200" >></app-item-company>
+    <app-item-company (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
 </div>
+
+<button (click)="log()">click</button>
+
+<!-- <div class="body">
+    <form [formGroup]="formHamper">
+        <div class="hamper-info block-hamper">
+            <div class="header-hamper-info"> 
+                 <div class="title-header">Thông tin hamper</div>
+                 <div class="title-status">Đang soạn thảo</div>
+            </div>
+            <div class="content-hamper">
+                <div class="group-item">
+                    <div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Barcode gốc <div >(*)</div>
+                            </kendo-label>
+                            <kendo-textbox formControlName="barcode"></kendo-textbox>
+                        </div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Tên tiếng Việt <div >(*)</div>
+                            </kendo-label>
+                            <kendo-textbox></kendo-textbox>
+                        </div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Tên tiếng Anh
+                            </kendo-label>
+                            <kendo-textbox formControlName="nameEnglish"></kendo-textbox>
+                        </div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Tên tiếng Nhật
+                            </kendo-label>
+                            <kendo-textbox></kendo-textbox>
+                        </div>
+                    </div>
+    
+                    <div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Xuất xứ
+                            </kendo-label>
+                            <kendo-dropdownlist
+                            SetClassSVGIcon
+                            ></kendo-dropdownlist>
+                        </div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Chất liệu tiếng Việt
+                            </kendo-label>
+                            <kendo-textbox></kendo-textbox>
+                        </div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Chất liệu tiếng Anh
+                            </kendo-label>
+                            <kendo-textbox></kendo-textbox>
+                        </div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Chất liệu tiếng Nhật
+                            </kendo-label>
+                            <kendo-textbox></kendo-textbox>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+        <div class="hamper-info-package block-hamper">
+            <div class="header-hamper-info"> 
+                 <div class="title-header">Thông tin hamper</div>
+            </div>
+            <div class="content-hamper">
+                <div class="group-item">
+                    <div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Đơn vị  sản phẩm (Base unit)
+                            </kendo-label>
+                            <kendo-dropdownlist SetClassSVGIcon></kendo-dropdownlist>
+                        </div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)
+                            </kendo-label>
+                            <div class="box-group">
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="medium-textbox"></kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)
+                            </kendo-label>
+                            <div class="box-group">
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="medium-textbox"></kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)
+                            </kendo-label>
+                            <div class="box-group">
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="medium-textbox"></kendo-textbox>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)
+                            </kendo-label>
+                            <div class="box-group">
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="short-textbox"></kendo-textbox>
+                                <kendo-textbox class="medium-textbox"></kendo-textbox>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div>
+                       
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+    </form>
+
+    
+</div> -->
+
