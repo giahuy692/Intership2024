@@ -1,7 +1,7 @@
 import { Directive, ElementRef, OnInit } from '@angular/core';
 
 @Directive({
-  selector: '[HamberButtons]',
+  selector: '[HamperButtons]',
 })
 /**
  * Using for css button in hamber-page
@@ -9,9 +9,9 @@ import { Directive, ElementRef, OnInit } from '@angular/core';
  * Using default example <button type='button' HamberButtons data-type='danger'>Content <kendo-svg-icon [icon]="rotateIcon"></kendo-svg-icon></button>
  * Using with modified css example <button type='button' HamberButtons data-type='danger' data-css='paddig: 10px'>Content <kendo-svg-icon [icon]="rotateIcon"></kendo-svg-icon></button>
  */
-export class HamberButtons implements OnInit {
+export class HamperButtons implements OnInit {
   csStyle =
-    'padding : 10px; border: 1px solid transparent; border-radius: 5px; color: white; display: flex; justify-content: center; gap: 7px; align-items: center; fill: white; font-weight: 700; cursor: pointer; box-shadow: rgba(3, 102, 214, 0.3) 0px 3px 5px 0px;';
+    'border: 1px solid transparent; border-radius: 5px; color: white; display: flex; justify-content: center; gap: 7px; align-items: center; fill: white; font-weight: 700; cursor: pointer; box-shadow: rgba(3, 102, 214, 0.3) 0px 3px 5px 0px;';
   constructor(private element: ElementRef) {}
   ngOnInit(): void {
     this.element.nativeElement.style = this.csStyle;
