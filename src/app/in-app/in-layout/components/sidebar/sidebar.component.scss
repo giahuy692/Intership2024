@@ -4,21 +4,112 @@
     
 
     kendo-drawer-container{
-        height: 100%;
+        height: 100%;      
+        
         .drawer{
+            height: 100%;
             background-color: #5A6276;
+            border: none;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+            
+            .modules-block{
+                display: flex;
+                height: 50px;
+                width: 100%;
+                align-items: center;
+                color: #959DB3;
+                user-select: none;
+
+                &.active{
+                    color: #FFFFFF;
+                }
+
+
+                &.groupModule{
+                    color: #959DB3;    
+                    
+
+                    &.parentActive{
+                        color: #FFFFFF; 
+                    }
+                }
+
+                .status-bar{
+                    width: 5px;
+                    height: 100%;
+                    background-color: #FFFFFF;
+                    display: none;
+
+                    &.active{
+                        display: block;
+                    }
+                }
+
+                .icon-block{
+                    display: flex;
+                    width: 45px;
+                    height: 100%;
+                    align-items: center;
+                    justify-content: center;
+
+                    .module-icon{
+                        width: 20px;
+                        height: 20px;
+                        padding: 0;
+                        font-size: 20px;
+                    }
+                    .expand-icon{
+                        width: 20px;
+                        height: 20px;
+                        color: #959DB3;
+    
+                        &.expanded{
+                            transform: rotate(180deg);
+                        }
+                    }
+                }
+
+                .module-text{
+                    text-align: center;
+                    font-size: 13px;
+                    font-weight: 700;
+                    width: calc(100% - 95px);
+
+                    &.parent{
+                        text-transform: uppercase;
+                    }
+                }
+            }
+
+            .k-drawer-item{
+                padding: 0;
+                &:focus{   
+                    box-shadow: none;
+                }
+            }
+
+            .k-drawer-wrapper{
+                height: 100%;
+            }
+
+            .k-selected{
+                background-color: transparent;
+                color: none;
+            }
+
+            
         }
         .sidebar-header{
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 48px;
+            height: 50px;
             width: 100%;
-            margin-top: 1px;
-            margin-bottom: 1px;
             background-color: #FFFFFF;
-            
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
             color: #1A6634;
+            cursor: pointer;
+            user-select: none;
 
             .icon-block{
                 display: flex;
