@@ -19,6 +19,10 @@ $box-shadow4: rgba(17, 17, 26, 0.1) 0px 0px 16px;
 $box-shadow-blue: rgba(65, 179, 255, 0.4) 0px 7px 15px 0px;
 $box-shadow-green: rgba(26, 102, 52, 0.4) 0px 7px 15px 0px;
 
+.k-font-icon{
+  font-family: "WebComponentsIcons" !important;
+}
+
 
 ::-webkit-scrollbar {
   z-index: 2;
