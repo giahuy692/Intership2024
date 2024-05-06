@@ -11,6 +11,7 @@ import { SetClassSVGIcon } from './pages/shared/directives/SetClassSVGIcon.direc
 import { ImportImageComponent } from './pages/shared/components/import-image/import-image.component';
 import { HamberBreadcrumb } from './pages/shared/directives/HamberBreadcrumb.directive';
 import { FileSelected } from './pages/shared/directives/FileSelected.directive';
+import { ProductListComponent } from './pages/shared/components/product-list/product-list.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import { FileSelected } from './pages/shared/directives/FileSelected.directive';
     SetClassSVGIcon,
     ImportImageComponent,
     HamberBreadcrumb,
-    FileSelected
+    FileSelected,
+    ProductListComponent
   ],
   imports: [
     PConfigRoutingModule,

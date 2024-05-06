@@ -1,8 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { itemConpany } from '../../dtos/item-company';
-import { Company } from '../../dtos/company';
+import { DTOItemCompany } from '../../dtos/DTOItemCompany.dto';
+import { DTOCompany } from '../../dtos/DTOCompany.dto';
 import { Observable, BehaviorSubject } from 'rxjs'; 
-import { companyData } from '../../../config004-hamper-detail/data-test';
+import { DataDefautCompany } from './dataDefault';
+
 
 
 @Component({
@@ -10,76 +11,83 @@ import { companyData } from '../../../config004-hamper-detail/data-test';
   templateUrl: './item-company.component.html',
   styleUrls: ['./item-company.component.scss']
 })
-export class ItemCompanyComponent{
-  isSelectedCompany: boolean = true
-  private itemCompanySelectedSubject = new BehaviorSubject<any[]>([]);
-  itemCompanySelected$ = this.itemCompanySelectedSubject.asObservable();
-  // @Input() company: Array<Company> = []
+export class ItemCompanyComponent implements OnInit{
+  @Input() setValue: Array<DTOCompany> = DataDefautCompany
   @Input() important: boolean = false
   @Input() totalPrice: number = 0
-  @Output() itemCompany = new EventEmitter<any[]>();
-  company: Array<Company> = companyData
+  @Output() getValue = new EventEmitter<any>();
+  isSelectedCompany: boolean = true
+
+  selectedItem1: any = null
+  selectedItem2: any = null
+  selectedItem3: any = null
+  selectedItem4: any = null
+  selectedItem5: any = null
 
   typeOfMoney: Array<String> = [
     "VND"
   ]
-  public listItems: Array<string> = [
-    "Baseball",
-    "Basketball",
-    "Cricket",
-    "Field Hockey",
-    "Football",
-    "Table Tennis",
-    "Tennis",
-    "Volleyball",
-  ];
 
-  
-  selectedItem1: any
-  selectedItem2: any
-  selectedItem3: any
-  selectedItem4: any
-  selectedItem5: any
-  
+  ngOnInit(): void {
+    this.searchType1 = this.setValue[0].itemConpany.slice();
+    this.handleSelectedItem(this.selectedItem1, this.selectedItem2, this.selectedItem3, this.selectedItem4, this.selectedItem5)
+  }
+
+  constructor() {
+ 
+  }
 
   handleSelectedItem(selectedItem1: any, selectedItem2: any, selectedItem3: any, selectedItem4: any, selectedItem5: any){
-    const selectedItems = [{level1: selectedItem1}, {level2: selectedItem2}, {level3: selectedItem3},{level4: selectedItem4},{level5: selectedItem5}];
-    this.itemCompanySelectedSubject.next(selectedItems);
-    console.log(selectedItems);
+    const selectedItems = {code: this.setValue[0].code, name: this.setValue[0].name,itemSelected: [{level1: selectedItem1}, {level2: selectedItem2}, {level3: selectedItem3},{level4: selectedItem4},{level5: selectedItem5}]}
+    this.getValue.emit(selectedItems);
   }
-
-  onSelectionChange(event: any, itemChange: number) {
-    const selectedValue = event.selected ? event.selected : null;
-    this.onItemChange(selectedValue, itemChange);
-  }
-
-
+ 
   onItemChange(event: any, itemchange:number) {
     switch (itemchange){
       case 1:
-        this.selectedItem1 = event; 
+        if(event === this.defaultItem){
+          this.selectedItem1 = null; 
+        }else{
+          this.selectedItem1 = event; 
+        }
         this.selectedItem2 = null;
         this.selectedItem3 = null;
         this.selectedItem4 = null;
         this.selectedItem5 = null;
         break
       case 2:
-        this.selectedItem2 = event;
+        if(event === this.defaultItem){
+          this.selectedItem2 = null;
+        }else{
+          this.selectedItem2 = event;
+        }
         this.selectedItem3 = null;
         this.selectedItem4 = null;
         this.selectedItem5 = null;
         break
       case 3:
-        this.selectedItem3 = event;
+        if(event === this.defaultItem){
+          this.selectedItem3 = null;
+        }else{
+          this.selectedItem3 = event;
+        }
         this.selectedItem4 = null;
         this.selectedItem5 = null;
         break
       case 4:
-        this.selectedItem4 = event;
+        if(event === this.defaultItem){
+          this.selectedItem4 = null;
+        }else{
+          this.selectedItem4 = event;
+        }
         this.selectedItem5 = null;
         break
       case 5:
-        this.selectedItem5 = event;
+        if(event === this.defaultItem){
+          this.selectedItem5 = null;
+        }else{
+          this.selectedItem5 = event;
+        }
         break
     }
     this.handleSelectedItem(this.selectedItem1, this.selectedItem2, this.selectedItem3, this.selectedItem4, this.selectedItem5)
@@ -93,14 +101,12 @@ export class ItemCompanyComponent{
   searchType4: Array<{ id:number, name:string, child:any }>;
   searchType5: Array<{ id:number, name:string, child:any }>;
 
-  constructor() {
-      this.searchType1 = this.company[0].itemConpany.slice();
-  }
+
 
   handleFilter(value: string, level: number) {
     switch (level) {
         case 1:
-          this.searchType1 = this.company[0].itemConpany.filter((s) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+          this.searchType1 = this.setValue[0].itemConpany.filter((s) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
           break;
         case 2:
           this.searchType2 = this.selectedItem1?.child.filter((s: { name: string }) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { companyData } from './data-test';
-import { Company } from '../shared/dtos/company';
+import { companyVietHaTri, companyMotThanhVien, company3PS } from './data-test';
+import { DTOCompany } from '../shared/dtos/DTOCompany.dto';
 
 @Component({
   selector: 'app-config004-hamper-detail',
@@ -8,10 +8,30 @@ import { Company } from '../shared/dtos/company';
   styleUrls: ['./config004-hamper-detail.component.scss']
 })
 export class Config004HamperDetailComponent {
-  // companyData: Array<Company> = company
+  vietHaCom: Array<DTOCompany> = companyVietHaTri
+  motThanhCom: Array<DTOCompany> = companyMotThanhVien
+  PSCom: Array<DTOCompany> = companyMotThanhVien
 
-  handleItemCompanySelected(selectedItems: any[]) {
-    // Xử lý dữ liệu được gửi từ ItemCompanyComponent
-    console.log(selectedItems);
+  receivedCPN1: any;
+  receivedCPN2: any;
+  receivedCPN3: any;
+
+
+  getValueCompany1($event: any) {
+    this.receivedCPN1 = $event;
   }
+
+  getValueCompany2($event: any) {
+    this.receivedCPN2 = $event;
+  }
+  getValueCompany3($event: any) {
+    this.receivedCPN3 = $event;
+  }
+
+  log(){
+    console.log(this.receivedCPN1);
+    console.log(this.receivedCPN2);
+    console.log(this.receivedCPN3);
+  }
+
 }
