@@ -1,20 +1,14 @@
 <!-- <p>config004-hamper-detail works!</p> -->
 <!-- <app-item-company [setValue]="company" (getValue)="receiveArray($event)" [important]="true" [totalPrice]="200" >></app-item-company> -->
-<button (click)="log()">click</button>
-<div class="item">
-    <app-item-company [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
-    <app-item-company [setValue]="motThanhCom" (getValue)="getValueCompany2($event)" [important]="false" [totalPrice]="200" >></app-item-company>
-    <app-item-company [setValue]="PSCom" (getValue)="getValueCompany3($event)" [important]="false" [totalPrice]="200" >></app-item-company>
-    <app-item-company (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
-</div>
+
 
 <button (click)="log()">click</button>
 
-<!-- <div class="body">
+<div class="body">
     <form [formGroup]="formHamper">
         <div class="hamper-info block-hamper">
-            <div class="header-hamper-info"> 
-                 <div class="title-header">Thông tin hamper</div>
+            <div class="header"> 
+                 <div class="title-header">{{'Thông tin hamper' | uppercase}}</div>
                  <div class="title-status">Đang soạn thảo</div>
             </div>
             <div class="content-hamper">
@@ -30,7 +24,7 @@
                             <kendo-label class="kendo-label"> 
                                 Tên tiếng Việt <div >(*)</div>
                             </kendo-label>
-                            <kendo-textbox></kendo-textbox>
+                            <kendo-textbox formControlName="nameVietNames"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
@@ -42,7 +36,7 @@
                             <kendo-label class="kendo-label"> 
                                 Tên tiếng Nhật
                             </kendo-label>
-                            <kendo-textbox></kendo-textbox>
+                            <kendo-textbox formControlName="nameJapan"></kendo-textbox>
                         </div>
                     </div>
     
@@ -52,6 +46,7 @@
                                 Xuất xứ
                             </kendo-label>
                             <kendo-dropdownlist
+                            formControlName="made"
                             SetClassSVGIcon
                             ></kendo-dropdownlist>
                         </div>
@@ -59,28 +54,32 @@
                             <kendo-label class="kendo-label"> 
                                 Chất liệu tiếng Việt
                             </kendo-label>
-                            <kendo-textbox></kendo-textbox>
+                            <kendo-textbox formControlName="materialVietnames"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Chất liệu tiếng Anh
                             </kendo-label>
-                            <kendo-textbox></kendo-textbox>
+                            <kendo-textbox formControlName="materialEnglish"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Chất liệu tiếng Nhật
                             </kendo-label>
-                            <kendo-textbox></kendo-textbox>
+                            <kendo-textbox formControlName="materialJapan"> </kendo-textbox>
                         </div>
+                    </div>
+
+                    <div class="import-image">
+                        <app-import-image></app-import-image>
                     </div>
                    
                 </div>
             </div>
         </div>
         <div class="hamper-info-package block-hamper">
-            <div class="header-hamper-info"> 
-                 <div class="title-header">Thông tin hamper</div>
+            <div class="header"> 
+                 <div class="title-header">{{'Thông tin đóng gói' | uppercase}}</div>
             </div>
             <div class="content-hamper">
                 <div class="group-item">
@@ -89,63 +88,100 @@
                             <kendo-label class="kendo-label"> 
                                 Đơn vị  sản phẩm (Base unit)
                             </kendo-label>
-                            <kendo-dropdownlist SetClassSVGIcon></kendo-dropdownlist>
+                            <kendo-dropdownlist formControlName="unit" SetClassSVGIcon></kendo-dropdownlist>
                         </div>
-                        <div class="group">
+                        <div formGroupName="sizeProduct" class="group">
                             <kendo-label class="kendo-label"> 
                                 Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="medium-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="lenght" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="width" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="height" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="weight" class="medium-textbox"></kendo-textbox>
                             </div>
                         </div>
-                        <div class="group">
+                        <div formGroupName="sizeInner" class="group">
                             <kendo-label class="kendo-label"> 
                                 Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="medium-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="lenght" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="width" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="height" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="weight" class="medium-textbox"></kendo-textbox>
                             </div>
                         </div>
-                        <div class="group">
+                        <div formGroupName="sizeCartoon" class="group">
                             <kendo-label class="kendo-label"> 
                                 Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="medium-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="lenght" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="width" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="height" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="weight" class="medium-textbox"></kendo-textbox>
                             </div>
                         </div>
-                        <div class="group">
+                        <div formGroupName="sizePallet" class="group">
                             <kendo-label class="kendo-label"> 
                                 Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="medium-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="lenght" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="width" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="height" class="short-textbox"></kendo-textbox>
+                                <kendo-textbox formControlName="weight" class="medium-textbox"></kendo-textbox>
                             </div>
                         </div>
                     </div>
-    
+
                     <div>
-                       
+                       <div class="group">
+                            <kendo-label class="kendo-label"> 
+                                Quy đổi quy cách sản phẩm
+                            </kendo-label>
+                            <div class="box-group-change">
+                                <div class="box">
+                                    <kendo-label class="package">Inner</kendo-label>
+                                    <kendo-label class="equal">=</kendo-label>
+                                    <kendo-textbox formControlName="changeInner" class="textbox-change-package"></kendo-textbox>
+                                    <kendo-label class="title-base-unit">Base unit</kendo-label>
+                                </div>
+                                <div class="box">
+                                    <kendo-label class="package">Carton</kendo-label>
+                                    <kendo-label class="equal">=</kendo-label>
+                                    <kendo-textbox formControlName="changeCarton" class="textbox-change-package"></kendo-textbox>
+                                    <kendo-label class="title-base-unit">Base unit</kendo-label>
+                                </div>
+                                <div class="box">
+                                    <kendo-label class="package">Pallet</kendo-label>
+                                    <kendo-label class="equal">=</kendo-label>
+                                    <kendo-textbox formControlName="changePallet" class="textbox-change-package"></kendo-textbox>
+                                    <kendo-label class="title-base-unit">Base unit</kendo-label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                    
+                </div>
+            </div>
+        </div>
+
+        <div class="hamper-company block-hamper">
+            <div class="header"> 
+                 <div class="title-header">{{'Công ty áp dụng' | uppercase}}</div>
+            </div>
+            <div class="content-hamper">
+                <div class="item-company">
+                    <app-item-company [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
+                    <app-item-company [setValue]="motThanhCom" (getValue)="getValueCompany2($event)" [important]="false" [totalPrice]="200" >></app-item-company>
+                    <app-item-company [setValue]="PSCom" (getValue)="getValueCompany3($event)" [important]="false" [totalPrice]="200" >></app-item-company>
                 </div>
             </div>
         </div>
     </form>
 
     
-</div> -->
+</div>
 
