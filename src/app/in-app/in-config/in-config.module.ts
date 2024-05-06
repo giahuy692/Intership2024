@@ -10,7 +10,11 @@ import { HamperButtons } from './pages/shared/directives/HamperButtons.directive
 import { SetClassSVGIcon } from './pages/shared/directives/SetClassSVGIcon.directive';
 import { ImportImageComponent } from './pages/shared/components/import-image/import-image.component';
 import { HamperBreadcrumb } from './pages/shared/directives/HamperBreadcrumb.directive';
+import { FileSelected } from './pages/shared/directives/FileSelected.directive';
 import { ProductListComponent } from './pages/shared/components/product-list/product-list.component';
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { LabelModule } from '@progress/kendo-angular-label';
+import { Necessary } from './pages/shared/directives/Necessary.directive';
 
 @NgModule({
   declarations: [
@@ -22,13 +26,18 @@ import { ProductListComponent } from './pages/shared/components/product-list/pro
     HamperButtons,
     SetClassSVGIcon,
     ImportImageComponent,
-    HamperButtons,
     ProductListComponent,
     HamperBreadcrumb
+    FileSelected,
+    ProductListComponent,
+    Necessary
   ],
   imports: [
     PConfigRoutingModule,
     InLayoutModule,
+    InputsModule,
+    LabelModule
+    
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
