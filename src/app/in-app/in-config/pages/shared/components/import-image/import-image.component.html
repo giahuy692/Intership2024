@@ -1,3 +1,19 @@
-<div class="">
-    <span class="k-icon k-font-icon k-i-export"></span>
+<div class="p-import-image">
+    <div class="text-icon-container">
+        <div class="text-image">Hình ảnh</div>
+        <div style="display: flex;">
+            <kendo-fileselect [restrictions]="fileRestrictions" (select)="select($event)" FileSelected></kendo-fileselect>
+            <div class="important">(*)</div>
+        </div>
+    </div>
+    <div class="image-container" *ngIf="imagePreview">
+        <div class="img-preview example-config big-image">
+            <img [src]="imagePreview.src" alt="image preview"/>
+            <span class="k-icon k-font-icon k-i-minus-outline" (click)="delete()"></span>
+        </div>
+        <div class="img-preview example-config small-image">
+            <img [src]="imagePreview.src" alt="image preview"/>
+            <span class="k-icon k-font-icon k-i-minus-outline" (click)="delete()"></span>
+        </div>
+    </div>
 </div>
