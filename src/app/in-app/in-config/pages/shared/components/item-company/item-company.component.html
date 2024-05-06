@@ -12,15 +12,21 @@
         <div class="kendo-label">
             Phân nhóm cấp 1
         </div>
-        <kendo-dropdownlist iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="isSelectedCompany == false"     
-        (filterChange)="handleFilter($event, 1)" 
-        [filterable]="true" textField="name" [(ngModel)]="selectedItem1" 
-        valueField="id" [data]="searchType1" (valueChange)="onItemChange($event, 1)"
-        SetClassSVGIcon icon
-        [classList]="'selectedItem'"
-        >
-        
+        <kendo-dropdownlist
+            iconClass="fa-solid fa-angle-down"
+            [defaultItem]="defaultItem"
+            [disabled]="isSelectedCompany == false"
+            (filterChange)="handleFilter($event, 1)"
+            [filterable]="true"
+            textField="name"
+            [(ngModel)]="selectedItem1"
+            valueField="id"
+            [data]="searchType1"
+            (valueChange)="onItemChange($event, 1)"
+            SetClassSVGIcon
+            > 
         </kendo-dropdownlist>
+      
     </div>
     
     

@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { itemConpany } from '../../dtos/item-company';
 import { Company } from '../../dtos/company';
 import { Observable, BehaviorSubject } from 'rxjs'; 
@@ -9,7 +9,8 @@ import { DataDefautCompany } from './dataDefault';
 @Component({
   selector: 'app-item-company',
   templateUrl: './item-company.component.html',
-  styleUrls: ['./item-company.component.scss']
+  styleUrls: ['./item-company.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ItemCompanyComponent implements OnInit{
   @Input() setValue: Array<Company> = DataDefautCompany
