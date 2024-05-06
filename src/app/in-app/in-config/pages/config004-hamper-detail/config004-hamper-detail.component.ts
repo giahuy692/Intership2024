@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { companyVietHaTri, companyMotThanhVien, company3PS } from './data-test';
-import { Company } from '../shared/dtos/company';
+import { DTOCompany } from '../shared/dtos/DTOCompany.dto';
 
 @Component({
   selector: 'app-config004-hamper-detail',
@@ -8,9 +8,9 @@ import { Company } from '../shared/dtos/company';
   styleUrls: ['./config004-hamper-detail.component.scss']
 })
 export class Config004HamperDetailComponent {
-  vietHaCom: Array<Company> = companyVietHaTri
-  motThanhCom: Array<Company> = companyMotThanhVien
-  PSCom: Array<Company> = companyMotThanhVien
+  vietHaCom: Array<DTOCompany> = companyVietHaTri
+  motThanhCom: Array<DTOCompany> = companyMotThanhVien
+  PSCom: Array<DTOCompany> = companyMotThanhVien
 
   receivedCPN1: any;
   receivedCPN2: any;

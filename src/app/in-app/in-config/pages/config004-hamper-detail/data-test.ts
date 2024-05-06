@@ -1,6 +1,6 @@
-import { Company } from "../shared/dtos/company";
+import { DTOCompany } from "../shared/dtos/DTOCompany.dto";
 
-export const companyVietHaTri: Array<Company> = [
+export const companyVietHaTri: Array<DTOCompany> = [
     {
       code: 1,
       name: "TNHH Việt Hạ Chí",
@@ -110,7 +110,7 @@ export const companyVietHaTri: Array<Company> = [
     }
   ]
 
-  export const companyMotThanhVien: Array<Company> = [
+  export const companyMotThanhVien: Array<DTOCompany> = [
     {
       code: 2,
       name: "TNHH Một thành viên",
@@ -220,7 +220,7 @@ export const companyVietHaTri: Array<Company> = [
     }
   ]
 
-export const company3PS: Array<Company> = [
+export const company3PS: Array<DTOCompany> = [
     {
       code: 1,
       name: "TNHH 3PS",

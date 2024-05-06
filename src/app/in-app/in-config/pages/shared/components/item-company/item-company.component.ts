@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { itemConpany } from '../../dtos/item-company';
-import { Company } from '../../dtos/company';
+import { DTOItemCompany } from '../../dtos/DTOItemCompany.dto';
+import { DTOCompany } from '../../dtos/DTOCompany.dto';
 import { Observable, BehaviorSubject } from 'rxjs'; 
 import { DataDefautCompany } from './dataDefault';
 
@@ -13,7 +13,7 @@ import { DataDefautCompany } from './dataDefault';
   encapsulation: ViewEncapsulation.None
 })
 export class ItemCompanyComponent implements OnInit{
-  @Input() setValue: Array<Company> = DataDefautCompany
+  @Input() setValue: Array<DTOCompany> = DataDefautCompany
   @Input() important: boolean = false
   @Input() totalPrice: number = 0
   @Output() getValue = new EventEmitter<any>();
