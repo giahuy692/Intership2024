@@ -38,11 +38,12 @@ export class SidebarComponent implements OnInit {
       if (event instanceof NavigationEnd) {
         const segments = this.routerService.router.url.split('/');
         const navigatedModule = segments[2];
-        this.removeAllPrevSelected(true);
+        this.removeAllPrevSelected(false);
         const item = this.listMenu.find(item => item.Code === navigatedModule);
         const parentItem = this.listMenu.find(parent => parent.Name === item.Parent);
         item.Actived = true;
-        parentItem.Actived = true;
+        if(parentItem) parentItem.Actived = true;
+        
       }
     });
   }
@@ -78,26 +79,32 @@ export class SidebarComponent implements OnInit {
     
     //Nếu item là một module cha và module đó khác với module hiện đang được chọn thì remove tất cả các item đang được chọn
     const isParentItem = this.baseListMenu.find(menuItem => menuItem.Code == item.Code)
-    if(isParentItem && isParentItem.Code != this.selectedParentModule.Code){
-      this.removeAllPrevSelected(true);
+    if(isParentItem && this.selectedParentModule && isParentItem.Code != this.selectedParentModule.Code){
+      if(this.selectedParentModule.LstChild.length >0 ){
+        this.selectedParentModule.LstChild.forEach(child => child.Actived = false)
+      }
+      if(this.checkParentPrevSelect(isParentItem) == false){
+        this.removeAllPrevSelected(false);
+      }
     }
 
     if (parentItem && item.Code != parentItem.Code) {
       this.removeAllPrevSelected(false);
+      
     }
-
     //Nếu như item chưa được active và là một module chứa các module con thì thêm module con vào list và ngược lại
     if (!item.Actived) {
-      if(isParentItem){
-        this.selectedParentModule = item
+      if(isParentItem && item.Type != 'group'){
+        this.selectedParentModule = item;
       }
       item.Actived = true;
       if (item.LstChild.length > 0 && item.Type == 'group') this.addChildren(itemIndex, item.LstChild);
     }
     else {
-      item.Actived = false
+      if(item.Type != 'function') item.Actived = false
       if (item.LstChild.length > 0 && item.Type == 'group') this.removeChildren(itemIndex, item.LstChild);
     }
+
 
   }
 
@@ -112,6 +119,13 @@ export class SidebarComponent implements OnInit {
         }
       }
     });
+  }
+
+  checkParentPrevSelect(parentItem : MenuDataItem) : boolean{
+    if((parentItem.Type == 'function' && this.selectedParentModule.Type == 'group')){
+      return false;   
+    }
+    return true;
   }
 
   //Hàm thêm các module con vào module cha
