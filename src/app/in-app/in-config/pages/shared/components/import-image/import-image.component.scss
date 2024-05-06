@@ -87,7 +87,7 @@
             img {
                 width: 100%;
                 height: 100%;
-                object-fit: contain;
+                object-fit: cover;
             }
 
             .k-i-minus-outline {
@@ -101,8 +101,8 @@
         }
 
         .big-image {
-            width: 266px;
-            height: 216px;
+            width: 236px;
+            height: 166px;
         }
 
         .small-image {

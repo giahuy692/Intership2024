@@ -1,18 +1,15 @@
-.sidebar-container{
+.sidebar-container {
     height: 100%;
-    margin-right: 7px;
-    
+    kendo-drawer-container {
+        height: 100%;
 
-    kendo-drawer-container{
-        height: 100%;      
-        
-        .drawer{
+        .drawer {
             height: 100%;
             background-color: #5A6276;
             border: none;
             box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-            
-            .modules-block{
+
+            .modules-block {
                 display: flex;
                 height: 50px;
                 width: 100%;
@@ -20,86 +17,116 @@
                 color: #959DB3;
                 user-select: none;
 
-                &.active{
+                &:hover {
                     color: #FFFFFF;
-                }
 
-
-                &.groupModule{
-                    color: #959DB3;    
-                    
-
-                    &.parentActive{
-                        color: #FFFFFF; 
+                    .icon-block>.expand-icon {
+                        color: #FFFFFF;
                     }
                 }
 
-                .status-bar{
+                &.active {
+                    color: #FFFFFF;
+
+                }
+
+
+                &.groupModule {
+                    color: #959DB3;
+
+                    &:hover {
+                        color: #FFFFFF;
+                    }
+
+                    &.parentActive {
+                        color: #FFFFFF;
+
+                        .icon-block>.expand-icon {
+                            color: #FFFFFF;
+                        }
+                    }
+                }
+
+                .status-bar {
                     width: 5px;
                     height: 100%;
                     background-color: #FFFFFF;
                     display: none;
 
-                    &.active{
+                    &.active {
                         display: block;
+                    }
+
+                    &.spacefill{
+                        display: block;
+                        visibility: hidden;
                     }
                 }
 
-                .icon-block{
+                .icon-block {
                     display: flex;
                     width: 45px;
                     height: 100%;
                     align-items: center;
                     justify-content: center;
 
-                    .module-icon{
+                    .module-icon {
                         width: 20px;
                         height: 20px;
                         padding: 0;
                         font-size: 20px;
                     }
-                    .expand-icon{
+
+                    .expand-icon {
                         width: 20px;
                         height: 20px;
                         color: #959DB3;
-    
-                        &.expanded{
+
+                        &.expanded {
                             transform: rotate(180deg);
                         }
                     }
                 }
 
-                .module-text{
+                .module-text {
                     text-align: center;
                     font-size: 13px;
                     font-weight: 700;
                     width: calc(100% - 95px);
 
-                    &.parent{
+                    &.parent {
                         text-transform: uppercase;
                     }
                 }
             }
 
-            .k-drawer-item{
+            .k-drawer-item {
                 padding: 0;
-                &:focus{   
+
+                &:focus {
                     box-shadow: none;
+                }
+
+                &:hover {
+                    background-color: transparent;
                 }
             }
 
-            .k-drawer-wrapper{
+            .k-drawer-wrapper {
                 height: 100%;
             }
 
-            .k-selected{
+            .k-selected {
                 background-color: transparent;
                 color: none;
             }
 
-            
+
+
+
         }
-        .sidebar-header{
+
+        .sidebar-header {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -111,37 +138,39 @@
             cursor: pointer;
             user-select: none;
 
-            .icon-block{
+            .icon-block {
                 display: flex;
                 width: 50px;
                 align-items: center;
                 justify-content: center;
 
-                .company-icon{
+                .company-icon {
                     width: 20px;
                     height: 20px;
                 }
-                .expand-icon{
+
+                .expand-icon {
                     width: 20px;
                     height: 20px;
-                    color: #959DB3;
+                    color: #1A6634;
                 }
             }
 
-            
-            .text-holder{
+
+            .text-holder {
                 width: calc(100% - 100px);
                 text-align: center;
-                .company-text{
+
+                .company-text {
                     font-size: 14px;
                     font-weight: 700;
                     overflow: hidden;
                 }
             }
-            
 
-            
+
+
         }
     }
-    
+
 }

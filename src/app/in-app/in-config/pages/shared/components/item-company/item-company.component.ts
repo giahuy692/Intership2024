@@ -16,7 +16,7 @@ import { DataDefautCompany } from './dataDefault';
   selector: 'app-item-company',
   templateUrl: './item-company.component.html',
   styleUrls: ['./item-company.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  // encapsulation: ViewEncapsulation.None
 })
 export class ItemCompanyComponent implements OnInit{
   @Input() setValue: Array<DTOCompany> = DataDefautCompany

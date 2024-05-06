@@ -20,10 +20,10 @@
             </div>
         </ng-template>
         <ng-template kendoDrawerItemTemplate let-item >                
-                <div class="modules-block" [ngClass]="{'active' : (item.Actived === true && item.LstChild), 'groupModule': item.Type === 'group', 'parentActive': (selectedParentModule? selectedParentModule.Name : '') === item.Name}" (click)="drawer.toggle(true)" [routerLink]="(item.Type == 'function'?item.Link : '')">
-                    <div class="status-bar" [ngClass]="{'active' : (selectedParentModule? selectedParentModule.Name : '') === item.Name}"></div>    
+                <div class="modules-block" [ngClass]="{'active' : (item.Actived === true && item.LstChild), 'groupModule': item.Type === 'group', 'parentActive': (selectedParentModule? selectedParentModule.Name : '') === item.Name}" (click)="drawer.toggle(true)" [routerLink]="(item.Type == 'function'?item.Link : null)">
+                    <div class="status-bar" [ngClass]="{'active' : ((selectedParentModule? selectedParentModule.Name : '') === item.Name) && item.Type === 'group', 'spacefill' : item.Type === 'function'}"></div>    
                     <div class="icon-block"><span class="module-icon k-icon k-font-icon {{item.Icon}}" *ngIf="item.Icon"></span></div>
-                    <div class="module-text" *ngIf="expanded == true">{{item.Name}}</div>   
+                    <div class="module-text" [ngClass]="{'parent' : item.Type == 'group'}" *ngIf="expanded == true">{{item.Name}}</div>   
                     <div class="icon-block expand-block" *ngIf="item.Type === 'group' && expanded == true"><kendo-svg-icon [icon]="icons.chevronDownIcon" class="expand-icon" [ngClass]="{'expanded': (item.Actived === true && item.Type === 'group')}"></kendo-svg-icon></div>      
                 </div>             
         </ng-template>
