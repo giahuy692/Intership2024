@@ -30,9 +30,9 @@ export class Config004HamperDetailComponent {
   }
 
   log(){
-    console.log(this.receivedCPN1);
-    console.log(this.receivedCPN2);
-    console.log(this.receivedCPN3);
+    // console.log(this.receivedCPN1);
+    // console.log(this.receivedCPN2);
+    // console.log(this.receivedCPN3);
 
     console.log(this.formHamper);
   }
@@ -45,8 +45,35 @@ export class Config004HamperDetailComponent {
     made: new FormControl,
     materialVietnames: new FormControl,
     materialEnglish: new FormControl,
-    materialJapan: new FormControl
-
+    materialJapan: new FormControl,
+    unit: new FormControl,
+    sizeProduct: new FormGroup({
+      lenght: new FormControl,
+      width: new FormControl,
+      height: new FormControl,
+      weight: new FormControl
+    }),
+    sizeInner:  new FormGroup({
+      lenght: new FormControl,
+      width: new FormControl,
+      height: new FormControl,
+      weight: new FormControl
+    }),
+    sizeCartoon:  new FormGroup({
+      lenght: new FormControl,
+      width: new FormControl,
+      height: new FormControl,
+      weight: new FormControl
+    }),
+    sizePallet:  new FormGroup({
+      lenght: new FormControl,
+      width: new FormControl,
+      height: new FormControl,
+      weight: new FormControl
+    }),
+    changeInner: new FormControl,
+    changeCarton: new FormControl,
+    changePallet: new FormControl
   })
   
 
