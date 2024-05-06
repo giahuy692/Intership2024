@@ -8,6 +8,11 @@ import { ItemCompanyComponent } from './pages/shared/components/item-company/ite
 import { Config003HamberDetailComponent } from './pages/config003-hamber-detail/config003-hamber-detail.component';
 import { HamberButtons } from './pages/shared/directives/HamberButtons.directive';
 import { SetClassSVGIcon } from './pages/shared/directives/SetClassSVGIcon.directive';
+import { ImportImageComponent } from './pages/shared/components/import-image/import-image.component';
+import { HamberBreadcrumb } from './pages/shared/directives/HamberBreadcrumb.directive';
+import { FileSelected } from './pages/shared/directives/FileSelected.directive';
+import { ProductListComponent } from './pages/shared/components/product-list/product-list.component';
+import { Necessary } from './pages/shared/directives/Necessary.directive';
 
 @NgModule({
   declarations: [
@@ -17,7 +22,12 @@ import { SetClassSVGIcon } from './pages/shared/directives/SetClassSVGIcon.direc
     ItemCompanyComponent,
     Config003HamberDetailComponent,
     HamberButtons,
-    SetClassSVGIcon
+    SetClassSVGIcon,
+    ImportImageComponent,
+    HamberBreadcrumb,
+    FileSelected,
+    ProductListComponent,
+    Necessary
   ],
   imports: [
     PConfigRoutingModule,

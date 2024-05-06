@@ -1,19 +1,22 @@
-import { Directive, ElementRef, OnInit } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Directive, ElementRef, OnInit } from '@angular/core';
 
 @Directive({
-  selector: '[SetClassSVGIcon]'
+  selector: '[SetClassSVGIcon]',
 })
-export class SetClassSVGIcon implements OnInit {
+/**
+ * Using for Kendo SVG Icon to add class k-font-icon to display icon 
+ * Using default example <kendo-breadcrumb SetClassSVGIcon></kendo-breadcrumb>
+ */
+export class SetClassSVGIcon implements AfterViewChecked {
   private className = 'k-font-icon'; // Customize the class name
 
   constructor(private element: ElementRef) {}
-
-  ngOnInit(): void {
-    console.log(this.element.nativeElement)
-    const icon = this.element.nativeElement.querySelector('.kendo-button-icon');
-    if (icon) {
-        console.log(icon)
-      icon.classList.add(this.className);
+  ngAfterViewChecked(): void {
+    const icons = this.element.nativeElement.querySelectorAll('kendo-icon');
+    if (icons) {
+      icons.forEach((icon:HTMLElement)=>{
+        icon.classList.add(this.className);
+      })
     }
   }
 }

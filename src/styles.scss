@@ -3,20 +3,63 @@
   padding: 0;
   margin: 0;
   font-family: "Mulish", sans-serif;
+  @import "@progress/kendo-font-icons/dist/index.css";
 }
+
+$dark-green: #1A6634;
+$text-grey: #959DB3;
+$text-dark-grey: #5A6276;
+$text-black: #26282E;
+$red: #EB273A;
+$border-color-input: #DBDEE7;
+$box-shadow1: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+$box-shadow2: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px, rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+$box-shadow3: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
+$box-shadow4: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+$box-shadow-blue: rgba(65, 179, 255, 0.4) 0px 7px 15px 0px;
+$box-shadow-green: rgba(26, 102, 52, 0.4) 0px 7px 15px 0px;
+
+.k-font-icon{
+  font-family: "WebComponentsIcons" !important;
+}
+
+
 ::-webkit-scrollbar {
   z-index: 2;
   width: 5px;
   height: 5px;
 }
+
 ::-webkit-scrollbar-track {
   background-color: transparent;
   border-radius: 5px;
 }
+
 ::-webkit-scrollbar-thumb {
   background-color: #008000;
   border-radius: 5px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background-color: #008000;
+}
+
+// Tạo vòng lặp từ 1 đến 12
+@for $i from 1 through 12 {
+
+  // Tạo class với tên .col-span-N, trong đó N là số cột
+  .col-span-#{$i} {
+    grid-column: span $i;
+  }
+}
+
+// Tạo vòng lặp từ 1 đến 12 (hoặc số cột tối đa bạn muốn)
+@for $i from 1 through 12 {
+
+  // Tạo class với tên .grid-cols-N, trong đó N là số cột
+  .grid-cols-#{$i} {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(#{$i}, 1fr);
+  }
 }

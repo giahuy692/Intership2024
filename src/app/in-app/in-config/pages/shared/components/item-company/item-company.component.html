@@ -3,8 +3,8 @@
         <input (change)="handleClear()" type="checkbox" id="terms" kendoCheckBox [(ngModel)]="isSelectedCompany" />
         <div class="name-company">
             <label class="k-checkbox-label" for="terms"
-            >Áp dụng tại công ty TNHH Việt Hạ Chí</label>
-            <div *ngIf="companyImportant == true" class="conpany-important">(*)</div>
+            >Áp dụng tại công ty {{setValue[0].name}}</label>
+            <div *ngIf="important == true" class="conpany-important">(*)</div>
         </div>
     </div>
 
@@ -12,10 +12,14 @@
         <div class="kendo-label">
             Phân nhóm cấp 1
         </div>
-        <kendo-dropdownlist [disabled]="isSelectedCompany == false"     
+        <kendo-dropdownlist iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="isSelectedCompany == false"     
         (filterChange)="handleFilter($event, 1)" 
-        [filterable]="true" textField="name" 
-        valueField="id" [data]="data" (valueChange)="onItemChange($event, 1)">
+        [filterable]="true" textField="name" [(ngModel)]="selectedItem1" 
+        valueField="id" [data]="searchType1" (valueChange)="onItemChange($event, 1)"
+        SetClassSVGIcon icon
+        [classList]="'selectedItem'"
+        >
+        
         </kendo-dropdownlist>
     </div>
     
@@ -25,10 +29,12 @@
         <div class="kendo-label">
             Phân nhóm cấp 2
         </div>
-        <kendo-dropdownlist [disabled]="!selectedCategory1 || isSelectedCompany == false" 
+        <kendo-dropdownlist iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem1 || selectedItem1.id == -1 || isSelectedCompany == false" 
         (filterChange)="handleFilter($event, 2)" [filterable]="true"  
-        textField="name" valueField="id" [(ngModel)]="selectedCategory2" 
-        [data]="selectedCategory1?.child" (valueChange)="onItemChange($event, 2)" >
+        textField="name" valueField="id" [(ngModel)]="selectedItem2" 
+        [data]="selectedItem1?.child" (valueChange)="onItemChange($event, 2)" 
+        [data]="searchType2" SetClassSVGIcon>
+        
         </kendo-dropdownlist>
     </div>
     
@@ -36,9 +42,11 @@
         <div class="kendo-label">
             Phân nhóm cấp 3
         </div>
-        <kendo-dropdownlist [disabled]="!selectedCategory2 || isSelectedCompany == false" 
-        textField="name" valueField="id" [(ngModel)]="selectedCategory3" [data]="selectedCategory2?.child" 
-        (valueChange)="onItemChange($event, 3)">
+        <kendo-dropdownlist iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem2 || selectedItem2.id == -1 || isSelectedCompany == false" 
+        (filterChange)="handleFilter($event, 3)" [filterable]="true"
+        textField="name" valueField="id" [(ngModel)]="selectedItem3" [data]="selectedItem2?.child" 
+        (valueChange)="onItemChange($event, 3)"
+        [data]="searchType3" SetClassSVGIcon>
         </kendo-dropdownlist>
     </div>
     
@@ -46,9 +54,12 @@
         <div class="kendo-label">
             Phân nhóm cấp 4
         </div>
-        <kendo-dropdownlist [disabled]="!selectedCategory3 || isSelectedCompany == false" 
-        textField="name" valueField="id" [(ngModel)]="selectedCategory4" [data]="selectedCategory3?.child" 
-        (valueChange)="onItemChange($event, 4)">
+        <kendo-dropdownlist iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem3 || selectedItem3.id == -1 || isSelectedCompany == false" 
+        (filterChange)="handleFilter($event, 4)" [filterable]="true"
+        textField="name" valueField="id" [(ngModel)]="selectedItem4" [data]="selectedItem3?.child" 
+        (valueChange)="onItemChange($event, 4)"
+        [data]="searchType4" SetClassSVGIcon>
+       
         </kendo-dropdownlist>
     </div>
     
@@ -56,9 +67,11 @@
         <div class="kendo-label">
             Phân nhóm cấp 5
         </div>
-        <kendo-dropdownlist [disabled]="!selectedCategory4 || isSelectedCompany == false" 
-        textField="name" valueField="id" [(ngModel)]="selectedCategory5" [data]="selectedCategory4?.child" 
-        (valueChange)="onItemChange($event, 5)">
+        <kendo-dropdownlist iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem4 || selectedItem4.id == -1 || isSelectedCompany == false" 
+        (filterChange)="handleFilter($event, 5)" [filterable]="true"
+        textField="name" valueField="id" [(ngModel)]="selectedItem5" [data]="selectedItem4?.child" 
+        (valueChange)="onItemChange($event, 5)"
+        [data]="searchType5" SetClassSVGIcon>
         </kendo-dropdownlist>
     </div>
     
@@ -71,7 +84,7 @@
             <div class="inputTotalPrice">
                 <input [disabled]="true" class="inputPrice" [value]="totalPrice"/>
             </div>
-            <kendo-dropdownlist [disabled]="true" [data]="typeOfMoney" value="VND">
+            <kendo-dropdownlist SetClassSVGIcon iconClass="fa-solid fa-angle-down" [disabled]="true" [data]="typeOfMoney" value="VND">
             </kendo-dropdownlist>
         </div>
     </div>
