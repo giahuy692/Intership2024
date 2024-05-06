@@ -12,6 +12,7 @@ import { ImportImageComponent } from './pages/shared/components/import-image/imp
 import { HamberBreadcrumb } from './pages/shared/directives/HamberBreadcrumb.directive';
 import { FileSelected } from './pages/shared/directives/FileSelected.directive';
 import { ProductListComponent } from './pages/shared/components/product-list/product-list.component';
+import { Necessary } from './pages/shared/directives/Necessary.directive';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ProductListComponent } from './pages/shared/components/product-list/pro
     ImportImageComponent,
     HamberBreadcrumb,
     FileSelected,
-    ProductListComponent
+    ProductListComponent,
+    Necessary
   ],
   imports: [
     PConfigRoutingModule,
