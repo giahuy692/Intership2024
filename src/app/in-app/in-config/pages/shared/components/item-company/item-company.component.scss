@@ -2,7 +2,7 @@
     width: 377px;
     height: 414px;
     background-color: white;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    // box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
     .header{
         display: flex;
         align-items: center;
@@ -34,7 +34,10 @@
         }
         kendo-dropdownlist{
             background-color: white;
+        
         }
+
+ 
     }
 
     .price{
@@ -56,6 +59,7 @@
                     width: 261px;
                     text-align: right;
                     padding: 0 10px;
+                    height: 33px;
                 }
             }
 
