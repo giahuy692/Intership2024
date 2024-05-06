@@ -5,12 +5,18 @@ import { InConfigComponent } from './in-config.component';
 import { Config001HamperDetailComponent } from './pages/config001-hamper-detail/config001-hamper-detail.component';
 import { Config004HamperDetailComponent } from './pages/config004-hamper-detail/config004-hamper-detail.component';
 import { ItemCompanyComponent } from './pages/shared/components/item-company/item-company.component';
-import { Config003HamberDetailComponent } from './pages/config003-hamber-detail/config003-hamber-detail.component';
-import { HamberButtons } from './pages/shared/directives/HamberButtons.directive';
+import { Config003HamperDetailComponent } from './pages/config003-hamper-detail/config003-hamper-detail.component';
+import { HamperButtons } from './pages/shared/directives/HamperButtons.directive';
 import { SetClassSVGIcon } from './pages/shared/directives/SetClassSVGIcon.directive';
 import { ImportImageComponent } from './pages/shared/components/import-image/import-image.component';
-import { HamberBreadcrumb } from './pages/shared/directives/HamberBreadcrumb.directive';
+import { HamperBreadcrumb } from './pages/shared/directives/HamperBreadcrumb.directive';
+import { FileSelected } from './pages/shared/directives/FileSelected.directive';
 import { ProductListComponent } from './pages/shared/components/product-list/product-list.component';
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { LabelModule } from '@progress/kendo-angular-label';
+import { Necessary } from './pages/shared/directives/Necessary.directive';
+import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/config002-hamper-detail.component';
+import { PricePipe } from './pages/shared/directives/PricePipe.pipe';
 
 @NgModule({
   declarations: [
@@ -18,16 +24,24 @@ import { ProductListComponent } from './pages/shared/components/product-list/pro
     Config001HamperDetailComponent,
     Config004HamperDetailComponent,
     ItemCompanyComponent,
-    Config003HamberDetailComponent,
-    HamberButtons,
+    Config003HamperDetailComponent,
+    HamperButtons,
     SetClassSVGIcon,
     ImportImageComponent,
-    HamberBreadcrumb,
-    ProductListComponent
+    ProductListComponent,
+    HamperBreadcrumb,
+    FileSelected,
+    ProductListComponent,
+    Necessary,
+    Config002HamperDetailComponent,
+    PricePipe
   ],
   imports: [
     PConfigRoutingModule,
     InLayoutModule,
+    InputsModule,
+    LabelModule
+    
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

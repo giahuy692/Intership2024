@@ -1,5 +1,139 @@
 <div class="product-list">
-    <header></header>
-    <main></main>
+  <div class="product-content">
+    <header>
+      <div class="header-content">
+        <div class="title">
+          <h2>Danh sách sản phẩm thuộc hamper</h2>
+          <span Necessary></span>
+        </div>
+        <div class="search">
+          <kendo-textbox
+            placeholder="Tìm theo barcode, postcode hoặc tên sản phẩm"
+            [(ngModel)]="query"
+            (keydown)="searchOnEnter($event)"
+          ></kendo-textbox>
+          <button
+            type="button"
+            HamperButtons
+            class="btn"
+            data-type="success"
+            (click)="search()"
+          >
+            Tìm
+          </button>
+        </div>
+        <div class="actions">
+          <button
+            type="button"
+            class="btn btn-upload"
+            title="upload"
+          >
+            <kendo-svg-icon [icon]="icons.uploadIcon"></kendo-svg-icon>
+          </button>
+          <button
+            type="button"
+            class="btn btn-upload"
+            title="download"
+          >
+            <kendo-svg-icon [icon]="icons.downloadIcon"></kendo-svg-icon>
+            Template
+          </button>
+          <button
+            type="button"
+            HamperButtons
+            class="btn"
+            data-type="success"
+            (click)="openDrawer({ action: 'Thêm', product: {} })"
+          >
+            <kendo-svg-icon [icon]="icons.plusIcon"></kendo-svg-icon>
+            Thêm mới
+          </button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <table>
+        <thead>
+          <tr>
+            <th colspan="2">Tên sản phẩm</th>
+            <th>Barcode</th>
+            <th style="text-align: center">Số lượng</th>
+            <th style="text-align: center">Giá</th>
+            <th>Xuất xứ</th>
+            <th>Thương hiệu</th>
+            <th colspan="2"></th>
+          </tr>
+        </thead>
+        <tbody *ngIf="productsDisplay.length">
+          <tr *ngFor="let product of productsDisplay">
+            <td class="product-img">
+              <img
+                src="{{ product.Image }}"
+                alt="image"
+                *ngIf="product.Image"
+              />
+              <img
+                src="\assets/default-image.png"
+                alt="Image unavailable"
+                *ngIf="!product.Image"
+              />
+            </td>
+            <td class="product-name">{{ product.Name }}</td>
+            <td class="product-td-width">{{ product.Barcode }}</td>
+            <td class="product-quantity product-td-width">
+              {{ product.Quantity }}
+            </td>
+            <td class="product-quantity" style="width: 200px">
+              {{ product.Price | priceFormat }}
+            </td>
+            <td style="width: 200px">{{ product.Origin }}</td>
+            <td style="width: 200px">{{ product.Brand }}</td>
+            <td class="actions" colspan="2">
+              <div
+                class="action-content"
+                (click)="selectProduct(product.Barcode)"
+                [class.active]="selectedProduct == product.Barcode"
+              >
+                <i
+                  style="pointer-events: none"
+                  class="fa-solid fa-ellipsis"
+                ></i>
+                <div class="action-list">
+                  <button
+                    *ngIf="actions.includes('Xem chi tiết')"
+                    (click)="
+                      openDrawer({ action: 'Xem chi tiết', product: product })
+                    "
+                    type="button"
+                  >
+                    <kendo-svg-icon [icon]="icons.eyeIcon"></kendo-svg-icon
+                    ><span>Xem chi tiết</span>
+                  </button>
+                  <button
+                    *ngIf="actions.includes('Chỉnh sửa')"
+                    (click)="
+                      openDrawer({ action: 'Chỉnh sửa', product: product })
+                    "
+                    type="button"
+                  >
+                    <kendo-svg-icon [icon]="icons.pencilIcon"></kendo-svg-icon
+                    ><span>Chỉnh sửa</span>
+                  </button>
+                  <button
+                    *ngIf="actions.includes('Xóa')"
+                    (click)="openDrawer({ action: 'Xóa', product: product })"
+                    type="button"
+                  >
+                    <kendo-svg-icon [icon]="icons.trashIcon"></kendo-svg-icon
+                    ><span>Xóa</span>
+                  </button>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </main>
     <footer></footer>
+  </div>
 </div>

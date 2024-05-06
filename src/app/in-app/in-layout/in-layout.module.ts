@@ -2,7 +2,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { InLayoutRoutingModule } from './in-layout-routing.module';
 import { ButtonModule, DropDownButtonModule, ListModule } from '@progress/kendo-angular-buttons';
-import { IconsModule, ICON_SETTINGS } from '@progress/kendo-angular-icons';
+import { IconsModule, ICON_SETTINGS, SVGIconModule } from '@progress/kendo-angular-icons';
 import { LayoutModule } from '@progress/kendo-angular-layout';
 import { DropDownsModule, DropDownListModule, DropDownTreesModule, MultiSelectModule } from '@progress/kendo-angular-dropdowns';
 import { PopupModule } from '@progress/kendo-angular-popup';
@@ -33,6 +33,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { LayoutDefaultComponent } from './layout-default/layout-default.component';
 import { HeaderComponent } from './components/header/header.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { TextBoxModule } from '@progress/kendo-angular-inputs';
+
 
 @NgModule({
   declarations: [
@@ -80,6 +82,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     NavigationModule,
     UploadModule,
     UploadsModule,
+    TextBoxModule,
+    SVGIconModule,
   ],
   providers: [
     { provide: ICON_SETTINGS, useValue: { type: 'font' } },
@@ -126,6 +130,8 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
     TreeListModule,
     TreeViewModule,
     UploadModule,
+    TextBoxModule,
+    SVGIconModule
   ]
 })
 export class InLayoutModule { }

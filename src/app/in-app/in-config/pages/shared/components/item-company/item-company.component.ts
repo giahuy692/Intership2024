@@ -1,15 +1,22 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { DTOItemCompany } from '../../dtos/DTOItemCompany.dto';
 import { DTOCompany } from '../../dtos/DTOCompany.dto';
 import { Observable, BehaviorSubject } from 'rxjs'; 
 import { DataDefautCompany } from './dataDefault';
 
+/**Component Công ty áp dụng
+ * - Truyền vào dạng data [setValue]=[{code: number, name: string, child:[]}]
+ * - Data trả về 
+ *  - [getValue]=[{code: number, name: string, itemSelected: [{level1: string}, {level2: string}, {level3:string}, {level4:string}, {level5:string}]}]
+ *  - 
+**/
 
 
 @Component({
   selector: 'app-item-company',
   templateUrl: './item-company.component.html',
-  styleUrls: ['./item-company.component.scss']
+  styleUrls: ['./item-company.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ItemCompanyComponent implements OnInit{
   @Input() setValue: Array<DTOCompany> = DataDefautCompany
@@ -27,6 +34,8 @@ export class ItemCompanyComponent implements OnInit{
   typeOfMoney: Array<String> = [
     "VND"
   ]
+  
+
 
   ngOnInit(): void {
     this.searchType1 = this.setValue[0].itemConpany.slice();
@@ -91,7 +100,6 @@ export class ItemCompanyComponent implements OnInit{
         break
     }
     this.handleSelectedItem(this.selectedItem1, this.selectedItem2, this.selectedItem3, this.selectedItem4, this.selectedItem5)
-
   }
 
   defaultItem = { id: -1, name: "--- Chọn ---"};
@@ -121,7 +129,6 @@ export class ItemCompanyComponent implements OnInit{
           this.searchType5 = this.selectedItem4?.child.filter((s: { name: string }) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
           break;
     }
-    
   }
 
   handleClear():void{
