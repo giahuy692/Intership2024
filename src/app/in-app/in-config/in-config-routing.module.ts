@@ -3,9 +3,9 @@ import { Routes, RouterModule } from '@angular/router';
 import { InConfigComponent } from './in-config.component';
 import { Config001HamperDetailComponent } from './pages/config001-hamper-detail/config001-hamper-detail.component';
 import { Config004HamperDetailComponent } from './pages/config004-hamper-detail/config004-hamper-detail.component';
-import { Config003HamberDetailComponent } from './pages/config003-hamber-detail/config003-hamber-detail.component';
 import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/config002-hamper-detail.component';
 import { Config002PartnerManagementComponent } from './pages/config002-partner-management/config002-partner-management.component';
+import { Config003HamperDetailComponent } from './pages/config003-hamper-detail/config003-hamper-detail.component';
 const routes: Routes = [
   {
     path: '',
@@ -26,7 +26,7 @@ const routes: Routes = [
       },
       {
         path: 'config003-hamper-detail',//Le Thanh Hoang
-        component: Config003HamberDetailComponent,
+        component: Config003HamperDetailComponent,
       },
       {
         path: 'config004-hamper-detail', //Luong Van Phu
