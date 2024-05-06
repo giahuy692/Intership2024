@@ -2,6 +2,44 @@ input[type='checkbox'] {
     accent-color: #1A6634;
 }
 
+.k-checkbox{
+    border:#1A6634;
+    border: 1px solid #999999;
+}
+
+.k-checkbox:checked {
+    accent-color: #1A6634;
+    background-color: #1A6634;
+    border: 1px solid #1A6634;
+}
+
+.k-checkbox:focus{
+    box-shadow: none;
+}
+
+
+.k-i-search.k-input-icon.k-icon{
+    
+}
+
+.k-list-optionlabel{
+    color: black;
+}
+.k-list-optionlabel.k-selected {
+    background-color: #1A6634; 
+}
+
+.k-list-optionlabel.k-selected:hover{
+    background-color: #1A6634; 
+}
+.k-list-item.k-selected {
+    background-color: #1A6634; 
+}
+
+.k-list-item.k-selected:hover{
+    background-color: #1A6634;
+}
+
 .body{
     width: 377px;
     height: 414px;
@@ -36,19 +74,26 @@ input[type='checkbox'] {
           font-weight: bold;
           margin-bottom: 5px;
         }
-        // kendo-dropdownlist{
-        //     background-color: white;
-         
-        // }
+        kendo-dropdownlist{
+            background-color: white;
+
+      
+        }
+
+        
 
         // .k-dropdownlist {
         //     background-color: red !important;
         // }
 
-        .k-picker{
-            background-color: white;
+        // .k-picker{
+        //     background-color: white;
             
-        }
+        // }
+
+        // .k-picker .k-item{
+        //     background-color: blue;
+        // }
  
        
       }

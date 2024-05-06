@@ -11,7 +11,8 @@ import { SetClassSVGIcon } from './pages/shared/directives/SetClassSVGIcon.direc
 import { ImportImageComponent } from './pages/shared/components/import-image/import-image.component';
 import { HamberBreadcrumb } from './pages/shared/directives/HamberBreadcrumb.directive';
 import { ProductListComponent } from './pages/shared/components/product-list/product-list.component';
-
+import { InputsModule } from '@progress/kendo-angular-inputs';
+import { LabelModule } from '@progress/kendo-angular-label';
 @NgModule({
   declarations: [
     InConfigComponent,
@@ -28,6 +29,9 @@ import { ProductListComponent } from './pages/shared/components/product-list/pro
   imports: [
     PConfigRoutingModule,
     InLayoutModule,
+    InputsModule,
+    LabelModule
+    
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,

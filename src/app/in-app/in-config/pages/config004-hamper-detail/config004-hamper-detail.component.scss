@@ -5,3 +5,99 @@
         margin-left: 20px;
     }
 }
+kendo-dropdownlist{
+    background-color: white;
+    border-width: 2px;
+    height: 33px;
+}    
+kendo-textbox{
+    background-color: white;
+    border-width: 2px;
+    height: 33px;
+}   
+
+.short-textbox{
+    background-color: white;
+    border-width: 2px;
+    height: 33px;
+    width: 65px;
+    display: flex;
+    text-align: center;
+}
+
+.medium-textbox{
+    background-color: white;
+    border-width: 2px;
+    height: 33px;
+    width: 135px;
+}
+
+.body{
+    margin-right: 5px;
+    height: 100%;
+    .block-hamper{
+        height: 306px;
+        width: 100%;
+        .header-hamper-info{
+            display: flex;
+            
+            .title-header{
+                margin-right: 20px;
+                font-size: 16px;
+                color: black;
+                font-weight: bold;
+            }
+        }
+
+        .content-hamper{
+            height: 282px;
+            width: 100%;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            background-color: white;
+            .group-item{
+                display: flex;
+                padding: 0px 20px;
+                div{
+                    margin-right: 10px;
+                }
+                .group {
+                    width: 377px;
+                    margin-top: 5px;
+                    .kendo-label {
+                        display: flex;
+                        color: #959DB3;
+                        font-size: 13px;
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                        div{
+                            margin-left: 5px;
+                            color: red;
+                        }
+                    }
+                   
+                  }
+            }
+            
+        }
+    }
+
+    .hamper-info-package{
+        height: 3000px;
+        margin-top: 20px;
+        .content-hamper{
+            height: 352px;
+            .group-item{
+                div{
+                    .group{
+                        .box-group{
+                            width: 100%;
+                            display: flex;
+                            justify-content: space-between;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
