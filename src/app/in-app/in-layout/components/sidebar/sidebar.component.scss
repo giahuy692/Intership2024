@@ -1,5 +1,7 @@
 .sidebar-container {
     height: 100%;
+    position: relative;
+    z-index: 998;
     kendo-drawer-container {
         height: 100%;
 

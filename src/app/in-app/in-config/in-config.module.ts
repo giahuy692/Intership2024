@@ -18,6 +18,7 @@ import { Necessary } from './pages/shared/directives/Necessary.directive';
 import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/config002-hamper-detail.component';
 import { PricePipe } from './pages/shared/directives/PricePipe.pipe';
 import { Config002PartnerManagementComponent } from './pages/config002-partner-management/config002-partner-management.component';
+import { HamperDrawerComponent } from './pages/shared/components/drawer/drawer.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { Config002PartnerManagementComponent } from './pages/config002-partner-m
     Config002HamperDetailComponent,
     PricePipe,
     Config002PartnerManagementComponent,
+    HamperDrawerComponent,
   ],
   imports: [
     PConfigRoutingModule,

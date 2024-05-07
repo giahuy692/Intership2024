@@ -1,0 +1,44 @@
+.hamper-container{
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    
+    .breadcumb_functions_container{
+        display: flex;
+        height: 60px;
+        align-items: center;
+        justify-content: space-between;
+
+        .breadcrumb{
+            width: fit-content;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            padding-left: 0px;
+            margin-bottom: 0;
+            background-color: transparent;
+            user-select: none;
+            
+            .k-breadcrumb-root-link:focus{
+                box-shadow: none;
+            }
+
+            .k-breadcrumb-link:focus{
+                box-shadow: none;
+            }
+        }
+
+        .button-function-block{
+            .func-button{
+                height: 40px;
+                padding-left: 10px;
+                padding-right: 10px;
+
+                &:last-of-type{
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+}
