@@ -1,1 +1,14 @@
-<p>config002-hamper-detail works!</p>
+<div class="hamper-container">
+    <div class="breadcumb_functions_container">
+        <kendo-breadcrumb [items]="defaultItems" SetClassSVGIcon HamperBreadcrumb
+            class="breadcrumb"></kendo-breadcrumb>
+        <div class="button-function-block">
+            <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">THÊM MỚI</button>
+        </div>
+    </div>
+    <app-drawer [expanded]="isDrawerShow" [titleText]="'Sản phẩm thuộc hamper'">
+        <div drawer-content> 
+            <button HamperButtons data-type="error" class="func-button" (click)="closeDrawer()">THÊM MỚI</button>  
+        </div>
+    </app-drawer>
+</div>
