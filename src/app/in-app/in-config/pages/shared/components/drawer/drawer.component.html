@@ -1,0 +1,22 @@
+
+    <kendo-drawer-container class="kendo-drawer-container">
+        <kendo-drawer
+        #drawerElement
+        [width]="417"
+        [position]="'end'"
+        class="drawer"
+        [mode]="'overlay'"
+        [autoCollapse]="false">
+        <ng-template kendoDrawerTemplate>
+            <div class="drawer-header">
+                <div class="icon-block" *ngIf="titleIcon"><kendo-svg-icon [icon]="titleIcon" class="drawer-icon"></kendo-svg-icon></div>                     
+                <div class="text-holder"><span class="drawer-text">{{titleText}}</span></div>
+            </div>
+            <div class="drawer-content">
+                <ng-content drawer-content>
+
+                </ng-content>
+            </div>
+        </ng-template>
+        </kendo-drawer>
+    </kendo-drawer-container>
