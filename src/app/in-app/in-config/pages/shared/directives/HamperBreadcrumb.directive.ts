@@ -1,13 +1,13 @@
 import { AfterViewChecked, Directive, ElementRef } from '@angular/core';
-
+/**HamperBreadcrumb
+ * - Using for css hamber breadcrumb
+ * - Using default example  ~kendo-breadcrumb HamberBreadcrumb++/kendo-breadcrumb
+ * - Using with modified css example ~kendo-breadcrumb HamberBreadcrumb data-active-color='#3A7B50' data-disabled-color='#3A7B50'~~/kendo-breadcrumb~
+ **/
 @Directive({
   selector: '[HamperBreadcrumb]',
 })
-/**
- * Using for css hamber breadcrumb
- * Using default example <kendo-breadcrumb HamberBreadcrumb></kendo-breadcrumb>
- * Using with modified css example <kendo-breadcrumb HamberBreadcrumb data-active-color='#3A7B50' data-disabled-color='#3A7B50'></kendo-breadcrumb>
- */
+
 export class HamperBreadcrumb implements AfterViewChecked {
   constructor(private element: ElementRef) {}
   ngAfterViewChecked(): void {

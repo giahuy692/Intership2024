@@ -1,35 +1,43 @@
 @import '../shared/styles/styles.scss';
 
-kendo-dropdownlist{
+.kendo-dropdownlist{
     background-color: white;
     height: 33px;
     border: 2px solid #DBDEE7;
-    border-radius: 2px;
-    outline: none;
+    border-radius: 2px !important;
+    // outline: none;
     &:hover{
-        border-color: #008000;
+        border-color: #1A6634;
         background-color: white;
         color: black;
     }
     &.k-focus{
         box-shadow: none;
         outline: none;
-        border-color: #008000;
+        border-color: #1A6634;
     }
 }    
-kendo-textbox{
+
+.k-input-outline:focus-within{
+    border-color: red;
+    border-width: 2px;
+    box-shadow: none !important;
+    border-radius: 2px;
+}
+
+.kendo-textbox{
     background-color: white;
     height: 33px;
     border: 2px solid #DBDEE7;
-    border-radius: 2px;
+    border-radius: 2px !important;
     &:hover{
-        border-color: #008000;
+        border-color: #1A6634;
         background-color: white;
     }
     &.k-focus{
         box-shadow: none;
         outline: none;
-        border-color: #008000;
+        border-color: #1A6634;
     } 
 }  
 
@@ -41,6 +49,21 @@ kendo-textbox{
     width: 18%;
     display: flex;
     text-align: center;
+    align-items: center;
+    &:hover{
+        border-color: #1A6634;
+        background-color: white;
+    }
+    &.k-focus{
+        box-shadow: none;
+        outline: none;
+        border-color: #1A6634;
+    } 
+    .k-input-inner{
+        align-items: center;
+        text-align: center;
+    }
+    
 }
 
 .medium-textbox{
@@ -48,7 +71,23 @@ kendo-textbox{
     border-width: 2px;
     height: 33px;
     width: 40%;
+    &:hover{
+        border-color: #1A6634;
+        background-color: white;
+    }
+    &.k-focus{
+        box-shadow: none;
+        outline: none;
+        border-color: #1A6634;
+    } 
+    .k-input-inner{
+        align-items: center;
+        text-align: center;
+    }
+    
 }
+
+
 
 .body{
     width: 100%;
@@ -57,7 +96,7 @@ kendo-textbox{
     overflow-x: hidden;
 
     .drawer{
-        padding: 10px 10px;
+        // padding: 10px 10px;
         div{
             margin-bottom: 10px;
             kendo-label{
@@ -185,11 +224,6 @@ kendo-textbox{
                                 .package{
                                     margin-right: 40px;
                                 }
-
-                                .textbox-change-package{
-                                    width: 167px;
-                                    margin: 0 20px;
-                                }
                             }
                         }
 
@@ -209,8 +243,21 @@ kendo-textbox{
                                 }
 
                                 .textbox-change-package{
+                                    background-color: white;
+                                    height: 33px;
+                                    border: 2px solid #DBDEE7;
+                                    border-radius: 2px !important;
                                     width: 167px;
-                                    margin: 0 10px;
+                                    margin: 0 20px;
+                                    &:hover{
+                                        border-color: #1A6634;
+                                        background-color: white;
+                                    }
+                                    &.k-focus{
+                                        box-shadow: none;
+                                        outline: none;
+                                        border-color: #1A6634;
+                                    } 
                                 }
 
                                 .title-base-unit{

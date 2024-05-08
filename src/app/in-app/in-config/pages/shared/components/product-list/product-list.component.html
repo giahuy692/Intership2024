@@ -1,6 +1,6 @@
 <div class="product-list">
   <div class="product-content">
-    <header>
+    <div class="header-product-list">
       <div class="header-content">
         <div class="title">
           <span>Danh sách sản phẩm thuộc hamper</span>
@@ -16,7 +16,7 @@
             type="button"
             HamperButtons
             class="btn"
-            data-type="success"
+            data-type="search"
             (click)="search()"
           >
             <kendo-svg-icon [icon]="icons.searchIcon"></kendo-svg-icon>
@@ -43,8 +43,8 @@
           </button>
         </div>
       </div>
-    </header>
-    <main>
+    </div>
+    <div class="main-product-list">
       <table>
         <thead>
           <tr>
@@ -140,7 +140,7 @@
           <tr class="not-found"><td colspan="9"><div><span>Product not found</span></div></td></tr>
         </tbody>
       </table>
-    </main>
-    <footer></footer>
+    </div>
+
   </div>
 </div>

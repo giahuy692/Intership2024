@@ -1,5 +1,9 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
+import { DTOHamper } from '../shared/dtos/DTOHamper.dto';
+import { HamperService } from '../shared/services/hamper.service';
+import { Subscription } from 'rxjs';
+import { checkOutlineIcon, minusCircleIcon, plusIcon, redoIcon, trashIcon } from '@progress/kendo-svg-icons';
 
 @Component({
   selector: 'app-config001-hamper-detail',
@@ -8,7 +12,9 @@ import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-
   encapsulation: ViewEncapsulation.None
 })
 export class Config001HamperDetailComponent {
-  status: string = "Trả về";
+  constructor(private hamperService: HamperService) { }
+  hamperCrr: DTOHamper;
+  status: string = "Đang soạn thảo";
   defaultItems: BreadCrumbItem[] = [
     {
       text: "Quản lý sản phẩm",
@@ -20,6 +26,20 @@ export class Config001HamperDetailComponent {
       text: "Chi tiết hamper",
     }
   ];
-  public items: BreadCrumbItem[] = [...this.defaultItems];
-  public collapseMode: BreadCrumbCollapseMode = 'none';
+  items: BreadCrumbItem[] = [...this.defaultItems];
+  collapseMode: BreadCrumbCollapseMode = 'none';
+  private subscriptions: Subscription[] = [];
+  icons = {trashIcon, plusIcon, minusCircleIcon, checkOutlineIcon, redoIcon}
+
+  ngOnInit(): void {
+    this.subscriptions.push(this.hamperService.hamberSubject$.subscribe(data => {
+      this.hamperCrr = data
+    }))
+  }
+
+ngOnDestroy(): void {
+  if(this.subscriptions.length > 0) {
+  this.subscriptions.forEach((sb) => sb.unsubscribe());
+}
+  }
 }
