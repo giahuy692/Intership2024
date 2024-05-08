@@ -11,6 +11,11 @@ kendo-dropdownlist{
         background-color: white;
         color: black;
     }
+    &.k-focus{
+        box-shadow: none;
+        outline: none;
+        border-color: #008000;
+    }
 }    
 kendo-textbox{
     background-color: white;
@@ -21,7 +26,13 @@ kendo-textbox{
         border-color: #008000;
         background-color: white;
     }
-}   
+    &.k-focus{
+        box-shadow: none;
+        outline: none;
+        border-color: #008000;
+    } 
+}  
+
 
 .short-textbox{
     background-color: white;
@@ -44,6 +55,26 @@ kendo-textbox{
     margin-left: 2px;
     height: 100%;
     overflow-x: hidden;
+
+    .drawer{
+        padding: 10px 10px;
+        div{
+            margin-bottom: 10px;
+            kendo-label{
+                color: black;
+                font-weight: bold;
+            }
+        }
+        .item-group{
+            margin-bottom: 10px;
+            display: flex;
+            kendo-label{
+                color: black;
+                font-weight: bold;
+            }
+        }
+      
+    }
 
     .header-hamper{
         display: flex;

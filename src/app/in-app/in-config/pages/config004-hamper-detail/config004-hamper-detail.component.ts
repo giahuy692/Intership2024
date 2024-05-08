@@ -12,10 +12,11 @@ import {
   anchorIcon,
   codeIcon,
 } from "@progress/kendo-svg-icons";
+import { DTOHamper } from '../shared/dtos/DTOHamper.dto';
 @Component({
   selector: 'app-config004-hamper-detail',
   templateUrl: './config004-hamper-detail.component.html',
-  styleUrls: ['./config004-hamper-detail.component.scss']
+  styleUrls: ['./config004-hamper-detail.component.scss'],  
 })
 export class Config004HamperDetailComponent {
   vietHaCom: Array<DTOCompany> = companyVietHaTri
@@ -31,6 +32,9 @@ export class Config004HamperDetailComponent {
   public svgCode: SVGIcon = codeIcon;
 
   dataButtonStatus: any = DataButtonStatus
+  isOpenDrawer: boolean = false
+
+  itemHamber: DTOHamper
 
   onButtonClick(): void {
     console.log("click");
@@ -50,7 +54,13 @@ export class Config004HamperDetailComponent {
   ];
 
   
+  openDrawer():any{
+    this.isOpenDrawer = true
+  }
 
+  closeDrawer():any{
+    this.isOpenDrawer = false
+  }
 
   getValueCompany1($event: any) {
     this.receivedCPN1 = $event;
