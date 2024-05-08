@@ -1,27 +1,110 @@
 @import '../../../../../styles.scss';
 
-.hamper-detail{
+.breadcrumb-container{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    border-bottom: 1px solid $grey;
+    overflow-x: auto;
 
-    .bread-container{
+    .button-group-field{
         display: flex;
-        justify-content: space-between;
-        width: 100%;
-        border-bottom: 1px solid $grey;
-        overflow-x: auto;
+        gap: 8px;
+        padding: 15px 0;
 
-        .bread-field{
+        button{
+            padding: 5px 10px;
+            text-transform: uppercase;      
+        }
+    }
+}    
+
+.hamper-detail{
+    width: 100%;
+
+    .hamper-infor-title{
+        display: flex;
+        gap: 10px;
+
+        div:first-child{
+            color: $text-black;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        div{
+            padding: 12px 8px;
+            font-weight: 600;
             display: flex;
             align-items: center;
         }
+    }
 
-        .button-group-field{
-            display: flex;
-            gap: 5px;
-            padding: 10px 0;
+    .hamper-infor-container{
+        display: flex;
+        padding: 15px;
+        width: 100%;
+        height: auto;
+        background-color: #fff;
+        overflow-x: auto;
 
-            button{
-                padding: 5px 10px;
+        form{
+            gap: 20px;
+
+            .col-span-1{
+                width: 519.33px;
+            }
+
+            .k-label{
+                font-weight: 600;
+                color: $text-grey;
+                padding: 8px 0;
+            }
+
+            .k-input-inner{
+                height: 33px;
+                border: none;
+                outline: none;
+                border: 2px solid $border-color-input;
+                border-radius: 2px;
+            }
+
+            .k-input-solid{
+                border: none;
+                box-shadow: none;
+
+                &:focus, 
+                .k-focus{
+                    box-shadow: none;
+                }
+            }
+
+            .p-import-image{
+                padding-top: 20px;
+            }
+
+            .first-child{
+                display: flex; 
+                gap: 5px; 
+                padding-bottom: 8px;
+
+                .k-label{
+                    padding: 0;
+                }
             }
         }
-    }    
+    }
+
+    .hamper-infor-package{
+
+        &_title{
+            padding: 12px 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            color: $text-black;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+    }
 }
