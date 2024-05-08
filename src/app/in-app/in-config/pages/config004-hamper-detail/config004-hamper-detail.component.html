@@ -7,7 +7,7 @@
             <kendo-breadcrumb [items]="itemBreadCrumb" SetClassSVGIcon HamperBreadcrumb class="breadcrumb"></kendo-breadcrumb>
             <div class="aria-button">
                <div *ngFor="let btn of dataButtonStatus">
-                <button class="btn-addNew" HamperButtons data-type={{btn.status}}><kendo-svg-icon [icon]="btn.icon"></kendo-svg-icon>{{ btn.text | uppercase}} {{btn.status}}</button>
+                <button class="btn-addNew" HamperButtons data-type='{{btn.status}}'><kendo-svg-icon [icon]="btn.icon"></kendo-svg-icon>{{ btn.text | uppercase}} {{btn.status}}</button>
                </div>
                 <button class="btn-addNew" HamperButtons data-type="success"><kendo-svg-icon [icon]="svgCart"></kendo-svg-icon>{{'Thêm mới' | uppercase}}</button>
             </div>
