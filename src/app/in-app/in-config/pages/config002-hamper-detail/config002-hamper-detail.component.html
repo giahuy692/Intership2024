@@ -1,239 +1,278 @@
 <div class="hamper-container">
-    <div class="breadcumb_functions_container">
-        <kendo-breadcrumb [items]="defaultItems" SetClassSVGIcon HamperBreadcrumb
-            class="breadcrumb"></kendo-breadcrumb>
-        <div class="button-function-block">                                            
-            <button HamperButtons data-type="danger" class="func-button" (click)="openDrawer()">
-                <kendo-svg-icon [icon]="buttonIcons.trashIcon"></kendo-svg-icon> XOÁ
-            </button>
-            <button HamperButtons data-type="danger" class="func-button" (click)="openDrawer()">
-                <kendo-svg-icon [icon]="buttonIcons.minusOutlineIcon"></kendo-svg-icon> NGƯNG HIỂN THỊ
-            </button>
-            <button HamperButtons data-type="return" class="func-button" (click)="openDrawer()">
-                <kendo-svg-icon [icon]="buttonIcons.undoIcon"></kendo-svg-icon> TRẢ VỀ
-            </button>          
-            <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
-                <kendo-svg-icon [icon]="buttonIcons.checkOutlineIcon"></kendo-svg-icon> DUYỆT ÁP DỤNG
-            </button>
-            <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
-                <kendo-svg-icon [icon]="buttonIcons.redoIcon"></kendo-svg-icon> GỬI DUYỆT
-            </button>
-            <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
-                <kendo-svg-icon [icon]="buttonIcons.plusIcon"></kendo-svg-icon> TẠO MỚI
-            </button>                                                        
+    <header class="header">
+        <div class="breadcumb_functions_container">
+            <kendo-breadcrumb [items]="defaultItems" SetClassSVGIcon HamperBreadcrumb
+                class="breadcrumb"></kendo-breadcrumb>
+            <div class="button-function-block">
+                <button HamperButtons data-type="danger" class="func-button" (click)="openDrawer()">
+                    <kendo-svg-icon [icon]="buttonIcons.trashIcon"></kendo-svg-icon> XOÁ
+                </button>
+                <button HamperButtons data-type="danger" class="func-button" (click)="openDrawer()">
+                    <kendo-svg-icon [icon]="buttonIcons.minusOutlineIcon"></kendo-svg-icon> NGƯNG HIỂN THỊ
+                </button>
+                <button HamperButtons data-type="return" class="func-button" (click)="openDrawer()">
+                    <kendo-svg-icon [icon]="buttonIcons.undoIcon"></kendo-svg-icon> TRẢ VỀ
+                </button>
+                <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
+                    <kendo-svg-icon [icon]="buttonIcons.checkOutlineIcon"></kendo-svg-icon> DUYỆT ÁP DỤNG
+                </button>
+                <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
+                    <kendo-svg-icon [icon]="buttonIcons.redoIcon"></kendo-svg-icon> GỬI DUYỆT
+                </button>
+                <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
+                    <kendo-svg-icon [icon]="buttonIcons.plusIcon"></kendo-svg-icon> TẠO MỚI
+                </button>
+            </div>
         </div>
-    </div>
-    <app-drawer [expanded]="isDrawerShow" [titleText]="'Sản phẩm thuộc hamper'">
-        <div drawer-content> 
-            <button HamperButtons data-type="error" class="func-button" (click)="closeDrawer()">THÊM MỚI</button>  
-        </div>
-    </app-drawer>
+    </header>
 
-    <div class="hamper-info-container">
-        <div class="hamper-info-title-block">
-            <span class="hamper-title-text">Thông tin hamper</span>
-            <span class="hamper-status-text">Đang soạn thảo</span>
-        </div>
-        <div class="hamper-info-content-block grid-cols-3">
-            <div class="hamper-info-code-name-block info-block col-span-1">
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Barcode gốc</span><span Necessary></span>
-                    </div>
-                    <kendo-textbox class="input"></kendo-textbox>
-                </div>
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Tên tiếng Việt</span><span Necessary></span>
-                    </div>
-                    <kendo-textbox class="input"></kendo-textbox>
-                </div>
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Tên tiếng Anh</span>
-                    </div>
-                    <kendo-textbox class="input"></kendo-textbox>
-                </div>
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Tên tiếng Nhật</span>
-                    </div>
-                    <kendo-textbox class="input"></kendo-textbox>
-                </div>
+    <main class="main">
+        <div class="hamper-info-container">
+            <div class="hamper-info-title-block">
+                <span class="hamper-title-text">Thông tin hamper</span>
+                <span class="hamper-status-text">Đang soạn thảo</span>
             </div>
-            <div class="hamper-info-code-origin-material info-block col-span-1">
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Xuất xứ</span>
+            <div class="hamper-info-content-block grid-cols-3">
+                <div class="hamper-info-code-name-block info-block col-span-1">
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Barcode gốc</span><span Necessary></span>
+                        </div>
+                        <kendo-textbox class="input"></kendo-textbox>
                     </div>
-                    <kendo-dropdownlist
-                    [fillMode]="'outline'"
-                    iconClass="fa-solid fa-angle-down"
-                    class="input">
-                        
-                    </kendo-dropdownlist>
-                </div>
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Chất liệu tiếng Việt</span>
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Tên tiếng Việt</span><span Necessary></span>
+                        </div>
+                        <kendo-textbox class="input"></kendo-textbox>
                     </div>
-                    <kendo-textbox class="input"></kendo-textbox>
-                </div>
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Chất liệu tiếng Anh</span>
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Tên tiếng Anh</span>
+                        </div>
+                        <kendo-textbox class="input"></kendo-textbox>
                     </div>
-                    <kendo-textbox class="input"></kendo-textbox>
-                </div>
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Chất liệu tiếng Nhật</span>
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Tên tiếng Nhật</span>
+                        </div>
+                        <kendo-textbox class="input"></kendo-textbox>
                     </div>
-                    <kendo-textbox class="input"></kendo-textbox>
                 </div>
-            </div>
-            <div class="hamper-info-code-img-block info-block col-span-1">
-                <div class="input-group img-group">
-                    <app-import-image></app-import-image>
-                </div>
-            </div>
-        </div>
-    </div>
+                <div class="hamper-info-code-origin-material info-block col-span-1">
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Xuất xứ</span>
+                        </div>
+                        <kendo-dropdownlist [fillMode]="'outline'" iconClass="fa-solid fa-angle-down" class="input">
 
-    <div class="hamper-info-container">
-        <div class="hamper-info-title-block">
-            <span class="hamper-title-text">Thông tin đóng gói</span>
-        </div>
-        <div class="hamper-info-content-block grid-cols-3">
-            <div class="hamper-info-code-name-block info-block col-span-1">
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Đơn vị  sản phẩm (Base unit)</span>
+                        </kendo-dropdownlist>
                     </div>
-                    <kendo-textbox class="input"></kendo-textbox>
-                </div>
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)</span>
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Chất liệu tiếng Việt</span>
+                        </div>
+                        <kendo-textbox class="input"></kendo-textbox>
                     </div>
-                    <div class="size-weight-block grid-cols-5">
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Chất liệu tiếng Anh</span>
                         </div>
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="weight-block col-span-2">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
+                        <kendo-textbox class="input"></kendo-textbox>
                     </div>
-                    
-                </div>
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)</span>
-                    </div>
-                    <div class="size-weight-block grid-cols-5">
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Chất liệu tiếng Nhật</span>
                         </div>
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="weight-block col-span-2">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
+                        <kendo-textbox class="input"></kendo-textbox>
                     </div>
                 </div>
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)</span>
-                    </div>
-                    <div class="size-weight-block grid-cols-5">
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="weight-block col-span-2">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)</span>
-                    </div>
-                    <div class="size-weight-block grid-cols-5">
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="size-block col-span-1">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="weight-block col-span-2">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                    </div>
-                </div>
-                
-            </div>
-            <div class="hamper-info-code-origin-material info-block col-span-1">
-                <div class="input-group">
-                    <div class="label-group">
-                        <span class="label-text">Quy đổi quy cách sản phẩm</span>
-                    </div>
-                    <div class="unit-exchange-group grid-cols-4">
-                        <div class="unit-exchange-block col-span-1">
-                            <span class="label-text">Inner</span>
-                            <span class="label-text">=</span>
-                        </div>
-                        <div class="unit-exchange-block col-span-2">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="unit-exchange-block col-span-1">
-                            <span class="unit-text">Base unit</span>
-                        </div>
-                    </div>
-                    <div class="unit-exchange-group grid-cols-4">
-                        <div class="unit-exchange-block col-span-1">
-                            <span class="label-text">Inner</span>
-                            <span class="label-text">=</span>
-                        </div>
-                        <div class="unit-exchange-block col-span-2">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="unit-exchange-block col-span-1">
-                            <span class="unit-text">Base unit</span>
-                        </div>
-                    </div>
-                    <div class="unit-exchange-group grid-cols-4">
-                        <div class="unit-exchange-block col-span-1">
-                            <span class="label-text">Inner</span>
-                            <span class="label-text">=</span>
-                        </div>
-                        <div class="unit-exchange-block col-span-2">
-                            <kendo-textbox class="input"></kendo-textbox>
-                        </div>
-                        <div class="unit-exchange-block col-span-1">
-                            <span class="unit-text">Base unit</span>
-                        </div>
+                <div class="hamper-info-code-img-block info-block col-span-1">
+                    <div class="input-group img-group">
+                        <app-import-image></app-import-image>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+        <div class="hamper-info-container">
+            <div class="hamper-info-title-block">
+                <span class="hamper-title-text">Thông tin đóng gói</span>
+            </div>
+            <div class="hamper-info-content-block grid-cols-3">
+                <div class="hamper-info-code-name-block info-block col-span-1">
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Đơn vị sản phẩm (Base unit)</span>
+                        </div>
+                        <kendo-dropdownlist [fillMode]="'outline'" iconClass="fa-solid fa-angle-down" class="input">
+
+                        </kendo-dropdownlist>
+                    </div>
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)</span>
+                        </div>
+                        <div class="size-weight-block grid-cols-5">
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="weight-block col-span-2">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)</span>
+                        </div>
+                        <div class="size-weight-block grid-cols-5">
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="weight-block col-span-2">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)</span>
+                        </div>
+                        <div class="size-weight-block grid-cols-5">
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="weight-block col-span-2">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)</span>
+                        </div>
+                        <div class="size-weight-block grid-cols-5">
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="size-block col-span-1">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="weight-block col-span-2">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="hamper-info-code-origin-material info-block col-span-1">
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Quy đổi quy cách sản phẩm</span>
+                        </div>
+                        <div class="unit-exchange-group grid-cols-4">
+                            <div class="unit-exchange-block col-span-1">
+                                <span class="label-text">Inner</span>
+                                <span class="label-text">=</span>
+                            </div>
+                            <div class="unit-exchange-block col-span-2">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="unit-exchange-block col-span-1">
+                                <span class="unit-text">Base unit</span>
+                            </div>
+                        </div>
+                        <div class="unit-exchange-group grid-cols-4">
+                            <div class="unit-exchange-block col-span-1">
+                                <span class="label-text">Inner</span>
+                                <span class="label-text">=</span>
+                            </div>
+                            <div class="unit-exchange-block col-span-2">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="unit-exchange-block col-span-1">
+                                <span class="unit-text">Base unit</span>
+                            </div>
+                        </div>
+                        <div class="unit-exchange-group grid-cols-4">
+                            <div class="unit-exchange-block col-span-1">
+                                <span class="label-text">Inner</span>
+                                <span class="label-text">=</span>
+                            </div>
+                            <div class="unit-exchange-block col-span-2">
+                                <kendo-textbox class="input"></kendo-textbox>
+                            </div>
+                            <div class="unit-exchange-block col-span-1">
+                                <span class="unit-text">Base unit</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hamper-info-container">
+            <div class="hamper-info-title-block">
+                <span class="hamper-title-text">Thông tin khác</span>
+            </div>
+            <div class="hamper-info-content-block grid-cols-3">
+                <div class="hamper-info-code-name-block info-block col-span-1">
+                    <div class="input-group">
+                        <div class="label-group">
+                            <span class="label-text">Thông số kĩ thuật</span>
+                        </div>
+                        <kendo-textbox class="input"></kendo-textbox>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="hamper-info-container">
+            <div class="hamper-info-title-block">
+                <span class="hamper-title-text">Công ty áp dụng</span>
+            </div>
+            <div class="hamper-info-content-block grid-cols-3">
+                <div class="hamper-info-code-name-block info-block col-span-1">
+                    <app-item-company></app-item-company>
+                </div>
+                <div class="hamper-info-code-name-block info-block col-span-1">
+                    <app-item-company></app-item-company>
+                </div>
+                <div class="hamper-info-code-name-block info-block col-span-1">
+                    <app-item-company></app-item-company>
+                </div>
+            </div>
+            
+        </div>
+
+        <app-hamper-drawer [expanded]="isDrawerShow" [titleText]="'Sản phẩm thuộc hamper'">
+            <div drawer-content>
+                <button HamperButtons data-type="error" class="func-button" (click)="closeDrawer()">THÊM MỚI</button>
+            </div>
+        </app-hamper-drawer>
+    </main>
 </div>
