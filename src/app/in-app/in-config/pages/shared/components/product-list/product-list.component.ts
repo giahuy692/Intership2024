@@ -9,7 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { DTOProduct } from '../../dtos/DTOProduct.dto';
-import { downloadIcon, eyeIcon, pencilIcon, plusIcon, trashIcon, uploadIcon } from '@progress/kendo-svg-icons';
+import { downloadIcon, eyeIcon, pencilIcon, plusIcon, searchIcon, trashIcon, uploadIcon } from '@progress/kendo-svg-icons';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
@@ -28,7 +28,7 @@ export class ProductListComponent implements OnInit {
   productsDisplay: DTOProduct[];
   query: string = '';
   selectedProduct?: string;
-  icons = {pencilIcon,eyeIcon,trashIcon,uploadIcon,downloadIcon,plusIcon}
+  icons = {pencilIcon,eyeIcon,trashIcon,uploadIcon,downloadIcon,plusIcon,searchIcon}
   constructor(private element: ElementRef) {}
   @HostListener('document:click', ['$event'])
   onClose(event: any) {
