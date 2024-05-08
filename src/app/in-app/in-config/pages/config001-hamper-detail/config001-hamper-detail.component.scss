@@ -1,3 +1,27 @@
+@import '../../../../../styles.scss';
+
 .hamper-detail{
-    
+
+    .bread-container{
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        border-bottom: 1px solid $grey;
+        overflow-x: auto;
+
+        .bread-field{
+            display: flex;
+            align-items: center;
+        }
+
+        .button-group-field{
+            display: flex;
+            gap: 5px;
+            padding: 10px 0;
+
+            button{
+                padding: 5px 10px;
+            }
+        }
+    }    
 }
