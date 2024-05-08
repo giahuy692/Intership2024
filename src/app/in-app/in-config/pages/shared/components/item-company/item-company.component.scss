@@ -7,39 +7,42 @@ input[type='checkbox'] {
     border: 1px solid #999999;
 }
 
-.k-checkbox:checked {
-    accent-color: #1A6634;
-    background-color: #1A6634;
-    border: 1px solid #1A6634;
-}
 
-.k-checkbox:focus{
-    box-shadow: none;
-}
+::ng-deep{
+    .k-list-optionlabel.k-selected {
+        background-color: #1A6634; 
+    }
+    .k-checkbox:checked {
+        accent-color: #1A6634;
+        background-color: #1A6634;
+        border: 1px solid #1A6634;
+    }
+    
+    .k-checkbox:focus{
+        box-shadow: none;
+    }
+    
+    .k-i-search.k-input-icon.k-icon{
+        display: none;
+    }
+    
+    .k-list-optionlabel{
+        color: black;
+    }
+    .k-list-optionlabel.k-selected:hover{
+        background-color: #1A6634; 
+    }
+    
+    .k-list-item.k-selected {
+        background-color: #1A6634; 
+    }
+    
+    .k-list-item.k-selected:hover{
+        background-color: #1A6634;
+    }
+} 
 
 
-
-.k-i-search.k-input-icon.k-icon{
-    display: none;
-}
-
-.k-list-optionlabel{
-    color: black;
-}
-.k-list-optionlabel.k-selected {
-    background-color: #1A6634; 
-}
-
-.k-list-optionlabel.k-selected:hover{
-    background-color: #1A6634; 
-}
-.k-list-item.k-selected {
-    background-color: #1A6634; 
-}
-
-.k-list-item.k-selected:hover{
-    background-color: #1A6634;
-}
 
 .body{
     width: 377px;
@@ -77,6 +80,7 @@ input[type='checkbox'] {
         }
         kendo-dropdownlist{
             background-color: white;
+            
 
       
         }

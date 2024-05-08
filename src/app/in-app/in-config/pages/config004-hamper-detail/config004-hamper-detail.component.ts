@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { companyVietHaTri, companyMotThanhVien, company3PS } from './data-test';
 import { DTOCompany } from '../shared/dtos/DTOCompany.dto';
 import { FormControl, FormGroup } from '@angular/forms';
+import { dataMadeHameper } from './dataMadeOfHamper';
+import { DataUnitProduct } from './dataUnitProduct';
+import { BreadCrumbItem } from '@progress/kendo-angular-navigation';
 
 @Component({
   selector: 'app-config004-hamper-detail',
@@ -17,6 +20,20 @@ export class Config004HamperDetailComponent {
   receivedCPN2: any;
   receivedCPN3: any;
 
+  dataMadeHameper: any = dataMadeHameper
+  itemBreadCrumb: BreadCrumbItem[] = [
+    {
+        text: 'QUẢN LÝ SẢN PHẨM'
+    },
+    {
+        text: 'TẠO HAMPER'
+    },
+    {
+        text: 'CHI TIẾT HAMPER'
+    }  
+  ];
+  
+
 
   getValueCompany1($event: any) {
     this.receivedCPN1 = $event;
@@ -30,11 +47,11 @@ export class Config004HamperDetailComponent {
   }
 
   log(){
-    // console.log(this.receivedCPN1);
-    // console.log(this.receivedCPN2);
-    // console.log(this.receivedCPN3);
+    console.log(this.receivedCPN1);
+    console.log(this.receivedCPN2);
+    console.log(this.receivedCPN3);
 
-    console.log(this.formHamper);
+    // console.log(this.formHamper);
   }
 
   formHamper = new FormGroup({
