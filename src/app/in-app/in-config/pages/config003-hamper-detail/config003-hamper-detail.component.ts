@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
-import { SVGIcon, arrowRotateCcwIcon, homeIcon } from '@progress/kendo-svg-icons';
+import { SVGIcon, arrowRotateCcwIcon, downloadIcon, eyeIcon, homeIcon, pencilIcon, plusIcon, trashIcon, uploadIcon } from '@progress/kendo-svg-icons';
 import { DTOHamper } from '../shared/dtos/DTOHamper.dto';
 import { Subscription } from 'rxjs';
 import { HamperService } from '../shared/services/hamper.service';
@@ -12,28 +12,21 @@ import { HamperService } from '../shared/services/hamper.service';
   encapsulation: ViewEncapsulation.None
 })
 export class Config003HamperDetailComponent implements OnInit,OnDestroy {
-   defaultItems: BreadCrumbItem[] = [
+  defaultItems: BreadCrumbItem[] = [
     {
-      text: "Home",
+        text: 'QUẢN LÝ SẢN PHẨM'
     },
     {
-      text: "Products",
+        text: 'TẠO HAMPER'
     },
     {
-      text: "Computer peripherals",
-    },
-    {
-      text: "Keyboards",
-    },
-    {
-      text: "Gaming keyboards",
-    },
+        text: 'CHI TIẾT HAMPER'
+    }  
   ];
+  icons = {pencilIcon,eyeIcon,trashIcon,uploadIcon,downloadIcon,plusIcon}
   private subscriptions: Subscription[] = [];
   hamperCrr: DTOHamper
   public items: BreadCrumbItem[] = [...this.defaultItems];
-  public homeIcon: SVGIcon = homeIcon;
-  public rotateIcon: SVGIcon = arrowRotateCcwIcon;
   public collapseMode: BreadCrumbCollapseMode = 'none';
   constructor(private hamperService: HamperService){
 
@@ -48,13 +41,6 @@ export class Config003HamperDetailComponent implements OnInit,OnDestroy {
       this.subscriptions.forEach((sb) => sb.unsubscribe());
     }
   }
-  // public onItemClick(item: BreadCrumbItem): void {
-  //   const index = this.items.findIndex((e) => e.text === item.text);
-  //   this.items = this.items.slice(0, index + 1);
-  // }
-  // public refreshBreadCrumb(): void {
-  //   this.items = [...this.defaultItems];
-  // }
   
   
 
