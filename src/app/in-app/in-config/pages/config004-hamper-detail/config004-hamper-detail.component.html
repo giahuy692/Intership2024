@@ -1,7 +1,36 @@
 <!-- <p>config004-hamper-detail works!</p> -->
 <!-- <app-item-company [setValue]="company" (getValue)="receiveArray($event)" [important]="true" [totalPrice]="200" >></app-item-company> -->
 <!-- <button (click)="log()">click</button> -->
+
+
 <div class="body">
+    <app-drawer [titleText]="'SẢN PHẨM THUỘC HAMPER'" [expanded]="isOpenDrawer">
+        <div class="drawer"> 
+            <div>
+                <kendo-label>Nhập mã sản phẩm</kendo-label>
+                <kendo-textbox></kendo-textbox>
+            </div>
+            <div>
+                <kendo-label>Tên sản phẩm</kendo-label>
+                <kendo-textbox></kendo-textbox>
+            </div>
+            <div class="item-group">
+                <div>
+                    <kendo-label>Số lượng</kendo-label>
+                    <kendo-textbox></kendo-textbox>
+                </div>
+                <div >
+
+                </div>
+            </div>
+
+            <div>
+                <button class="Close" HamperButtons data-type=""><kendo-svg-icon [icon]=""></kendo-svg-icon></button>
+            </div>
+    
+            <kendo-button (click)="closeDrawer()">Close</kendo-button>
+        </div>
+    </app-drawer>
     <form [formGroup]="formHamper">
         <div class="header-hamper">
             <kendo-breadcrumb [items]="itemBreadCrumb" SetClassSVGIcon HamperBreadcrumb class="breadcrumb"></kendo-breadcrumb>
@@ -9,7 +38,7 @@
                <div *ngFor="let btn of dataButtonStatus">
                 <button class="btn-addNew" HamperButtons data-type="{{btn.status}}"><kendo-svg-icon [icon]="btn.icon"></kendo-svg-icon>{{ btn.text | uppercase}} </button>
                </div>
-                <button class="btn-addNew" HamperButtons data-type="success"><kendo-svg-icon [icon]="svgCart"></kendo-svg-icon>{{'Thêm mới' | uppercase}}</button>
+                <button (click)="openDrawer()" class="btn-addNew" HamperButtons data-type="success"><kendo-svg-icon [icon]="svgCart"></kendo-svg-icon>{{'Thêm mới' | uppercase}}</button>
             </div>
             
         </div>
@@ -205,8 +234,9 @@
             </div>
         </div>
 
-        <!-- <div class="hamper-otherInfor block-hamper">
-        </div> -->
+        <div class="hapmer-list-product block-hamper">
+            <!-- <app-product-list></app-product-list> -->
+        </div>
 
         <div class="hamper-company block-hamper">
             <div class="header"> 

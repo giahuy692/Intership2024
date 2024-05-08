@@ -7,9 +7,9 @@
         background-color: #1A6634;
         border: 1px solid #1A6634;
     }
-    
-    .k-checkbox:focus{
-        box-shadow: none;
+
+    .k-checkbox:hover{
+        background-color: #1A6634;
     }
 
     .k-i-search.k-input-icon.k-icon{
@@ -30,4 +30,19 @@
     .k-list-item.k-selected:hover{
         background-color: #1A6634;
     }
+
+    .k-list-item:hover{
+        background-color: #1A6634;
+        color: white;
+    }
+
+    .k-list-item{
+        &.k-focus{
+            outline: none;
+            box-shadow: none;
+        }
+    }
+
+    
+
 } 
