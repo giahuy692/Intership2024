@@ -50,6 +50,13 @@ export class HamperButtons implements OnInit {
             icon.style.fill = '#008000';
           });
         }
+      }else if (type == 'search') {
+        this.element.nativeElement.style.backgroundColor = '#008000';
+          if (svgIcons) {
+            svgIcons.forEach((icon: HTMLElement) => {
+              icon.style.fill = '#EB273A';
+            });
+          }
       }
     }
     let css = this.element.nativeElement.dataset.css;
