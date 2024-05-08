@@ -1,149 +1,175 @@
 @import "../shared/styles/styles.scss";
-
+@import "../../../../../styles.scss";
 .hamper-container{
     height: 100%;
     width: 100%;
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
     
-    .breadcumb_functions_container{
-        display: flex;
+    overflow-x: hidden;
+    
+    .header{
         height: 60px;
-        align-items: center;
-        justify-content: space-between;
-        overflow-x: auto;
-        overflow-y: hidden;
-        border-bottom: 1px solid #BDC2D2;
-        position: sticky;
-        z-index: 99;
-        background-color: #EDEFF3;
-        top: 0;
-
-        .breadcrumb{
-            width: fit-content;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-            padding-left: 0px;
-            margin-bottom: 0;
-            background-color: transparent;
-            user-select: none;
-            
-            .k-breadcrumb-root-link:focus{
-                box-shadow: none;
-            }
-
-            .k-breadcrumb-link:focus{
-                box-shadow: none;
-            }
-        }
-
-        .button-function-block{
+        .breadcumb_functions_container{
             display: flex;
-            .func-button{
-                height: 32px;
-                padding-left: 10px;
-                padding-right: 10px;
-                margin-right: 10px;
+            height: 100%;
+            align-items: center;
+            justify-content: space-between;
+            overflow-x: auto;
+            overflow-y: hidden;
+            border-bottom: 1px solid #BDC2D2;
+            z-index: 99;
+            background-color: #EDEFF3;
+    
+            .breadcrumb{
+                width: fit-content;
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                padding-left: 0px;
+                margin-bottom: 0;
+                background-color: transparent;
+                user-select: none;
+                
+                .k-breadcrumb-root-link:focus{
+                    box-shadow: none;
+                }
+    
+                .k-breadcrumb-link:focus{
+                    box-shadow: none;
+                }
+            }
+    
+            .button-function-block{
+                display: flex;
+                .func-button{
+                    height: 32px;
+                    padding-left: 10px;
+                    padding-right: 10px;
+                    margin-right: 10px;
+                }
             }
         }
     }
-
-    .hamper-info-container{
-        width: 100%;
-        height: fit-content;
-        padding: 10px;
-        padding-top: 5px;
-        padding-bottom: 5px;
-
-        .hamper-info-title-block{
-            display: flex;
-            align-items: center;
-            height: 30px;
-            gap: 1.5rem;
-
-            .hamper-title-text{
-                text-transform: uppercase;
-                font-weight: 700;
-                font-size: 16px;
-            }
-        }
-
-        .hamper-info-content-block{
+    
+    .main{
+        height: calc(100% - 60px);
+        overflow-y: auto;
+        .hamper-info-container{
             width: 100%;
-            height: calc(100% - 30px);
-            background-color: #FFFFFF;
-            overflow-y: hidden;
-            overflow-x: auto;
+            height: 100%;
+            height: fit-content;
+            padding-left: 10px;
+            padding-right: 10px;
 
-            .info-block{
+            &:last-of-type{
+                padding-bottom: 10px;
+                .hamper-info-content-block{
+                    padding-bottom: 10px;
+                }
+            }
+    
+            .hamper-info-title-block{
                 display: flex;
-                flex-direction: column;
-                min-width: 377px;
-                padding: 10px;
-                padding-top: 5px;
-                gap: 0.5rem;
-                
-                .input-group{
-                    background-color: #FFFFFF;
-                    display: flex;                   
+                align-items: center;
+                height: 30px;
+                gap: 1.5rem;
+                margin-top: 7px;
+                margin-bottom: 7px;
+    
+                .hamper-title-text{
+                    text-transform: uppercase;
+                    font-weight: 700;
+                    font-size: 16px;
+                }
+                .hamper-status-text{
+                    font-weight: 700;
+                    font-size: 13px;
+                }
+            }
+    
+            .hamper-info-content-block{
+                width: 100%;
+                height: calc(100% - 30px);
+                background-color: #FFFFFF;
+                overflow-y: hidden;
+                overflow-x: auto;
+    
+                .info-block{
+                    display: flex;
+                    flex-direction: column;
+                    min-width: 377px;
+                    padding: 10px;
+                    padding-top: 5px;
                     gap: 0.5rem;
-                    .label-group{
-                        display: flex;
-                        align-items: center;
-                        height: fit-content;
+                    
+                    .input-group{
+                        background-color: #FFFFFF;
+                        display: flex;                   
                         gap: 0.5rem;
-                        
-                        .label-text{
-                            color: #959DB3;
-                            font-weight: 700;
-                        }
-                    }
-
-                    .size-weight-block{                      
-                        width: 100%;
-                        gap: 0.5rem;
-                    }
-
-                    .input{
-                        height: 35px;
-                        border-width: 2px;
-                        border-radius: 4px;
-                        outline: none;
-                        z-index: 0;
-
-                        &:focus{
-                            box-shadow: none;
-                        }
-
-                        &:hover{
-                            background-color: transparent;
-                            color: black;
-
-                            
-                        }
-                    }
-
-                    .unit-exchange-group{
-                        gap: 0.5rem;
-                        .unit-exchange-block{
+                        .label-group{
                             display: flex;
-                            justify-content: space-between;
                             align-items: center;
-
-                            .unit-text{
-                                text-align: right;
+                            height: fit-content;
+                            gap: 0.5rem;
+                            
+                            .label-text{
+                                color: #959DB3;
+                                font-weight: 700;
+                            }
+                        }
+    
+                        .size-weight-block{                      
+                            width: 100%;
+                            gap: 0.5rem;
+                        }
+    
+                        .input{
+                            height: 35px;
+                            border-width: 2px;
+                            border-radius: 2px;
+                            outline: none;
+                            border-color: #DBDEE7;
+                            z-index: 0;
+    
+                            &.k-focus{
+                                box-shadow: none;
+                                outline: none;
+                                border-color: $dark-green;
+                            }
+    
+                            &:hover{
+                                background-color: transparent;
+                                border-color: $dark-green;
+                                color: black;
+                                
+                            }
+                        }
+    
+                        .unit-exchange-group{
+                            gap: 0.5rem;
+                            .unit-exchange-block{
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+    
+                                .label-text{
+                                    color: #959DB3;
+                                    font-weight: 700;
+                                }
+                                .unit-text{
+                                    text-align: right;
+                                    color: black;
+                                }
                             }
                         }
                     }
+    
+                    .img-group{
+                        justify-content: center;
+                    }
+                    
+                    
                 }
-
-                .img-group{
-                    justify-content: center;
-                }
-                
-                
             }
         }
     }
+    
 }

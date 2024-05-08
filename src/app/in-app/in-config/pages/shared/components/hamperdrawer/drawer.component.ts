@@ -1,24 +1,19 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { SVGIcon } from '@progress/kendo-svg-icons';
 import { DrawerComponent } from '@progress/kendo-angular-layout';
-/**
- * Drawer Component
- * @param expanded boolean varaiable for open/close drawer
- * @param titleIcon SVGIcon varaiable for icon of title
- * @param titleText string varaiable for text of title
- * 
- * To add content to drawer use directives drawer-content
+
+/**Drawer Component
+ * - To add content to drawer use directives drawer-content
+ * - param expanded boolean varaiable for open/close drawer
+ * - param titleIcon SVGIcon varaiable for icon of title
+ * - param titleText string varaiable for text of title
  * For example: 
- * <app-drawer>
-        <div drawer-content> 
-            THIS IS CUSTOMIZE DRAWER CONTENT 
-        </div>
-    </app-drawer>
- * 
- */
+ * <app-drawer> <div drawer-content> THIS IS CUSTOMIZE DRAWER CONTENT </div> </app-drawer>
+**/
+
 @Component({
   encapsulation: ViewEncapsulation.None,
-  selector: 'app-drawer',
+  selector: 'app-hamper-drawer',
   templateUrl: './drawer.component.html',
   styleUrls: ['./drawer.component.scss']
 })
