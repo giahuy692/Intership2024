@@ -5,6 +5,7 @@ kendo-dropdownlist{
     height: 33px;
     border: 2px solid #DBDEE7;
     border-radius: 2px;
+    outline: none;
     &:hover{
         border-color: #008000;
         background-color: white;
@@ -39,15 +40,17 @@ kendo-textbox{
 }
 
 .body{
-    // margin-right: 5px;
+    width: 100%;
     margin-left: 2px;
     height: 100%;
+    overflow-x: hidden;
 
     .header-hamper{
         display: flex;
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid #BDC2D2;
+        overflow-x: auto;
         kendo-breadcrumb{
             display: flex;
             align-items: center;
@@ -62,6 +65,7 @@ kendo-textbox{
             font-size: 13px;
             color: white;
             justify-content: end;
+            margin-right: 10px;
             .btn-function{
                height: 32px;
                padding: 0px 10px;
