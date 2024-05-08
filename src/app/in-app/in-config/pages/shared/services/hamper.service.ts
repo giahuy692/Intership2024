@@ -12,7 +12,7 @@ export class HamperService {
     ProductList: [
       {
         Barcode: '0001',
-        Name: 'daudhahdoahdahdaljdaldhaldhaldaljbckhabvaihgcaousdh adhuahdkadakdadhadaldjaljdlajdlajdaldja',
+        Name: 'daudhahdoahdahdaljdaldhaldhaldaljbckhabvaihgcaousdh adhuahdkadakdadhadaldjaljdlajdlajdaldja daudhahdoahdahdaljdaldhaldhaldaljbckhabvaihgcaousdh adhuahdkadakdadhadaldjaljdlajdlajdaldja',
         Brand: 'Brand01',
         Origin: 'Origin01',
         Price: 15000000,
@@ -34,6 +34,20 @@ export class HamperService {
         Quantity: 3,
       },{
         Barcode: '0004',
+        Name: 'daudhahdoahdahdaljdaldhaldhaldaljbckhabvaihgcaousdh adhuahdkadakdadhadaldjaljdlajdlajdaldja',
+        Brand: 'Brand01',
+        Origin: 'Origin01',
+        Price: 15,
+        Quantity: 3,
+      },{
+        Barcode: '0005',
+        Name: 'daudhahdoahdahdaljdaldhaldhaldaljbckhabvaihgcaousdh adhuahdkadakdadhadaldjaljdlajdlajdaldja',
+        Brand: 'Brand01',
+        Origin: 'Origin01',
+        Price: 15,
+        Quantity: 3,
+      },{
+        Barcode: '0006',
         Name: 'daudhahdoahdahdaljdaldhaldhaldaljbckhabvaihgcaousdh adhuahdkadakdadhadaldjaljdlajdlajdaldja',
         Brand: 'Brand01',
         Origin: 'Origin01',

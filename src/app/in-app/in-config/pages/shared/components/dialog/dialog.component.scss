@@ -1,0 +1,55 @@
+::ng-deep .dialog {
+  .k-dialog {
+    border-radius: 5px;
+  }
+  .k-dialog-titlebar {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    .k-dialog-title {
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      text-transform: uppercase;
+      .k-font-icon,
+      .titleDialog {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+        font-weight: bold;
+      }
+    }
+    .k-dialog-titlebar-actions {
+      display: none;
+    }
+  }
+  .k-actions {
+    padding: 0;
+    gap: 0;
+    height: 60px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    .k-button-md {
+      height: 100%;
+      border-radius: 0px;
+      font-size: 15px;
+      text-transform: uppercase;
+      border: none;
+      font-weight: bold;
+      .k-button-text {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        align-items: center;
+      }
+    }
+    .k-button-md:hover {
+      opacity: 80%;
+    }
+    .button-close {
+      color: #959db3;
+      background-color: white;
+    }
+  }
+}
