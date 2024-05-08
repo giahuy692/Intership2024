@@ -1,6 +1,7 @@
 
 .kendo-drawer-container{
     position: fixed;
+    z-index: 501;
     .k-overlay{
         z-index: 500;
     }

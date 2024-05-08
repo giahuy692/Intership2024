@@ -32,6 +32,15 @@
 
                 }
 
+                &.parentActive{
+                    >.status-bar{
+                        &.spacefill{
+                            display: block !important;
+                            visibility: visible !important;
+                        }                          
+                   }
+                }
+
 
                 &.groupModule {
                     color: #959DB3;
@@ -46,6 +55,8 @@
                         .icon-block>.expand-icon {
                             color: #FFFFFF;
                         }
+
+                       
                     }
                 }
 
