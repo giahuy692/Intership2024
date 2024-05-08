@@ -6,6 +6,7 @@ import { Config004HamperDetailComponent } from './pages/config004-hamper-detail/
 import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/config002-hamper-detail.component';
 import { Config002PartnerManagementComponent } from './pages/config002-partner-management/config002-partner-management.component';
 import { Config003HamperDetailComponent } from './pages/config003-hamper-detail/config003-hamper-detail.component';
+import { Config005HamperDetailComponent } from './pages/config005-hamper-detail/config005-hamper-detail.component';
 const routes: Routes = [
   {
     path: '',
@@ -25,7 +26,7 @@ const routes: Routes = [
         component: Config002HamperDetailComponent,
       },
       {
-        path: 'config003-hamper-detail',//Le Thanh Hoang
+        path: 'config003-hamper-detail', //Le Thanh Hoang
         component: Config003HamperDetailComponent,
       },
       {
@@ -33,8 +34,8 @@ const routes: Routes = [
         component: Config004HamperDetailComponent,
       },
       {
-        path: 'config002-partner-management', //for test purposes
-        component: Config002PartnerManagementComponent,
+        path: 'config005-hamper-detail', //Bui Tan Hieu
+        component: Config005HamperDetailComponent,
       },
     ],
   },
