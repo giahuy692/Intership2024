@@ -3,7 +3,7 @@
     <header>
       <div class="header-content">
         <div class="title">
-          <h2>Danh sách sản phẩm thuộc hamper</h2>
+          <span>Danh sách sản phẩm thuộc hamper</span>
           <span Necessary></span>
         </div>
         <div class="search">
@@ -19,22 +19,15 @@
             data-type="success"
             (click)="search()"
           >
+            <kendo-svg-icon [icon]="icons.searchIcon"></kendo-svg-icon>
             Tìm
           </button>
         </div>
         <div class="actions">
-          <button
-            type="button"
-            class="btn btn-upload"
-            title="upload"
-          >
+          <button type="button" class="btn btn-upload" title="upload">
             <kendo-svg-icon [icon]="icons.uploadIcon"></kendo-svg-icon>
           </button>
-          <button
-            type="button"
-            class="btn btn-upload"
-            title="download"
-          >
+          <button type="button" class="btn btn-upload" title="download">
             <kendo-svg-icon [icon]="icons.downloadIcon"></kendo-svg-icon>
             Template
           </button>
@@ -61,11 +54,15 @@
             <th style="text-align: center">Giá</th>
             <th>Xuất xứ</th>
             <th>Thương hiệu</th>
-            <th colspan="2"></th>
+            <th></th>
+            <th class="actions"></th>
           </tr>
         </thead>
-        <tbody *ngIf="productsDisplay.length">
-          <tr *ngFor="let product of productsDisplay">
+        <tbody *ngIf="productsDisplay?.length">
+          <tr
+            *ngFor="let product of productsDisplay"
+            [class.active]="selectedProduct == product.Barcode"
+          >
             <td class="product-img">
               <img
                 src="{{ product.Image }}"
@@ -78,7 +75,11 @@
                 *ngIf="!product.Image"
               />
             </td>
-            <td class="product-name">{{ product.Name }}</td>
+            <td class="product-name">
+              <div class="name-area">
+                <div title="{{ product.Name }}">{{ product.Name }}</div>
+              </div>
+            </td>
             <td class="product-td-width">{{ product.Barcode }}</td>
             <td class="product-quantity product-td-width">
               {{ product.Quantity }}
@@ -86,51 +87,57 @@
             <td class="product-quantity" style="width: 200px">
               {{ product.Price | priceFormat }}
             </td>
-            <td style="width: 200px">{{ product.Origin }}</td>
-            <td style="width: 200px">{{ product.Brand }}</td>
-            <td class="actions" colspan="2">
-              <div
-                class="action-content"
-                (click)="selectProduct(product.Barcode)"
-                [class.active]="selectedProduct == product.Barcode"
-              >
-                <i
-                  style="pointer-events: none"
-                  class="fa-solid fa-ellipsis"
-                ></i>
-                <div class="action-list">
-                  <button
-                    *ngIf="actions.includes('Xem chi tiết')"
-                    (click)="
-                      openDrawer({ action: 'Xem chi tiết', product: product })
-                    "
-                    type="button"
-                  >
-                    <kendo-svg-icon [icon]="icons.eyeIcon"></kendo-svg-icon
-                    ><span>Xem chi tiết</span>
-                  </button>
-                  <button
-                    *ngIf="actions.includes('Chỉnh sửa')"
-                    (click)="
-                      openDrawer({ action: 'Chỉnh sửa', product: product })
-                    "
-                    type="button"
-                  >
-                    <kendo-svg-icon [icon]="icons.pencilIcon"></kendo-svg-icon
-                    ><span>Chỉnh sửa</span>
-                  </button>
-                  <button
-                    *ngIf="actions.includes('Xóa')"
-                    (click)="openDrawer({ action: 'Xóa', product: product })"
-                    type="button"
-                  >
-                    <kendo-svg-icon [icon]="icons.trashIcon"></kendo-svg-icon
-                    ><span>Xóa</span>
-                  </button>
+            <td>{{ product.Origin }}</td>
+            <td>{{ product.Brand }}</td>
+            <td></td>
+            <td class="actions">
+              <div class="action-area">
+                <div
+                  class="action-content"
+                  (click)="selectProduct(product.Barcode)"
+                  [class.active]="selectedProduct == product.Barcode"
+                >
+                  <i
+                    style="pointer-events: none"
+                    class="fa-solid fa-ellipsis"
+                  ></i>
+                  <div class="action-list">
+                    <button
+                      *ngIf="actions.includes('Xem chi tiết')"
+                      (click)="
+                        openDrawer({ action: 'Xem chi tiết', product: product })
+                      "
+                      type="button"
+                    >
+                      <kendo-svg-icon [icon]="icons.eyeIcon"></kendo-svg-icon
+                      ><span>Xem chi tiết</span>
+                    </button>
+                    <button
+                      *ngIf="actions.includes('Chỉnh sửa')"
+                      (click)="
+                        openDrawer({ action: 'Chỉnh sửa', product: product })
+                      "
+                      type="button"
+                    >
+                      <kendo-svg-icon [icon]="icons.pencilIcon"></kendo-svg-icon
+                      ><span>Chỉnh sửa</span>
+                    </button>
+                    <button
+                      *ngIf="actions.includes('Xóa')"
+                      (click)="openDrawer({ action: 'Xóa', product: product })"
+                      type="button"
+                    >
+                      <kendo-svg-icon [icon]="icons.trashIcon"></kendo-svg-icon
+                      ><span>Xóa</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </td>
           </tr>
+        </tbody>
+        <tbody *ngIf="!productsDisplay?.length">
+          <tr class="not-found"><td colspan="8"><div><span>Product not found</span></div></td></tr>
         </tbody>
       </table>
     </main>

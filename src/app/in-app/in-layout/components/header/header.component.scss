@@ -11,6 +11,7 @@
     .modules-container {
         display: flex;
         overflow-x: auto;
+        min-width: fit-content;
         transform: rotate(180deg);
 
         .modules-block {

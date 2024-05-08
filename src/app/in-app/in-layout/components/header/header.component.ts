@@ -23,7 +23,6 @@ export class HeaderComponent {
         const segments = this.routerService.router.url.split('/');
         const navigatedModule = segments[1];
         this.selectedModule = navigatedModule;
-        console.log(navigatedModule)
       }
     });
   }

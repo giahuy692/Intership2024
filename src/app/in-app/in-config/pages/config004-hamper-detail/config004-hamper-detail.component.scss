@@ -1,20 +1,32 @@
+@import '../shared/styles/styles.scss';
 
 kendo-dropdownlist{
     background-color: white;
-    border-width: 2px;
     height: 33px;
+    border: 2px solid #DBDEE7;
+    border-radius: 2px;
+    &:hover{
+        border-color: #008000;
+        background-color: white;
+        color: black;
+    }
 }    
 kendo-textbox{
     background-color: white;
-    border-width: 2px;
     height: 33px;
+    border: 2px solid #DBDEE7;
+    border-radius: 2px;
+    &:hover{
+        border-color: #008000;
+        background-color: white;
+    }
 }   
 
 .short-textbox{
     background-color: white;
     border-width: 2px;
     height: 33px;
-    width: 65px;
+    width: 20%;
     display: flex;
     text-align: center;
 }
@@ -26,44 +38,8 @@ kendo-textbox{
     width: 135px;
 }
 
-::ng-deep{
-    .k-list-optionlabel.k-selected {
-        background-color: #1A6634; 
-    }
-    .k-checkbox:checked {
-        accent-color: #1A6634;
-        background-color: #1A6634;
-        border: 1px solid #1A6634;
-    }
-    
-    .k-checkbox:focus{
-        box-shadow: none;
-    }
-    
-    .k-i-search.k-input-icon.k-icon{
-        display: none;
-    }
-    
-    .k-list-optionlabel{
-        color: black;
-    }
-    .k-list-optionlabel.k-selected:hover{
-        background-color: #1A6634; 
-    }
-    
-    .k-list-item.k-selected {
-        background-color: #1A6634; 
-    }
-    
-    .k-list-item.k-selected:hover{
-        background-color: #1A6634;
-    }
-} 
-
-
-
 .body{
-    margin-right: 5px;
+    // margin-right: 5px;
     margin-left: 2px;
     height: 100%;
 
@@ -71,34 +47,37 @@ kendo-textbox{
         display: flex;
         align-items: center;
         justify-content: space-between;
+        border-bottom: 1px solid #BDC2D2;
         kendo-breadcrumb{
+            display: flex;
+            align-items: center;
+            height: 100%;
+
+            margin: 0;
+            margin-left: -20px;
             background-color: transparent;
         }
         .aria-button{
-            width: 300px;
             display: flex;
+            font-size: 13px;
+            color: white;
+            justify-content: end;
             .btn-function{
-                background-color: red;
+               height: 32px;
+               padding: 0px 10px;
+               margin-left: 10px;
             }
             .btn-addNew{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 85px;
                 height: 32px;
-                color: white;
-                background-color: #1A6634;
+                padding: 0px 10px;
+                margin-left: 10px;
 
-                .title-btn{
-                    align-items: center;
-                    display: flex;
-                    justify-content: center;
-                }
             }
         }
     }
 
     .block-hamper{
+        margin-top: 10px;
         height: 306px;
         width: 100%;
         .header{
@@ -112,17 +91,17 @@ kendo-textbox{
                 font-weight: bold;
             }
         }
-
         .content-hamper{
+            overflow-x: auto;
             height: 282px;
             width: 100%;
             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
             background-color: white;
             .group-item{
-                display: flex;
                 padding: 0px 20px;
-                div{
+                .col-span-1 {
                     margin-right: 10px;
+                    min-width: 377px;
                 }
 
                 .import-image{
@@ -132,7 +111,6 @@ kendo-textbox{
                     justify-content: center;
                 }
                 .group {
-                    width: 377px;
                     margin-top: 5px;
                     .kendo-label {
                         display: flex;
@@ -140,10 +118,6 @@ kendo-textbox{
                         font-size: 13px;
                         font-weight: bold;
                         margin-bottom: 5px;
-                        div{
-                            margin-left: 5px;
-                            color: red;
-                        }
                     }
                    
                   }
@@ -216,22 +190,26 @@ kendo-textbox{
         }
     }
 
-    .hamper-company{
-        margin-top: 10px;
-        .header{
-
+    .hamper-otherInfor{
+        height: 106px;
+        .content-hamper{
+            height: 82px;
+            .kendo-label {
+                display: flex;
+                color: #959DB3;
+                font-size: 13px;
+                font-weight: bold;
+                margin-bottom: 5px;
+            
+            }
         }
+    }
+
+    .hamper-company{
+        width: 100%;
+        margin-top: 20px;
         .content-hamper{
             height: 516px;
-            .item-company{
-                padding: 10px 10px;
-                display: flex;
-                margin-top: 10px;
-                justify-content: space-between;
-                app-item-company{
-                    margin-right: 20px;
-                }
-            }
         }
     }
 }

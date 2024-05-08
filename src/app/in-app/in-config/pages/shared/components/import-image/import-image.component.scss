@@ -53,6 +53,7 @@
     min-width: 100px;
     font-size: 13px;
     padding: 5px;
+    height: 100%;
 
     .text-icon-container {
         display: flex;
@@ -103,12 +104,12 @@
 
         .big-image {
             width: 236px;
-            height: 166px;
+            height: 160px;
         }
 
         .small-image {
             width: 86px;
-            height: 76px;
+            height: 70px;
         }
     }
 }
