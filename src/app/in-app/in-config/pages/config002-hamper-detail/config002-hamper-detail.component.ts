@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { BreadCrumbItem } from '@progress/kendo-angular-navigation';
-
+import { plusIcon, undoIcon, redoIcon, checkOutlineIcon, minusOutlineIcon, trashIcon } from '@progress/kendo-svg-icons';
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'app-config002-hamper-detail',
@@ -12,15 +12,17 @@ export class Config002HamperDetailComponent {
 
   defaultItems: BreadCrumbItem[] = [
     {
-        text: 'QUẢN LÝ SẢN PHẨM'
+      text: 'QUẢN LÝ SẢN PHẨM'
     },
     {
-        text: 'TẠO HAMPER'
+      text: 'TẠO HAMPER'
     },
     {
-        text: 'CHI TIẾT HAMPER'
+      text: 'CHI TIẾT HAMPER'
     }  
   ];
+
+  buttonIcons = {plusIcon, undoIcon, redoIcon, checkOutlineIcon, minusOutlineIcon, trashIcon, chevronDownIcon : "k-i-arrow-chevron-down"}
 
   openDrawer(){
     this.isDrawerShow = true;
