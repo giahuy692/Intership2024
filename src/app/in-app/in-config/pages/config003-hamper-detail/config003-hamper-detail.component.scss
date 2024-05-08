@@ -1,8 +1,27 @@
 .hamber-003{
     width: 100%;
-    height: 100%;
-    
-    .product-list-area{
-        width: 100%;
+    height: calc(100vh - 50px);
+    header{
+        background-color: #EDEFF3;
+        height: 55px;
+        .header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #BDC2D2;
+            padding: 10px 0;
+            .actions-hamber{
+                button{
+                    padding: 5px 10px;
+                }
+            }
+        }
+    }
+    main{
+        height: calc(100vh - 110px);
+        overflow: auto;
+        .product-list-area{
+            width: 100%;
+        }
     }
 }
