@@ -1,21 +1,24 @@
-input[type='checkbox'] {
-    accent-color: #1A6634;
-}
+
 
 .k-checkbox{
-    border:#1A6634;
     border: 1px solid #999999;
+    border-radius: 2px;
+    &.k-focus{
+        box-shadow: none;
+        outline: none;
+        border-color: #008000;
+    }
 }
 
 
 ::ng-deep{
     .k-list-optionlabel.k-selected {
-        background-color: #1A6634; 
+        background-color: #008000; 
     }
     .k-checkbox:checked {
-        accent-color: #1A6634;
-        background-color: #1A6634;
-        border: 1px solid #1A6634;
+        accent-color: #008000;
+        background-color: #008000;
+        border: 1px solid #008000;
     }
     
     .k-checkbox:focus{
@@ -40,6 +43,20 @@ input[type='checkbox'] {
     
     .k-list-item.k-selected:hover{
         background-color: #1A6634;
+    }
+
+    .k-checkbox:checked:focus{
+        box-shadow: none;
+    }
+
+    .k-list-filter{
+       
+    }
+    .k-input-outline:focus-within{
+        border-color: #008000;
+        border-width: 2px;
+        box-shadow: none !important;
+        border-radius: 2px;
     }
 } 
 
@@ -83,6 +100,11 @@ input[type='checkbox'] {
             background-color: rgb(255, 255, 255);
             border: 2px solid #DBDEE7;
             border-radius: 2px;
+            &.k-focus{
+                box-shadow: none;
+                outline: none;
+                border-color: #008000;
+            }
 
             &:hover{
                 color: black;
@@ -112,12 +134,16 @@ input[type='checkbox'] {
                     width: 100%;
                     text-align: right;
                     height: 33px;
+                    border: 2px solid #DBDEE7;
+                    border-radius: 2px;
+                    padding: 0 10px;
                 }
             }
 
             kendo-dropdownlist{
                 width: 30%;
-                // margin-left: 20px;
+                border: 2px solid #DBDEE7;
+                border-radius: 2px;
             }
         }
     }
