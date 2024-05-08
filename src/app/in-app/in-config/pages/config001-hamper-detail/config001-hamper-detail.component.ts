@@ -5,6 +5,8 @@ import { HamperService } from '../shared/services/hamper.service';
 import { Subscription } from 'rxjs';
 import { checkOutlineIcon, minusCircleIcon, plusIcon, redoIcon, SVGIcon, trashIcon, undoIcon } from '@progress/kendo-svg-icons';
 import { FormGroup, FormControl } from '@angular/forms';
+import { dataMadeHameper } from '../config004-hamper-detail/dataMadeOfHamper';
+import { DataUnitProduct } from '../config004-hamper-detail/dataUnitProduct';
 
 class Button {
   svgClassIcon: SVGIcon
@@ -88,6 +90,8 @@ export class Config001HamperDetailComponent {
     nameJP: new FormControl(''),
     materialJP: new FormControl('')
   })
+  public dataOrigin = {dataMadeHameper};  
+  public productUnit = {DataUnitProduct};  
 
   ngOnInit(): void {
     this.subscriptions.push(this.hamperService.hamberSubject$.subscribe(data => {
