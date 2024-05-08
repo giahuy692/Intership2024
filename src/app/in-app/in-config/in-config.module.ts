@@ -65,6 +65,7 @@ import { Config005HamperDetailComponent } from './pages/config005-hamper-detail/
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA
-  ]
+  ],
+
 })
 export class InConfigModule {}
