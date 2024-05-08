@@ -14,6 +14,7 @@
         overflow-y: hidden;
         border-bottom: 1px solid #BDC2D2;
         position: sticky;
+        z-index: 99;
         background-color: #EDEFF3;
         top: 0;
 
@@ -48,8 +49,10 @@
 
     .hamper-info-container{
         width: 100%;
-        height: 310px;
+        height: fit-content;
         padding: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
 
         .hamper-info-title-block{
             display: flex;
@@ -65,8 +68,67 @@
         }
 
         .hamper-info-content-block{
+            width: 100%;
             height: calc(100% - 30px);
             background-color: #FFFFFF;
+            overflow-y: hidden;
+            overflow-x: auto;
+
+            .info-block{
+                display: flex;
+                flex-direction: column;
+                min-width: 377px;
+                padding: 10px;
+                padding-top: 5px;
+                gap: 0.5rem;
+                
+                .input-group{
+                    background-color: #FFFFFF;
+                    display: flex;                   
+                    gap: 0.5rem;
+                    .label-group{
+                        display: flex;
+                        align-items: center;
+                        height: fit-content;
+                        gap: 0.5rem;
+                        
+                        .label-text{
+                            color: #959DB3;
+                            font-weight: 700;
+                        }
+                    }
+
+                    .size-weight-block{                      
+                        width: 100%;
+                        gap: 0.5rem;
+                    }
+
+                    .input{
+                        height: 35px;
+                        border-width: 2px;
+                        border-radius: 4px;
+                    }
+
+                    .unit-exchange-group{
+                        .unit-exchange-block{
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding-right: 10px;
+
+                            .unit-text{
+                                text-align: right;
+                            }
+                        }
+                    }
+                }
+
+                .img-group{
+                    justify-content: center;
+                }
+                
+                
+            }
         }
     }
 }

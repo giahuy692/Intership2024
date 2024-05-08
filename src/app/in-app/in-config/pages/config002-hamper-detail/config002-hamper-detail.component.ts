@@ -12,13 +12,13 @@ export class Config002HamperDetailComponent {
 
   defaultItems: BreadCrumbItem[] = [
     {
-        text: 'QUẢN LÝ SẢN PHẨM'
+      text: 'QUẢN LÝ SẢN PHẨM'
     },
     {
-        text: 'TẠO HAMPER'
+      text: 'TẠO HAMPER'
     },
     {
-        text: 'CHI TIẾT HAMPER'
+      text: 'CHI TIẾT HAMPER'
     }  
   ];
 

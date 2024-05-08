@@ -34,10 +34,201 @@
             <span class="hamper-title-text">Thông tin hamper</span>
             <span class="hamper-status-text">Đang soạn thảo</span>
         </div>
-        <div class="hamper-info-content-block">
-            <div class="hamper-info-code-name-block info-block"></div>
-            <div class="hamper-info-code-origin-material info-block"></div>
-            <div class="hamper-info-code-img-block info-block"></div>
+        <div class="hamper-info-content-block grid-cols-3">
+            <div class="hamper-info-code-name-block info-block col-span-1">
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Barcode gốc</span><span Necessary></span>
+                    </div>
+                    <kendo-textbox class="input"></kendo-textbox>
+                </div>
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Tên tiếng Việt</span><span Necessary></span>
+                    </div>
+                    <kendo-textbox class="input"></kendo-textbox>
+                </div>
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Tên tiếng Anh</span>
+                    </div>
+                    <kendo-textbox class="input"></kendo-textbox>
+                </div>
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Tên tiếng Nhật</span>
+                    </div>
+                    <kendo-textbox class="input"></kendo-textbox>
+                </div>
+            </div>
+            <div class="hamper-info-code-origin-material info-block col-span-1">
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Xuất xứ</span>
+                    </div>
+                    <kendo-textbox class="input"></kendo-textbox>
+                </div>
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Chất liệu tiếng Việt</span>
+                    </div>
+                    <kendo-textbox class="input"></kendo-textbox>
+                </div>
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Chất liệu tiếng Anh</span>
+                    </div>
+                    <kendo-textbox class="input"></kendo-textbox>
+                </div>
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Chất liệu tiếng Nhật</span>
+                    </div>
+                    <kendo-textbox class="input"></kendo-textbox>
+                </div>
+            </div>
+            <div class="hamper-info-code-img-block info-block col-span-1">
+                <div class="input-group img-group">
+                    <app-import-image></app-import-image>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="hamper-info-container">
+        <div class="hamper-info-title-block">
+            <span class="hamper-title-text">Thông tin đóng gói</span>
+        </div>
+        <div class="hamper-info-content-block grid-cols-3">
+            <div class="hamper-info-code-name-block info-block col-span-1">
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Đơn vị  sản phẩm (Base unit)</span>
+                    </div>
+                    <kendo-textbox class="input"></kendo-textbox>
+                </div>
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)</span>
+                    </div>
+                    <div class="size-weight-block grid-cols-5">
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="weight-block col-span-2">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)</span>
+                    </div>
+                    <div class="size-weight-block grid-cols-5">
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="weight-block col-span-2">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)</span>
+                    </div>
+                    <div class="size-weight-block grid-cols-5">
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="weight-block col-span-2">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)</span>
+                    </div>
+                    <div class="size-weight-block grid-cols-5">
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="size-block col-span-1">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="weight-block col-span-2">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="hamper-info-code-origin-material info-block col-span-1">
+                <div class="input-group">
+                    <div class="label-group">
+                        <span class="label-text">Quy đổi quy cách sản phẩm</span>
+                    </div>
+                    <div class="unit-exchange-group grid-cols-4">
+                        <div class="unit-exchange-block col-span-1">
+                            <span class="label-text">Inner</span>
+                            <span class="label-text">=</span>
+                        </div>
+                        <div class="unit-exchange-block col-span-2">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="unit-exchange-block col-span-1">
+                            <span class="unit-text">Base unit</span>
+                        </div>
+                    </div>
+                    <div class="unit-exchange-group grid-cols-4">
+                        <div class="unit-exchange-block col-span-1">
+                            <span class="label-text">Inner</span>
+                            <span class="label-text">=</span>
+                        </div>
+                        <div class="unit-exchange-block col-span-2">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="unit-exchange-block col-span-1">
+                            <span class="unit-text">Base unit</span>
+                        </div>
+                    </div>
+                    <div class="unit-exchange-group grid-cols-4">
+                        <div class="unit-exchange-block col-span-1">
+                            <span class="label-text">Inner</span>
+                            <span class="label-text">=</span>
+                        </div>
+                        <div class="unit-exchange-block col-span-2">
+                            <kendo-textbox class="input"></kendo-textbox>
+                        </div>
+                        <div class="unit-exchange-block col-span-1">
+                            <span class="unit-text">Base unit</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
