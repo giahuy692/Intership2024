@@ -2,7 +2,7 @@
   width: 100%;
   overflow: auto;
   .product-content {
-    .btn-upload{
+    .btn-upload {
       display: flex;
       height: 30px;
       justify-content: center;
@@ -14,14 +14,20 @@
       text-wrap: nowrap;
       padding: 0 5px;
     }
-    .btn{
+    .btn {
       height: 30px;
       text-wrap: nowrap;
-      color: #959DB3;
-      fill: #959DB3;
+      color: #959db3;
+      fill: #959db3;
     }
     header {
       width: 100%;
+      background-color: #edeff3;
+      min-width: 1300px;
+      position: sticky;
+      top: 0;
+      z-index: 60;
+      padding: 10px 0;
       .header-content {
         display: flex;
         justify-content: space-between;
@@ -31,7 +37,7 @@
           text-wrap: nowrap;
           display: flex;
           gap: 5px;
-          span{
+          span {
             font-size: 20px;
           }
         }
@@ -57,6 +63,7 @@
       }
     }
     main {
+      height: 400px;
       table {
         min-width: 1300px;
         width: 100%;
@@ -64,17 +71,28 @@
         border-spacing: 0px 10px;
         text-align: start;
         thead {
+          background-color: #edeff3;
           th {
             padding: 0 10px;
+            &.actions {
+              background-color: #edeff3;
+              position: sticky;
+              right: 0;
+              z-index: 59;
+            }
           }
         }
         tbody {
           tr {
+            max-height: 76px;
+            &.active {
+              z-index: 50;
+            }
             background-color: white;
             position: relative;
             td {
               background-color: white;
-              padding: 0 10px;
+              padding: 5px 10px;
               &.product-td-width {
                 width: 100px;
               }
@@ -83,14 +101,27 @@
                 height: 40px;
               }
               &.product-name {
-                width: 400px;
-                text-wrap: wrap;
+                .name-area{
+                  display: flex;
+                  align-items: center;
+                  div {
+                    overflow: hidden;
+                    display: -webkit-inline-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    text-overflow: ellipsis;
+                    max-width: 400px;
+                  }
+                }
               }
               &.product-quantity {
                 text-align: center;
               }
               &.actions {
-                .action-area{
+                position: sticky;
+                right: 0;
+                z-index: 1;
+                .action-area {
                   display: flex;
                   justify-content: right;
                 }
@@ -111,11 +142,14 @@
                     background-color: #959db3;
                     .action-list {
                       display: block;
+                      z-index: 50;
+                      button {
+                        z-index: 50;
+                      }
                     }
                   }
                   .action-list {
                     display: none;
-                    z-index: 10;
                     position: absolute;
                     top: 100%;
                     right: 0;
@@ -125,7 +159,6 @@
                     min-width: 130px;
                     button {
                       display: flex;
-                      z-index: 10;
                       width: 100%;
                       background-color: #959db3;
                       border: none;
@@ -144,7 +177,7 @@
                         }
                         &:last-of-type {
                           border-bottom-left-radius: 5px;
-                          border-bottom-right-radius: 5px ;
+                          border-bottom-right-radius: 5px;
                         }
                       }
                       span {

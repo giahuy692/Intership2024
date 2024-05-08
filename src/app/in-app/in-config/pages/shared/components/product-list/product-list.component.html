@@ -61,11 +61,12 @@
             <th style="text-align: center">Giá</th>
             <th>Xuất xứ</th>
             <th>Thương hiệu</th>
-            <th colspan="2"></th>
+            <th></th>
+            <th class="actions"></th>
           </tr>
         </thead>
         <tbody *ngIf="productsDisplay.length">
-          <tr *ngFor="let product of productsDisplay">
+          <tr *ngFor="let product of productsDisplay" [class.active]="selectedProduct == product.Barcode">
             <td class="product-img">
               <img
                 src="{{ product.Image }}"
@@ -78,7 +79,7 @@
                 *ngIf="!product.Image"
               />
             </td>
-            <td class="product-name">{{ product.Name }}</td>
+            <td class="product-name"><div class="name-area"><div title={{product.Name}} >{{ product.Name }}</div></div></td>
             <td class="product-td-width">{{ product.Barcode }}</td>
             <td class="product-quantity product-td-width">
               {{ product.Quantity }}
