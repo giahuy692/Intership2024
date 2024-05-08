@@ -21,6 +21,7 @@ import { Config002PartnerManagementComponent } from './pages/config002-partner-m
 import { HamperDrawerComponent } from './pages/shared/components/drawer/drawer.component';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { IconModule } from '@progress/kendo-angular-icons';
+import { StatusColorPipe } from './pages/shared/pipes/statusColor.pipe';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { IconModule } from '@progress/kendo-angular-icons';
     PricePipe,
     Config002PartnerManagementComponent,
     HamperDrawerComponent,
+    StatusColorPipe
   ],
   imports: [
     PConfigRoutingModule,
