@@ -1,13 +1,13 @@
 import { Directive, ElementRef, OnInit } from '@angular/core';
 
+/** Necessary
+ * - Using for input that is necessary type
+ * - Example <span Necessary></span>
+ **/
+
 @Directive({
     selector: '[Necessary]',
 })
-
-/**
- * Using for input that is necessary type
- * Example: <span Necessary></span>
- */
 
 export class Necessary implements OnInit {
     constructor(private element: ElementRef) { }
