@@ -36,7 +36,7 @@ export class HamperButtons implements OnInit {
           });
         }
       } else if (type == 'success') {
-        this.element.nativeElement.style.backgroundColor = '#008000';
+        this.element.nativeElement.style.backgroundColor = '#1a6634';
         if (svgIcons) {
           svgIcons.forEach((icon: HTMLElement) => {
             icon.style.fill = '#EB273A';
