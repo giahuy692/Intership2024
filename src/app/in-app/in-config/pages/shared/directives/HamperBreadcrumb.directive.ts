@@ -43,7 +43,7 @@ export class HamperBreadcrumb implements AfterViewChecked {
             
             if (kText) {
               kText.style.color = activeColor;
-              kText.style.textTransform = 'upercase'
+              kText.style.textTransform = 'uppercase'
               kText.style.fontWeight = '600'
             }
           });

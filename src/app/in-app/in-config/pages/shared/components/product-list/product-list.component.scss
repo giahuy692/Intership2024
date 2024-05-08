@@ -17,6 +17,8 @@
     .btn{
       height: 30px;
       text-wrap: nowrap;
+      color: #959DB3;
+      fill: #959DB3;
     }
     header {
       width: 100%;
@@ -69,6 +71,7 @@
         tbody {
           tr {
             background-color: white;
+            position: relative;
             td {
               background-color: white;
               padding: 0 10px;
@@ -87,7 +90,11 @@
                 text-align: center;
               }
               &.actions {
-                padding-left: 70px;
+                .action-area{
+                  display: flex;
+                  justify-content: right;
+                }
+                padding-right: 20px;
                 .action-content {
                   cursor: pointer;
                   position: relative;
@@ -97,6 +104,7 @@
                   display: flex;
                   justify-content: center;
                   align-items: center;
+                  height: 100%;
                   &.active {
                     border-top-right-radius: 5px;
                     border-top-left-radius: 5px;
@@ -107,7 +115,7 @@
                   }
                   .action-list {
                     display: none;
-                    z-index: 5;
+                    z-index: 10;
                     position: absolute;
                     top: 100%;
                     right: 0;
@@ -117,6 +125,7 @@
                     min-width: 130px;
                     button {
                       display: flex;
+                      z-index: 10;
                       width: 100%;
                       background-color: #959db3;
                       border: none;
@@ -135,6 +144,7 @@
                         }
                         &:last-of-type {
                           border-bottom-left-radius: 5px;
+                          border-bottom-right-radius: 5px ;
                         }
                       }
                       span {

@@ -86,10 +86,11 @@
             <td class="product-quantity" style="width: 200px">
               {{ product.Price | priceFormat }}
             </td>
-            <td style="width: 200px">{{ product.Origin }}</td>
-            <td style="width: 200px">{{ product.Brand }}</td>
-            <td class="actions" colspan="2">
-              <div
+            <td>{{ product.Origin }}</td>
+            <td>{{ product.Brand }}</td>
+            <td></td>
+            <td class="actions">
+              <div class="action-area"><div
                 class="action-content"
                 (click)="selectProduct(product.Barcode)"
                 [class.active]="selectedProduct == product.Barcode"
@@ -128,7 +129,7 @@
                     ><span>Xóa</span>
                   </button>
                 </div>
-              </div>
+              </div></div>
             </td>
           </tr>
         </tbody>
