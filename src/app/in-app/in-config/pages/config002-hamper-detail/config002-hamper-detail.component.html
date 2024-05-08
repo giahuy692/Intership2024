@@ -2,8 +2,25 @@
     <div class="breadcumb_functions_container">
         <kendo-breadcrumb [items]="defaultItems" SetClassSVGIcon HamperBreadcrumb
             class="breadcrumb"></kendo-breadcrumb>
-        <div class="button-function-block">
-            <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">THÊM MỚI</button>
+        <div class="button-function-block">                                            
+            <button HamperButtons data-type="danger" class="func-button" (click)="openDrawer()">
+                <kendo-svg-icon [icon]="buttonIcons.trashIcon"></kendo-svg-icon> XOÁ
+            </button>
+            <button HamperButtons data-type="danger" class="func-button" (click)="openDrawer()">
+                <kendo-svg-icon [icon]="buttonIcons.minusOutlineIcon"></kendo-svg-icon> NGƯNG HIỂN THỊ
+            </button>
+            <button HamperButtons data-type="return" class="func-button" (click)="openDrawer()">
+                <kendo-svg-icon [icon]="buttonIcons.undoIcon"></kendo-svg-icon> TRẢ VỀ
+            </button>          
+            <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
+                <kendo-svg-icon [icon]="buttonIcons.checkOutlineIcon"></kendo-svg-icon> DUYỆT ÁP DỤNG
+            </button>
+            <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
+                <kendo-svg-icon [icon]="buttonIcons.redoIcon"></kendo-svg-icon> GỬI DUYỆT
+            </button>
+            <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
+                <kendo-svg-icon [icon]="buttonIcons.plusIcon"></kendo-svg-icon> TẠO MỚI
+            </button>                                                        
         </div>
     </div>
     <app-drawer [expanded]="isDrawerShow" [titleText]="'Sản phẩm thuộc hamper'">
@@ -11,4 +28,16 @@
             <button HamperButtons data-type="error" class="func-button" (click)="closeDrawer()">THÊM MỚI</button>  
         </div>
     </app-drawer>
+
+    <div class="hamper-info-container">
+        <div class="hamper-info-title-block">
+            <span class="hamper-title-text">Thông tin hamper</span>
+            <span class="hamper-status-text">Đang soạn thảo</span>
+        </div>
+        <div class="hamper-info-content-block">
+            <div class="hamper-info-code-name-block info-block"></div>
+            <div class="hamper-info-code-origin-material info-block"></div>
+            <div class="hamper-info-code-img-block info-block"></div>
+        </div>
+    </div>
 </div>

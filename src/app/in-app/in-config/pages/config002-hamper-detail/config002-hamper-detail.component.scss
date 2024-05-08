@@ -10,6 +10,12 @@
         height: 60px;
         align-items: center;
         justify-content: space-between;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-bottom: 1px solid #BDC2D2;
+        position: sticky;
+        background-color: #EDEFF3;
+        top: 0;
 
         .breadcrumb{
             width: fit-content;
@@ -30,15 +36,37 @@
         }
 
         .button-function-block{
+            display: flex;
             .func-button{
-                height: 40px;
+                height: 32px;
                 padding-left: 10px;
                 padding-right: 10px;
-
-                &:last-of-type{
-                    margin-right: 10px;
-                }
+                margin-right: 10px;
             }
+        }
+    }
+
+    .hamper-info-container{
+        width: 100%;
+        height: 310px;
+        padding: 10px;
+
+        .hamper-info-title-block{
+            display: flex;
+            align-items: center;
+            height: 30px;
+            gap: 1.5rem;
+
+            .hamper-title-text{
+                text-transform: uppercase;
+                font-weight: 700;
+                font-size: 16px;
+            }
+        }
+
+        .hamper-info-content-block{
+            height: calc(100% - 30px);
+            background-color: #FFFFFF;
         }
     }
 }
