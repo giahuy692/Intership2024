@@ -25,7 +25,6 @@ import { Config002PartnerManagementComponent } from './pages/config002-partner-m
 import { HamperDrawerComponent } from './pages/shared/components/drawer/drawer.component';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { IconModule } from '@progress/kendo-angular-icons';
-// import { StatusColorPipe } from './pages/shared/pipes/statusColor.pipe';
 import { StatusColorPipe } from './pages/shared/pipes/StatusColorPipe';
 import { DialogComponent } from './pages/shared/components/dialog/dialog.component';
 import { DialogDirective } from './pages/shared/directives/dialog.directive';
