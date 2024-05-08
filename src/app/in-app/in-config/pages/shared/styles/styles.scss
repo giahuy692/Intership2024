@@ -1,48 +1,48 @@
-::ng-deep{
-    .k-list-optionlabel.k-selected {
-        background-color: #1A6634; 
-    }
-    .k-checkbox:checked {
-        accent-color: #1A6634;
-        background-color: #1A6634;
-        border: 1px solid #1A6634;
-    }
+// ::ng-deep{
+//     .k-list-optionlabel.k-selected {
+//         background-color: #1A6634; 
+//     }
+//     .k-checkbox:checked {
+//         accent-color: #1A6634;
+//         background-color: #1A6634;
+//         border: 1px solid #1A6634;
+//     }
 
-    .k-checkbox:hover{
-        background-color: #1A6634;
-    }
+//     .k-checkbox:hover{
+//         background-color: #1A6634;
+//     }
 
-    .k-i-search.k-input-icon.k-icon{
-        display: none;
-    }
+//     .k-i-search.k-input-icon.k-icon{
+//         display: none;
+//     }
     
-    .k-list-optionlabel{
-        color: black;
-    }
-    .k-list-optionlabel.k-selected:hover{
-        background-color: #1A6634; 
-    }
+//     .k-list-optionlabel{
+//         color: black;
+//     }
+//     .k-list-optionlabel.k-selected:hover{
+//         background-color: #1A6634; 
+//     }
     
-    .k-list-item.k-selected {
-        background-color: #1A6634; 
-    }
+//     .k-list-item.k-selected {
+//         background-color: #1A6634; 
+//     }
     
-    .k-list-item.k-selected:hover{
-        background-color: #1A6634;
-    }
+//     .k-list-item.k-selected:hover{
+//         background-color: #1A6634;
+//     }
 
-    .k-list-item:hover{
-        background-color: #1A6634;
-        color: white;
-    }
+//     .k-list-item:hover{
+//         background-color: #1A6634;
+//         color: white;
+//     }
 
-    .k-list-item{
-        &.k-focus{
-            outline: none;
-            box-shadow: none;
-        }
-    }
+//     .k-list-item{
+//         &.k-focus{
+//             outline: none;
+//             box-shadow: none;
+//         }
+//     }
 
     
 
-} 
+// } 
