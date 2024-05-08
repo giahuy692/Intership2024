@@ -23,7 +23,6 @@
             valueField="id"
             [data]="searchType1"
             (valueChange)="onItemChange($event, 1)"
-            SetClassSVGIcon
             [filterInput]="false"
             [closeOnClick]="false"
             > 
@@ -41,7 +40,7 @@
         (filterChange)="handleFilter($event, 2)" [filterable]="true"  
         textField="name" valueField="id" [(ngModel)]="selectedItem2" 
         [data]="selectedItem1?.child" (valueChange)="onItemChange($event, 2)" 
-        [data]="searchType2" SetClassSVGIcon>
+        [data]="searchType2" >
         
         </kendo-dropdownlist>
     </div>
@@ -54,7 +53,7 @@
         (filterChange)="handleFilter($event, 3)" [filterable]="true"
         textField="name" valueField="id" [(ngModel)]="selectedItem3" [data]="selectedItem2?.child" 
         (valueChange)="onItemChange($event, 3)"
-        [data]="searchType3" SetClassSVGIcon>
+        [data]="searchType3" >
         </kendo-dropdownlist>
     </div>
     
@@ -66,7 +65,7 @@
         (filterChange)="handleFilter($event, 4)" [filterable]="true"
         textField="name" valueField="id" [(ngModel)]="selectedItem4" [data]="selectedItem3?.child" 
         (valueChange)="onItemChange($event, 4)"
-        [data]="searchType4" SetClassSVGIcon>
+        [data]="searchType4" >
        
         </kendo-dropdownlist>
     </div>
@@ -79,7 +78,7 @@
         (filterChange)="handleFilter($event, 5)" [filterable]="true"
         textField="name" valueField="id" [(ngModel)]="selectedItem5" [data]="selectedItem4?.child" 
         (valueChange)="onItemChange($event, 5)"
-        [data]="searchType5" SetClassSVGIcon>
+        [data]="searchType5" >
         </kendo-dropdownlist>
     </div>
     
@@ -92,7 +91,7 @@
             <div class="inputTotalPrice">
                 <input [disabled]="true" class="inputPrice" [value]="totalPrice"/>
             </div>
-            <kendo-dropdownlist SetClassSVGIcon iconClass="fa-solid fa-angle-down" [disabled]="true" [data]="typeOfMoney" value="VND">
+            <kendo-dropdownlist  iconClass="fa-solid fa-angle-down" [disabled]="true" [data]="typeOfMoney" value="VND">
             </kendo-dropdownlist>
         </div>
     </div>

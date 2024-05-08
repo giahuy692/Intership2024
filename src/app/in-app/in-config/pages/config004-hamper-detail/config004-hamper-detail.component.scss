@@ -26,10 +26,78 @@ kendo-textbox{
     width: 135px;
 }
 
+::ng-deep{
+    .k-list-optionlabel.k-selected {
+        background-color: #1A6634; 
+    }
+    .k-checkbox:checked {
+        accent-color: #1A6634;
+        background-color: #1A6634;
+        border: 1px solid #1A6634;
+    }
+    
+    .k-checkbox:focus{
+        box-shadow: none;
+    }
+    
+    .k-i-search.k-input-icon.k-icon{
+        display: none;
+    }
+    
+    .k-list-optionlabel{
+        color: black;
+    }
+    .k-list-optionlabel.k-selected:hover{
+        background-color: #1A6634; 
+    }
+    
+    .k-list-item.k-selected {
+        background-color: #1A6634; 
+    }
+    
+    .k-list-item.k-selected:hover{
+        background-color: #1A6634;
+    }
+} 
+
+
+
 .body{
     margin-right: 5px;
-    margin-left: 5px;
+    margin-left: 2px;
     height: 100%;
+
+    .header-hamper{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        kendo-breadcrumb{
+            background-color: transparent;
+        }
+        .aria-button{
+            width: 300px;
+            display: flex;
+            .btn-function{
+                background-color: red;
+            }
+            .btn-addNew{
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 85px;
+                height: 32px;
+                color: white;
+                background-color: #1A6634;
+
+                .title-btn{
+                    align-items: center;
+                    display: flex;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+
     .block-hamper{
         height: 306px;
         width: 100%;

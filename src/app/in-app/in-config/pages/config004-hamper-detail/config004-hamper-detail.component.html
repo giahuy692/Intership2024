@@ -1,10 +1,20 @@
 <!-- <p>config004-hamper-detail works!</p> -->
 <!-- <app-item-company [setValue]="company" (getValue)="receiveArray($event)" [important]="true" [totalPrice]="200" >></app-item-company> -->
-
-
-<button (click)="log()">click</button>
-
+<!-- <button (click)="log()">click</button> -->
 <div class="body">
+    <div class="header-hamper">
+        <kendo-breadcrumb [items]="itemBreadCrumb" SetClassSVGIcon HamperBreadcrumb class="breadcrumb"></kendo-breadcrumb>
+        <div class="aria-button">
+            <div class="btn-function">Hello</div>
+            <button
+                kendoButtons   
+                [disabled]="true"
+            >
+            Browse
+          </button>
+        </div>
+    </div>
+   
     <form [formGroup]="formHamper">
         <div class="hamper-info block-hamper">
             <div class="header"> 
@@ -46,8 +56,12 @@
                                 Xuất xứ
                             </kendo-label>
                             <kendo-dropdownlist
-                            formControlName="made"
-                            SetClassSVGIcon
+                                [data]="dataMadeHameper"
+                                textField="made"
+                                valueField="id"
+                                formControlName="made"
+                                [filterable]="true"
+                                SetClassSVGIcon
                             ></kendo-dropdownlist>
                         </div>
                         <div class="group">
@@ -88,7 +102,12 @@
                             <kendo-label class="kendo-label"> 
                                 Đơn vị  sản phẩm (Base unit)
                             </kendo-label>
-                            <kendo-dropdownlist formControlName="unit" SetClassSVGIcon></kendo-dropdownlist>
+                            <kendo-dropdownlist   
+                            [data]="dataMadeHameper"
+                            textField="made"
+                            valueField="id"
+                            formControlName="made"
+                            [filterable]="true" formControlName="unit" SetClassSVGIcon></kendo-dropdownlist>
                         </div>
                         <div formGroupName="sizeProduct" class="group">
                             <kendo-label class="kendo-label"> 

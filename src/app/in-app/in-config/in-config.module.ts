@@ -19,7 +19,7 @@ import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/
 import { PricePipe } from './pages/shared/directives/PricePipe.pipe';
 import { Config002PartnerManagementComponent } from './pages/config002-partner-management/config002-partner-management.component';
 import { HamperDrawerComponent } from './pages/shared/components/drawer/drawer.component';
-
+import { ButtonModule } from '@progress/kendo-angular-buttons';
 
 @NgModule({
   declarations: [
@@ -45,8 +45,8 @@ import { HamperDrawerComponent } from './pages/shared/components/drawer/drawer.c
     PConfigRoutingModule,
     InLayoutModule,
     InputsModule,
-    LabelModule
-    
+    LabelModule,
+    ButtonModule
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
