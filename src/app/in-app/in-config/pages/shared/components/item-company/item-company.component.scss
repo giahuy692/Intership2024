@@ -13,7 +13,11 @@
 
 ::ng-deep{
     .k-list-optionlabel.k-selected {
-        background-color: #008000; 
+        background-color: #1A6634; 
+    }
+    .k-list-optionlabel:hover{
+        background-color: #1A6634; 
+        color: white;
     }
     .k-checkbox:checked {
         accent-color: #008000;
@@ -49,14 +53,24 @@
         box-shadow: none;
     }
 
-    .k-list-filter{
-       
-    }
+
     .k-input-outline:focus-within{
-        border-color: #008000;
+        border-color: #1A6634;
         border-width: 2px;
         box-shadow: none !important;
         border-radius: 2px;
+    }
+
+    .k-list-item:hover{
+        background-color: #1A6634;
+        color: white;
+    }
+
+    .k-list-item{
+        &.k-focus{
+            outline: none;
+            box-shadow: none;
+        }
     }
 } 
 
@@ -84,6 +98,7 @@
 
             .conpany-important{
                 color: red;
+                font-weight: bold;
             }
         }
     }
@@ -103,12 +118,12 @@
             &.k-focus{
                 box-shadow: none;
                 outline: none;
-                border-color: #008000;
+                border-color: #1A6634;
             }
 
             &:hover{
                 color: black;
-                border-color: #008000;
+                border-color: #1A6634;
             }
         }
       }

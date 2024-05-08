@@ -16,7 +16,8 @@ import { DTOHamper } from '../shared/dtos/DTOHamper.dto';
 @Component({
   selector: 'app-config004-hamper-detail',
   templateUrl: './config004-hamper-detail.component.html',
-  styleUrls: ['./config004-hamper-detail.component.scss'],  
+  styleUrls: ['./config004-hamper-detail.component.scss'], 
+  encapsulation: ViewEncapsulation.None 
 })
 export class Config004HamperDetailComponent {
   vietHaCom: Array<DTOCompany> = companyVietHaTri
