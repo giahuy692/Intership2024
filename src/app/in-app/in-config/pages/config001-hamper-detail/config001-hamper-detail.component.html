@@ -1,8 +1,23 @@
 <div class="hamper-detail">
-    <!-- <kendo-breadcrumb
-    [collapseMode]="collapseMode" 
-    [items]="items" SetClassSVGIcon
-    HamperBreadcrumb>
-    </kendo-breadcrumb> -->
-    <app-import-image></app-import-image>
+    <div class="bread-container">
+        <div class="bread-field">
+            <kendo-breadcrumb [collapseMode]="collapseMode" [items]="items" SetClassSVGIcon HamperBreadcrumb>
+            </kendo-breadcrumb>
+        </div>
+        <div class="button-group-field">
+            <button type="button" HamperButtons data-type="danger"><kendo-svg-icon
+                    [icon]="icons.trashIcon"></kendo-svg-icon>Xóa</button>
+            <button type="button" HamperButtons data-type="return"><kendo-svg-icon
+                    [icon]="icons.plusIcon"></kendo-svg-icon>Trả về</button>
+            <button type="button" HamperButtons data-type="danger"><kendo-svg-icon
+                    [icon]="icons.minusCircleIcon"></kendo-svg-icon>Ngưng hiển thị</button>
+            <button type="button" HamperButtons data-type="success"><kendo-svg-icon
+                    [icon]="icons.checkOutlineIcon"></kendo-svg-icon>Duyệt áp dụng</button>
+            <button type="button" HamperButtons data-type="success"><kendo-svg-icon
+                    [icon]="icons.redoIcon"></kendo-svg-icon>Gửi duyệt</button>
+            <button type="button" HamperButtons data-type="success"><kendo-svg-icon
+                    [icon]="icons.plusIcon"></kendo-svg-icon>Thêm mới</button>
+        </div>
+    </div>
+    <app-hamper-drawer [expanded] = 'true'></app-hamper-drawer>
 </div>
