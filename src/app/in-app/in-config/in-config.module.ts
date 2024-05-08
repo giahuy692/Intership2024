@@ -1,5 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { InLayoutModule } from '../in-layout/in-layout.module'; 
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgModule,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
+import { InLayoutModule } from '../in-layout/in-layout.module';
 import { PConfigRoutingModule } from './in-config-routing.module';
 import { InConfigComponent } from './in-config.component';
 import { Config001HamperDetailComponent } from './pages/config001-hamper-detail/config001-hamper-detail.component';
@@ -16,12 +20,16 @@ import { InputsModule } from '@progress/kendo-angular-inputs';
 import { LabelModule } from '@progress/kendo-angular-label';
 import { Necessary } from './pages/shared/directives/Necessary.directive';
 import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/config002-hamper-detail.component';
-import { PricePipe } from './pages/shared/directives/PricePipe.pipe';
+import { PricePipe } from './pages/shared/pipes/PricePipe.pipe';
 import { Config002PartnerManagementComponent } from './pages/config002-partner-management/config002-partner-management.component';
 import { HamperDrawerComponent } from './pages/shared/components/drawer/drawer.component';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { IconModule } from '@progress/kendo-angular-icons';
 import { StatusColorPipe } from './pages/shared/pipes/statusColor.pipe';
+import { StatusColorPipe } from './pages/shared/pipes/StatusColorPipe';
+import { DialogComponent } from './pages/shared/components/dialog/dialog.component';
+import { DialogDirective } from './pages/shared/directives/dialog.directive';
+import { Config005HamperDetailComponent } from './pages/config005-hamper-detail/config005-hamper-detail.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +50,10 @@ import { StatusColorPipe } from './pages/shared/pipes/statusColor.pipe';
     PricePipe,
     Config002PartnerManagementComponent,
     HamperDrawerComponent,
-    StatusColorPipe
+    StatusColorPipe,
+    DialogComponent,
+    DialogDirective,
+    Config005HamperDetailComponent,
   ],
   imports: [
     PConfigRoutingModule,
@@ -56,5 +67,6 @@ import { StatusColorPipe } from './pages/shared/pipes/statusColor.pipe';
     CUSTOM_ELEMENTS_SCHEMA,
     NO_ERRORS_SCHEMA
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class InConfigModule { }
+export class InConfigModule {}
