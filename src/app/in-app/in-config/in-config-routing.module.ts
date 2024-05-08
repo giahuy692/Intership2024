@@ -18,7 +18,7 @@ const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'config001-hamper-detail',
+        path: 'config001-hamper-detail', // Do Quoc Thanh
         component: Config001HamperDetailComponent,
       },
       {

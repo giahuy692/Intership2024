@@ -1,23 +1,64 @@
-<div class="hamper-detail">
-    <div class="bread-container">
-        <div class="bread-field">
-            <kendo-breadcrumb [collapseMode]="collapseMode" [items]="items" SetClassSVGIcon HamperBreadcrumb>
-            </kendo-breadcrumb>
+<div class="breadcrumb-container">
+    <kendo-breadcrumb [collapseMode]="collapseMode" [items]="items" SetClassSVGIcon HamperBreadcrumb />
+    <div class="button-group-field">
+        <button *ngFor="let button of listButtonAvailable" type="button" HamperButtons
+            [attr.data-type]="button.typeButton">
+            <kendo-svg-icon [icon]='button.svgClassIcon' />{{button.nameButton}}
+        </button>
+    </div>
+</div>
+
+<div class="hamper-body">
+    <div class="hamper-detail">
+        <div class="hamper-infor-title">
+            <div>Thông tin hamper</div>
+            <div [style.color]="status | statusColor">{{ status }}</div>
         </div>
-        <div class="button-group-field">
-            <button type="button" HamperButtons data-type="danger"><kendo-svg-icon
-                    [icon]="icons.trashIcon"></kendo-svg-icon>Xóa</button>
-            <button type="button" HamperButtons data-type="return"><kendo-svg-icon
-                    [icon]="icons.plusIcon"></kendo-svg-icon>Trả về</button>
-            <button type="button" HamperButtons data-type="danger"><kendo-svg-icon
-                    [icon]="icons.minusCircleIcon"></kendo-svg-icon>Ngưng hiển thị</button>
-            <button type="button" HamperButtons data-type="success"><kendo-svg-icon
-                    [icon]="icons.checkOutlineIcon"></kendo-svg-icon>Duyệt áp dụng</button>
-            <button type="button" HamperButtons data-type="success"><kendo-svg-icon
-                    [icon]="icons.redoIcon"></kendo-svg-icon>Gửi duyệt</button>
-            <button type="button" HamperButtons data-type="success"><kendo-svg-icon
-                    [icon]="icons.plusIcon"></kendo-svg-icon>Thêm mới</button>
+       
+        <div class="hamper-infor-container">
+            <form class="grid-cols-3" [formGroup]="inforHamper">
+    
+                <div class="col-span-1">
+                    <div class="first-child"><kendo-label for="origin-barcode" text="Barcode" /><span Necessary></span></div>
+                    <kendo-textbox id="origin-barcode" type="text" formControlName="originBarcode" />
+    
+                    <div style="display: flex; gap: 5px;"><kendo-label for="nameVN" text="Tên tiếng Việt" /> <span Necessary></span></div>
+                    <kendo-textbox id="nameVN" type="text" formControlName="nameVN" />
+    
+                    <kendo-label for="nameENG" text="Tên tiếng Anh" />
+                    <kendo-textbox id="nameENG" type="text" formControlName="nameENG" />
+    
+                    <kendo-label for="nameJP" text="Tên tiếng Nhật" />
+                    <kendo-textbox id="nameJP" type="text" formControlName="nameJP" />
+                </div>
+    
+                <div class="col-span-1">
+                    <kendo-label class="first-child" for="origin" text="Xuất xứ" />
+                    <kendo-textbox id="origin" type="text" formControlName="origin" />
+    
+                    <kendo-label for="materialVN" text="Chất liệu tiếng Việt" />
+                    <kendo-textbox id="materialVN" type="text" formControlName="materialVN" />
+    
+                    <kendo-label for="materialENG" text="Chất liệu tiếng Anh" />
+                    <kendo-textbox id="materialENG" type="text" formControlName="materialENG" />
+    
+                    <kendo-label for="materialJP" text="Chất liệu tiếng Nhật" />
+                    <kendo-textbox id="materialJP" type="text" formControlName="materialJP" />
+                </div>
+    
+                <div class="col-span-1" style="justify-content: center; display: flex;">
+                    <app-import-image></app-import-image>
+                </div>
+                
+            </form>
         </div>
     </div>
-    <app-hamper-drawer [expanded] = 'true'></app-hamper-drawer>
+
+    <div class="hamper-infor-package">
+        <div class="hamper-infor-package_title">Thông tin đóng gói</div>
+        <div class="hamper-infor-package_container">Thông tin đóng gói</div>
+    </div>
 </div>
+
+
+
