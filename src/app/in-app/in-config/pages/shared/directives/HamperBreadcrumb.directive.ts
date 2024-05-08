@@ -13,11 +13,12 @@ export class HamperBreadcrumb implements AfterViewChecked {
   ngAfterViewChecked(): void {
     let breadcrumb = this.element.nativeElement;
     let activeColor =
-      this.element.nativeElement.dataset.activeColor || '#3A7B50';
+      this.element.nativeElement.dataset.activeColor || '#1A6634';
     let disabledColor =
       this.element.nativeElement.dataset.disabledColor || '#959DB3';
     if (breadcrumb) {
       let kDisabled = breadcrumb.querySelector('.k-disabled') as HTMLElement;
+      breadcrumb.style.background = 'none';
       if (kDisabled) {
         kDisabled.classList.remove('k-disabled');
         
