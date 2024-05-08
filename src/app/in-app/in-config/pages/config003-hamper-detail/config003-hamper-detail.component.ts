@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
-import { SVGIcon, arrowRotateCcwIcon, downloadIcon, eyeIcon, homeIcon, pencilIcon, plusIcon, trashIcon, uploadIcon } from '@progress/kendo-svg-icons';
+import { SVGIcon, arrowRotateCcwIcon, checkOutlineIcon, downloadIcon, eyeIcon, homeIcon, minusCircleIcon, pencilIcon, plusIcon, redoIcon, trashIcon, undoIcon, uploadIcon } from '@progress/kendo-svg-icons';
 import { DTOHamper } from '../shared/dtos/DTOHamper.dto';
 import { Subscription } from 'rxjs';
 import { HamperService } from '../shared/services/hamper.service';
@@ -23,7 +23,7 @@ export class Config003HamperDetailComponent implements OnInit,OnDestroy {
         text: 'CHI TIẾT HAMPER'
     }  
   ];
-  icons = {pencilIcon,eyeIcon,trashIcon,uploadIcon,downloadIcon,plusIcon}
+  icons = {pencilIcon,eyeIcon,trashIcon,uploadIcon,downloadIcon,plusIcon,redoIcon,checkOutlineIcon, minusCircleIcon,undoIcon}
   private subscriptions: Subscription[] = [];
   hamperCrr: DTOHamper
   public items: BreadCrumbItem[] = [...this.defaultItems];
