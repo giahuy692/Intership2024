@@ -22,7 +22,7 @@ export class Config002HamperDetailComponent {
     }  
   ];
 
-  buttonIcons = {plusIcon, undoIcon, redoIcon, checkOutlineIcon, minusOutlineIcon, trashIcon}
+  buttonIcons = {plusIcon, undoIcon, redoIcon, checkOutlineIcon, minusOutlineIcon, trashIcon, chevronDownIcon : "k-i-arrow-chevron-down"}
 
   openDrawer(){
     this.isDrawerShow = true;
