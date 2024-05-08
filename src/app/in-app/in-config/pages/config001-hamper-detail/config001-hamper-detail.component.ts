@@ -8,6 +8,7 @@ import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-
   encapsulation: ViewEncapsulation.None
 })
 export class Config001HamperDetailComponent {
+  status: string = "Trả về";
   defaultItems: BreadCrumbItem[] = [
     {
       text: "Quản lý sản phẩm",
