@@ -1,13 +1,14 @@
+@import "../../../../../../../styles.scss";
 .product-list {
   width: 100%;
   overflow: auto;
-  .not-found{
-    div{
+  .not-found {
+    div {
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 15px;
-      span{
+      span {
         text-transform: uppercase;
       }
     }
@@ -63,7 +64,25 @@
             background-color: white;
             input::placeholder {
               color: #a8a9ab;
-            }
+            } 
+              height: 35px;
+              border-width: 2px;
+              border-radius: 2px;
+              outline: none;
+              border-color: #dbdee7;
+              z-index: 0;
+              &.k-focus {
+                box-shadow: none;
+                outline: none;
+                border-color: $dark-green;
+              }
+
+              &:hover {
+                background-color: transparent;
+                border-color: $dark-green;
+                color: black;
+              }
+            
           }
         }
         .actions {
@@ -76,8 +95,8 @@
     }
     main {
       height: 400px;
+      min-width: 1300px;
       table {
-        min-width: 1300px;
         width: 100%;
         border-collapse: separate;
         border-spacing: 0px 10px;

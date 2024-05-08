@@ -11,7 +11,7 @@ import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
  */
 export class HamperButtons implements OnInit {
   csStyle =
-    'border: 1px solid transparent; border-radius: 5px; color: white; display: flex; justify-content: center; gap: 7px; align-items: center; fill: white; font-weight: 700; cursor: pointer; box-shadow: rgba(3, 102, 214, 0.3) 0px 3px 5px 0px;text-wrap:nowrap;';
+    'border: 1px solid transparent; border-radius: 4px; color: white; display: flex; justify-content: center; gap: 7px; align-items: center; fill: white; font-weight: 700; cursor: pointer; box-shadow: rgba(3, 102, 214, 0.3) 0px 3px 5px 0px;text-wrap:nowrap;';
   constructor(private element: ElementRef) {}
   ngOnInit(): void {
     this.element.nativeElement.style = this.csStyle;
