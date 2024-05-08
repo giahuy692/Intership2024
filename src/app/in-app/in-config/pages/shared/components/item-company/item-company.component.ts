@@ -23,7 +23,7 @@ export class ItemCompanyComponent implements OnInit{
   @Input() important: boolean = false
   @Input() totalPrice: number = 0
   @Output() getValue = new EventEmitter<any>();
-  isSelectedCompany: boolean = true
+  @Input() isSelectedCompany: boolean = false
 
   selectedItem1: any = null
   selectedItem2: any = null
@@ -47,7 +47,7 @@ export class ItemCompanyComponent implements OnInit{
   }
 
   handleSelectedItem(selectedItem1: any, selectedItem2: any, selectedItem3: any, selectedItem4: any, selectedItem5: any){
-    const selectedItems = {code: this.setValue[0].code, name: this.setValue[0].name,itemSelected: [{level1: selectedItem1}, {level2: selectedItem2}, {level3: selectedItem3},{level4: selectedItem4},{level5: selectedItem5}]}
+    const selectedItems = {code: this.setValue[0].code, state: this.isSelectedCompany ,name: this.setValue[0].name,itemSelected: [{level1: selectedItem1}, {level2: selectedItem2}, {level3: selectedItem3},{level4: selectedItem4},{level5: selectedItem5}]}
     this.getValue.emit(selectedItems);
   }
  
@@ -137,5 +137,6 @@ export class ItemCompanyComponent implements OnInit{
     this.selectedItem3 = null;
     this.selectedItem4 = null;
     this.selectedItem5 = null;
+    console.log(this.isSelectedCompany);
   }
 }
