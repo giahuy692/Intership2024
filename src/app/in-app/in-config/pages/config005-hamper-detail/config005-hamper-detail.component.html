@@ -1,4 +1,4 @@
-<!-- appConfig5 component -->
+<!-- appConfig5 component
 <app-dialog
   primary
   [title]="'Xoá Câu Hỏi'"
@@ -9,4 +9,131 @@
   <p>
     Do you want to console <span class="modiColor">{{ data }}</span>
   </p>
-</app-dialog>
+</app-dialog> -->
+
+<div class="hamberCustom">
+  <!-- Header  -->
+
+  <div class="header-hamber">
+    <kendo-breadcrumb
+      [items]="itemBreadCrumb"
+      SetClassSVGIcon
+      HamperBreadcrumb
+      class="breadcrumb"
+    ></kendo-breadcrumb>
+    <div class="btnFunction">
+      <button HamperButtons data-type="success" class="btn">
+        <kendo-svg-icon [icon]="icons.checkOutlineIcon"></kendo-svg-icon>Thêm
+        mới
+      </button>
+    </div>
+  </div>
+
+  <!-- Thong tin HAMPER -->
+  <div class="hamberDetails">
+    <div class="hamber-title">
+      <h4 class="hamber-title-text">Thông tin hamber</h4>
+      <h5 class="hamber-title-status">Đang soạn thảo</h5>
+    </div>
+    <form class="hamber-form" [formGroup]="hamber">
+      <div class="hamberDetails-form">
+        <div class="hamberDetails-form-grid">
+          <div class="hamberDetails-col">
+            <kendo-formfield class="grid-item">
+              <kendo-label
+                labelCssClass="k-form-label"
+                [for]="barcode"
+                text="Barcode Gốc "
+                ><span class="require-label">(*)</span></kendo-label
+              >
+
+              <kendo-textbox
+                formControlName="barcode"
+                #barcode
+                required
+              ></kendo-textbox>
+            </kendo-formfield>
+            <kendo-formfield class="grid-item">
+              <kendo-label
+                labelCssClass="k-form-label"
+                [for]="vietnamese"
+                text="Tên tiếng việt"
+                ><span class="require-label">(*)</span></kendo-label
+              >
+              <kendo-textbox
+                formControlName="vietnamese"
+                #vietnamese
+                required
+              ></kendo-textbox>
+            </kendo-formfield>
+            <kendo-formfield class="grid-item">
+              <kendo-label
+                labelCssClass="k-form-label"
+                [for]="english"
+                text="Tên tiếng Anh"
+              ></kendo-label>
+              <kendo-textbox formControlName="english" #english></kendo-textbox>
+            </kendo-formfield>
+            <kendo-formfield class="grid-item">
+              <kendo-label
+                labelCssClass="k-form-label"
+                [for]="japanese"
+                text="Tên tiếng Nhật"
+              ></kendo-label>
+              <kendo-textbox
+                formControlName="japanese"
+                #japanese
+              ></kendo-textbox>
+            </kendo-formfield>
+          </div>
+          <div class="hamberDetails-col">
+            <kendo-formfield class="grid-item">
+              <kendo-label
+                labelCssClass="k-form-label"
+                [for]="origin"
+                text="Xuất xứ"
+              ></kendo-label>
+              <kendo-textbox
+                formControlName="origin"
+                #origin
+              ></kendo-textbox> </kendo-formfield
+            ><kendo-formfield class="grid-item">
+              <kendo-label
+                labelCssClass="k-form-label"
+                [for]="materialVietnamese"
+                text="Chất liệu tiếng Việt"
+              ></kendo-label>
+              <kendo-textbox
+                formControlName="materialVietnamese"
+                #materialVietnamese
+              ></kendo-textbox>
+            </kendo-formfield>
+            <kendo-formfield class="grid-item">
+              <kendo-label
+                labelCssClass="k-form-label"
+                [for]="materialEnglish"
+                text="Chất liệu tiếng Anh"
+              ></kendo-label>
+              <kendo-textbox
+                formControlName="materialEnglish"
+                #materialEnglish
+              ></kendo-textbox>
+            </kendo-formfield>
+            <kendo-formfield class="grid-item">
+              <kendo-label
+                labelCssClass="k-form-label"
+                [for]="materialJapanese"
+                text="Chất liệu tiếng Nhật"
+              ></kendo-label>
+              <kendo-textbox
+                formControlName="materialJapanese"
+                #materialJapanese
+              ></kendo-textbox>
+            </kendo-formfield>
+          </div>
+        </div>
+        <app-import-image class="import-image"></app-import-image>
+      </div>
+    </form>
+  </div>
+</div>
