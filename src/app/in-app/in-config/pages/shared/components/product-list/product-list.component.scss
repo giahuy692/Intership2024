@@ -1,7 +1,6 @@
 @import "../../../../../../../styles.scss";
 .product-list {
   width: 100%;
-  overflow: auto;
   .not-found {
     div {
       display: flex;
@@ -14,6 +13,7 @@
     }
   }
   .product-content {
+    padding-right: 10px;
     .btn-upload {
       display: flex;
       height: 32px;
@@ -32,15 +32,18 @@
       color: #959db3;
       fill: #959db3;
     }
-    header {
+    
+    .header-product-list {
       width: 100%;
       background-color: #edeff3;
-      min-width: 1300px;
+      height: 65px;
       position: sticky;
       top: 0;
       z-index: 60;
       padding: 10px 0;
+      overflow: auto;
       .header-content {
+        min-width: 1250px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -52,11 +55,13 @@
           span {
             font-size: 16px;
             font-weight: 700;
+            text-transform: uppercase;
           }
         }
         .search {
           display: flex;
           justify-content: center;
+          align-items: center;
           gap: 10px;
           kendo-textbox {
             width: 500px;
@@ -93,10 +98,12 @@
         }
       }
     }
-    main {
+    .main-product-list  {
       height: 400px;
-      min-width: 1300px;
+      overflow: auto;
+      
       table {
+        min-width: 1250px;
         width: 100%;
         border-collapse: separate;
         border-spacing: 0px 10px;

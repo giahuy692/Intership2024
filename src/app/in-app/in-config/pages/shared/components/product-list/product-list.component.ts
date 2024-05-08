@@ -10,16 +10,17 @@ import {
 } from '@angular/core';
 import { DTOProduct } from '../../dtos/DTOProduct.dto';
 import { downloadIcon, eyeIcon, pencilIcon, plusIcon, searchIcon, trashIcon, uploadIcon } from '@progress/kendo-svg-icons';
+/** ProductListComponent
+ * - Using with default <app-product-list [products]="hamperCrr.ProductList" [stateHamper]="hamperCrr.State"></app-product-list>
+ * - hamperCrr: DTOHamper
+ **/ 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-/**
- * Using with default <app-product-list [products]="hamperCrr.ProductList" [stateHamper]="hamperCrr.State"></app-product-list>
- * hamperCrr: DTOHamper
- */ 
+
 export class ProductListComponent implements OnInit {
   @Input() products: DTOProduct[];
   @Input() stateHamper: string; 
