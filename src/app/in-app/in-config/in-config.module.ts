@@ -1,5 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
-import { InLayoutModule } from '../in-layout/in-layout.module'; 
+import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  NgModule,
+  NO_ERRORS_SCHEMA,
+} from '@angular/core';
+import { InLayoutModule } from '../in-layout/in-layout.module';
 import { PConfigRoutingModule } from './in-config-routing.module';
 import { InConfigComponent } from './in-config.component';
 import { Config001HamperDetailComponent } from './pages/config001-hamper-detail/config001-hamper-detail.component';
@@ -21,6 +25,9 @@ import { Config002PartnerManagementComponent } from './pages/config002-partner-m
 import { HamperDrawerComponent } from './pages/shared/components/drawer/drawer.component';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { StatusColorPipe } from './pages/shared/pipes/statusColor.pipe';
+import { DialogComponent } from './pages/shared/components/dialog/dialog.component';
+import { DialogDirective } from './pages/shared/directives/dialog.directive';
+import { Config005HamperDetailComponent } from './pages/config005-hamper-detail/config005-hamper-detail.component';
 
 @NgModule({
   declarations: [
@@ -41,18 +48,18 @@ import { StatusColorPipe } from './pages/shared/pipes/statusColor.pipe';
     PricePipe,
     Config002PartnerManagementComponent,
     HamperDrawerComponent,
-    StatusColorPipe
+    StatusColorPipe,
+    DialogComponent,
+    DialogDirective,
+    Config005HamperDetailComponent,
   ],
   imports: [
     PConfigRoutingModule,
     InLayoutModule,
     InputsModule,
     LabelModule,
-    ButtonModule
+    ButtonModule,
   ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA,
-    NO_ERRORS_SCHEMA
-  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
 })
-export class InConfigModule { }
+export class InConfigModule {}
