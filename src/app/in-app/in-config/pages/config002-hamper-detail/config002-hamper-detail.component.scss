@@ -1,3 +1,5 @@
+@import "../shared/styles/styles.scss";
+
 .hamper-container{
     height: 100%;
     width: 100%;
@@ -10,6 +12,13 @@
         height: 60px;
         align-items: center;
         justify-content: space-between;
+        overflow-x: auto;
+        overflow-y: hidden;
+        border-bottom: 1px solid #BDC2D2;
+        position: sticky;
+        z-index: 99;
+        background-color: #EDEFF3;
+        top: 0;
 
         .breadcrumb{
             width: fit-content;
@@ -30,14 +39,110 @@
         }
 
         .button-function-block{
+            display: flex;
             .func-button{
-                height: 40px;
+                height: 32px;
                 padding-left: 10px;
                 padding-right: 10px;
+                margin-right: 10px;
+            }
+        }
+    }
 
-                &:last-of-type{
-                    margin-right: 10px;
+    .hamper-info-container{
+        width: 100%;
+        height: fit-content;
+        padding: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+
+        .hamper-info-title-block{
+            display: flex;
+            align-items: center;
+            height: 30px;
+            gap: 1.5rem;
+
+            .hamper-title-text{
+                text-transform: uppercase;
+                font-weight: 700;
+                font-size: 16px;
+            }
+        }
+
+        .hamper-info-content-block{
+            width: 100%;
+            height: calc(100% - 30px);
+            background-color: #FFFFFF;
+            overflow-y: hidden;
+            overflow-x: auto;
+
+            .info-block{
+                display: flex;
+                flex-direction: column;
+                min-width: 377px;
+                padding: 10px;
+                padding-top: 5px;
+                gap: 0.5rem;
+                
+                .input-group{
+                    background-color: #FFFFFF;
+                    display: flex;                   
+                    gap: 0.5rem;
+                    .label-group{
+                        display: flex;
+                        align-items: center;
+                        height: fit-content;
+                        gap: 0.5rem;
+                        
+                        .label-text{
+                            color: #959DB3;
+                            font-weight: 700;
+                        }
+                    }
+
+                    .size-weight-block{                      
+                        width: 100%;
+                        gap: 0.5rem;
+                    }
+
+                    .input{
+                        height: 35px;
+                        border-width: 2px;
+                        border-radius: 4px;
+                        outline: none;
+                        z-index: 0;
+
+                        &:focus{
+                            box-shadow: none;
+                        }
+
+                        &:hover{
+                            background-color: transparent;
+                            color: black;
+
+                            
+                        }
+                    }
+
+                    .unit-exchange-group{
+                        gap: 0.5rem;
+                        .unit-exchange-block{
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+
+                            .unit-text{
+                                text-align: right;
+                            }
+                        }
+                    }
                 }
+
+                .img-group{
+                    justify-content: center;
+                }
+                
+                
             }
         }
     }
