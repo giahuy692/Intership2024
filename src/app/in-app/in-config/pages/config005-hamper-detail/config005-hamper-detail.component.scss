@@ -1,0 +1,87 @@
+::ng-deep .hamberCustom {
+  .header-hamber {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(143, 155, 166, 0.4);
+    .k-breadcrumb {
+      margin: 0;
+      //   padding: 13px 0;
+    }
+    .btnFunction {
+      .btn {
+        padding: 10px;
+      }
+      .btn:hover {
+        opacity: 90%;
+      }
+    }
+  }
+  .hamberDetails {
+    padding: 15px 0px;
+    .hamber-title {
+      display: flex;
+      gap: 40px;
+      .hamber-title-text {
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+      .hamber-title-status {
+        font-size: 13px;
+        font-weight: 600;
+        color: #1a6634;
+      }
+    }
+    .hamber-form {
+      background-color: white;
+      padding-bottom: 20px;
+      .hamberDetails-form {
+        display: flex;
+        .import-image {
+          display: flex;
+          justify-content: center;
+          flex-grow: 1;
+          padding-top: 30px;
+        }
+        .hamberDetails-form-grid {
+          padding: 5px 10px;
+          display: grid;
+          width: 66%;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 20px;
+          .hamberDetails-col {
+            .grid-item {
+              padding-bottom: 10px;
+            }
+            .k-form-field {
+              .k-form-label {
+                font-size: 13px;
+                font-weight: 600;
+                color: #959db3;
+                padding-bottom: 7px;
+              }
+              .require-label {
+                font-size: 13px;
+                font-weight: 600;
+                color: red;
+                padding-left: 10px;
+              }
+              .k-form-field-wrap {
+                padding-bottom: 7px;
+
+                .k-input {
+                  height: 33px;
+                  outline: 1px solid #00000014;
+                  border-radius: 3px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
