@@ -22,7 +22,7 @@ import { Necessary } from './pages/shared/directives/Necessary.directive';
 import { Config002HamperDetailComponent } from './pages/config002-hamper-detail/config002-hamper-detail.component';
 import { PricePipe } from './pages/shared/pipes/PricePipe.pipe';
 import { Config002PartnerManagementComponent } from './pages/config002-partner-management/config002-partner-management.component';
-import { HamperDrawerComponent } from './pages/shared/components/drawer/drawer.component';
+import { HamperDrawerComponent } from './pages/shared/components/hamperdrawer/drawer.component';
 import { ButtonModule } from '@progress/kendo-angular-buttons';
 import { IconModule } from '@progress/kendo-angular-icons';
 import { StatusColorPipe } from './pages/shared/pipes/StatusColorPipe';
