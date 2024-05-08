@@ -6,7 +6,7 @@ import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
 /**
  * Using for css button in hamber-page
  * Type button : danger, success, cancel, return
- * Using default example <button type='button' HamberButtons data-type='danger'>Content <kendo-svg-icon [icon]="rotateIcon"></kendo-svg-icon></button>
+ * Using default example  
  * Using with modified css example <button type='button' HamberButtons data-type='danger' data-css='paddig: 10px'>Content <kendo-svg-icon [icon]="rotateIcon"></kendo-svg-icon></button>
  */
 export class HamperButtons implements OnInit {
