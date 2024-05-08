@@ -2,20 +2,17 @@
 <!-- <app-item-company [setValue]="company" (getValue)="receiveArray($event)" [important]="true" [totalPrice]="200" >></app-item-company> -->
 <!-- <button (click)="log()">click</button> -->
 <div class="body">
-    <div class="header-hamper">
-        <kendo-breadcrumb [items]="itemBreadCrumb" SetClassSVGIcon HamperBreadcrumb class="breadcrumb"></kendo-breadcrumb>
-        <div class="aria-button">
-            <div class="btn-function">Hello</div>
-            <button
-                kendoButtons   
-                [disabled]="true"
-            >
-            Browse
-          </button>
-        </div>
-    </div>
-   
     <form [formGroup]="formHamper">
+        <div class="header-hamper">
+            <kendo-breadcrumb [items]="itemBreadCrumb" SetClassSVGIcon HamperBreadcrumb class="breadcrumb"></kendo-breadcrumb>
+            <div class="aria-button">
+               <div *ngFor="let btn of dataButtonStatus">
+                <button class="btn-addNew" HamperButtons data-type={{btn.status}}><kendo-svg-icon [icon]="btn.icon"></kendo-svg-icon>{{ btn.text | uppercase}} {{btn.status}}</button>
+               </div>
+                <button class="btn-addNew" HamperButtons data-type="success"><kendo-svg-icon [icon]="svgCart"></kendo-svg-icon>{{'Thêm mới' | uppercase}}</button>
+            </div>
+            
+        </div>
         <div class="hamper-info block-hamper">
             <div class="header"> 
                  <div class="title-header">{{'Thông tin hamper' | uppercase}}</div>

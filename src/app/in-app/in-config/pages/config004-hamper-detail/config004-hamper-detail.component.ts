@@ -1,11 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { companyVietHaTri, companyMotThanhVien, company3PS } from './data-test';
 import { DTOCompany } from '../shared/dtos/DTOCompany.dto';
 import { FormControl, FormGroup } from '@angular/forms';
 import { dataMadeHameper } from './dataMadeOfHamper';
 import { DataUnitProduct } from './dataUnitProduct';
 import { BreadCrumbItem } from '@progress/kendo-angular-navigation';
-
+import { DataButtonStatus } from './dataButtonStatus';
+import {
+  SVGIcon,
+  cartIcon,
+  anchorIcon,
+  codeIcon,
+} from "@progress/kendo-svg-icons";
 @Component({
   selector: 'app-config004-hamper-detail',
   templateUrl: './config004-hamper-detail.component.html',
@@ -20,6 +26,16 @@ export class Config004HamperDetailComponent {
   receivedCPN2: any;
   receivedCPN3: any;
 
+  public svgCart: SVGIcon = cartIcon;
+  public svgAnchor: SVGIcon = anchorIcon;
+  public svgCode: SVGIcon = codeIcon;
+
+  dataButtonStatus: any = DataButtonStatus
+
+  onButtonClick(): void {
+    console.log("click");
+  }
+
   dataMadeHameper: any = dataMadeHameper
   itemBreadCrumb: BreadCrumbItem[] = [
     {
@@ -32,6 +48,7 @@ export class Config004HamperDetailComponent {
         text: 'CHI TIẾT HAMPER'
     }  
   ];
+
   
 
 
@@ -55,6 +72,7 @@ export class Config004HamperDetailComponent {
   }
 
   formHamper = new FormGroup({
+    status: new FormControl,
     barcode: new FormControl,
     nameVietNames: new FormControl,
     nameEnglish: new FormControl,

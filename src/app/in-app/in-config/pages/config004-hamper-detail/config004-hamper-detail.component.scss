@@ -60,8 +60,6 @@ kendo-textbox{
     }
 } 
 
-
-
 .body{
     margin-right: 5px;
     margin-left: 2px;
@@ -71,34 +69,37 @@ kendo-textbox{
         display: flex;
         align-items: center;
         justify-content: space-between;
+        border-bottom: 1px solid #BDC2D2;
         kendo-breadcrumb{
+            display: flex;
+            align-items: center;
+            height: 100%;
+
+            margin: 0;
+            margin-left: -20px;
             background-color: transparent;
         }
         .aria-button{
-            width: 300px;
             display: flex;
+            font-size: 13px;
+            color: white;
+            justify-content: end;
             .btn-function{
-                background-color: red;
+               height: 32px;
+               padding: 0px 10px;
+               margin-left: 10px;
             }
             .btn-addNew{
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 85px;
                 height: 32px;
-                color: white;
-                background-color: #1A6634;
+                padding: 0px 10px;
+                margin-left: 10px;
 
-                .title-btn{
-                    align-items: center;
-                    display: flex;
-                    justify-content: center;
-                }
             }
         }
     }
 
     .block-hamper{
+        margin-top: 10px;
         height: 306px;
         width: 100%;
         .header{
