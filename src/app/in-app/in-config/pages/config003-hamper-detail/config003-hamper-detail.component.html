@@ -1,16 +1,16 @@
 <div class="hamber-003">
-  <!-- <button type="button" HamberButtons data-type="return">Content <kendo-svg-icon [icon]="rotateIcon"></kendo-svg-icon></button>
+  <!-- 
   <button kendoButton [svgIcon]="rotateIcon" (click)="refreshBreadCrumb()">
     Refresh breadcrumb
     
-  </button>
+  </button> -->
+  <button type="button" HamperButtons data-type="success">Content <kendo-svg-icon [icon]="rotateIcon"></kendo-svg-icon></button>
   <kendo-breadcrumb
     [collapseMode]="collapseMode"
     [items]="items"
-    (itemClick)="onItemClick($event)"
     SetClassSVGIcon
-    HamberBreadcrumb
-  ></kendo-breadcrumb> -->
+    HamperBreadcrumb
+  ></kendo-breadcrumb>
   <div class="product-list-area">
     <app-product-list [products]="hamperCrr.ProductList" [stateHamper]="hamperCrr.State"></app-product-list>
   </div>

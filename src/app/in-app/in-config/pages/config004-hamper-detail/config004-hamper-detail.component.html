@@ -2,37 +2,34 @@
 <!-- <app-item-company [setValue]="company" (getValue)="receiveArray($event)" [important]="true" [totalPrice]="200" >></app-item-company> -->
 <!-- <button (click)="log()">click</button> -->
 <div class="body">
-    <div class="header-hamper">
-        <kendo-breadcrumb [items]="itemBreadCrumb" SetClassSVGIcon HamperBreadcrumb class="breadcrumb"></kendo-breadcrumb>
-        <div class="aria-button">
-            <div class="btn-function">Hello</div>
-            <button
-                kendoButtons   
-                [disabled]="true"
-            >
-            Browse
-          </button>
-        </div>
-    </div>
-   
     <form [formGroup]="formHamper">
+        <div class="header-hamper">
+            <kendo-breadcrumb [items]="itemBreadCrumb" SetClassSVGIcon HamperBreadcrumb class="breadcrumb"></kendo-breadcrumb>
+            <div class="aria-button">
+               <div *ngFor="let btn of dataButtonStatus">
+                <button class="btn-addNew" HamperButtons data-type="{{btn.status}}"><kendo-svg-icon [icon]="btn.icon"></kendo-svg-icon>{{ btn.text | uppercase}} </button>
+               </div>
+                <button class="btn-addNew" HamperButtons data-type="success"><kendo-svg-icon [icon]="svgCart"></kendo-svg-icon>{{'Thêm mới' | uppercase}}</button>
+            </div>
+            
+        </div>
         <div class="hamper-info block-hamper">
             <div class="header"> 
                  <div class="title-header">{{'Thông tin hamper' | uppercase}}</div>
                  <div class="title-status">Đang soạn thảo</div>
             </div>
             <div class="content-hamper">
-                <div class="group-item">
-                    <div>
+                <div class="group-item grid-cols-3">
+                    <div class="col-limit col-span-1">
                         <div class="group">
                             <kendo-label class="kendo-label"> 
-                                Barcode gốc <div >(*)</div>
+                                Barcode gốc &nbsp; <span Necessary></span>
                             </kendo-label>
                             <kendo-textbox formControlName="barcode"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
-                                Tên tiếng Việt <div >(*)</div>
+                                Tên tiếng Việt  &nbsp; <span Necessary ></span>
                             </kendo-label>
                             <kendo-textbox formControlName="nameVietNames"></kendo-textbox>
                         </div>
@@ -50,12 +47,14 @@
                         </div>
                     </div>
     
-                    <div>
+                    <div class="col-limit col-span-1">
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Xuất xứ
                             </kendo-label>
                             <kendo-dropdownlist
+                                iconClass="fa-solid fa-angle-down"
+                                fillMode="outline"
                                 [data]="dataMadeHameper"
                                 textField="made"
                                 valueField="id"
@@ -84,7 +83,7 @@
                         </div>
                     </div>
 
-                    <div class="import-image">
+                    <div class="col-limit import-image col-span-1">
                         <app-import-image></app-import-image>
                     </div>
                    
@@ -96,13 +95,15 @@
                  <div class="title-header">{{'Thông tin đóng gói' | uppercase}}</div>
             </div>
             <div class="content-hamper">
-                <div class="group-item">
-                    <div>
+                <div class="group-item grid-cols-3">
+                    <div class="col-span-1">
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Đơn vị  sản phẩm (Base unit)
                             </kendo-label>
                             <kendo-dropdownlist   
+                            iconClass="fa-solid fa-angle-down"
+                            fillMode="outline"
                             [data]="dataMadeHameper"
                             textField="made"
                             valueField="id"
@@ -155,7 +156,7 @@
                         </div>
                     </div>
 
-                    <div>
+                    <div class="col-span-1">
                        <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Quy đổi quy cách sản phẩm
@@ -187,15 +188,41 @@
             </div>
         </div>
 
+        <div class="hamper-otherInfor block-hamper">
+            <div class="header"> 
+                 <div class="title-header">{{'Thông tin khác' | uppercase}}</div>
+            </div>
+            <div class="content-hamper">
+                <div class="group-item grid-cols-3">
+                    <div class="group col-span-1">
+                        <kendo-label class="kendo-label"> 
+                            Thông số kỹ thuật
+                        </kendo-label>
+                        <kendo-textbox formControlName="barcode"></kendo-textbox>
+                    </div>
+                </div>
+              
+            </div>
+        </div>
+
+        <!-- <div class="hamper-otherInfor block-hamper">
+        </div> -->
+
         <div class="hamper-company block-hamper">
             <div class="header"> 
                  <div class="title-header">{{'Công ty áp dụng' | uppercase}}</div>
             </div>
             <div class="content-hamper">
-                <div class="item-company">
-                    <app-item-company [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
-                    <app-item-company [setValue]="motThanhCom" (getValue)="getValueCompany2($event)" [important]="false" [totalPrice]="200" >></app-item-company>
-                    <app-item-company [setValue]="PSCom" (getValue)="getValueCompany3($event)" [important]="false" [totalPrice]="200" >></app-item-company>
+                <div class="group-item grid-cols-3 item-company">
+                    <div class="group col-span-1">
+                        <app-item-company [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
+                    </div>
+                    <div class="group col-span-1">
+                        <app-item-company [setValue]="motThanhCom" (getValue)="getValueCompany2($event)" [important]="false" [totalPrice]="200" >></app-item-company>
+                    </div>
+                    <div class="group col-span-1">
+                        <app-item-company [setValue]="PSCom" (getValue)="getValueCompany3($event)" [important]="false" [totalPrice]="200" >></app-item-company>
+                    </div>
                 </div>
             </div>
         </div>

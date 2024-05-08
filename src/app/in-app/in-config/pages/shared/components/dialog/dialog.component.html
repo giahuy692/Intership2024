@@ -1,0 +1,35 @@
+<button kendoButton *ngIf="!opened" (click)="open()">Open dialog</button>
+<kendo-dialog
+  class="dialog"
+  *ngIf="opened"
+  (close)="close()"
+  [minWidth]="250"
+  [width]="width"
+>
+  <kendo-dialog-titlebar>
+    <div class="titleDialog" [style.color]="defaultColor">
+      <span class="k-icon k-font-icon {{ titleIcon }}"></span>{{ title }}
+    </div>
+  </kendo-dialog-titlebar>
+  <div style="margin: 30px; text-align: center">
+    <div #ref><ng-content></ng-content></div>
+    <span *ngIf="ref.children.length == 0"> Content Dialog is Empty </span>
+  </div>
+  <kendo-dialog-actions>
+    <button class="button-close" kendoButton (click)="close()">
+      {{ cancelButton }}
+    </button>
+    <button
+      [style.background]="defaultColor"
+      kendoButton
+      (click)="confirm()"
+      themeColor="primary"
+    >
+      <span
+        class="k-icon k-font-icon
+       {{ buttonIcon }}"
+      ></span>
+      {{ confirmButton }}
+    </button>
+  </kendo-dialog-actions>
+</kendo-dialog>

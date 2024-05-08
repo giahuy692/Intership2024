@@ -1,1 +1,12 @@
-<p>config005-hamper-detail works!</p>
+<!-- appConfig5 component -->
+<app-dialog
+  primary
+  [title]="'Xoá Câu Hỏi'"
+  [cancelButton]="'Cancel'"
+  [confirmButton]="'Xoá'"
+  (confirmDialog)="confirmDelete()"
+>
+  <p>
+    Do you want to console <span class="modiColor">{{ data }}</span>
+  </p>
+</app-dialog>

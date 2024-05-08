@@ -13,6 +13,7 @@
             Phân nhóm cấp 1
         </div>
         <kendo-dropdownlist
+            fillMode="outline"
             iconClass="fa-solid fa-angle-down"
             [defaultItem]="defaultItem"
             [disabled]="isSelectedCompany == false"
@@ -36,7 +37,7 @@
         <div class="kendo-label">
             Phân nhóm cấp 2
         </div>
-        <kendo-dropdownlist iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem1 || selectedItem1.id == -1 || isSelectedCompany == false" 
+        <kendo-dropdownlist fillMode="outline"  iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem1 || selectedItem1.id == -1 || isSelectedCompany == false" 
         (filterChange)="handleFilter($event, 2)" [filterable]="true"  
         textField="name" valueField="id" [(ngModel)]="selectedItem2" 
         [data]="selectedItem1?.child" (valueChange)="onItemChange($event, 2)" 
@@ -49,7 +50,7 @@
         <div class="kendo-label">
             Phân nhóm cấp 3
         </div>
-        <kendo-dropdownlist iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem2 || selectedItem2.id == -1 || isSelectedCompany == false" 
+        <kendo-dropdownlist fillMode="outline"  iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem2 || selectedItem2.id == -1 || isSelectedCompany == false" 
         (filterChange)="handleFilter($event, 3)" [filterable]="true"
         textField="name" valueField="id" [(ngModel)]="selectedItem3" [data]="selectedItem2?.child" 
         (valueChange)="onItemChange($event, 3)"
@@ -61,7 +62,7 @@
         <div class="kendo-label">
             Phân nhóm cấp 4
         </div>
-        <kendo-dropdownlist iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem3 || selectedItem3.id == -1 || isSelectedCompany == false" 
+        <kendo-dropdownlist fillMode="outline"  iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem3 || selectedItem3.id == -1 || isSelectedCompany == false" 
         (filterChange)="handleFilter($event, 4)" [filterable]="true"
         textField="name" valueField="id" [(ngModel)]="selectedItem4" [data]="selectedItem3?.child" 
         (valueChange)="onItemChange($event, 4)"
@@ -74,7 +75,7 @@
         <div class="kendo-label">
             Phân nhóm cấp 5
         </div>
-        <kendo-dropdownlist iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem4 || selectedItem4.id == -1 || isSelectedCompany == false" 
+        <kendo-dropdownlist fillMode="outline"  iconClass="fa-solid fa-angle-down" [defaultItem]="defaultItem" [disabled]="!selectedItem4 || selectedItem4.id == -1 || isSelectedCompany == false" 
         (filterChange)="handleFilter($event, 5)" [filterable]="true"
         textField="name" valueField="id" [(ngModel)]="selectedItem5" [data]="selectedItem4?.child" 
         (valueChange)="onItemChange($event, 5)"
