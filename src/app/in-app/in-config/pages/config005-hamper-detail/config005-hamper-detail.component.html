@@ -36,6 +36,7 @@
       <h5 class="hamber-title-status">Đang soạn thảo</h5>
     </div>
     <form class="hamber-form" [formGroup]="hamber">
+      <!-- thong tin hamber -->
       <div class="hamberDetails-form">
         <div class="hamberDetails-form-grid">
           <div class="hamberDetails-col">
@@ -90,14 +91,21 @@
             <kendo-formfield class="grid-item">
               <kendo-label
                 labelCssClass="k-form-label"
-                [for]="origin"
                 text="Xuất xứ"
               ></kendo-label>
-              <kendo-textbox
+              <kendo-dropdownlist
+                iconClass="fa-solid fa-angle-down"
                 formControlName="origin"
-                #origin
-              ></kendo-textbox> </kendo-formfield
-            ><kendo-formfield class="grid-item">
+                [textField]="'country'"
+                [valueField]="'id'"
+                [valuePrimitive]="true"
+                [defaultItem]="defaultOrigin"
+                [data]="origins"
+                formControlName="origin"
+              >
+              </kendo-dropdownlist>
+            </kendo-formfield>
+            <kendo-formfield class="grid-item">
               <kendo-label
                 labelCssClass="k-form-label"
                 [for]="materialVietnamese"
