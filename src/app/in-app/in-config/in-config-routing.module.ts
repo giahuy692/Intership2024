@@ -37,6 +37,10 @@ const routes: Routes = [
         path: 'config005-hamper-detail', //Bui Tan Hieu
         component: Config005HamperDetailComponent,
       },
+      {
+        path: 'config002-partner-management', //for test purposes
+        component: Config002PartnerManagementComponent,
+      },
     ],
   },
 ];
