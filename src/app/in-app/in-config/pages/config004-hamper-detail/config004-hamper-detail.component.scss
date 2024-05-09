@@ -1,5 +1,7 @@
 @import '../shared/styles/styles.scss';
 
+
+
 .kendo-dropdownlist{
     background-color: white;
     height: 33px;
@@ -98,6 +100,7 @@
     margin-left: 2px;
     height: 100%;
     overflow-x: hidden;
+    margin-bottom: 50px;
 
     .drawer{
         div{
@@ -117,6 +120,7 @@
                 padding-right: 10px;
                 color: #959DB3;
                 font-weight: 100;
+                margin-top: 5px;
             }
         }
         .item-group{
@@ -125,6 +129,11 @@
             kendo-label{
                 color: black;
                 font-weight: bold;
+            }
+
+            .kendo-textbox{
+                margin-top: 5px;
+                width: 146px;
             }
 
       
@@ -207,7 +216,7 @@
 
     .block-hamper{
         margin-top: 10px;
-        height: 306px;
+
         width: 100%;
         .header{
             display: flex;
@@ -263,12 +272,10 @@
 
     .hamper-info{
         margin-top: 10px;
-        height: 306px;
         width: 100%;
         .header{
             display: flex;
             margin-bottom: 10px;
-            
             .title-header{
                 margin-right: 20px;
                 font-size: 16px;
@@ -278,7 +285,7 @@
         }
         .content-hamper{
             overflow-x: auto;
-            height: 282px;
+            padding-bottom: 20px;
             width: 100%;
             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
             background-color: white;
@@ -313,7 +320,6 @@
 
     .hamper-info-package{
         width: 100%;
-        height: 370px;
         margin-top: 20px;
         .content-hamper{
             height: 332px;
@@ -412,9 +418,22 @@
     .hamper-company{
         width: 100%;
         margin-top: 20px;
+  
         .content-hamper{
-            height: 516px;
+            overflow-y:hidden ;
+            height: 440px;
         }
+    }
+
+    .actor{
+        margin-top: 20px;
+        margin-bottom: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        margin-right: 20px;
+        color: black;
+        font-weight: bold;
     }
 }
 

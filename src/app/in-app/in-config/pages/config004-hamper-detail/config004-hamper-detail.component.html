@@ -1,3 +1,5 @@
+
+
 <button (click)="log()">click</button>
 <div class="body">
     <app-hamper-drawer [titleText]="'SẢN PHẨM THUỘC HAMPER'" [expanded]="isOpenDrawer">
@@ -18,50 +20,49 @@
             </div>
             <div class="item-group">
                 <div>
-                    <kendo-label>Số lượng</kendo-label>
-                    <kendo-numerictextbox [(value)]="quantityProduct" class="kendo-textbox"></kendo-numerictextbox>
+                    <kendo-label>Số lượng có trong hamper</kendo-label>
+                    <kendo-numerictextbox format="##" [(value)]="quantityProduct" class="kendo-textbox"></kendo-numerictextbox>
                 </div>
                 <div class="item-group-image">
-                    <img class="image" src="{{itemProductFilter.Image}}" width="100%" height="100%" alt="">
+                    <img *ngIf="itemProductFilter.Image" [ngStyle]="{ 'width': '100%', 'height': '100%', 'border': 'none' }" [src]="itemProductFilter.Image" alt="">
                 </div>
             </div>
 
             <div class="btn-aria">
                 <button kendoButton class="btn btn-close" data-type="success" (click)="closeDrawer()">
-                    <!-- <kendo-svg-icon [icon]="svgCart" ></kendo-svg-icon> -->
+            
                     {{'đóng' | uppercase}}
                 </button>
                 <button (click)="handleAddProductHamper()" kendoButton class="btn btn-add" data-type="success">
-                    <!-- <kendo-svg-icon [icon]="svgCart" ></kendo-svg-icon> -->
+                
                     {{'Thêm' | uppercase}}
                 </button>
-                <button kendoButton class="btn btn-update" data-type="success">
-                    <!-- <kendo-svg-icon [icon]="svgCart" ></kendo-svg-icon> -->
+                <!-- <button kendoButton class="btn btn-update" data-type="success">
                     {{'Cập nhật' | uppercase}}
-                </button>
+                </button> -->
             </div>
         </div>
     </app-hamper-drawer>
-    <form  [formGroup]="formHamper">
+    <form #myForm="ngForm" [formGroup]="formHamper">
         <div class="header-hamper">
             <kendo-breadcrumb [items]="itemBreadCrumb" SetClassSVGIcon HamperBreadcrumb class="breadcrumb"></kendo-breadcrumb>
             <div class="aria-button">
                 <div *ngFor="let btn of dataButtonStatus">
-                    <button *ngIf="btn.dataShow.includes(currentStatusHamper)" class="btn-addNew" HamperButtons [attr.data-type]="btn.status" (click)="handleChangeStatus(btn.id)">
+                    <button *ngIf="formHamper.get('status').value && btn.dataShow.includes(formHamper.get('status').value.id)" class="btn-addNew" HamperButtons [attr.data-type]="btn.status" (click)="handleChangeStatus(btn.id)">
                         <kendo-svg-icon [icon]="btn.icon"></kendo-svg-icon>
                         {{ btn.text | uppercase }}
                     </button>
                 </div>
                 
-                <button (click)="openDrawer()" class="btn-addNew" HamperButtons data-type="success"><kendo-svg-icon [icon]="svgCart"></kendo-svg-icon>{{'Thêm mới' | uppercase}}</button>
+                <button (click)="openDrawer()" class="btn-addNew" HamperButtons data-type="success"><kendo-svg-icon [icon]="plusIcon"></kendo-svg-icon>{{'Thêm mới' | uppercase}}</button>
             </div>
             
         </div>
         <div class="hamper-info block-hamper">
             <div class="header"> 
                  <div class="title-header">{{'Thông tin hamper' | uppercase}}</div>
-                 <div *ngIf="barcodeHamper!=''" class="title-status" [style.color]="getStatusColor(currentStatusHamper)">
-                    {{ getStatusText(currentStatusHamper) }}
+                 <div *ngIf="barcodeHamper!=''" class="title-status" [style.color]="getStatusColor(formHamper.get('status').value.id)">
+                    {{ getStatusText(formHamper.get('status').value.id) }}
                 </div>
             </div>
             <div class="content-hamper">
@@ -99,13 +100,14 @@
                                 Xuất xứ
                             </kendo-label>
                             <kendo-dropdownlist
+                                [defaultItem]="defaultItemDropdown"
                                 [readonly]="!barcodeHamper"
                                 class="kendo-dropdownlist"
                                 iconClass="fa-solid fa-angle-down"
                                 fillMode="outline"
                                 [data]="dataMadeHameper"
                                 textField="made"
-                                valueField="id"
+                                valueField="made"
                                 formControlName="made"
                                 [filterable]="true"
                                 SetClassSVGIcon
@@ -149,14 +151,15 @@
                             <kendo-label class="kendo-label"> 
                                 Đơn vị  sản phẩm (Base unit)
                             </kendo-label>
-                            <kendo-dropdownlist  
+                            <kendo-dropdownlist 
+                            [defaultItem]="defaultItemDropdownOgirin" 
                             [readonly]="!barcodeHamper"
                             class="kendo-dropdownlist" 
                             iconClass="fa-solid fa-angle-down"
                             fillMode="outline"
                             [data]="dataUnitProduct"
                             textField="text"
-                            valueField="id"
+                            valueField="text"
                             formControlName="text"
                             [filterable]="true" formControlName="unit" SetClassSVGIcon></kendo-dropdownlist>
                         </div>
@@ -187,7 +190,7 @@
                                 Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox  format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
                                 <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
                                 <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
                                 <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
@@ -215,7 +218,12 @@
                                 <div class="box">
                                     <kendo-label class="package">Inner</kendo-label>
                                     <kendo-label class="equal">=</kendo-label>
-                                    <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" formControlName="changeInner" class="textbox-change-package"></kendo-numerictextbox>
+                                    <kendo-numerictextbox
+                                        formControlName="changeInner"
+                                        format="n0"
+                                        [readonly]="!barcodeHamper"
+                                        class="textbox-change-package">
+                                    </kendo-numerictextbox>
                                     <kendo-label class="title-base-unit">Base unit</kendo-label>
                                 </div>
                                 <div class="box">
@@ -255,9 +263,9 @@
             </div>
         </div>
 
-        <div class="hamper-product-list">
-            <app-product-list  [products]="dataItemProductInHamper" class="product-list"></app-product-list>
-        </div>
+        <!-- <div class="hamper-product-list">
+            <app-product-list [stateHamper]="formHamper.get('status').value"  [products]="dataItemProductInHamper" class="product-list"></app-product-list>
+        </div> -->
 
         <div class="hamper-company block-hamper">
             <div class="header"> 
@@ -266,19 +274,19 @@
             <div class="content-hamper">
                 <div class="group-item grid-cols-3 item-company">
                     <div class="group col-span-1">
-                        <app-item-company [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
+                        <app-item-company [disableCheckbox]="barcodeHamper==''" [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
                     </div>
                     <div class="group col-span-1">
-                        <app-item-company [setValue]="motThanhCom" (getValue)="getValueCompany2($event)" [important]="false" [totalPrice]="200" >></app-item-company>
+                        <app-item-company [disableCheckbox]="barcodeHamper==''" [setValue]="motThanhCom" (getValue)="getValueCompany2($event)" [important]="false" [totalPrice]="200" >></app-item-company>
                     </div>
                     <div class="group col-span-1">
-                        <app-item-company [setValue]="PSCom" (getValue)="getValueCompany3($event)" [important]="false" [totalPrice]="200" >></app-item-company>
+                        <app-item-company [disableCheckbox]="barcodeHamper==''" [setValue]="PSCom" (getValue)="getValueCompany3($event)" [important]="false" [totalPrice]="200" >></app-item-company>
                     </div>
                 </div>
             </div>
         </div>
     </form>
-
+    <div class="actor">©️ Luong Phu</div>
     
 </div>
 
