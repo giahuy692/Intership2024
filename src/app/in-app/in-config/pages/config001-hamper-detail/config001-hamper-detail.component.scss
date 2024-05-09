@@ -21,6 +21,9 @@
 
 
 .hamper-body {
+    height: calc(100vh - 62.5px - 50px);
+    overflow-y: auto;
+    
     .k-input-inner {
         height: 33px;
         border: none;
