@@ -19,7 +19,7 @@
 }    
 
 .k-input-outline:focus-within{
-    border-color: red;
+    border-color: #1A6634;
     border-width: 2px;
     box-shadow: none !important;
     border-radius: 2px;
@@ -39,7 +39,11 @@
         outline: none;
         border-color: #1A6634;
     } 
-}  
+} 
+
+.k-input-spinner{
+    display: none;
+}
 
 
 .short-textbox{
@@ -96,12 +100,23 @@
     overflow-x: hidden;
 
     .drawer{
-        // padding: 10px 10px;
         div{
             margin-bottom: 10px;
+            margin-left: 5px;
+            margin-right: 5px;
             kendo-label{
                 color: black;
                 font-weight: bold;
+            }
+        }
+        .item-group-name{
+            display: inline-block;
+
+            .name{
+                padding-left: 10px;
+                padding-right: 10px;
+                color: #959DB3;
+                font-weight: 100;
             }
         }
         .item-group{
@@ -109,6 +124,46 @@
             display: flex;
             kendo-label{
                 color: black;
+                font-weight: bold;
+            }
+
+      
+
+            .item-group-image{
+                height: 161px;
+                width: 181px;
+
+                // .image{
+                //     width: 100%;
+                //     height: 100%;
+                // }
+            }
+        }
+
+        .btn-aria{
+            display: flex;
+
+            .btn{
+                height: 30px;
+                width: 90px;
+                margin-right: 10px;
+                box-shadow: rgba(3, 102, 214, 0.3) 0px 3px 5px 0px
+            }
+
+            .btn-close{
+                color: #1A6634;
+                font-weight: bold;
+            }
+
+            .btn-add{
+                background-color: #1A6634;
+                color: white;
+                font-weight: bold;
+            }
+
+            .btn-update{
+                background-color: #1A6634;
+                color: white;
                 font-weight: bold;
             }
         }
@@ -151,6 +206,62 @@
     }
 
     .block-hamper{
+        margin-top: 10px;
+        height: 306px;
+        width: 100%;
+        .header{
+            display: flex;
+            margin-bottom: 10px;
+            align-items: center;
+            
+            .title-header{
+                margin-right: 20px;
+                font-size: 16px;
+                color: black;
+                font-weight: bold;
+            }
+
+            .title-status{
+                color: black;
+                font-weight: bold; 
+            }
+        }
+        .content-hamper{
+            overflow-x: auto;
+            // height: 282px;
+            width: 100%;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+            background-color: white;
+            .group-item{
+                padding: 0px 20px;
+                .col-span-1 {
+                    margin-right: 10px;
+                    min-width: 377px;
+                }
+
+                .import-image{
+                    height: 222px;
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                }
+                .group {
+                    margin-top: 5px;
+                    .kendo-label {
+                        display: flex;
+                        color: #959DB3;
+                        font-size: 13px;
+                        font-weight: bold;
+                        margin-bottom: 5px;
+                    }
+                   
+                  }
+            }
+            
+        }
+    }
+
+    .hamper-info{
         margin-top: 10px;
         height: 306px;
         width: 100%;
@@ -202,10 +313,10 @@
 
     .hamper-info-package{
         width: 100%;
-        height: 390px;
+        height: 370px;
         margin-top: 20px;
         .content-hamper{
-            height: 352px;
+            height: 332px;
             .group-item{
                 div{
                     .group{
@@ -274,6 +385,8 @@
 
     .hamper-otherInfor{
         height: 106px;
+        overflow-x: auto;
+        overflow-y: hidden;
         .content-hamper{
             height: 82px;
             .kendo-label {
@@ -284,6 +397,15 @@
                 margin-bottom: 5px;
             
             }
+        }
+    }
+
+    .hamper-list-product{
+        // height: 0px;
+        // max-height: 388px;
+        // background-color: red;
+        .product-list{
+            max-height: 388px;
         }
     }
 

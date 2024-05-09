@@ -1,41 +1,58 @@
-<!-- <p>config004-hamper-detail works!</p> -->
-<!-- <app-item-company [setValue]="company" (getValue)="receiveArray($event)" [important]="true" [totalPrice]="200" >></app-item-company> -->
-<!-- <button (click)="log()">click</button> -->
-
-
+<button (click)="log()">click</button>
 <div class="body">
     <app-hamper-drawer [titleText]="'SẢN PHẨM THUỘC HAMPER'" [expanded]="isOpenDrawer">
         <div class="drawer"> 
             <div>
                 <kendo-label>Nhập mã sản phẩm</kendo-label>
-                <kendo-textbox></kendo-textbox>
+                <kendo-textbox (blur)="findProductByBarcode(idProductItem)" [(value)]="idProductItem" class="kendo-textbox"></kendo-textbox>
             </div>
-            <div>
-                <kendo-label>Tên sản phẩm</kendo-label>
-                <kendo-textbox></kendo-textbox>
+            <div class="item-group-name">
+                <div>
+                    <kendo-label>Tên sản phẩm</kendo-label>
+                </div>
+                <div class="name">
+                    <kendo-label>{{itemProductFilter.Name}}</kendo-label>
+                </div>
+
+
             </div>
             <div class="item-group">
                 <div>
                     <kendo-label>Số lượng</kendo-label>
-                    <kendo-textbox></kendo-textbox>
+                    <kendo-numerictextbox [(value)]="quantityProduct" class="kendo-textbox"></kendo-numerictextbox>
                 </div>
-                <div >
-
+                <div class="item-group-image">
+                    <img class="image" src="{{itemProductFilter.Image}}" width="100%" height="100%" alt="">
                 </div>
             </div>
 
-            <div>
-                <button (click)="closeDrawer()" class="Close" HamperButtons data-type=""><kendo-svg-icon [icon]=""></kendo-svg-icon>Close</button>
+            <div class="btn-aria">
+                <button kendoButton class="btn btn-close" data-type="success" (click)="closeDrawer()">
+                    <!-- <kendo-svg-icon [icon]="svgCart" ></kendo-svg-icon> -->
+                    {{'đóng' | uppercase}}
+                </button>
+                <button (click)="handleAddProductHamper()" kendoButton class="btn btn-add" data-type="success">
+                    <!-- <kendo-svg-icon [icon]="svgCart" ></kendo-svg-icon> -->
+                    {{'Thêm' | uppercase}}
+                </button>
+                <button kendoButton class="btn btn-update" data-type="success">
+                    <!-- <kendo-svg-icon [icon]="svgCart" ></kendo-svg-icon> -->
+                    {{'Cập nhật' | uppercase}}
+                </button>
             </div>
         </div>
     </app-hamper-drawer>
-    <form [formGroup]="formHamper">
+    <form  [formGroup]="formHamper">
         <div class="header-hamper">
             <kendo-breadcrumb [items]="itemBreadCrumb" SetClassSVGIcon HamperBreadcrumb class="breadcrumb"></kendo-breadcrumb>
             <div class="aria-button">
-               <div *ngFor="let btn of dataButtonStatus">
-                <button class="btn-addNew" HamperButtons data-type="{{btn.status}}"><kendo-svg-icon [icon]="btn.icon"></kendo-svg-icon>{{ btn.text | uppercase}} </button>
-               </div>
+                <div *ngFor="let btn of dataButtonStatus">
+                    <button *ngIf="btn.dataShow.includes(currentStatusHamper)" class="btn-addNew" HamperButtons [attr.data-type]="btn.status" (click)="handleChangeStatus(btn.id)">
+                        <kendo-svg-icon [icon]="btn.icon"></kendo-svg-icon>
+                        {{ btn.text | uppercase }}
+                    </button>
+                </div>
+                
                 <button (click)="openDrawer()" class="btn-addNew" HamperButtons data-type="success"><kendo-svg-icon [icon]="svgCart"></kendo-svg-icon>{{'Thêm mới' | uppercase}}</button>
             </div>
             
@@ -43,7 +60,9 @@
         <div class="hamper-info block-hamper">
             <div class="header"> 
                  <div class="title-header">{{'Thông tin hamper' | uppercase}}</div>
-                 <div class="title-status">Đang soạn thảo</div>
+                 <div *ngIf="barcodeHamper!=''" class="title-status" [style.color]="getStatusColor(currentStatusHamper)">
+                    {{ getStatusText(currentStatusHamper) }}
+                </div>
             </div>
             <div class="content-hamper">
                 <div class="group-item grid-cols-3">
@@ -52,25 +71,25 @@
                             <kendo-label class="kendo-label"> 
                                 Barcode gốc &nbsp; <span Necessary></span>
                             </kendo-label>
-                            <kendo-textbox class="kendo-textbox"  formControlName="barcode"></kendo-textbox>
+                            <kendo-textbox class="kendo-textbox" [(value)]="barcodeHamper" [disabled]="true"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Tên tiếng Việt  &nbsp; <span Necessary ></span>
                             </kendo-label>
-                            <kendo-textbox class="kendo-textbox" formControlName="nameVietNames"></kendo-textbox>
+                            <kendo-textbox class="kendo-textbox" formControlName="nameVietNames" (blur)="onBlurNameVietNames()"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Tên tiếng Anh
                             </kendo-label>
-                            <kendo-textbox class="kendo-textbox" formControlName="nameEnglish"></kendo-textbox>
+                            <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="nameEnglish"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Tên tiếng Nhật
                             </kendo-label>
-                            <kendo-textbox class="kendo-textbox" formControlName="nameJapan"></kendo-textbox>
+                            <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="nameJapan"></kendo-textbox>
                         </div>
                     </div>
     
@@ -80,6 +99,7 @@
                                 Xuất xứ
                             </kendo-label>
                             <kendo-dropdownlist
+                                [readonly]="!barcodeHamper"
                                 class="kendo-dropdownlist"
                                 iconClass="fa-solid fa-angle-down"
                                 fillMode="outline"
@@ -95,19 +115,19 @@
                             <kendo-label class="kendo-label"> 
                                 Chất liệu tiếng Việt
                             </kendo-label>
-                            <kendo-textbox class="kendo-textbox" formControlName="materialVietnames"></kendo-textbox>
+                            <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="materialVietnames"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Chất liệu tiếng Anh
                             </kendo-label>
-                            <kendo-textbox class="kendo-textbox" formControlName="materialEnglish"></kendo-textbox>
+                            <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="materialEnglish"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Chất liệu tiếng Nhật
                             </kendo-label>
-                            <kendo-textbox class="kendo-textbox" formControlName="materialJapan"> </kendo-textbox>
+                            <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="materialJapan"> </kendo-textbox>
                         </div>
                     </div>
 
@@ -130,13 +150,14 @@
                                 Đơn vị  sản phẩm (Base unit)
                             </kendo-label>
                             <kendo-dropdownlist  
+                            [readonly]="!barcodeHamper"
                             class="kendo-dropdownlist" 
                             iconClass="fa-solid fa-angle-down"
                             fillMode="outline"
-                            [data]="dataMadeHameper"
-                            textField="made"
+                            [data]="dataUnitProduct"
+                            textField="text"
                             valueField="id"
-                            formControlName="made"
+                            formControlName="text"
                             [filterable]="true" formControlName="unit" SetClassSVGIcon></kendo-dropdownlist>
                         </div>
                         <div formGroupName="sizeProduct" class="group">
@@ -144,10 +165,10 @@
                                 Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-textbox class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-textbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##"  [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
                             </div>
                         </div>
                         <div formGroupName="sizeInner" class="group">
@@ -155,10 +176,10 @@
                                 Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-textbox class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-textbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
                             </div>
                         </div>
                         <div formGroupName="sizeCartoon" class="group">
@@ -166,10 +187,10 @@
                                 Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-textbox class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-textbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
                             </div>
                         </div>
                         <div formGroupName="sizePallet" class="group">
@@ -177,10 +198,10 @@
                                 Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-textbox class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-textbox>
-                                <kendo-textbox class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-textbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
                             </div>
                         </div>
                     </div>
@@ -194,19 +215,19 @@
                                 <div class="box">
                                     <kendo-label class="package">Inner</kendo-label>
                                     <kendo-label class="equal">=</kendo-label>
-                                    <kendo-textbox formControlName="changeInner" class="textbox-change-package"></kendo-textbox>
+                                    <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" formControlName="changeInner" class="textbox-change-package"></kendo-numerictextbox>
                                     <kendo-label class="title-base-unit">Base unit</kendo-label>
                                 </div>
                                 <div class="box">
                                     <kendo-label class="package">Carton</kendo-label>
                                     <kendo-label class="equal">=</kendo-label>
-                                    <kendo-textbox formControlName="changeCarton" class="textbox-change-package"></kendo-textbox>
+                                    <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" formControlName="changeCarton" class="textbox-change-package"></kendo-numerictextbox>
                                     <kendo-label class="title-base-unit">Base unit</kendo-label>
                                 </div>
                                 <div class="box">
                                     <kendo-label class="package">Pallet</kendo-label>
                                     <kendo-label class="equal">=</kendo-label>
-                                    <kendo-textbox formControlName="changePallet" class="textbox-change-package"></kendo-textbox>
+                                    <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" formControlName="changePallet" class="textbox-change-package"></kendo-numerictextbox>
                                     <kendo-label class="title-base-unit">Base unit</kendo-label>
                                 </div>
                             </div>
@@ -227,15 +248,15 @@
                         <kendo-label class="kendo-label"> 
                             Thông số kỹ thuật
                         </kendo-label>
-                        <kendo-textbox class="kendo-textbox" formControlName="barcode"></kendo-textbox>
+                        <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="specifications"></kendo-textbox>
                     </div>
                 </div>
               
             </div>
         </div>
 
-        <div class="hapmer-list-product block-hamper">
-            <app-product-list></app-product-list>
+        <div class="hamper-product-list">
+            <app-product-list  [products]="dataItemProductInHamper" class="product-list"></app-product-list>
         </div>
 
         <div class="hamper-company block-hamper">
@@ -245,7 +266,7 @@
             <div class="content-hamper">
                 <div class="group-item grid-cols-3 item-company">
                     <div class="group col-span-1">
-                        <app-item-company [isSelectedCompany]="true" [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
+                        <app-item-company [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
                     </div>
                     <div class="group col-span-1">
                         <app-item-company [setValue]="motThanhCom" (getValue)="getValueCompany2($event)" [important]="false" [totalPrice]="200" >></app-item-company>
