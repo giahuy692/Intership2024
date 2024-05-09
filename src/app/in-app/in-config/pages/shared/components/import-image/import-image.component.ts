@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
 import { FileRestrictions, SelectEvent } from '@progress/kendo-angular-upload';
 
 type ImagePreview = {
@@ -15,12 +15,14 @@ type ImagePreview = {
 export class ImportImageComponent {
   public events: string[] = [];
   public imagePreview: ImagePreview;
+  @Output() fileSelected: EventEmitter<string> = new EventEmitter<string>();
 
   public fileRestrictions: FileRestrictions = {
     allowedExtensions: [".jpg", ".png"],
   };
 
   public select(e: SelectEvent){
+    const objectFile = e.files;
     this.imagePreview = null;
     const that = this;
 
@@ -36,10 +38,13 @@ export class ImportImageComponent {
 
           that.imagePreview = image;
         };
-
+        
         reader.readAsDataURL(file.rawFile);
       }
     });
+    
+    // Emit the filename to the parent component
+    this.fileSelected.emit(objectFile[0].name);
   }
 
 
