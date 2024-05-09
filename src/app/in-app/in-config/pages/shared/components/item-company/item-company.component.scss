@@ -86,6 +86,7 @@
         height: 24px;
 
         .name-company{
+            pointer-events: none;
             display: flex;
             align-items: center;
 
