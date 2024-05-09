@@ -106,7 +106,7 @@ export class Config001HamperDetailComponent {
     }
   }
 
-  public setListButtonAvailable(status: string, statusForOtherFunc: string) {
+  setListButtonAvailable(status: string, statusForOtherFunc: string) {
     if (!(!!statusForOtherFunc)) {
       if (status) {
         if (status === 'Đang soạn thảo') {
@@ -130,5 +130,9 @@ export class Config001HamperDetailComponent {
         this.listButtonAvailable.push(this.buttonThemMoi);
       }
     }
+  }
+
+  onFileSelected(fileName: string) {
+    console.log('File selected:', fileName);
   }
 }
