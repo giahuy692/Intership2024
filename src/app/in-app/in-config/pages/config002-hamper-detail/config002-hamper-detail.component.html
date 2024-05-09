@@ -20,7 +20,7 @@
                     <kendo-svg-icon [icon]="buttonIcons.redoIcon"></kendo-svg-icon> GỬI DUYỆT
                 </button>
                 <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
-                    <kendo-svg-icon [icon]="buttonIcons.plusIcon"></kendo-svg-icon> TẠO MỚI
+                    <kendo-svg-icon [icon]="buttonIcons.plusIcon"></kendo-svg-icon> THÊM MỚI
                 </button>
             </div>
         </div>
@@ -64,7 +64,7 @@
                         <div class="label-group">
                             <span class="label-text">Xuất xứ</span>
                         </div>
-                        <kendo-dropdownlist [fillMode]="'outline'" iconClass="fa-solid fa-angle-down" class="input">
+                        <kendo-dropdownlist [fillMode]="'outline'" iconClass="fa-solid fa-angle-down" class="input" [data]="originData.dataMadeHameper" valueField="id" textField="made">
 
                         </kendo-dropdownlist>
                     </div>
@@ -105,9 +105,7 @@
                         <div class="label-group">
                             <span class="label-text">Đơn vị sản phẩm (Base unit)</span>
                         </div>
-                        <kendo-dropdownlist [fillMode]="'outline'" iconClass="fa-solid fa-angle-down" class="input">
-
-                        </kendo-dropdownlist>
+                        <kendo-dropdownlist [fillMode]="'outline'" iconClass="fa-solid fa-angle-down" class="input" [data]="unitData.DataUnitProduct" textField="made" valueField="id"></kendo-dropdownlist>
                     </div>
                     <div class="input-group">
                         <div class="label-group">
@@ -115,16 +113,16 @@
                         </div>
                         <div class="size-weight-block grid-cols-5">
                             <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                             <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                             <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                             <div class="weight-block col-span-2">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                         </div>
 
@@ -135,16 +133,16 @@
                         </div>
                         <div class="size-weight-block grid-cols-5">
                             <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                             <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                             <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                             <div class="weight-block col-span-2">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                         </div>
                     </div>
@@ -154,16 +152,16 @@
                         </div>
                         <div class="size-weight-block grid-cols-5">
                             <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                             <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                             <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                             <div class="weight-block col-span-2">
-                                <kendo-textbox class="input"></kendo-textbox>
+                                <kendo-textbox class="input center-input"></kendo-textbox>
                             </div>
                         </div>
                     </div>
@@ -261,22 +259,26 @@
             </div>
             <div class="hamper-info-content-block grid-cols-3">
                 <div class="hamper-info-code-name-block info-block col-span-1">
-                    <app-item-company></app-item-company>
+                    <app-item-company [setValue]="companyData.companyVietHaTri" [important]="true"></app-item-company>
                 </div>
                 <div class="hamper-info-code-name-block info-block col-span-1">
-                    <app-item-company></app-item-company>
+                    <app-item-company [setValue]="companyData.companyMotThanhVien"></app-item-company>
                 </div>
                 <div class="hamper-info-code-name-block info-block col-span-1">
-                    <app-item-company></app-item-company>
+                    <app-item-company [setValue]="companyData.company3PS"></app-item-company>
                 </div>
             </div>
             
         </div>
+
+        <span class="footer">© Thiện Tâm</span>
 
         <app-hamper-drawer [expanded]="isDrawerShow" [titleText]="'Sản phẩm thuộc hamper'">
             <div drawer-content>
                 <button HamperButtons data-type="error" class="func-button" (click)="closeDrawer()">THÊM MỚI</button>
             </div>
         </app-hamper-drawer>
+
+        
     </main>
 </div>
