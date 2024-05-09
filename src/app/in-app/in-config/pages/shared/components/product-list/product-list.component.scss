@@ -1,7 +1,6 @@
 @import "../../../../../../../styles.scss";
 .product-list {
   width: 100%;
-  overflow: auto;
   .not-found {
     div {
       display: flex;
@@ -14,6 +13,7 @@
     }
   }
   .product-content {
+    padding-right: 10px;
     .btn-upload {
       display: flex;
       height: 32px;
@@ -25,6 +25,10 @@
       box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
       text-wrap: nowrap;
       padding: 0 10px;
+      &:hover {
+        background-color: #7ae37a;
+        color: white;
+      }
     }
     .btn {
       height: 32px;
@@ -32,15 +36,18 @@
       color: #959db3;
       fill: #959db3;
     }
-    header {
+
+    .header-product-list {
       width: 100%;
       background-color: #edeff3;
-      min-width: 1300px;
+      height: 65px;
       position: sticky;
       top: 0;
       z-index: 60;
       padding: 10px 0;
+      overflow: auto;
       .header-content {
+        min-width: 1250px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -52,11 +59,13 @@
           span {
             font-size: 16px;
             font-weight: 700;
+            text-transform: uppercase;
           }
         }
         .search {
           display: flex;
           justify-content: center;
+          align-items: center;
           gap: 10px;
           kendo-textbox {
             width: 500px;
@@ -64,25 +73,24 @@
             background-color: white;
             input::placeholder {
               color: #a8a9ab;
-            } 
-              height: 35px;
-              border-width: 2px;
-              border-radius: 2px;
+            }
+            height: 35px;
+            border-width: 2px;
+            border-radius: 2px;
+            outline: none;
+            border-color: #dbdee7;
+            z-index: 0;
+            &.k-focus {
+              box-shadow: none;
               outline: none;
-              border-color: #dbdee7;
-              z-index: 0;
-              &.k-focus {
-                box-shadow: none;
-                outline: none;
-                border-color: $dark-green;
-              }
+              border-color: $dark-green;
+            }
 
-              &:hover {
-                background-color: transparent;
-                border-color: $dark-green;
-                color: black;
-              }
-            
+            &:hover {
+              background-color: transparent;
+              border-color: $dark-green;
+              color: black;
+            }
           }
         }
         .actions {
@@ -93,23 +101,31 @@
         }
       }
     }
-    main {
+    .main-product-list {
       height: 400px;
-      min-width: 1300px;
+      overflow: auto;
+      position: relative;
       table {
+        min-width: 1250px;
         width: 100%;
         border-collapse: separate;
         border-spacing: 0px 10px;
         text-align: start;
         thead {
           background-color: #edeff3;
+          position: sticky;
+          top: 0;
+          z-index: 61;
           th {
             padding: 0 10px;
+            background-color: #edeff3;
+            padding: 10px 0;
+            font-weight: 600;
+            color: #5a6276;
             &.actions {
-              background-color: #edeff3;
               position: sticky;
               right: 0;
-              z-index: 59;
+              z-index: 62;
             }
           }
         }
@@ -122,6 +138,7 @@
             background-color: white;
             position: relative;
             td {
+              color: #26282e;
               background-color: white;
               padding: 5px 10px;
               &.product-td-width {
@@ -167,6 +184,10 @@
                   justify-content: center;
                   align-items: center;
                   height: 100%;
+                  border: 1px solid transparent;
+                  &:hover {
+                    border-color: #959db3;
+                  }
                   &.active {
                     border-top-right-radius: 5px;
                     border-top-left-radius: 5px;
@@ -183,7 +204,7 @@
                     display: none;
                     position: absolute;
                     top: 100%;
-                    right: 0;
+                    right: -1px;
                     background-color: #959db3;
                     border-radius: 5px;
                     border-top-right-radius: 0px;

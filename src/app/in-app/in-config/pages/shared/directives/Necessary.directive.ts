@@ -2,7 +2,7 @@ import { Directive, ElementRef, OnInit } from '@angular/core';
 
 /** Necessary
  * - Using for input that is necessary type
- * - Example <span Necessary></span>
+ * - Example (<span Necessary> </span>)
  **/
 
 @Directive({

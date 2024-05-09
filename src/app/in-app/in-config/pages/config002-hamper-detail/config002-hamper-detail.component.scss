@@ -91,7 +91,7 @@
                 background-color: #FFFFFF;
                 overflow-y: hidden;
                 overflow-x: auto;
-    
+                
                 .info-block{
                     display: flex;
                     flex-direction: column;
@@ -141,6 +141,13 @@
                                 color: black;
                                 
                             }
+
+                            &.center-input{
+                                >.k-input-inner{
+                                    text-align: center;
+                                }
+                            }
+                           
                         }
     
                         .unit-exchange-group{
@@ -169,6 +176,13 @@
                     
                 }
             }
+
+        }
+
+        .footer{
+            display: flex;
+            justify-content: end;
+            padding-right: 10px;
         }
     }
     
