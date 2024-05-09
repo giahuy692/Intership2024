@@ -1,4 +1,5 @@
 ::ng-deep .hamberCustom {
+  overflow-y: hidden;
   .header-hamber {
     display: flex;
     justify-content: space-between;
@@ -6,6 +7,7 @@
     margin: 0;
     padding: 8px 0;
     border-bottom: 1px solid rgba(143, 155, 166, 0.4);
+    overflow-x: auto;
     .k-breadcrumb {
       margin: 0;
       //   padding: 13px 0;
@@ -21,9 +23,12 @@
   }
   .hamberDetails {
     padding: 15px 0px;
+    overflow-y: auto;
+
     .hamber-title {
       display: flex;
       gap: 40px;
+      padding-bottom: 5px;
       .hamber-title-text {
         font-size: 16px;
         font-weight: 600;
@@ -37,24 +42,29 @@
     }
     .hamber-form {
       background-color: white;
+      display: block;
+      width: 100%;
       padding-bottom: 20px;
       .hamberDetails-form {
-        display: flex;
+        background-color: white;
+        overflow-x: auto;
         .import-image {
           display: flex;
           justify-content: center;
-          flex-grow: 1;
           padding-top: 30px;
+          min-width: 377px;
         }
         .hamberDetails-form-grid {
-          padding: 5px 10px;
-          display: grid;
-          width: 66%;
-          grid-template-columns: repeat(2, 1fr);
+          padding: 10px;
           gap: 20px;
           .hamberDetails-col {
             .grid-item {
               padding-bottom: 10px;
+              .k-form-field-wrap {
+                .k-focus {
+                  outline: 1px solid #1a6634 !important;
+                }
+              }
             }
             .k-form-field {
               .k-form-label {
@@ -86,6 +96,7 @@
                   height: 33px;
                   outline: 1px solid #00000014;
                   border-radius: 3px;
+                  min-width: 377px;
                   &:hover {
                     outline: 1px solid #1a6634;
                   }
@@ -94,6 +105,136 @@
             }
           }
         }
+      }
+    }
+    .hamberPack-form {
+      padding-top: 13px;
+      text-wrap: nowrap;
+
+      .hamberPackDetails-form {
+        background-color: white;
+        padding: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #959db3;
+        overflow-x: auto;
+
+        .col-group-form {
+          min-width: 337px;
+          .k-form-field-wrap {
+            .k-focus {
+              outline: 1px solid #1a6634;
+            }
+          }
+        }
+
+        .k-input {
+          height: 33px;
+          outline: 1px solid #00000014;
+          border-radius: 3px;
+          &:hover {
+            outline: 1px solid #1a6634;
+          }
+        }
+        .k-dropdownlist {
+          background-color: transparent;
+          height: 33px;
+          border-radius: 3px;
+          outline: 1px solid #00000014;
+
+          &:hover {
+            outline: 1px solid #1a6634;
+          }
+          &:focus {
+            outline: 1px solid #1a6634;
+          }
+        }
+        padding-bottom: 7px;
+        .k-form-field-wrap {
+          padding-bottom: 7px;
+        }
+        .k-label {
+          padding-bottom: 7px;
+        }
+        gap: 25px;
+        .hamberPack-form-group {
+          display: flex;
+          gap: 10px;
+        }
+
+        .small-textbox {
+          height: 33px;
+          // width: 18%;
+        }
+        .big-textbox {
+          height: 33px;
+          width: 70%;
+        }
+      }
+      .baseUnit {
+        .baseUnit-grid {
+          gap: 10px;
+        }
+        .k-form-field-wrap {
+          .baseUnit-labelGroup {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+        }
+      }
+    }
+    .hamberOthers-form {
+      padding-top: 13px;
+      text-wrap: nowrap;
+      .hamberOthersDetails-form {
+        background-color: white;
+        overflow-x: auto;
+        padding: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        color: #959db3;
+        .grid-item {
+          gap: 20px;
+          min-width: 337px;
+          .k-form-field-wrap {
+            .k-focus {
+              outline: 1px solid #1a6634;
+            }
+          }
+        }
+        .k-input {
+          height: 33px;
+          outline: 1px solid #00000014;
+          border-radius: 3px;
+          &:hover {
+            outline: 1px solid #1a6634;
+          }
+        }
+        .k-label {
+          padding-bottom: 7px;
+        }
+      }
+    }
+  }
+  .hamerApply {
+    .hamberForm-content {
+      padding: 10px 10px 30px 10px;
+      gap: 20px;
+      background-color: white;
+      overflow-x: auto;
+      .col-span-1 {
+        min-width: 337px;
+      }
+    }
+    .hamber-title {
+      display: flex;
+      gap: 40px;
+      padding-bottom: 5px;
+      .hamber-title-text {
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
       }
     }
   }
