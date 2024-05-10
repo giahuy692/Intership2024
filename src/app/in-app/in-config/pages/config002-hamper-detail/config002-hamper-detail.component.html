@@ -116,11 +116,12 @@
                             </div>
                             <kendo-dropdownlist 
                             [fillMode]="'outline'" 
+                            [defaultItem]="defaultItem"
                             formControlName="baseUnit"
                             iconClass="fa-solid fa-angle-down" 
                             class="input" 
                             [data]="unitData.DataUnitProduct" 
-                            textField="made" 
+                            textField="text" 
                             valueField="id"
                             
                             >
