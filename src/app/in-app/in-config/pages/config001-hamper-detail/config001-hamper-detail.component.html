@@ -1,14 +1,17 @@
+<!-- Breadcumb and buttons -->
 <div class="breadcrumb-container">
     <kendo-breadcrumb [collapseMode]="collapseMode" [items]="items" SetClassSVGIcon HamperBreadcrumb />
     <div class="button-group-field">
         <button *ngFor="let button of listButtonAvailable" type="button" HamperButtons
-            [attr.data-type]="button.typeButton" (click)="onClickButton(button.nameButton)">
+            [attr.data-type]="button.typeButton" (click)="onClickOptionButton(button.nameButton)">
             <kendo-svg-icon [icon]='button.svgClassIcon' />{{button.nameButton}}
         </button>
     </div>
 </div>
 
+
 <div class="hamper-body">
+
 
     <!-- Thông tin hamper -->
     <div class="hamper-detail" [ngClass]="{'disabled' : disableField(status)}">
@@ -22,60 +25,74 @@
 
                 <div class="col-span-1">
 
+
                     <!-- Input Barcode -->
                     <div class="first-child"><kendo-label for="origin-barcode" text="Barcode" /><span Necessary></span>
                     </div>
                     <kendo-textbox class="disabled-input" (keydown)="onKeyDown($event)"
-                        (mousedown)="onMouseDown($event)" id="origin-barcode" type="text"
+                         id="origin-barcode" type="text"
                         formControlName="originBarcode" />
+
 
                     <!-- Input tên tiếng việt -->
                     <div style="display: flex; gap: 5px;"><kendo-label for="nameVN" text="Tên tiếng Việt" /> <span
                             Necessary></span></div>
                     <kendo-textbox id="nameVN" type="text" (blur)="onInputNameTVBlur()" formControlName="nameVN"
-                        #inputNameTV />
+                        (click)="onClickInput()" />
+
 
                     <!-- Input tên tiếng anh -->
                     <kendo-label for="nameENG" text="Tên tiếng Anh" />
-                    <kendo-textbox id="nameENG" type="text" (blur)="setValueHamperInfor()" formControlName="nameENG" />
+                    <kendo-textbox id="nameENG" type="text" (blur)="onBlurValueHamperInfor()" formControlName="nameENG"
+                        (click)="onClickInput()" />
+
 
                     <!-- Input tên tiếng nhật -->
                     <kendo-label for="nameJP" text="Tên tiếng Nhật" />
-                    <kendo-textbox id="nameJP" type="text" (blur)="setValueHamperInfor()" formControlName="nameJP" />
+                    <kendo-textbox id="nameJP" type="text" (blur)="onBlurValueHamperInfor()" formControlName="nameJP"
+                        (click)="onClickInput()" />
+
 
                 </div>
 
                 <div class="col-span-1">
 
+
                     <!-- Input xuất xứ -->
                     <kendo-label class="first-child" for="origin" text="Xuất xứ" />
                     <kendo-dropdownlist id="origin" [fillMode]="'outline'" iconClass="fa-solid fa-angle-down"
-                        [data]="dataOrigin.dataMadeHameper" valueField="id" textField="made" #originDropdown />
+                        [data]="dataOrigin.dataMadeHameper" valueField="id" textField="made" #originDropdown [defaultItem]="defaultItem"/>
+
 
                     <!-- Input chất liệu tiếng việt -->
                     <kendo-label for="materialVN" text="Chất liệu tiếng Việt" />
-                    <kendo-textbox id="materialVN" type="text" formControlName="materialVN"
-                        (blur)="setValueHamperInfor()" />
+                    <kendo-textbox id="materialVN" type="text" formControlName="materialVN" (click)="onClickInput()"
+                        (blur)="onBlurValueHamperInfor()" />
+
 
                     <!-- Input chất liệu tiếng anh -->
                     <kendo-label for="materialENG" text="Chất liệu tiếng Anh" />
-                    <kendo-textbox id="materialENG" type="text" formControlName="materialENG"
-                        (blur)="setValueHamperInfor()" />
+                    <kendo-textbox id="materialENG" type="text" formControlName="materialENG" (click)="onClickInput()"
+                        (blur)="onBlurValueHamperInfor()" />
+
 
                     <!-- Input chất liệu tiếng nhật -->
                     <kendo-label for="materialJP" text="Chất liệu tiếng Nhật" />
-                    <kendo-textbox id="materialJP" type="text" formControlName="materialJP"
-                        (blur)="setValueHamperInfor()" />
+                    <kendo-textbox id="materialJP" type="text" formControlName="materialJP" (click)="onClickInput()"
+                        (blur)="onBlurValueHamperInfor()" />
+
 
                 </div>
 
                 <div class="col-span-1" style="justify-content: center; display: flex;">
-                    <app-import-image srcImage="default-image.png" (fileSelected)="onFileSelected($event)"></app-import-image>
+                    <app-import-image [srcImage]="inforHamperBeforeChange.image"
+                        (fileSelected)="onFileSelected($event)"></app-import-image>
                 </div>
 
             </form>
         </div>
     </div>
+
 
     <!-- Thông tin đóng gói -->
     <div class="hamper-infor-package" [ngClass]="{'disabled' : disableField(status)}">
@@ -84,7 +101,7 @@
             <div class="col-span-1">
                 <kendo-label class="first-child" for="product-unit" text="Đơn vị sản phẩm (Base unit)" />
                 <kendo-dropdownlist id="product-unit" [fillMode]="'outline'" iconClass="fa-solid fa-angle-down"
-                    [data]="productUnit.DataUnitProduct" valueField="id" textField="made" />
+                    [data]="productUnit.DataUnitProduct" valueField="id" textField="text" [defaultItem]="defaultItemUnit" />
 
                 <kendo-label for="size-product" text="Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)" />
                 <div class="group-size-product">
@@ -155,6 +172,7 @@
         </div>
     </div>
 
+
     <!-- Thông tin khác -->
     <div class="hamper-other-infor" [ngClass]="{'disabled' : disableField(status)}">
         <div class="hamper-other-infor_title">Thông tin khác</div>
@@ -166,10 +184,12 @@
         </div>
     </div>
 
+
     <!-- Danh sách sản phẩm thuộc hamper -->
     <div class="hamper-list-product" [ngClass]="{'disabled' : disableField(status)}">
         <app-product-list [products]="hamperCrr.ProductList" [stateHamper]="hamperCrr.State"></app-product-list>
     </div>
+
 
     <!-- Công ty áp dụng -->
     <div class="hamper-list-company" [ngClass]="{'disabled' : disableField(status)}">
@@ -200,4 +220,10 @@
             </div>
         </div>
     </div>
+
+
+    <!-- Tag name -->
+    <div class="tag-name">© Đỗ Quốc Thành</div>
+
+
 </div>
