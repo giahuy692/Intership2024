@@ -22,8 +22,10 @@ export class ItemCompanyComponent implements OnInit{
   @Input() setValue: Array<DTOCompany> = DataDefautCompany
   @Input() important: boolean = false
   @Input() totalPrice: number = 0
+  @Input() disableCheckbox: boolean = false
   @Output() getValue = new EventEmitter<any>();
   @Input() isSelectedCompany: boolean = false
+
 
   selectedItem1: any = null
   selectedItem2: any = null
@@ -137,6 +139,6 @@ export class ItemCompanyComponent implements OnInit{
     this.selectedItem3 = null;
     this.selectedItem4 = null;
     this.selectedItem5 = null;
-    console.log(this.isSelectedCompany);
+    this.handleSelectedItem(this.selectedItem1, this.selectedItem2, this.selectedItem3, this.selectedItem4, this.selectedItem5)
   }
 }
