@@ -49,7 +49,7 @@ export class ItemCompanyComponent implements OnInit{
   }
 
   handleSelectedItem(selectedItem1: any, selectedItem2: any, selectedItem3: any, selectedItem4: any, selectedItem5: any){
-    const selectedItems = {code: this.setValue[0].code, state: this.isSelectedCompany ,name: this.setValue[0].name,itemSelected: [{level1: selectedItem1}, {level2: selectedItem2}, {level3: selectedItem3},{level4: selectedItem4},{level5: selectedItem5}]}
+    const selectedItems = {code: this.setValue[0].code,require: this.important ,state: this.isSelectedCompany ,name: this.setValue[0].name,itemSelected: [{level1: selectedItem1}, {level2: selectedItem2}, {level3: selectedItem3},{level4: selectedItem4},{level5: selectedItem5}]}
     this.getValue.emit(selectedItems);
   }
  
