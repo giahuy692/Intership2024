@@ -19,27 +19,27 @@
     }
 }
 
-.disabled-no-hover{
+.disabled-no-hover {
     opacity: 0.6;
 
-    .k-input-inner:hover{
+    .k-input-inner:hover {
         border: 2px solid $border-color-input;
     }
 }
 
-.disabled{
+.disabled {
     opacity: 0.6;
-    
-    .k-input-inner:hover{
+
+    .k-input-inner:hover {
         border: 2px solid $dark-green;
     }
 }
 
-.disabled-input{
+.disabled-input {
     opacity: 0.4;
     background-color: $grey;
-    
-    .k-input-inner{
+
+    .k-input-inner {
         border: none !important;
     }
 }
@@ -57,7 +57,7 @@
         border-radius: 2px;
     }
 
-    .k-input-inner:hover{
+    .k-input-inner:hover {
         border: 2px solid $dark-green;
     }
 
@@ -102,7 +102,7 @@
             }
 
             div {
-                padding: 12px 8px;
+                padding: 12px 0px;
                 font-weight: 600;
                 display: flex;
                 align-items: center;
@@ -160,7 +160,7 @@
     .hamper-infor-package {
 
         &_title {
-            padding: 12px 8px;
+            padding: 12px 0px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -263,7 +263,7 @@
     .hamper-other-infor {
 
         &_title {
-            padding: 12px 8px;
+            padding: 12px 0px;
             font-weight: 600;
             display: flex;
             align-items: center;
@@ -289,7 +289,7 @@
                 padding-bottom: 8px;
             }
 
-            .k-input-inner{
+            .k-input-inner {
                 width: 519.33px;
             }
 
@@ -303,5 +303,58 @@
                 }
             }
         }
+    }
+
+    .hamper-list-product {
+
+        .k-input-inner {
+            border: none;
+        }
+
+        .k-input-inner:hover {
+            border: none;
+        }
+    }
+
+    .hamper-list-company {
+
+        &_title {
+            padding: 12px 0px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            color: $text-black;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        &_container{
+            overflow-x: auto;
+
+            .grid-cols-3{
+                background-color: #fff;
+                width: 1623px;
+                padding: 15px;
+                gap: 15px;
+
+                .col-span-1{
+                    height: 100%;
+                }
+    
+                .k-input-inner {
+                    border: none;
+                }
+        
+                .k-input-inner:hover {
+                    border: none;
+                }
+
+                .inputPrice{
+                    height: 100% !important ;
+                }
+            }
+        }
+
+       
     }
 }

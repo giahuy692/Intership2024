@@ -1,10 +1,17 @@
-import { Component, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { FileRestrictions, SelectEvent } from '@progress/kendo-angular-upload';
 
 type ImagePreview = {
   src: string | ArrayBuffer;
   uid: string;
 };
+
+/**
+ * Component import image
+ * - Only import from folder assets of project
+ * - Having 1 input srcImage to transmit 1 src photo
+ * - Having 1 output fileSelected to get name image that is imported
+ */
 
 @Component({
   selector: 'app-import-image',
@@ -16,12 +23,14 @@ export class ImportImageComponent {
   public events: string[] = [];
   public imagePreview: ImagePreview;
   @Output() fileSelected: EventEmitter<string> = new EventEmitter<string>();
+  @Input() srcImage: string = '';
 
   public fileRestrictions: FileRestrictions = {
     allowedExtensions: [".jpg", ".png"],
   };
 
   public select(e: SelectEvent){
+    this.srcImage = '';
     const objectFile = e.files;
     this.imagePreview = null;
     const that = this;
@@ -50,6 +59,8 @@ export class ImportImageComponent {
 
   public delete(){
     this.imagePreview = null;
+    this.srcImage = null;
+    this.fileSelected.emit('');
   }
 
 }
