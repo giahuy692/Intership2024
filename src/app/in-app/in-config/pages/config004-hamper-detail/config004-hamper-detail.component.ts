@@ -29,7 +29,7 @@ import { TextBoxComponent } from '@progress/kendo-angular-inputs';
 export class Config004HamperDetailComponent implements OnInit, OnDestroy {
   vietHaCom: Array<DTOCompany> = companyVietHaTri
   motThanhCom: Array<DTOCompany> = companyMotThanhVien
-  PSCom: Array<DTOCompany> = companyMotThanhVien
+  PSCom: Array<DTOCompany> = company3PS
 
   receivedCPN1: any;
   receivedCPN2: any;
@@ -61,7 +61,7 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
   ];
 
   formHamper = new FormGroup({
-    status: new FormControl,
+    status: new FormControl(),
     barcode: new FormControl(''),
     nameVietNames: new FormControl(''),
     nameEnglish: new FormControl,
@@ -96,7 +96,7 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
       height: new FormControl('', [Validators.min(0)]),
       weight: new FormControl('', [Validators.min(0)])
     }),
-    changeInner: new FormControl(0, [Validators.min(0)]),
+    changeInner: new FormControl('', [Validators.min(0)]),
     changeCarton: new FormControl('', [Validators.min(0)]),
     changePallet: new FormControl('', [Validators.min(0)]),
     specifications: new FormControl,
@@ -123,7 +123,7 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
   defaultItemDropdownOgirin = { id: -1, text: "--- Chọn ---", data: null as string };
 
 
-  currentStatusHamper: number = 0
+  currentStatusHamper: any 
   barcodeHamper: string = ''
   nameVietnamesHamper: string = ''
   idProductItem: string = ''
@@ -135,12 +135,14 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
   initialFormValue: any;
 
   constructor(private toast: NotifiService,){}
-   findProductByBarcode(barcode: string){
+
+
+  findProductByBarcode(barcode: string){
     const lowercaseBarcode = barcode.toLowerCase();
     this.itemProductFilter = ItemProduct.find(product => product.Barcode.toLowerCase() === lowercaseBarcode);
 
     if(this.itemProductFilter == undefined){
-      this.itemProductFilter = undefined
+      this.itemProductFilter = {Name: '', Image: ''}
       this.toast.message("Không tìm thấy sản phẩm", "error")
       return
     }
@@ -154,6 +156,7 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
       }
       let product = {Name: this.itemProductFilter.Name, Image: this.itemProductFilter.Image, Barcode:this.itemProductFilter.Barcode, Origin: this.itemProductFilter.Origin, Brand:this.itemProductFilter.Brand, Price: this.itemProductFilter.Price, Quantity: this.quantityProduct}
       this.dataItemProductInHamper.push(product)
+      this.formHamper.get("productItem").patchValue(this.dataItemProductInHamper);
       this.toast.message("Thêm sản phẩm thành công!", "success")
     }else{
       this.toast.message("Thêm sản phẩm thất bại!", "error")
@@ -166,6 +169,8 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
 
   closeDrawer():any{
     this.isOpenDrawer = false
+    this.quantityProduct = 0
+    this.idProductItem = ''
   }
 
   getValueCompany1($event: any) { 
@@ -191,30 +196,30 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
     // console.log(this.receivedCPN2);
     // console.log(this.receivedCPN3);
 
-    console.log(this.formHamper.value);
+    // console.log(this.formHamper.value);
+    console.log(this.formHamper.get('status').value?.text);
   }
 
 
 
   ngOnInit(): void {
     //Thực hiện theo dõi tồn tại của barcode và cập nhật
-    console.log(this.formHamper);
-    let subriceBarcode =  this.formHamper.valueChanges.subscribe(() => {
-      const barcodeControl = this.formHamper.get('barcode');
-      if (!barcodeControl.value) {
-        const newBarcode = this.generateUniqueBarcode(); 
-        barcodeControl.setValue(newBarcode);
-        this.updateBarcodeInForm() 
-        subriceBarcode.unsubscribe()
-      }
-    });
+    // let subriceBarcode =  this.formHamper.valueChanges.subscribe(() => {
+    //   const barcodeControl = this.formHamper.get('barcode');
+    //   if (!barcodeControl.value) {
+    //     const newBarcode = this.generateUniqueBarcode(); 
+    //     barcodeControl.setValue(newBarcode);
+    //     this.updateBarcodeInForm() 
+    //     subriceBarcode.unsubscribe()
+    //   }
+    // });
     this.initialFormValue = this.formHamper.value;
     this.previousNameVietNames = this.formHamper.get('nameVietNames').value;
   }
 
   //Cập nhật Status trong form thông qua biến currentStatusHamoer
   updateStatusInForm(): void {
-    this.formHamper.get('status').setValue(this.currentStatusHamper);
+    this.currentStatusHamper = this.formHamper.get('status').value;
   }
 
   //Cập nhật biến barcodeHamer thông qua barcode trong formHamber
@@ -224,21 +229,28 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
 
     let statusDrawer = {id: 0, text: "Đang soạn thảo"}
     this.formHamper.get('status').setValue(statusDrawer);
-    console.log(this.formHamper);
+    this.updateStatusInForm()
   }
 
   //Cập nhật Status trong form thông qua biến currentStatusHamoer
     updateNameVietnamesInForm(): void {
       this.formHamper.get('nameVietNames').setValue(this.nameVietnamesHamper);
+     
     }
 
   // Cập nhật giá trị của FormControl sau khi trường input mất focus
   onBlurNameVietNames() {
     const newNameVietNames = this.formHamper.get('nameVietNames').value;
-    console.log(newNameVietNames);
     if (newNameVietNames.trim() === "" && this.previousNameVietNames.trim() === "") {
       return;
     }else{
+      if(this.previousNameVietNames.trim() === ""){
+        const barcodeControl = this.formHamper.get('barcode');
+        const newBarcode = this.generateUniqueBarcode(); 
+        barcodeControl.setValue(newBarcode);
+        this.updateBarcodeInForm() 
+        this.previousNameVietNames = newNameVietNames;
+      }else{
       if (newNameVietNames == '') {
         // Nếu newNameVietNames là rỗng, gán lại giá trị trước đó
         this.formHamper.get('nameVietNames').setValue(this.previousNameVietNames);
@@ -247,6 +259,8 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
         // Nếu newNameVietNames không rỗng, cập nhật giá trị trước đó
         this.previousNameVietNames = newNameVietNames;
       }
+      }
+     
     }
   
     
@@ -279,9 +293,11 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
       case 4:
         this.formHamper.reset();
         console.log("Form reset:", this.formHamper.value);
+        this.barcodeHamper = ''
+        this.previousNameVietNames = ''
         break;
     }
-    this.log();
+    this.updateStatusInForm()
   }
 
   generateUniqueBarcode(): string {

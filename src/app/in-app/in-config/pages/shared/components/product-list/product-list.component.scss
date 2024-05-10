@@ -41,7 +41,7 @@
       width: 100%;
       background-color: #edeff3;
       height: 65px;
-      position: sticky;
+      // position: sticky;
       top: 0;
       z-index: 60;
       padding: 10px 0;
@@ -147,6 +147,10 @@
               &.product-img {
                 width: 40px;
                 height: 40px;
+                .img{
+                  width: 40px;
+                  height: 40px;
+                }
               }
               &.product-name {
                 .name-area {
