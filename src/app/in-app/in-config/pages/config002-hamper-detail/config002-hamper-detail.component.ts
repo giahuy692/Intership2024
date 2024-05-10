@@ -113,6 +113,7 @@ export class Config002HamperDetailComponent implements OnInit {
     Name: 'Product 1',
     Brand: 'Brand 1',
     Origin: 'Origin 1',
+    Image: 'https://sonhawater.vn/wp-content/uploads/2020/10/aquafina-355ml-new-2023.jpg',
     Price: 10,
     Quantity: 2
   },
@@ -121,6 +122,7 @@ export class Config002HamperDetailComponent implements OnInit {
     Name: 'Product 2',
     Brand: 'Brand 2',
     Origin: 'Origin 2',
+    Image:'https://lh3.googleusercontent.com/onIn_NMqtrREr1B1V_S0Lw2yh_-Oj0GzxK1NFgYt4OrObaZj6x-C0kCg9czPRRbAhsDQIcanV7nCkyrNDN2AkQ9XcQ69pkKa',
     Price: 15,
     Quantity: 3
   },
@@ -129,6 +131,7 @@ export class Config002HamperDetailComponent implements OnInit {
     Name: 'Product 3',
     Brand: 'Brand 3',
     Origin: 'Origin 3',
+    Image: 'https://duatruongson.com/thumbs/540x540x1/upload/product/do-dan-1788.jpg',
     Price: 20,
     Quantity: 5
   },
@@ -190,6 +193,7 @@ export class Config002HamperDetailComponent implements OnInit {
   }]
 
   searchedProduct : DTOProduct;
+  quantityInput : number = null;
 
   onFormSubmit() {
     if (this.hamperForm.valid) {
@@ -251,12 +255,14 @@ export class Config002HamperDetailComponent implements OnInit {
   }
 
   updateHamperProduct(){
-    const foundProductInHamper = this.tempProductList.find(product => product.Barcode == this.searchedProduct.Barcode);
+    let foundProductInHamper = this.tempProductList.find(product => product.Barcode == this.searchedProduct.Barcode);
     if(!foundProductInHamper){
-      this.tempProductList.push(this.searchedProduct)
-      
+      const tempProduct = {...this.searchedProduct}
+      tempProduct.Quantity = this.quantityInput;
+      this.tempProductList.push(tempProduct)
     }
     this.hamperForm.get('ProductList').setValue(this.tempProductList)
+    this.quantityInput = null;
   }
 
   checkDisable() {

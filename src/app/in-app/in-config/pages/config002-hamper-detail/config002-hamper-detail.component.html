@@ -270,7 +270,7 @@
             </div>
 
             <div class="hamper-info-container" [ngClass]="{'disable': checkDisable() == false}">
-                <app-product-list [products]="tempProductList" (sendDataOpenDrawer)="openDrawer()" #productlist></app-product-list>
+                <app-product-list [products]="tempProductList" [stateHamper]="hamperObject.State" (sendDataOpenDrawer)="openDrawer()" #productlist></app-product-list>
             </div>
 
             <div class="hamper-info-container" [ngClass]="{'disable': checkDisable() == false}">
@@ -315,18 +315,18 @@
                         <div class="label-group" [ngClass]="{'disable': checkDisable() == false}">
                             <span class="label-text">Số lượng có trong hamper</span>
                         </div>
-                        <kendo-textbox class="input" [ngClass]="{'norDisable': checkDisable() == false}"></kendo-textbox>
+                        <kendo-numerictextbox class="input right-input" [(value)]="quantityInput" format="##" [min]="0" [autoCorrect]="true" [ngClass]="{'norDisable': checkDisable() == false}"></kendo-numerictextbox>
                     </div>
 
                     <div class="input-group col-span-1">
-                        <img src="../../../../../assets/default-image.png" alt="" class="img">
+                        <img src="{{searchedProduct.Image}}" onerror="this.src='../../../../../../../assets/default-image.png'" alt="" class="img">
                     </div>
                 </div>
                 
                 <div class="input-group func-group">
                     <button HamperButtons data-type="cancel" class="func-button" (click)="closeDrawer(); termInput.clearValue()"> Đóng
                     </button>
-                    <button HamperButtons data-type="success" class="func-button" (click)="updateHamperProduct(); productlist.search()">Cập nhập
+                    <button HamperButtons data-type="success" class="func-button" (click)="updateHamperProduct()" *ngIf="searchedProduct">Cập nhập
                     </button>
                 </div>
 
