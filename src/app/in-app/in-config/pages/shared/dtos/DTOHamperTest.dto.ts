@@ -17,6 +17,7 @@ export class DTOHamperTest{
         vietnameseMaterial?: string,
         englishMaterial?: string,
         japaneseMaterial?: string,
+        image?: string,
         baseUnit?: number,
         productSize?:{
           long?: number,
