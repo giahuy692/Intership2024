@@ -40,7 +40,7 @@ export class ItemCompanyComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.searchType1 = this.setValue[0].itemConpany.slice();
+    this.searchType1 = this.setValue[0].itemCompany.slice();
     this.handleSelectedItem(this.selectedItem1, this.selectedItem2, this.selectedItem3, this.selectedItem4, this.selectedItem5)
   }
 
@@ -116,7 +116,7 @@ export class ItemCompanyComponent implements OnInit{
   handleFilter(value: string, level: number) {
     switch (level) {
         case 1:
-          this.searchType1 = this.setValue[0].itemConpany.filter((s) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+          this.searchType1 = this.setValue[0].itemCompany.filter((s) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
           break;
         case 2:
           this.searchType2 = this.selectedItem1?.child.filter((s: { name: string }) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
