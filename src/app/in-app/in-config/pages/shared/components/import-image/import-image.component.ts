@@ -50,6 +50,7 @@ export class ImportImageComponent {
 
   public delete(){
     this.imagePreview = null;
+    this.fileSelected.emit('');
   }
 
 }
