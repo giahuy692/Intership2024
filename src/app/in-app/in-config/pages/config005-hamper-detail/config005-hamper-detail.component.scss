@@ -218,8 +218,9 @@
     }
   }
   .hamerApply {
+    padding-bottom: 20px;
     .hamberForm-content {
-      padding: 10px 10px 30px 10px;
+      padding: 10px;
       gap: 20px;
       background-color: white;
       overflow-x: auto;
@@ -237,5 +238,13 @@
         text-transform: uppercase;
       }
     }
+  }
+}
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  background-color: #f8f9fa;
+  .footer-name {
+    padding-right: 16px;
   }
 }

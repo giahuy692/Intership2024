@@ -34,10 +34,10 @@
 
   <!-- Thong tin HAMPER  FORM -->
   <div class="hamberDetails">
-    <form [formGroup]="hamber">
+    <form [formGroup]="hamberForm">
       <!-- thong tin hamber -->
       <div class="hamber-title">
-        <h4 class="hamber-title-text">Thông tin hamber</h4>
+        <h4 class="hamber-title-text">Thông tin hamper</h4>
         <h5 class="hamber-title-status">Đang soạn thảo</h5>
       </div>
       <div class="hamber-form">
@@ -68,6 +68,7 @@
                 <kendo-textbox
                   formControlName="vietnamese"
                   #vietnamese
+                  (blur)="createHamperOnBlur()"
                   required
                 ></kendo-textbox>
               </kendo-formfield>
@@ -105,7 +106,6 @@
                   [textField]="'made'"
                   [valueField]="'id'"
                   [valuePrimitive]="true"
-                  [defaultItem]="defultOrigin"
                   [data]="origins"
                   formControlName="origin"
                 >
@@ -460,4 +460,8 @@
       </button>
     </div>
   </app-hamper-drawer>
+</div>
+
+<div class="footer">
+  <span class="footer-name">@Tan Hieu</span>
 </div>
