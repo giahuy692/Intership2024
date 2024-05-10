@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./config002-partner-management.component.scss']
 })
 export class Config002PartnerManagementComponent {
-
+  
 }
