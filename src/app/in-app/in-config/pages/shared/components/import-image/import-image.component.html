@@ -9,7 +9,7 @@
     </div>
     <div class="image-container" *ngIf="imagePreview">
         <div class="img-preview example-config big-image">
-            <img src="imagePreview.src" alt="small image preview" />
+            <img [src]="imagePreview.src" alt="big image preview" />
             <span class="k-icon k-font-icon k-i-minus-outline" (click)="delete()"></span>
         </div>
         <div class="img-preview example-config small-image">
@@ -24,7 +24,7 @@
             <span class="k-icon k-font-icon k-i-minus-outline" (click)="delete()"></span>
         </div>
         <div class="img-preview example-config small-image">
-            <img src="\assets/{{srcImage}}" alt="big image preview" />
+            <img src="\assets/{{srcImage}}" alt="small image preview" />
             <span class="k-icon k-font-icon k-i-minus-outline" (click)="delete()"></span>
         </div>
     </div>
