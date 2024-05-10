@@ -68,11 +68,11 @@
             <div class="content-hamper">
                 <div class="group-item grid-cols-3">
                     <div class="col-limit col-span-1">
-                        <div class="group">
+                        <div class="group ">
                             <kendo-label class="kendo-label"> 
                                 Barcode gốc &nbsp; <span Necessary></span>
                             </kendo-label>
-                            <kendo-textbox class="kendo-textbox" [(value)]="barcodeHamper" [disabled]="true"></kendo-textbox>
+                            <kendo-textbox class="kendo-textbox barcode" [(value)]="barcodeHamper" [disabled]="true"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
@@ -80,13 +80,13 @@
                             </kendo-label>
                             <kendo-textbox class="kendo-textbox" formControlName="nameVietNames" (blur)="onBlurNameVietNames()"></kendo-textbox>
                         </div>
-                        <div class="group">
+                        <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="group">
                             <kendo-label class="kendo-label"> 
                                 Tên tiếng Anh
                             </kendo-label>
                             <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="nameEnglish"></kendo-textbox>
                         </div>
-                        <div class="group">
+                        <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="group">
                             <kendo-label class="kendo-label"> 
                                 Tên tiếng Nhật
                             </kendo-label>
@@ -94,7 +94,7 @@
                         </div>
                     </div>
     
-                    <div class="col-limit col-span-1">
+                    <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="col-limit col-span-1">
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Xuất xứ
@@ -133,18 +133,18 @@
                         </div>
                     </div>
 
-                    <div class="col-limit import-image col-span-1">
-                        <app-import-image></app-import-image>
+                    <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="col-limit import-image col-span-1">
+                        <app-import-image (fileSelected)="getImage($event)"></app-import-image>
                     </div>
                    
                 </div>
             </div>
         </div>
-        <div class="hamper-info-package block-hamper">
+        <div  class="hamper-info-package block-hamper">
             <div class="header"> 
                  <div class="title-header">{{'Thông tin đóng gói' | uppercase}}</div>
             </div>
-            <div class="content-hamper">
+            <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="content-hamper">
                 <div class="group-item grid-cols-3">
                     <div class="col-span-1">
                         <div class="group">
@@ -250,11 +250,11 @@
             </div>
         </div>
 
-        <div class="hamper-otherInfor block-hamper">
+        <div  class="hamper-otherInfor block-hamper">
             <div class="header"> 
                  <div class="title-header">{{'Thông tin khác' | uppercase}}</div>
             </div>
-            <div class="content-hamper">
+            <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="content-hamper">
                 <div class="group-item grid-cols-3">
                     <div class="group col-span-1">
                         <kendo-label class="kendo-label"> 
@@ -267,15 +267,21 @@
             </div>
         </div>
 
-        <div class="hamper-product-list">
-            <app-product-list (sendDataOpenDrawer)="openDrawer()" [atrr.stateHamper]="formHamper.get('status').value?.text"  [products]="dataItemProductInHamper" class="product-list"></app-product-list>
+        <div  [ngClass]="{'product-list-disable': barcodeHamper == '' ? true : false}" >
+           <app-product-list  
+               
+                (sendDataOpenDrawer)="openDrawer()" 
+                [stateHamper]="formHamper.get('status').value?.text"  
+                [products]="dataItemProductInHamper">
+            </app-product-list>
+
         </div>
 
-        <div class="hamper-company block-hamper">
+        <div  class="hamper-company block-hamper">
             <div class="header"> 
                  <div class="title-header">{{'Công ty áp dụng' | uppercase}}</div>
             </div>
-            <div class="content-hamper">
+            <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="content-hamper">
                 <div class="group-item grid-cols-3 item-company">
                     <div class="group col-span-1">
                         <app-item-company [disableCheckbox]="barcodeHamper==''" [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>

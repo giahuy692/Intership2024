@@ -93,6 +93,11 @@
     
 }
 
+// .disable-aria{
+//     opacity: 0.7;
+//     pointer-events: none;
+// }
+
 
 
 .body{
@@ -292,6 +297,10 @@
             .group-item{
                 padding: 0px 20px;
                 .col-span-1 {
+
+                    .barcode{
+                        opacity: 0.7;
+                    }
                     margin-right: 10px;
                     min-width: 377px;
                 }
@@ -406,13 +415,22 @@
         }
     }
 
-    .hamper-list-product{
+    .product-list-disable{
+        pointer-events: none;
+        opacity: 0.7;
         // height: 0px;
         // max-height: 388px;
         // background-color: red;
-        .product-list{
-            max-height: 388px;
-        }
+        // .product-list{
+        //     max-height: 388px;
+        //     height: 10000px;
+        //     pointer-events: none;
+        // }
+
+        // .product-list-disable{
+        //     pointer-events: none;
+        //     background-color: red;
+        // }
     }
 
     .hamper-company{

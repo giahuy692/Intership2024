@@ -173,11 +173,13 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
     this.idProductItem = ''
   }
 
+  getImage($event: any){
+    this.formHamper.get("image").patchValue($event)
+  }
+
   getValueCompany1($event: any) { 
     this.updateCompanyValue($event, 'company1');
   }
-
-
   getValueCompany2($event: any) {
     this.updateCompanyValue($event, 'company2');
   }
@@ -195,9 +197,9 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
     // console.log(this.receivedCPN1);
     // console.log(this.receivedCPN2);
     // console.log(this.receivedCPN3);
-
-    // console.log(this.formHamper.value);
-    console.log(this.formHamper.get('status').value?.text);
+    
+    console.log(this.formHamper.value);
+    // console.log(this.formHamper.get('status').value?.text);
   }
 
 
