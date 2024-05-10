@@ -6,5 +6,5 @@ export const DataButtonStatus = [
     {id: 1, text: 'Phê duyệt', icon: checkOutlineIcon, status: 'success', dataShow: [1, 3]},
     {id: 2, text: 'Trả về', icon: undoIcon, status: 'return', dataShow: [1,3]},
     {id: 3, text: 'Ngưng hiển thị', icon: minusOutlineIcon, status: 'danger', dataShow: [2]},
-    {id: 4, text: 'Xóa', icon: trashIcon, status: 'danger', dataShow: [0]}
+    {id: 4, text: 'Xóa hamper', icon: trashIcon, status: 'danger', dataShow: [0]}
 ]

@@ -146,6 +146,8 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
       this.toast.message("Không tìm thấy sản phẩm", "error")
       return
     }
+
+    console.log(this.itemProductFilter);
   }
 
   handleAddProductHamper(){
@@ -171,6 +173,7 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
     this.isOpenDrawer = false
     this.quantityProduct = 0
     this.idProductItem = ''
+    this.itemProductFilter = ''
   }
 
   getImage($event: any){
@@ -281,15 +284,36 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
   handleChangeStatus(statusChange: number): void {
     switch (statusChange) {
       case 0:
+        if (!this.formHamper.get('barcode').value 
+        || !this.formHamper.get('nameVietNames').value 
+        || !this.formHamper.get('image').value 
+        || !this.formHamper.get('company').get('company1').value 
+        || !this.formHamper.get('productItem').value) {
+        this.toast.message("Vui lòng chọn đầy đủ thông tin yêu cầu", "error");
+        return;
+    }
+    
+        this.toast.message("Gửi duyệt thành công", "success")
         this.formHamper.get('status').setValue({ id: 1, text: "Gửi duyệt" });
         break;
       case 1: 
+        if (!this.formHamper.get('barcode').value 
+          || !this.formHamper.get('nameVietNames').value 
+          || !this.formHamper.get('image').value 
+          || !this.formHamper.get('company').get('company1').value 
+          || !this.formHamper.get('productItem').value) {
+          this.toast.message("Vui lòng chọn đầy đủ thông tin yêu cầu", "error");
+          return;
+        }
+        this.toast.message("Phê duyệt thành công", "success")
         this.formHamper.get('status').setValue({ id: 2, text: "Duyệt áp dụng" });
         break;
       case 2:
+        this.toast.message("Trả về thành công", "success")
         this.formHamper.get('status').setValue({ id: 4, text: "Trả về" });
         break;
       case 3:
+        this.toast.message("Ngưng áp dụng thành công", "success")
         this.formHamper.get('status').setValue({ id: 3, text: "Ngưng áp dụng" });
         break;
       case 4:
@@ -297,6 +321,8 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
         console.log("Form reset:", this.formHamper.value);
         this.barcodeHamper = ''
         this.previousNameVietNames = ''
+        this.dataItemProductInHamper = []
+        this.toast.message("Xóa thành công", "success")
         break;
     }
     this.updateStatusInForm()
@@ -306,6 +332,13 @@ export class Config004HamperDetailComponent implements OnInit, OnDestroy {
     const timestamp = Date.now().toString();
     const randomNum = Math.floor(Math.random() * 10000).toString();
     return timestamp + randomNum;
+  }
+
+  addNewHamper(){
+    this.formHamper.reset();
+    this.barcodeHamper = ''
+    this.previousNameVietNames = ''
+    this.dataItemProductInHamper = []
   }
 
   ngOnDestroy(): void {
