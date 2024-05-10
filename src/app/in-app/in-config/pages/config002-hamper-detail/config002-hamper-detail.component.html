@@ -98,7 +98,7 @@
                     </div>
                     <div class="hamper-info-code-img-block info-block col-span-1" [ngClass]="{'disable': checkDisable() == false}">
                         <div class="input-group img-group">
-                            <app-import-image></app-import-image>
+                            <app-import-image ></app-import-image>
                         </div>
                     </div>
                 </div>
@@ -279,13 +279,13 @@
                 </div>
                 <div class="hamper-info-content-block grid-cols-3">
                     <div class="hamper-info-code-name-block info-block col-span-1">
-                        <app-item-company [setValue]="companyData.companyVietHaTri" [important]="true"></app-item-company>
+                        <app-item-company [setValue]="companyData.companyVietHaTri" [important]="true" (getValue)="updateHamperCompanyLst($event)"></app-item-company>
                     </div>
                     <div class="hamper-info-code-name-block info-block col-span-1">
-                        <app-item-company [setValue]="companyData.companyMotThanhVien"></app-item-company>
+                        <app-item-company [setValue]="companyData.companyMotThanhVien" (getValue)="updateHamperCompanyLst($event)"></app-item-company>
                     </div>
                     <div class="hamper-info-code-name-block info-block col-span-1">
-                        <app-item-company [setValue]="companyData.company3PS"></app-item-company>
+                        <app-item-company [setValue]="companyData.company3PS" (getValue)="updateHamperCompanyLst($event)"></app-item-company>
                     </div>
                 </div>
                 
