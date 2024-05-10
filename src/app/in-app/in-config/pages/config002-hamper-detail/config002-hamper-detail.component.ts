@@ -11,6 +11,7 @@ import { NotifiService } from '../shared/services/notifi.service';
 import { DTOHamper } from '../shared/dtos/DTOHamper.dto';
 import { TextBoxComponent } from '@progress/kendo-angular-inputs';
 import { DTOHamperTest } from '../shared/dtos/DTOHamperTest.dto';
+import { DTOCompany } from '../shared/dtos/DTOCompany.dto';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -25,7 +26,7 @@ export class Config002HamperDetailComponent implements OnInit {
   ngOnInit(): void {
     this.hamperForm = this.formBuilder.group({
       State: null,
-      CompanyList: [],
+      CompanyList: [[], Validators.required],
       TotalPrice: null,
       Currency: '',
       OtherInfo: null,
@@ -39,6 +40,7 @@ export class Config002HamperDetailComponent implements OnInit {
         vietnameseMaterial: '',
         englishMaterial: '',
         japaneseMaterial: '',
+        image:null,
         baseUnit: this.defaultItem,
         productSize: this.formBuilder.group({
           long: null,
@@ -98,6 +100,7 @@ export class Config002HamperDetailComponent implements OnInit {
   originData = { dataMadeHameper }
 
   tempProductList : DTOProduct[]=[];
+  tempCompanyList : DTOCompany[]=[];
   hamperObject : DTOHamperTest = {
     State: '' ,
     CompanyList: [],
@@ -202,7 +205,19 @@ export class Config002HamperDetailComponent implements OnInit {
   }
 
   changeHamperStatus(status: string) {
-    this.hamperForm.get('State').setValue(status);
+    switch(status){
+      case 'Gửi duyệt':
+        if(this.hamperForm.valid){
+          this.hamperForm.get('State').setValue(status);
+        }
+        else{
+          this.toast.message('Gửi duyệt thất bại, vui lòng nhập đủ các trường bắt buộc', 'error');
+        }
+        break;
+      default:
+        this.hamperForm.get('State').setValue(status);
+        break;
+    }
   }
 
   generateBarcode(inputRef : TextBoxComponent): void {
@@ -229,6 +244,10 @@ export class Config002HamperDetailComponent implements OnInit {
         }
       });
     }
+  }
+
+  updateHamperImage(url: string){
+    this.hamperForm.controls['InfoHamber'].get('image').setValue(url);
   }
 
 
@@ -265,8 +284,28 @@ export class Config002HamperDetailComponent implements OnInit {
     this.quantityInput = null;
   }
 
+  updateHamperCompanyLst(company: DTOCompany){
+    let foundIndex = null;
+    let foundCompany = this.tempCompanyList.find((company, index) =>{foundIndex = index ;return company.code == company.code});
+    
+    if(company.state == true){
+      if(!foundCompany){
+        this.tempCompanyList.push(company)
+      }
+      
+    }else{
+      if(foundCompany){
+        this.tempCompanyList.splice(foundIndex, 1);
+      }
+    }
+
+    this.hamperForm.get('CompanyList').setValue(this.tempCompanyList)
+  }
+
   checkDisable() {
-    return this.hamperForm.valid ? true : false
+    const barcodeControl = this.hamperForm.controls['InfoHamber'].get('barcode');
+    const vietnameseNameControl = this.hamperForm.controls['InfoHamber'].get('vietnameseName');
+    return (barcodeControl.valid && vietnameseNameControl.valid)
   }
 
   resetForm(){
@@ -287,6 +326,7 @@ export class Config002HamperDetailComponent implements OnInit {
           vietnameseMaterial: '',
           englishMaterial: '',
           japaneseMaterial: '',
+          image:null,
           baseUnit: this.defaultItem,
           productSize: this.formBuilder.group({
             long: null,

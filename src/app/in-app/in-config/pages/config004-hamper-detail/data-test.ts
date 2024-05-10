@@ -4,7 +4,7 @@ export const companyVietHaTri: Array<DTOCompany> = [
     {
       code: 1,
       name: "TNHH Việt Hạ Chí",
-      itemConpany: [
+      itemCompany: [
         {
           id: 1,
           name: 'Thức uống',
@@ -114,7 +114,7 @@ export const companyVietHaTri: Array<DTOCompany> = [
     {
       code: 2,
       name: "TNHH Một thành viên",
-      itemConpany: [
+      itemCompany: [
         {
           id: 1,
           name: 'Thức uống',
@@ -224,7 +224,7 @@ export const company3PS: Array<DTOCompany> = [
     {
       code: 1,
       name: "TNHH 3PS",
-      itemConpany: [
+      itemCompany: [
         {
           id: 1,
           name: 'Thức uống',
