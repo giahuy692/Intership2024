@@ -2,14 +2,14 @@
     <kendo-breadcrumb [collapseMode]="collapseMode" [items]="items" SetClassSVGIcon HamperBreadcrumb />
     <div class="button-group-field">
         <button *ngFor="let button of listButtonAvailable" type="button" HamperButtons
-            [attr.data-type]="button.typeButton">
+            [attr.data-type]="button.typeButton" (click)="onClickButton(button.nameButton)">
             <kendo-svg-icon [icon]='button.svgClassIcon' />{{button.nameButton}}
         </button>
     </div>
 </div>
 
 <div class="hamper-body">
-    <div class="hamper-detail">
+    <div class="hamper-detail" [ngClass]="{'disabled' : disableField(status)}">
         <div class="hamper-infor-title">
             <div>Thông tin hamper</div>
             <div [style.color]="status | statusColor">{{ status }}</div>
@@ -19,46 +19,60 @@
             <form class="grid-cols-3" [formGroup]="inforHamper">
 
                 <div class="col-span-1">
+
+                    <!-- Input Barcode -->
                     <div class="first-child"><kendo-label for="origin-barcode" text="Barcode" /><span Necessary></span>
                     </div>
-                    <kendo-textbox id="origin-barcode" type="text" formControlName="originBarcode" />
+                    <kendo-textbox class="disabled-input" (keydown)="onKeyDown($event)"
+                        (mousedown)="onMouseDown($event)" id="origin-barcode" type="text"
+                        formControlName="originBarcode" />
 
+                    <!-- Input tên tiếng việt -->
                     <div style="display: flex; gap: 5px;"><kendo-label for="nameVN" text="Tên tiếng Việt" /> <span
                             Necessary></span></div>
-                    <kendo-textbox id="nameVN" type="text" formControlName="nameVN" />
+                    <kendo-textbox id="nameVN" type="text" (blur)="onInputNameTVBlur()" formControlName="nameVN"
+                        #inputNameTV />
 
+                    <!-- Input tên tiếng anh -->
                     <kendo-label for="nameENG" text="Tên tiếng Anh" />
-                    <kendo-textbox id="nameENG" type="text" formControlName="nameENG" />
+                    <kendo-textbox id="nameENG" type="text" (blur)="setValueHamperInfor()" formControlName="nameENG" />
 
+                    <!-- Input tên tiếng nhật -->
                     <kendo-label for="nameJP" text="Tên tiếng Nhật" />
-                    <kendo-textbox id="nameJP" type="text" formControlName="nameJP" />
+                    <kendo-textbox id="nameJP" type="text" (blur)="setValueHamperInfor()" formControlName="nameJP" />
+
                 </div>
 
                 <div class="col-span-1">
+
+                    <!-- Input xuất xứ -->
                     <kendo-label class="first-child" for="origin" text="Xuất xứ" />
                     <kendo-dropdownlist id="origin" [fillMode]="'outline'" iconClass="fa-solid fa-angle-down"
-                        [data]="dataOrigin.dataMadeHameper" valueField="id" textField="made" />
+                        [data]="dataOrigin.dataMadeHameper" valueField="id" textField="made" #originDropdown />
 
-
+                    <!-- Input chất liệu tiếng việt -->
                     <kendo-label for="materialVN" text="Chất liệu tiếng Việt" />
-                    <kendo-textbox id="materialVN" type="text" formControlName="materialVN" />
+                    <kendo-textbox id="materialVN" type="text" formControlName="materialVN" (blur)="setValueHamperInfor()" />
 
+                    <!-- Input chất liệu tiếng anh -->
                     <kendo-label for="materialENG" text="Chất liệu tiếng Anh" />
-                    <kendo-textbox id="materialENG" type="text" formControlName="materialENG" />
+                    <kendo-textbox id="materialENG" type="text" formControlName="materialENG" (blur)="setValueHamperInfor()" />
 
+                    <!-- Input chất liệu tiếng nhật -->
                     <kendo-label for="materialJP" text="Chất liệu tiếng Nhật" />
-                    <kendo-textbox id="materialJP" type="text" formControlName="materialJP" />
+                    <kendo-textbox id="materialJP" type="text" formControlName="materialJP" (blur)="setValueHamperInfor()" />
+
                 </div>
 
                 <div class="col-span-1" style="justify-content: center; display: flex;">
-                    <app-import-image></app-import-image>
+                    <app-import-image (fileSelected)="onFileSelected($event)"></app-import-image>
                 </div>
 
             </form>
         </div>
     </div>
 
-    <div class="hamper-infor-package">
+    <div class="hamper-infor-package" [ngClass]="{'disabled' : disableField(status)}">
         <div class="hamper-infor-package_title">Thông tin đóng gói</div>
         <div class="hamper-infor-package_container">
             <div class="col-span-1">
@@ -134,4 +148,15 @@
             </div>
         </div>
     </div>
+
+    <div class="hamper-other-infor" [ngClass]="{'disabled' : disableField(status)}">
+        <div class="hamper-other-infor_title">Thông tin khác</div>
+        <div class="hamper-other-infor_container">
+            <div class="col-span-1">
+                <kendo-label text="Thông số kĩ thuật" />
+                <kendo-textbox type="text" />
+            </div>
+        </div>
+    </div>
+
 </div>

@@ -19,8 +19,36 @@
     }
 }
 
+.disabled-no-hover{
+    opacity: 0.6;
+
+    .k-input-inner:hover{
+        border: 2px solid $border-color-input;
+    }
+}
+
+.disabled{
+    opacity: 0.6;
+    
+    .k-input-inner:hover{
+        border: 2px solid $dark-green;
+    }
+}
+
+.disabled-input{
+    opacity: 0.4;
+    background-color: $grey;
+    
+    .k-input-inner{
+        border: none !important;
+    }
+}
+
 
 .hamper-body {
+    height: calc(100vh - 62.5px - 50px);
+    overflow-y: auto;
+
     .k-input-inner {
         height: 33px;
         border: none;
@@ -29,11 +57,15 @@
         border-radius: 2px;
     }
 
+    .k-input-inner:hover{
+        border: 2px solid $dark-green;
+    }
+
     .k-picker-outline:hover,
     .k-picker-outline.k-hover {
         background: none;
         color: #000;
-        border: 2px solid $border-color-input;
+        border: 2px solid $dark-green;
     }
 
     .k-picker-outline {
@@ -143,6 +175,7 @@
             display: flex;
             gap: 20px;
             width: 100%;
+            overflow-x: auto;
 
             .group-size-product,
             .group-size-inner,
@@ -155,11 +188,11 @@
                 .cd,
                 .cr,
                 .cc {
-                    width: 20%;
+                    width: 94.86px;
                 }
 
                 .cn {
-                    width: 40%;
+                    width: 189.73px;
                 }
 
                 .k-input-solid {
@@ -192,35 +225,81 @@
 
                 .result-inner,
                 .result-carton,
-                .result-pallet{
+                .result-pallet {
                     display: flex;
+                    width: 420px;
                     justify-content: space-between;
 
 
                     .k-input-solid {
                         border: none;
                         box-shadow: none;
-    
+
                         &:focus,
                         .k-focus {
                             box-shadow: none;
                         }
                     }
 
-                    .k-textbox{
+                    .k-textbox {
                         width: 220px;
                     }
 
-                    &_right{
+                    &_right {
                         display: flex;
                         gap: 15px;
                         align-items: center;
                     }
 
-                    &_left{
+                    &_left {
                         display: flex;
                         align-items: center;
                     }
+                }
+            }
+        }
+    }
+
+    .hamper-other-infor {
+
+        &_title {
+            padding: 12px 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            color: $text-black;
+            font-size: 16px;
+            text-transform: uppercase;
+        }
+
+        &_container {
+            padding: 15px;
+            background-color: #fff;
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .col-span-1 {
+            width: 519.33px;
+
+            .k-label {
+                padding: 0;
+                padding-bottom: 8px;
+            }
+
+            .k-input-inner{
+                width: 519.33px;
+            }
+
+            .k-input-solid {
+                border: none;
+                box-shadow: none;
+
+                &:focus,
+                .k-focus {
+                    box-shadow: none;
                 }
             }
         }
