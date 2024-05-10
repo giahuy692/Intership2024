@@ -11,6 +11,8 @@ import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
 import { TextBoxComponent } from '@progress/kendo-angular-inputs';
 import { DTOCompany } from '../shared/dtos/DTOCompany.dto';
 import { company3PS, companyMotThanhVien, companyVietHaTri } from '../config004-hamper-detail/data-test';
+import { NotifiService } from '../shared/services/notifi.service';
+import { text } from '@fortawesome/fontawesome-svg-core';
 
 class Button {
   svgClassIcon: SVGIcon
@@ -27,6 +29,7 @@ class InforHamper {
   materialENG: string
   nameJP: string
   materialJP: string
+  image: string
 }
 
 @Component({
@@ -38,9 +41,18 @@ class InforHamper {
 export class Config001HamperDetailComponent implements OnInit, OnDestroy {
   @ViewChild('originDropdown') originDropdown!: DropDownListComponent;
   @ViewChild('inputNameTV') inputNameTV!: TextBoxComponent;
-  constructor(private hamperService: HamperService) { }
+  private subscriptions: Subscription[] = [];
+  constructor(private hamperService: HamperService, private notifi: NotifiService) { }
+
+
+  // Variables
   hamperCrr: DTOHamper;
   status: string = "Đang soạn thảo";
+  collapseMode: BreadCrumbCollapseMode = 'none';
+
+
+  // List
+  listButtonAvailable: Button[] = [];
   defaultItems: BreadCrumbItem[] = [
     {
       text: "Quản lý sản phẩm",
@@ -53,14 +65,19 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy {
     }
   ];
   items: BreadCrumbItem[] = [...this.defaultItems];
-  collapseMode: BreadCrumbCollapseMode = 'none';
-  private subscriptions: Subscription[] = [];
-  listButtonAvailable: Button[] = [];
   buttonXoa: Button = {
     svgClassIcon: trashIcon,
     nameButton: 'Xóa',
     typeButton: 'danger'
   };
+  vietHaCom: Array<DTOCompany> = companyVietHaTri;
+  motThanhCom: Array<DTOCompany> = companyMotThanhVien;
+  PSCom: Array<DTOCompany> = company3PS;
+  dataOrigin = { dataMadeHameper };
+  productUnit = { DataUnitProduct };
+
+
+  // Object
   buttonNgungHienThi: Button = {
     svgClassIcon: minusCircleIcon,
     nameButton: 'Ngưng hiển thị',
@@ -86,9 +103,12 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy {
     nameButton: 'Thêm mới',
     typeButton: 'success'
   };
-  vietHaCom: Array<DTOCompany> = companyVietHaTri
-  motThanhCom: Array<DTOCompany> = companyMotThanhVien
-  PSCom: Array<DTOCompany> = company3PS
+  inforHamperBeforeChange?: InforHamper;
+  defaultItem = { id: -1, made: "--- Chọn ---" };
+  defaultItemUnit = { id: -1, text: "--- Chọn ---" };
+
+
+  // Form
   inforHamper = new FormGroup({
     originBarcode: new FormControl(''),
     origin: new FormControl(''),
@@ -97,17 +117,26 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy {
     nameENG: new FormControl(''),
     materialENG: new FormControl(''),
     nameJP: new FormControl(''),
-    materialJP: new FormControl('')
+    materialJP: new FormControl(''),
+    image: new FormControl('')
   })
-
-  dataOrigin = { dataMadeHameper };
-  productUnit = { DataUnitProduct };
 
   ngOnInit(): void {
     this.subscriptions.push(this.hamperService.hamberSubject$.subscribe(data => {
       this.hamperCrr = data
     }))
     this.setListButtonAvailable(this.status, null);
+    this.inforHamperBeforeChange = {
+      originBarcode: this.inforHamper.get('originBarcode')?.value,
+      origin: this.inforHamper.get('origin')?.value,
+      nameVN: this.inforHamper.get('nameVN')?.value,
+      materialVN: this.inforHamper.get('materialVN')?.value,
+      nameENG: this.inforHamper.get('nameENG')?.value,
+      materialENG: this.inforHamper.get('materialENG')?.value,
+      nameJP: this.inforHamper.get('nameJP')?.value,
+      materialJP: this.inforHamper.get('materialJP')?.value,
+      image: this.inforHamper.get('image')?.value ,
+    }
   }
 
   ngOnDestroy(): void {
@@ -141,9 +170,22 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy {
       }
     }
   }
+    
+  
+  getValueCompany1($event: any) { 
+    // this.updateCompanyValue($event, 'company1');
+  }
+
+  getValueCompany2($event: any) {
+    // this.updateCompanyValue($event, 'company2');
+  }
+
+  getValueCompany3($event: any) {
+    // this.updateCompanyValue($event, 'company3');
+  }
 
   onFileSelected(fileName: string) {
-    console.log('File selected:', fileName);
+    this.inforHamper.patchValue({ image: fileName })
   }
 
   disableField(status: string) {
@@ -154,9 +196,9 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy {
   }
 
   // Xử lý sự kiện mousedown để ngăn chặn click chuột
-  onMouseDown(event: MouseEvent) {
-    event.preventDefault(); // Ngăn chặn hành vi mặc định (click chuột)
-  }
+  // onMouseDown(event: MouseEvent) {
+  //   event.preventDefault(); // Ngăn chặn hành vi mặc định (click chuột)
+  // }
 
   // Xử lý sự kiện keydown để ngăn chặn nhập liệu
   onKeyDown(event: KeyboardEvent) {
@@ -196,39 +238,79 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy {
     }
   }
 
-  onClickButton(nameButton: string) {
+  onClickOptionButton(nameButton: string) {
     if (nameButton === 'Thêm mới') {
-      this.getValuesHamperInfor();
+      this.onClickButtonAdd();
     }
   }
 
-  getValuesHamperInfor() {
-    if (this.originDropdown.value) {
-      this.inforHamper.patchValue({ origin: (this.originDropdown.value).made })
-    }
-    console.log('infor hamper: ', this.inforHamper.getRawValue());
+
+  onClickButtonAdd(){
+    this.resetForm();
   }
 
+
+
+  resetForm(){
+    this.inforHamper.reset();
+    this.inforHamper.patchValue({ image: '' });
+    this.inforHamper.patchValue({ origin: '' });
+  }
+
+
+
+  /**
+   * - Function is called whenever user blur input name Tieng Viet
+   * - Using for generate barcode and patchValue to originBarcode if current is empty  
+   * - Constraint user don't type empty into input
+   */
   onInputNameTVBlur(): void {
-    const inputValue = this.inforHamper.get('nameVN')?.value;
-    if(inputValue){
+    const inputValueName = this.inforHamper.get('nameVN')?.value;
+    const inputValueNameBefore = this.inforHamperBeforeChange.nameVN;
+    if(inputValueName.length === 0 && inputValueNameBefore.length !== 0){
+      this.inforHamper.patchValue({ nameVN: inputValueNameBefore })
+      this.notifi.message('VietNamese name should not be empty', 'error');
+    }
+    if(inputValueName.length > 0 && this.inforHamperBeforeChange.nameVN.length === 0){
       this.inforHamper.patchValue({ originBarcode: this.createUniqueBarcode() })
+      this.notifi.message('Hamper được tạo mới', 'success');
+    }
+    this.inforHamperBeforeChange = this.inforHamper.getRawValue();
+  }
+
+
+
+  /**
+   * - Function is called whenever user blur input
+   * - Update data inforHamper if having changes
+   */
+  onBlurValueHamperInfor() {
+    if(!this.checkDataIsChanged(this.inforHamper.getRawValue(), this.inforHamperBeforeChange)){
+      this.notifi.message('Data infor hamper is changed!', 'success');
+    }
+    else{
+      this.notifi.message('Data infor hamper has no change!', 'warning');
+      console.log('data infor hamper has no change!')
     }
   }
-
-  setValueHamperInfor() {
-    console.log(this.inforHamper.getRawValue());
+  
+  
+  
+  /**
+   * @param dataBeforeChange A data before change, meaning data on screen
+   * @param dataAfterChange A data after change
+   * @returns true or false
+   */
+  checkDataIsChanged(dataBeforeChange: InforHamper, dataAfterChange: InforHamper){
+    return JSON.stringify(dataBeforeChange) === JSON.stringify(dataAfterChange);
   }
 
-  getValueCompany1($event: any) { 
-    // this.updateCompanyValue($event, 'company1');
-  }
 
 
-  getValueCompany2($event: any) {
-    // this.updateCompanyValue($event, 'company2');
-  }
-  getValueCompany3($event: any) {
-    // this.updateCompanyValue($event, 'company3');
+  /** 
+  * - Set data form infor hamper on screen into inforHamperBeforeChange
+  */
+  onClickInput(){
+    this.inforHamperBeforeChange = this.inforHamper.getRawValue();
   }
 }
