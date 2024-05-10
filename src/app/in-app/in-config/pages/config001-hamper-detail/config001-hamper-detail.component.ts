@@ -8,6 +8,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { dataMadeHameper } from '../config004-hamper-detail/dataMadeOfHamper';
 import { DataUnitProduct } from '../config004-hamper-detail/dataUnitProduct';
 import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
+import { TextBoxComponent } from '@progress/kendo-angular-inputs';
 
 class Button {
   svgClassIcon: SVGIcon
@@ -32,8 +33,9 @@ class InforHamper {
   styleUrls: ['./config001-hamper-detail.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class Config001HamperDetailComponent implements OnInit, OnDestroy{
+export class Config001HamperDetailComponent implements OnInit, OnDestroy {
   @ViewChild('originDropdown') originDropdown!: DropDownListComponent;
+  @ViewChild('inputNameTV') inputNameTV!: TextBoxComponent;
   constructor(private hamperService: HamperService) { }
   public hamperCrr: DTOHamper;
   public status: string = "Đang soạn thảo";
@@ -92,6 +94,7 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy{
     nameJP: new FormControl(''),
     materialJP: new FormControl('')
   })
+
   public dataOrigin = { dataMadeHameper };
   public productUnit = { DataUnitProduct };
 
@@ -155,20 +158,60 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy{
     event.preventDefault(); // Ngăn chặn hành vi mặc định (nhập liệu)
   }
 
-  onOriginChange(event: any): void {
-    console.log(event)
+  // Định nghĩa một hàm tạo mã barcode ngẫu nhiên không trùng lặp
+  generateUniqueBarcode(): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // Các chữ cái in hoa
+    const digits = '0123456789'; // Các chữ số
+
+    const randomChar = characters.charAt(Math.floor(Math.random() * characters.length)); // Chọn ngẫu nhiên một chữ cái
+    let randomNumber = ''; // Chuỗi chứa các chữ số ngẫu nhiên
+
+    // Tạo 7 chữ số ngẫu nhiên
+    for (let i = 0; i < 7; i++) {
+      randomNumber += digits.charAt(Math.floor(Math.random() * digits.length));
+    }
+
+    // Kết hợp chữ cái và chữ số để tạo mã barcode hoàn chỉnh
+    const barcode = randomChar + randomNumber;
+
+    return barcode;
   }
 
-  onClickButton(nameButton: string){
-    if(nameButton === 'Thêm mới'){
+  // Định nghĩa một hàm tạo mã barcode không trùng lặp mỗi lần được gọi
+  createUniqueBarcode(): string {
+    const generatedBarcodes = new Set<string>(); // Set để lưu trữ các mã barcode đã tạo
+
+    while (true) {
+      const newBarcode = this.generateUniqueBarcode(); // Tạo một mã barcode ngẫu nhiên
+
+      if (!generatedBarcodes.has(newBarcode)) { // Kiểm tra xem mã barcode đã được tạo trước đó chưa
+        generatedBarcodes.add(newBarcode); // Thêm mã barcode mới vào set
+        return newBarcode; // Trả về mã barcode mới
+      }
+    }
+  }
+
+  onClickButton(nameButton: string) {
+    if (nameButton === 'Thêm mới') {
       this.getValuesHamperInfor();
     }
   }
 
-  getValuesHamperInfor(){
-    if(this.originDropdown.value){
-      this.inforHamper.patchValue({ origin: (this.originDropdown.value).made})
+  getValuesHamperInfor() {
+    if (this.originDropdown.value) {
+      this.inforHamper.patchValue({ origin: (this.originDropdown.value).made })
     }
+    console.log('infor hamper: ', this.inforHamper.getRawValue());
+  }
+
+  onInputNameTVBlur(): void {
+    const inputValue = this.inforHamper.get('nameVN')?.value;
+    if(inputValue){
+      this.inforHamper.patchValue({ originBarcode: this.createUniqueBarcode() })
+    }
+  }
+
+  setValueHamperInfor() {
     console.log(this.inforHamper.getRawValue());
   }
 }

@@ -30,15 +30,16 @@
                     <!-- Input tên tiếng việt -->
                     <div style="display: flex; gap: 5px;"><kendo-label for="nameVN" text="Tên tiếng Việt" /> <span
                             Necessary></span></div>
-                    <kendo-textbox id="nameVN" type="text" formControlName="nameVN" />
+                    <kendo-textbox id="nameVN" type="text" (blur)="onInputNameTVBlur()" formControlName="nameVN"
+                        #inputNameTV />
 
                     <!-- Input tên tiếng anh -->
                     <kendo-label for="nameENG" text="Tên tiếng Anh" />
-                    <kendo-textbox id="nameENG" type="text" formControlName="nameENG" />
+                    <kendo-textbox id="nameENG" type="text" (blur)="setValueHamperInfor()" formControlName="nameENG" />
 
                     <!-- Input tên tiếng nhật -->
                     <kendo-label for="nameJP" text="Tên tiếng Nhật" />
-                    <kendo-textbox id="nameJP" type="text" formControlName="nameJP" />
+                    <kendo-textbox id="nameJP" type="text" (blur)="setValueHamperInfor()" formControlName="nameJP" />
 
                 </div>
 
@@ -47,20 +48,19 @@
                     <!-- Input xuất xứ -->
                     <kendo-label class="first-child" for="origin" text="Xuất xứ" />
                     <kendo-dropdownlist id="origin" [fillMode]="'outline'" iconClass="fa-solid fa-angle-down"
-                        [data]="dataOrigin.dataMadeHameper" valueField="id" textField="made" #originDropdown 
-                        />
+                        [data]="dataOrigin.dataMadeHameper" valueField="id" textField="made" #originDropdown />
 
                     <!-- Input chất liệu tiếng việt -->
                     <kendo-label for="materialVN" text="Chất liệu tiếng Việt" />
-                    <kendo-textbox id="materialVN" type="text" formControlName="materialVN" />
+                    <kendo-textbox id="materialVN" type="text" formControlName="materialVN" (blur)="setValueHamperInfor()" />
 
                     <!-- Input chất liệu tiếng anh -->
                     <kendo-label for="materialENG" text="Chất liệu tiếng Anh" />
-                    <kendo-textbox id="materialENG" type="text" formControlName="materialENG" />
+                    <kendo-textbox id="materialENG" type="text" formControlName="materialENG" (blur)="setValueHamperInfor()" />
 
                     <!-- Input chất liệu tiếng nhật -->
                     <kendo-label for="materialJP" text="Chất liệu tiếng Nhật" />
-                    <kendo-textbox id="materialJP" type="text" formControlName="materialJP" />
+                    <kendo-textbox id="materialJP" type="text" formControlName="materialJP" (blur)="setValueHamperInfor()" />
 
                 </div>
 
