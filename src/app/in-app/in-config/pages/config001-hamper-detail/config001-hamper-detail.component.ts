@@ -9,6 +9,8 @@ import { dataMadeHameper } from '../config004-hamper-detail/dataMadeOfHamper';
 import { DataUnitProduct } from '../config004-hamper-detail/dataUnitProduct';
 import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
 import { TextBoxComponent } from '@progress/kendo-angular-inputs';
+import { DTOCompany } from '../shared/dtos/DTOCompany.dto';
+import { company3PS, companyMotThanhVien, companyVietHaTri } from '../config004-hamper-detail/data-test';
 
 class Button {
   svgClassIcon: SVGIcon
@@ -37,9 +39,9 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy {
   @ViewChild('originDropdown') originDropdown!: DropDownListComponent;
   @ViewChild('inputNameTV') inputNameTV!: TextBoxComponent;
   constructor(private hamperService: HamperService) { }
-  public hamperCrr: DTOHamper;
-  public status: string = "Đang soạn thảo";
-  public defaultItems: BreadCrumbItem[] = [
+  hamperCrr: DTOHamper;
+  status: string = "Đang soạn thảo";
+  defaultItems: BreadCrumbItem[] = [
     {
       text: "Quản lý sản phẩm",
     },
@@ -50,41 +52,44 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy {
       text: "Chi tiết hamper",
     }
   ];
-  public items: BreadCrumbItem[] = [...this.defaultItems];
-  public collapseMode: BreadCrumbCollapseMode = 'none';
+  items: BreadCrumbItem[] = [...this.defaultItems];
+  collapseMode: BreadCrumbCollapseMode = 'none';
   private subscriptions: Subscription[] = [];
-  public listButtonAvailable: Button[] = [];
-  public buttonXoa: Button = {
+  listButtonAvailable: Button[] = [];
+  buttonXoa: Button = {
     svgClassIcon: trashIcon,
     nameButton: 'Xóa',
     typeButton: 'danger'
   };
-  public buttonNgungHienThi: Button = {
+  buttonNgungHienThi: Button = {
     svgClassIcon: minusCircleIcon,
     nameButton: 'Ngưng hiển thị',
     typeButton: 'danger'
   };
-  public buttonTraVe: Button = {
+  buttonTraVe: Button = {
     svgClassIcon: undoIcon,
     nameButton: 'Trả về',
     typeButton: 'return'
   };
-  public buttonPheDuyet: Button = {
+  buttonPheDuyet: Button = {
     svgClassIcon: checkOutlineIcon,
     nameButton: 'Phê duyệt',
     typeButton: 'success'
   };
-  public buttonGuiDuyet: Button = {
+  buttonGuiDuyet: Button = {
     svgClassIcon: redoIcon,
     nameButton: 'Gửi duyệt',
     typeButton: 'success'
   };
-  public buttonThemMoi: Button = {
+  buttonThemMoi: Button = {
     svgClassIcon: plusIcon,
     nameButton: 'Thêm mới',
     typeButton: 'success'
   };
-  public inforHamper = new FormGroup({
+  vietHaCom: Array<DTOCompany> = companyVietHaTri
+  motThanhCom: Array<DTOCompany> = companyMotThanhVien
+  PSCom: Array<DTOCompany> = company3PS
+  inforHamper = new FormGroup({
     originBarcode: new FormControl(''),
     origin: new FormControl(''),
     nameVN: new FormControl(''),
@@ -95,8 +100,8 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy {
     materialJP: new FormControl('')
   })
 
-  public dataOrigin = { dataMadeHameper };
-  public productUnit = { DataUnitProduct };
+  dataOrigin = { dataMadeHameper };
+  productUnit = { DataUnitProduct };
 
   ngOnInit(): void {
     this.subscriptions.push(this.hamperService.hamberSubject$.subscribe(data => {
@@ -213,5 +218,17 @@ export class Config001HamperDetailComponent implements OnInit, OnDestroy {
 
   setValueHamperInfor() {
     console.log(this.inforHamper.getRawValue());
+  }
+
+  getValueCompany1($event: any) { 
+    // this.updateCompanyValue($event, 'company1');
+  }
+
+
+  getValueCompany2($event: any) {
+    // this.updateCompanyValue($event, 'company2');
+  }
+  getValueCompany3($event: any) {
+    // this.updateCompanyValue($event, 'company3');
   }
 }
