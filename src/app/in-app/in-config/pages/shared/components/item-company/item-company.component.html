@@ -1,6 +1,6 @@
 <div class="body">
     <div class="header">
-        <input (change)="handleClear()" type="checkbox" id="terms" kendoCheckBox [(ngModel)]="isSelectedCompany"  />
+        <input [disabled]="disableCheckbox" (change)="handleClear()" type="checkbox" id="terms" kendoCheckBox [(ngModel)]="isSelectedCompany"  />
         <div class="name-company">
             <label class="k-checkbox-label" for="terms"
             >Áp dụng tại công ty {{setValue[0].name}}</label>

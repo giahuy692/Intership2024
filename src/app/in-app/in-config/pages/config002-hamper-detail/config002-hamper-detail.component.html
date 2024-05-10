@@ -7,19 +7,19 @@
                 <button HamperButtons data-type="danger" class="func-button" (click)="openDrawer()">
                     <kendo-svg-icon [icon]="buttonIcons.trashIcon"></kendo-svg-icon> XOÁ
                 </button>
-                <button HamperButtons data-type="danger" class="func-button" (click)="openDrawer()">
+                <button HamperButtons data-type="danger" class="func-button" (click)="changeHamperStatus('Ngưng áp dụng')" *ngIf="hamperForm.get('State').value == 'Duyệt áp dụng'">
                     <kendo-svg-icon [icon]="buttonIcons.minusOutlineIcon"></kendo-svg-icon> NGƯNG HIỂN THỊ
                 </button>
-                <button HamperButtons data-type="return" class="func-button" (click)="openDrawer()">
+                <button HamperButtons data-type="return" class="func-button" (click)="changeHamperStatus('Trả về')" *ngIf="hamperForm.get('State').value == 'Gửi duyệt' || hamperForm.get('State').value == 'Ngưng áp dụng'">
                     <kendo-svg-icon [icon]="buttonIcons.undoIcon"></kendo-svg-icon> TRẢ VỀ
                 </button>
-                <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
+                <button HamperButtons data-type="success" class="func-button" (click)="changeHamperStatus('Duyệt áp dụng')" *ngIf="hamperForm.get('State').value == 'Gửi duyệt' || hamperForm.get('State').value == 'Ngưng áp dụng'">
                     <kendo-svg-icon [icon]="buttonIcons.checkOutlineIcon"></kendo-svg-icon> DUYỆT ÁP DỤNG
                 </button>
-                <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
+                <button HamperButtons data-type="success" class="func-button" (click)="changeHamperStatus('Gửi duyệt')" *ngIf="hamperForm.get('State').value == 'Đang soạn thảo' || hamperForm.get('State').value == 'Trả về'">
                     <kendo-svg-icon [icon]="buttonIcons.redoIcon"></kendo-svg-icon> GỬI DUYỆT
                 </button>
-                <button HamperButtons data-type="success" class="func-button" (click)="openDrawer()">
+                <button HamperButtons data-type="success" class="func-button" (click)="resetForm()">
                     <kendo-svg-icon [icon]="buttonIcons.plusIcon"></kendo-svg-icon> THÊM MỚI
                 </button>
             </div>
@@ -27,255 +27,309 @@
     </header>
 
     <main class="main">
-        <div class="hamper-info-container">
-            <div class="hamper-info-title-block">
-                <span class="hamper-title-text">Thông tin hamper</span>
-                <span class="hamper-status-text">Đang soạn thảo</span>
-            </div>
-            <div class="hamper-info-content-block grid-cols-3">
-                <div class="hamper-info-code-name-block info-block col-span-1">
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Barcode gốc</span><span Necessary></span>
-                        </div>
-                        <kendo-textbox class="input"></kendo-textbox>
-                    </div>
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Tên tiếng Việt</span><span Necessary></span>
-                        </div>
-                        <kendo-textbox class="input"></kendo-textbox>
-                    </div>
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Tên tiếng Anh</span>
-                        </div>
-                        <kendo-textbox class="input"></kendo-textbox>
-                    </div>
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Tên tiếng Nhật</span>
-                        </div>
-                        <kendo-textbox class="input"></kendo-textbox>
-                    </div>
+        <form [formGroup]="hamperForm" (ngSubmit)="onFormSubmit()">
+            <div class="hamper-info-container" formGroupName="InfoHamber" >
+                <div class="hamper-info-title-block">
+                    <span class="hamper-title-text">Thông tin hamper</span>
+                    <span class="hamper-status-text" [style.color]="hamperForm.get('State').value | statusColor">{{hamperForm.get('State').value}}</span>
                 </div>
-                <div class="hamper-info-code-origin-material info-block col-span-1">
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Xuất xứ</span>
+                <div class="hamper-info-content-block grid-cols-3">
+                    <div class="hamper-info-code-name-block info-block col-span-1">
+                        <div class="input-group">
+                            <div class="label-group" [ngClass]="{'disable': checkDisable() == false}">
+                                <span class="label-text">Barcode gốc</span><span Necessary></span>
+                            </div>
+                            <kendo-textbox class="input barcode-input" formControlName="barcode" [ngClass]="'disable'"></kendo-textbox>
                         </div>
-                        <kendo-dropdownlist [fillMode]="'outline'" iconClass="fa-solid fa-angle-down" class="input" [data]="originData.dataMadeHameper" valueField="id" textField="made">
+                        <div class="input-group ">
+                            <div class="label-group">
+                                <span class="label-text">Tên tiếng Việt</span><span Necessary></span>
+                            </div>
+                            <kendo-textbox class="input input-able" formControlName="vietnameseName" #vietNameInput (blur)="generateBarcode(vietNameInput)"></kendo-textbox>
+                        </div>
+                        <div class="input-group">
+                            <div class="label-group" [ngClass]="{'disable': checkDisable() == false}">
+                                <span class="label-text">Tên tiếng Anh</span>
+                            </div>
+                            <kendo-textbox class="input" formControlName="englishName" [ngClass]="{'norDisable': checkDisable() == false}"></kendo-textbox>
+                        </div>
+                        <div class="input-group">
+                            <div class="label-group" [ngClass]="{'disable': checkDisable() == false}">
+                                <span class="label-text">Tên tiếng Nhật</span>
+                            </div>
+                            <kendo-textbox class="input" formControlName="japaneseName"[ngClass]="{'norDisable': checkDisable() == false}" ></kendo-textbox>
+                        </div>
+                    </div>
+                    <div class="hamper-info-code-origin-material info-block col-span-1" [ngClass]="{'disable': checkDisable() == false}">
+                        <div class="input-group">
+                            <div class="label-group">
+                                <span class="label-text">Xuất xứ</span>
+                            </div>
+                            <kendo-dropdownlist 
+                            [fillMode]="'outline'" 
+                            formControlName="origin"
+                            iconClass="fa-solid fa-angle-down" 
+                            class="input" 
+                            [data]="originData.dataMadeHameper" 
+                            valueField="id" 
+                            textField="made"
+                            [defaultItem]="defaultItem">
 
-                        </kendo-dropdownlist>
-                    </div>
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Chất liệu tiếng Việt</span>
+                            </kendo-dropdownlist>
                         </div>
-                        <kendo-textbox class="input"></kendo-textbox>
-                    </div>
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Chất liệu tiếng Anh</span>
+                        <div class="input-group">
+                            <div class="label-group">
+                                <span class="label-text">Chất liệu tiếng Việt</span>
+                            </div>
+                            <kendo-textbox class="input" formControlName="vietnameseMaterial" ></kendo-textbox>
                         </div>
-                        <kendo-textbox class="input"></kendo-textbox>
-                    </div>
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Chất liệu tiếng Nhật</span>
+                        <div class="input-group">
+                            <div class="label-group">
+                                <span class="label-text">Chất liệu tiếng Anh</span>
+                            </div>
+                            <kendo-textbox class="input" formControlName="englishMaterial"></kendo-textbox>
                         </div>
-                        <kendo-textbox class="input"></kendo-textbox>
-                    </div>
-                </div>
-                <div class="hamper-info-code-img-block info-block col-span-1">
-                    <div class="input-group img-group">
-                        <app-import-image></app-import-image>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="hamper-info-container">
-            <div class="hamper-info-title-block">
-                <span class="hamper-title-text">Thông tin đóng gói</span>
-            </div>
-            <div class="hamper-info-content-block grid-cols-3">
-                <div class="hamper-info-code-name-block info-block col-span-1">
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Đơn vị sản phẩm (Base unit)</span>
-                        </div>
-                        <kendo-dropdownlist [fillMode]="'outline'" iconClass="fa-solid fa-angle-down" class="input" [data]="unitData.DataUnitProduct" textField="made" valueField="id"></kendo-dropdownlist>
-                    </div>
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)</span>
-                        </div>
-                        <div class="size-weight-block grid-cols-5">
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
+                        <div class="input-group">
+                            <div class="label-group">
+                                <span class="label-text">Chất liệu tiếng Nhật</span>
                             </div>
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
-                            </div>
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
-                            </div>
-                            <div class="weight-block col-span-2">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)</span>
-                        </div>
-                        <div class="size-weight-block grid-cols-5">
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
-                            </div>
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
-                            </div>
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
-                            </div>
-                            <div class="weight-block col-span-2">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
-                            </div>
+                            <kendo-textbox class="input" formControlName="japaneseMaterial"></kendo-textbox>
                         </div>
                     </div>
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)</span>
-                        </div>
-                        <div class="size-weight-block grid-cols-5">
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
-                            </div>
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
-                            </div>
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
-                            </div>
-                            <div class="weight-block col-span-2">
-                                <kendo-textbox class="input center-input"></kendo-textbox>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)</span>
-                        </div>
-                        <div class="size-weight-block grid-cols-5">
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
-                            </div>
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
-                            </div>
-                            <div class="size-block col-span-1">
-                                <kendo-textbox class="input"></kendo-textbox>
-                            </div>
-                            <div class="weight-block col-span-2">
-                                <kendo-textbox class="input"></kendo-textbox>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="hamper-info-code-origin-material info-block col-span-1">
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Quy đổi quy cách sản phẩm</span>
-                        </div>
-                        <div class="unit-exchange-group grid-cols-4">
-                            <div class="unit-exchange-block col-span-1">
-                                <span class="label-text">Inner</span>
-                                <span class="label-text">=</span>
-                            </div>
-                            <div class="unit-exchange-block col-span-2">
-                                <kendo-textbox class="input"></kendo-textbox>
-                            </div>
-                            <div class="unit-exchange-block col-span-1">
-                                <span class="unit-text">Base unit</span>
-                            </div>
-                        </div>
-                        <div class="unit-exchange-group grid-cols-4">
-                            <div class="unit-exchange-block col-span-1">
-                                <span class="label-text">Inner</span>
-                                <span class="label-text">=</span>
-                            </div>
-                            <div class="unit-exchange-block col-span-2">
-                                <kendo-textbox class="input"></kendo-textbox>
-                            </div>
-                            <div class="unit-exchange-block col-span-1">
-                                <span class="unit-text">Base unit</span>
-                            </div>
-                        </div>
-                        <div class="unit-exchange-group grid-cols-4">
-                            <div class="unit-exchange-block col-span-1">
-                                <span class="label-text">Inner</span>
-                                <span class="label-text">=</span>
-                            </div>
-                            <div class="unit-exchange-block col-span-2">
-                                <kendo-textbox class="input"></kendo-textbox>
-                            </div>
-                            <div class="unit-exchange-block col-span-1">
-                                <span class="unit-text">Base unit</span>
-                            </div>
+                    <div class="hamper-info-code-img-block info-block col-span-1" [ngClass]="{'disable': checkDisable() == false}">
+                        <div class="input-group img-group">
+                            <app-import-image></app-import-image>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="hamper-info-container">
-            <div class="hamper-info-title-block">
-                <span class="hamper-title-text">Thông tin khác</span>
-            </div>
-            <div class="hamper-info-content-block grid-cols-3">
-                <div class="hamper-info-code-name-block info-block col-span-1">
-                    <div class="input-group">
-                        <div class="label-group">
-                            <span class="label-text">Thông số kĩ thuật</span>
+            <div class="hamper-info-container" formGroupName="InfoHamber" [ngClass]="{'disable': checkDisable() == false}">
+                <div class="hamper-info-title-block">
+                    <span class="hamper-title-text">Thông tin đóng gói</span>
+                </div>
+                <div class="hamper-info-content-block grid-cols-3">
+                    <div class="hamper-info-code-name-block info-block col-span-1" >
+                        <div class="input-group">
+                            <div class="label-group">
+                                <span class="label-text">Đơn vị sản phẩm (Base unit)</span>
+                            </div>
+                            <kendo-dropdownlist 
+                            [fillMode]="'outline'" 
+                            formControlName="baseUnit"
+                            iconClass="fa-solid fa-angle-down" 
+                            class="input" 
+                            [data]="unitData.DataUnitProduct" 
+                            textField="made" 
+                            valueField="id"
+                            
+                            >
+                            </kendo-dropdownlist>
                         </div>
-                        <kendo-textbox class="input"></kendo-textbox>
+                        <div class="input-group" formGroupName="productSize">
+                            <div class="label-group">
+                                <span class="label-text">Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)</span>
+                            </div>
+                            <div class="size-weight-block grid-cols-5">
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="long"></kendo-numerictextbox>
+                                </div>
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="width"></kendo-numerictextbox>
+                                </div>
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="height"></kendo-numerictextbox>
+                                </div>
+                                <div class="weight-block col-span-2">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="weight"></kendo-numerictextbox>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="input-group" formGroupName="innerSize">
+                            <div class="label-group">
+                                <span class="label-text">Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)</span>
+                            </div>
+                            <div class="size-weight-block grid-cols-5">
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="long"></kendo-numerictextbox>
+                                </div>
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="width"></kendo-numerictextbox>
+                                </div>
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="height"></kendo-numerictextbox>
+                                </div>
+                                <div class="weight-block col-span-2">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="weight"></kendo-numerictextbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group" formGroupName="cartonSize">
+                            <div class="label-group">
+                                <span class="label-text">Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)</span>
+                            </div>
+                            <div class="size-weight-block grid-cols-5">
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="long"></kendo-numerictextbox>
+                                </div>
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="width"></kendo-numerictextbox>
+                                </div>
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="height"></kendo-numerictextbox>
+                                </div>
+                                <div class="weight-block col-span-2">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="weight"></kendo-numerictextbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="input-group" formGroupName="palletSize">
+                            <div class="label-group">
+                                <span class="label-text">Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)</span>
+                            </div>
+                            <div class="size-weight-block grid-cols-5">
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="long"></kendo-numerictextbox>
+                                </div>
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="width"></kendo-numerictextbox>
+                                </div>
+                                <div class="size-block col-span-1">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="height"></kendo-numerictextbox>
+                                </div>
+                                <div class="weight-block col-span-2">
+                                    <kendo-numerictextbox class="input center-input" format="##" [min]="0" [autoCorrect]="true" formControlName="weight"></kendo-numerictextbox>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
-
+                    
+                    <div class="hamper-info-code-origin-material info-block col-span-1">
+                        <div class="input-group">
+                            <div class="label-group">
+                                <span class="label-text">Quy đổi quy cách sản phẩm</span>
+                            </div>
+                            <div class="unit-exchange-group grid-cols-4" >
+                                <div class="unit-exchange-block col-span-1">
+                                    <span class="label-text">Inner</span>
+                                    <span class="label-text">=</span>
+                                </div>
+                                <div class="unit-exchange-block col-span-2">
+                                    <kendo-numerictextbox class="input right-input" format="##" [min]="0" [autoCorrect]="true"  formControlName="innerBaseUnit"></kendo-numerictextbox>
+                                </div>
+                                <div class="unit-exchange-block col-span-1">
+                                    <span class="unit-text">Base unit</span>
+                                </div>
+                            </div>
+                            <div class="unit-exchange-group grid-cols-4">
+                                <div class="unit-exchange-block col-span-1">
+                                    <span class="label-text">Inner</span>
+                                    <span class="label-text">=</span>
+                                </div>
+                                <div class="unit-exchange-block col-span-2">
+                                    <kendo-numerictextbox class="input right-input" format="##" [min]="0" [autoCorrect]="true"  formControlName="cartonBaseUnit"></kendo-numerictextbox>
+                                </div>
+                                <div class="unit-exchange-block col-span-1">
+                                    <span class="unit-text">Base unit</span>
+                                </div>
+                            </div>
+                            <div class="unit-exchange-group grid-cols-4">
+                                <div class="unit-exchange-block col-span-1">
+                                    <span class="label-text">Inner</span>
+                                    <span class="label-text">=</span>
+                                </div>
+                                <div class="unit-exchange-block col-span-2">
+                                    <kendo-numerictextbox class="input right-input" format="##" [min]="0" [autoCorrect]="true"  formControlName="palletInnerBaseUnit"></kendo-numerictextbox>
+                                </div>
+                                <div class="unit-exchange-block col-span-1">
+                                    <span class="unit-text">Base unit</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="hamper-info-container">
-            <app-product-list></app-product-list>
-        </div>
+            <div class="hamper-info-container" [ngClass]="{'disable': checkDisable() == false}">
+                <div class="hamper-info-title-block">
+                    <span class="hamper-title-text">Thông tin khác</span>
+                </div>
+                <div class="hamper-info-content-block grid-cols-3">
+                    <div class="hamper-info-code-name-block info-block col-span-1">
+                        <div class="input-group">
+                            <div class="label-group">
+                                <span class="label-text">Thông số kĩ thuật</span>
+                            </div>
+                            <kendo-textbox class="input" formControlName="OtherInfo"></kendo-textbox>
+                        </div>
 
-        <div class="hamper-info-container">
-            <div class="hamper-info-title-block">
-                <span class="hamper-title-text">Công ty áp dụng</span>
-            </div>
-            <div class="hamper-info-content-block grid-cols-3">
-                <div class="hamper-info-code-name-block info-block col-span-1">
-                    <app-item-company [setValue]="companyData.companyVietHaTri" [important]="true"></app-item-company>
-                </div>
-                <div class="hamper-info-code-name-block info-block col-span-1">
-                    <app-item-company [setValue]="companyData.companyMotThanhVien"></app-item-company>
-                </div>
-                <div class="hamper-info-code-name-block info-block col-span-1">
-                    <app-item-company [setValue]="companyData.company3PS"></app-item-company>
+                    </div>
                 </div>
             </div>
-            
-        </div>
+
+            <div class="hamper-info-container" [ngClass]="{'disable': checkDisable() == false}">
+                <app-product-list [products]="tempProductList" [stateHamper]="hamperObject.State" (sendDataOpenDrawer)="openDrawer()" #productlist></app-product-list>
+            </div>
+
+            <div class="hamper-info-container" [ngClass]="{'disable': checkDisable() == false}">
+                <div class="hamper-info-title-block">
+                    <span class="hamper-title-text">Công ty áp dụng</span>
+                </div>
+                <div class="hamper-info-content-block grid-cols-3">
+                    <div class="hamper-info-code-name-block info-block col-span-1">
+                        <app-item-company [setValue]="companyData.companyVietHaTri" [important]="true"></app-item-company>
+                    </div>
+                    <div class="hamper-info-code-name-block info-block col-span-1">
+                        <app-item-company [setValue]="companyData.companyMotThanhVien"></app-item-company>
+                    </div>
+                    <div class="hamper-info-code-name-block info-block col-span-1">
+                        <app-item-company [setValue]="companyData.company3PS"></app-item-company>
+                    </div>
+                </div>
+                
+            </div>
+        </form>
 
         <span class="footer">© Thiện Tâm</span>
 
-        <app-hamper-drawer [expanded]="isDrawerShow" [titleText]="'Sản phẩm thuộc hamper'">
+        <app-hamper-drawer [expanded]="isDrawerShow" [titleText]="'Sản phẩm thuộc hamper'" class="drawer">
             <div drawer-content>
-                <button HamperButtons data-type="error" class="func-button" (click)="closeDrawer()">THÊM MỚI</button>
+                <div class="input-group">
+                    <div class="label-group" [ngClass]="{'disable': checkDisable() == false}">
+                        <span class="label-text">Nhập mã sản phẩm</span>
+                    </div>
+                    <kendo-textbox #termInput class="input" [ngClass]="{'norDisable': checkDisable() == false}" (blur)="searchItem(termInput.value)"></kendo-textbox>
+                </div>
+                
+                <div class="input-group product-group" *ngIf="searchedProduct">
+                    <div class="label-group" [ngClass]="{'disable': checkDisable() == false}">
+                        <span class="label-text">Tên sản phẩm</span>
+                    </div>
+                    <span class="product-text">{{searchedProduct.Name}}</span>
+                </div>
+
+                <div class="grid-cols-2" *ngIf="searchedProduct">
+                    <div class="input-group col-span-1 quantity-group">
+                        <div class="label-group" [ngClass]="{'disable': checkDisable() == false}">
+                            <span class="label-text">Số lượng có trong hamper</span>
+                        </div>
+                        <kendo-numerictextbox class="input right-input" [(value)]="quantityInput" format="##" [min]="0" [autoCorrect]="true" [ngClass]="{'norDisable': checkDisable() == false}"></kendo-numerictextbox>
+                    </div>
+
+                    <div class="input-group col-span-1">
+                        <img src="{{searchedProduct.Image}}" onerror="this.src='../../../../../../../assets/default-image.png'" alt="" class="img">
+                    </div>
+                </div>
+                
+                <div class="input-group func-group">
+                    <button HamperButtons data-type="cancel" class="func-button" (click)="closeDrawer(); termInput.clearValue()"> Đóng
+                    </button>
+                    <button HamperButtons data-type="success" class="func-button" (click)="updateHamperProduct()" *ngIf="searchedProduct">Cập nhập
+                    </button>
+                </div>
+
             </div>
         </app-hamper-drawer>
 
