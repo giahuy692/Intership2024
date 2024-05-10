@@ -1,4 +1,4 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { BreadCrumbCollapseMode, BreadCrumbItem } from '@progress/kendo-angular-navigation';
 import { DTOHamper } from '../shared/dtos/DTOHamper.dto';
 import { HamperService } from '../shared/services/hamper.service';
@@ -7,6 +7,8 @@ import { checkOutlineIcon, minusCircleIcon, plusIcon, redoIcon, SVGIcon, trashIc
 import { FormGroup, FormControl } from '@angular/forms';
 import { dataMadeHameper } from '../config004-hamper-detail/dataMadeOfHamper';
 import { DataUnitProduct } from '../config004-hamper-detail/dataUnitProduct';
+import { DropDownListComponent } from '@progress/kendo-angular-dropdowns';
+import { TextBoxComponent } from '@progress/kendo-angular-inputs';
 
 class Button {
   svgClassIcon: SVGIcon
@@ -31,10 +33,12 @@ class InforHamper {
   styleUrls: ['./config001-hamper-detail.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class Config001HamperDetailComponent {
+export class Config001HamperDetailComponent implements OnInit, OnDestroy {
+  @ViewChild('originDropdown') originDropdown!: DropDownListComponent;
+  @ViewChild('inputNameTV') inputNameTV!: TextBoxComponent;
   constructor(private hamperService: HamperService) { }
   public hamperCrr: DTOHamper;
-  public status: string = "Ngưng áp dụng";
+  public status: string = "Đang soạn thảo";
   public defaultItems: BreadCrumbItem[] = [
     {
       text: "Quản lý sản phẩm",
@@ -76,7 +80,7 @@ export class Config001HamperDetailComponent {
     typeButton: 'success'
   };
   public buttonThemMoi: Button = {
-    svgClassIcon: redoIcon,
+    svgClassIcon: plusIcon,
     nameButton: 'Thêm mới',
     typeButton: 'success'
   };
@@ -90,8 +94,9 @@ export class Config001HamperDetailComponent {
     nameJP: new FormControl(''),
     materialJP: new FormControl('')
   })
-  public dataOrigin = {dataMadeHameper};  
-  public productUnit = {DataUnitProduct};  
+
+  public dataOrigin = { dataMadeHameper };
+  public productUnit = { DataUnitProduct };
 
   ngOnInit(): void {
     this.subscriptions.push(this.hamperService.hamberSubject$.subscribe(data => {
@@ -134,5 +139,79 @@ export class Config001HamperDetailComponent {
 
   onFileSelected(fileName: string) {
     console.log('File selected:', fileName);
+  }
+
+  disableField(status: string) {
+    if (status === 'Ngưng áp dụng' || status === 'Duyệt áp dụng') {
+      return true;
+    }
+    return false;
+  }
+
+  // Xử lý sự kiện mousedown để ngăn chặn click chuột
+  onMouseDown(event: MouseEvent) {
+    event.preventDefault(); // Ngăn chặn hành vi mặc định (click chuột)
+  }
+
+  // Xử lý sự kiện keydown để ngăn chặn nhập liệu
+  onKeyDown(event: KeyboardEvent) {
+    event.preventDefault(); // Ngăn chặn hành vi mặc định (nhập liệu)
+  }
+
+  // Định nghĩa một hàm tạo mã barcode ngẫu nhiên không trùng lặp
+  generateUniqueBarcode(): string {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'; // Các chữ cái in hoa
+    const digits = '0123456789'; // Các chữ số
+
+    const randomChar = characters.charAt(Math.floor(Math.random() * characters.length)); // Chọn ngẫu nhiên một chữ cái
+    let randomNumber = ''; // Chuỗi chứa các chữ số ngẫu nhiên
+
+    // Tạo 7 chữ số ngẫu nhiên
+    for (let i = 0; i < 7; i++) {
+      randomNumber += digits.charAt(Math.floor(Math.random() * digits.length));
+    }
+
+    // Kết hợp chữ cái và chữ số để tạo mã barcode hoàn chỉnh
+    const barcode = randomChar + randomNumber;
+
+    return barcode;
+  }
+
+  // Định nghĩa một hàm tạo mã barcode không trùng lặp mỗi lần được gọi
+  createUniqueBarcode(): string {
+    const generatedBarcodes = new Set<string>(); // Set để lưu trữ các mã barcode đã tạo
+
+    while (true) {
+      const newBarcode = this.generateUniqueBarcode(); // Tạo một mã barcode ngẫu nhiên
+
+      if (!generatedBarcodes.has(newBarcode)) { // Kiểm tra xem mã barcode đã được tạo trước đó chưa
+        generatedBarcodes.add(newBarcode); // Thêm mã barcode mới vào set
+        return newBarcode; // Trả về mã barcode mới
+      }
+    }
+  }
+
+  onClickButton(nameButton: string) {
+    if (nameButton === 'Thêm mới') {
+      this.getValuesHamperInfor();
+    }
+  }
+
+  getValuesHamperInfor() {
+    if (this.originDropdown.value) {
+      this.inforHamper.patchValue({ origin: (this.originDropdown.value).made })
+    }
+    console.log('infor hamper: ', this.inforHamper.getRawValue());
+  }
+
+  onInputNameTVBlur(): void {
+    const inputValue = this.inforHamper.get('nameVN')?.value;
+    if(inputValue){
+      this.inforHamper.patchValue({ originBarcode: this.createUniqueBarcode() })
+    }
+  }
+
+  setValueHamperInfor() {
+    console.log(this.inforHamper.getRawValue());
   }
 }
