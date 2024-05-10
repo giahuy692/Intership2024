@@ -8,7 +8,7 @@
                 <kendo-label>Nhập mã sản phẩm</kendo-label>
                 <kendo-textbox (blur)="findProductByBarcode(idProductItem)" [(value)]="idProductItem" class="kendo-textbox"></kendo-textbox>
             </div>
-            <div class="item-group-name">
+            <div *ngIf="itemProductFilter.Barcode" class="item-group-name">
                 <div>
                     <kendo-label>Tên sản phẩm</kendo-label>
                 </div>
@@ -18,7 +18,7 @@
 
 
             </div>
-            <div class="item-group">
+            <div *ngIf="itemProductFilter.Barcode" class="item-group">
                 <div>
                     <kendo-label>Số lượng có trong hamper</kendo-label>
                     <kendo-numerictextbox format="##" [(value)]="quantityProduct" class="kendo-textbox"></kendo-numerictextbox>
@@ -54,7 +54,7 @@
                     </button>
                 </div>
                 
-                <button (click)="openDrawer()" class="btn-addNew" HamperButtons data-type="success"><kendo-svg-icon [icon]="plusIcon"></kendo-svg-icon>{{'Thêm mới' | uppercase}}</button>
+                <button (click)="addNewHamper()" class="btn-addNew" HamperButtons data-type="success"><kendo-svg-icon [icon]="plusIcon"></kendo-svg-icon>{{'Thêm mới' | uppercase}}</button>
             </div>
             
         </div>
@@ -78,30 +78,30 @@
                             <kendo-label class="kendo-label"> 
                                 Tên tiếng Việt  &nbsp; <span Necessary ></span>
                             </kendo-label>
-                            <kendo-textbox class="kendo-textbox" formControlName="nameVietNames" (blur)="onBlurNameVietNames()"></kendo-textbox>
+                            <kendo-textbox [readonly]="formHamper.get('status').value?.id == 2 || formHamper.get('status').value?.id == 3" class="kendo-textbox" formControlName="nameVietNames" (blur)="onBlurNameVietNames()"></kendo-textbox>
                         </div>
-                        <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="group">
+                        <div [ngClass]="{'disable-aria': barcodeHamper == '' || formHamper.get('status').value?.id == 2 || formHamper.get('status').value?.id == 3 ? true : false}" class="group">
                             <kendo-label class="kendo-label"> 
                                 Tên tiếng Anh
                             </kendo-label>
-                            <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="nameEnglish"></kendo-textbox>
+                            <kendo-textbox [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="nameEnglish"></kendo-textbox>
                         </div>
-                        <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="group">
+                        <div [ngClass]="{'disable-aria': barcodeHamper == '' || formHamper.get('status').value?.id == 2 || formHamper.get('status').value?.id == 3 ? true : false}"class="group">
                             <kendo-label class="kendo-label"> 
                                 Tên tiếng Nhật
                             </kendo-label>
-                            <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="nameJapan"></kendo-textbox>
+                            <kendo-textbox [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3"class="kendo-textbox" formControlName="nameJapan"></kendo-textbox>
                         </div>
                     </div>
     
-                    <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="col-limit col-span-1">
+                    <div [ngClass]="{'disable-aria': barcodeHamper == '' || formHamper.get('status').value?.id == 2 || formHamper.get('status').value?.id == 3 ? true : false}" class="col-limit col-span-1">
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Xuất xứ
                             </kendo-label>
                             <kendo-dropdownlist
                                 [defaultItem]="defaultItemDropdown"
-                                [readonly]="!barcodeHamper"
+                                [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3"
                                 class="kendo-dropdownlist"
                                 iconClass="fa-solid fa-angle-down"
                                 fillMode="outline"
@@ -117,23 +117,23 @@
                             <kendo-label class="kendo-label"> 
                                 Chất liệu tiếng Việt
                             </kendo-label>
-                            <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="materialVietnames"></kendo-textbox>
+                            <kendo-textbox [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="materialVietnames"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Chất liệu tiếng Anh
                             </kendo-label>
-                            <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="materialEnglish"></kendo-textbox>
+                            <kendo-textbox [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="materialEnglish"></kendo-textbox>
                         </div>
                         <div class="group">
                             <kendo-label class="kendo-label"> 
                                 Chất liệu tiếng Nhật
                             </kendo-label>
-                            <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="materialJapan"> </kendo-textbox>
+                            <kendo-textbox [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="materialJapan"> </kendo-textbox>
                         </div>
                     </div>
 
-                    <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="col-limit import-image col-span-1">
+                    <div [ngClass]="{'disable-aria': barcodeHamper == '' || formHamper.get('status').value?.id == 2 || formHamper.get('status').value?.id == 3 ? true : false}" class="col-limit import-image col-span-1">
                         <app-import-image (fileSelected)="getImage($event)"></app-import-image>
                     </div>
                    
@@ -144,7 +144,7 @@
             <div class="header"> 
                  <div class="title-header">{{'Thông tin đóng gói' | uppercase}}</div>
             </div>
-            <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="content-hamper">
+            <div [ngClass]="{'disable-aria': barcodeHamper == '' || formHamper.get('status').value?.id == 2 || formHamper.get('status').value?.id == 3 ? true : false}" class="content-hamper">
                 <div class="group-item grid-cols-3">
                     <div class="col-span-1">
                         <div class="group">
@@ -153,7 +153,7 @@
                             </kendo-label>
                             <kendo-dropdownlist 
                             [defaultItem]="defaultItemDropdownOgirin" 
-                            [readonly]="!barcodeHamper"
+                            [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3"
                             class="kendo-dropdownlist" 
                             iconClass="fa-solid fa-angle-down"
                             fillMode="outline"
@@ -168,10 +168,10 @@
                                 Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"  [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"     [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
                             </div>
                         </div>
                         <div formGroupName="sizeInner" class="group">
@@ -179,10 +179,10 @@
                                 Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
                             </div>
                         </div>
                         <div formGroupName="sizeCartoon" class="group">
@@ -190,10 +190,10 @@
                                 Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true"  format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true"  format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
                             </div>
                         </div>
                         <div formGroupName="sizePallet" class="group">
@@ -223,7 +223,7 @@
                                         [autoCorrect]="true"
                                         formControlName="changeInner"
                                         format="##"
-                                        [readonly]="!barcodeHamper"
+                                           [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3"
                                         class="textbox-change-package">
                                     </kendo-numerictextbox>
                                     <kendo-label class="title-base-unit">Base unit</kendo-label>
@@ -232,14 +232,14 @@
                                     <kendo-label class="package">Carton</kendo-label>
                                     <kendo-label class="equal">=</kendo-label>
                                     <kendo-numerictextbox  [min]="0"
-                                        [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" formControlName="changeCarton" class="textbox-change-package"></kendo-numerictextbox>
+                                        [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" formControlName="changeCarton" class="textbox-change-package"></kendo-numerictextbox>
                                     <kendo-label class="title-base-unit">Base unit</kendo-label>
                                 </div>
                                 <div class="box">
                                     <kendo-label class="package">Pallet</kendo-label>
                                     <kendo-label class="equal">=</kendo-label>
                                     <kendo-numerictextbox  [min]="0"
-                                        [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" formControlName="changePallet" class="textbox-change-package"></kendo-numerictextbox>
+                                        [autoCorrect]="true" format="##"    [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" formControlName="changePallet" class="textbox-change-package"></kendo-numerictextbox>
                                     <kendo-label class="title-base-unit">Base unit</kendo-label>
                                 </div>
                             </div>
@@ -254,22 +254,21 @@
             <div class="header"> 
                  <div class="title-header">{{'Thông tin khác' | uppercase}}</div>
             </div>
-            <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="content-hamper">
+            <div [ngClass]="{'disable-aria': barcodeHamper == '' || formHamper.get('status').value?.id == 2 || formHamper.get('status').value?.id == 3 ? true : false}" class="content-hamper">
                 <div class="group-item grid-cols-3">
                     <div class="group col-span-1">
                         <kendo-label class="kendo-label"> 
                             Thông số kỹ thuật
                         </kendo-label>
-                        <kendo-textbox [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="specifications"></kendo-textbox>
+                        <kendo-textbox [readonly]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" class="kendo-textbox" formControlName="specifications"></kendo-textbox>
                     </div>
                 </div>
               
             </div>
         </div>
 
-        <div  [ngClass]="{'product-list-disable': barcodeHamper == '' ? true : false}" >
+        <div  [ngClass]="{'product-list-disable': barcodeHamper == '' || formHamper.get('status').value?.id == 2 || formHamper.get('status').value?.id == 3 ? true : false}" >
            <app-product-list  
-               
                 (sendDataOpenDrawer)="openDrawer()" 
                 [stateHamper]="formHamper.get('status').value?.text"  
                 [products]="dataItemProductInHamper">
@@ -277,20 +276,20 @@
 
         </div>
 
-        <div  class="hamper-company block-hamper">
+        <div class="hamper-company block-hamper">
             <div class="header"> 
                  <div class="title-header">{{'Công ty áp dụng' | uppercase}}</div>
             </div>
-            <div [ngClass]="{'disable-aria': barcodeHamper == '' ? true : false}" class="content-hamper">
+            <div  [ngClass]="{'company-disable': barcodeHamper == '' || formHamper.get('status').value?.id == 2 || formHamper.get('status').value?.id == 3 ? true : false}" class="content-hamper">
                 <div class="group-item grid-cols-3 item-company">
                     <div class="group col-span-1">
-                        <app-item-company [disableCheckbox]="barcodeHamper==''" [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
+                        <app-item-company [disableCheckbox]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" [setValue]="vietHaCom" (getValue)="getValueCompany1($event)" [important]="true" [totalPrice]="200" >></app-item-company>
                     </div>
                     <div class="group col-span-1">
-                        <app-item-company [disableCheckbox]="barcodeHamper==''" [setValue]="motThanhCom" (getValue)="getValueCompany2($event)" [important]="false" [totalPrice]="200" >></app-item-company>
+                        <app-item-company [disableCheckbox]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" [setValue]="motThanhCom" (getValue)="getValueCompany2($event)" [important]="false" [totalPrice]="200" >></app-item-company>
                     </div>
                     <div class="group col-span-1">
-                        <app-item-company [disableCheckbox]="barcodeHamper==''" [setValue]="PSCom" (getValue)="getValueCompany3($event)" [important]="false" [totalPrice]="200" >></app-item-company>
+                        <app-item-company [disableCheckbox]="!barcodeHamper || formHamper.get('status').value.id == 2 || formHamper.get('status').value.id == 3" [setValue]="PSCom" (getValue)="getValueCompany3($event)" [important]="false" [totalPrice]="200" >></app-item-company>
                     </div>
                 </div>
             </div>

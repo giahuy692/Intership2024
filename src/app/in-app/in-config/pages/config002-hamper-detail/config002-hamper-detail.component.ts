@@ -5,7 +5,7 @@ import { companyVietHaTri, company3PS, companyMotThanhVien } from '../config004-
 import { DataUnitProduct } from '../config004-hamper-detail/dataUnitProduct';
 import { dataMadeHameper } from '../config004-hamper-detail/dataMadeOfHamper';
 import { HamperService } from '../shared/services/hamper.service';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { DTOProduct } from '../shared/dtos/DTOProduct.dto';
 import { NotifiService } from '../shared/services/notifi.service';
 import { DTOHamper } from '../shared/dtos/DTOHamper.dto';
@@ -26,7 +26,7 @@ export class Config002HamperDetailComponent implements OnInit {
   ngOnInit(): void {
     this.hamperForm = this.formBuilder.group({
       State: null,
-      CompanyList: [[], Validators.required],
+      CompanyList: [],
       TotalPrice: null,
       Currency: '',
       OtherInfo: null,
@@ -40,7 +40,7 @@ export class Config002HamperDetailComponent implements OnInit {
         vietnameseMaterial: '',
         englishMaterial: '',
         japaneseMaterial: '',
-        image:null,
+        image: null,
         baseUnit: this.defaultItem,
         productSize: this.formBuilder.group({
           long: null,
@@ -73,6 +73,7 @@ export class Config002HamperDetailComponent implements OnInit {
     }, { updateOn: 'blur' });
 
     this.hamperObject = this.hamperForm.value;
+    console.log(this.hamperObject)
   }
 
   hamperForm: FormGroup;
@@ -80,7 +81,7 @@ export class Config002HamperDetailComponent implements OnInit {
   isFirstCreate: boolean = true;
   isInvalidUpdate: boolean = true;
   isDrawerShow: boolean = false;
-  defaultItem = { id: -1, made: "--- Chọn ---" };
+  defaultItem = { id: -1, text: "--- Chọn ---" };
   defaultItems: BreadCrumbItem[] = [
     {
       text: 'QUẢN LÝ SẢN PHẨM'
@@ -99,10 +100,40 @@ export class Config002HamperDetailComponent implements OnInit {
   unitData = { DataUnitProduct };
   originData = { dataMadeHameper }
 
-  tempProductList : DTOProduct[]=[];
-  tempCompanyList : DTOCompany[]=[];
-  hamperObject : DTOHamperTest = {
-    State: '' ,
+
+  defaultCompanyList: {
+    companyVietHaTri: DTOCompany,
+    companyMotThanhVien: DTOCompany,
+    company3PS: DTOCompany} = {
+      companyVietHaTri: {
+        code: null,
+        required: null,
+        state: null,
+        name: null,
+        itemCompany: []
+      },
+      companyMotThanhVien:{
+        code: null,
+        required: null,
+        state: null,
+        name: null,
+        itemCompany: []
+      },
+      company3PS:{
+        code: null,
+        required: null,
+        state: null,
+        name: null,
+        itemCompany: []
+    }
+  };
+
+
+
+  tempProductList: DTOProduct[] = [];
+  tempCompanyList: DTOCompany[] = [];
+  hamperObject: DTOHamperTest = {
+    State: '',
     CompanyList: [],
     TotalPrice: null,
     Currency: '',
@@ -125,7 +156,7 @@ export class Config002HamperDetailComponent implements OnInit {
     Name: 'Product 2',
     Brand: 'Brand 2',
     Origin: 'Origin 2',
-    Image:'https://lh3.googleusercontent.com/onIn_NMqtrREr1B1V_S0Lw2yh_-Oj0GzxK1NFgYt4OrObaZj6x-C0kCg9czPRRbAhsDQIcanV7nCkyrNDN2AkQ9XcQ69pkKa',
+    Image: 'https://lh3.googleusercontent.com/onIn_NMqtrREr1B1V_S0Lw2yh_-Oj0GzxK1NFgYt4OrObaZj6x-C0kCg9czPRRbAhsDQIcanV7nCkyrNDN2AkQ9XcQ69pkKa',
     Price: 15,
     Quantity: 3
   },
@@ -195,8 +226,8 @@ export class Config002HamperDetailComponent implements OnInit {
     Quantity: 8
   }]
 
-  searchedProduct : DTOProduct;
-  quantityInput : number = null;
+  searchedProduct: DTOProduct;
+  quantityInput: number = null;
 
   onFormSubmit() {
     if (this.hamperForm.valid) {
@@ -205,12 +236,28 @@ export class Config002HamperDetailComponent implements OnInit {
   }
 
   changeHamperStatus(status: string) {
-    switch(status){
-      case 'Gửi duyệt':
-        if(this.hamperForm.valid){
+
+    let falSysCheck: boolean
+        const companyList : DTOCompany[] = this.hamperForm.get('CompanyList').value;
+        if(companyList.length == 0){
+          falSysCheck = true;
+        }else{
+          const hachiCompanyItem = companyList.find(company => company.name == 'TNHH Việt Hạ Chí')
+          if(hachiCompanyItem){
+            if (!hachiCompanyItem.state) {
+              falSysCheck = true;
+            } else {
+              falSysCheck = false;
+            }
+          }
+    }
+    switch (status) {
+      case 'Gửi duyệt': 
+      case 'Duyệt áp dụng':
+        if (this.hamperForm.valid && falSysCheck == false) {
           this.hamperForm.get('State').setValue(status);
         }
-        else{
+        else {
           this.toast.message('Gửi duyệt thất bại, vui lòng nhập đủ các trường bắt buộc', 'error');
         }
         break;
@@ -220,7 +267,7 @@ export class Config002HamperDetailComponent implements OnInit {
     }
   }
 
-  generateBarcode(inputRef : TextBoxComponent): void {
+  generateBarcode(inputRef: TextBoxComponent): void {
     const barcodeControl = this.hamperForm.controls['InfoHamber'].get('barcode');
     const vietNameControl = this.hamperForm.controls['InfoHamber'].get('vietnameseName');
     const statusControl = this.hamperForm.get('State');
@@ -235,18 +282,18 @@ export class Config002HamperDetailComponent implements OnInit {
       this.hamperForm.valueChanges.subscribe(value => {
         if (this.hamperForm.invalid) {
           this.isInvalidUpdate = true;
-          this.hamperForm.setValue(this.hamperObject);  
-          
+          this.hamperForm.setValue(this.hamperObject);
+
         } else {
           this.hamperObject = value;
-          if(!this.isInvalidUpdate) this.toast.message("Update hamper thành công", 'success')  
+          if (!this.isInvalidUpdate) this.toast.message("Update hamper thành công", 'success')
           this.isInvalidUpdate = false;
         }
       });
     }
   }
 
-  updateHamperImage(url: string){
+  updateHamperImage(url: string) {
     this.hamperForm.controls['InfoHamber'].get('image').setValue(url);
   }
 
@@ -260,23 +307,23 @@ export class Config002HamperDetailComponent implements OnInit {
     return result;
   }
 
-  searchItem(term: string){
+  searchItem(term: string) {
     const foundProduct = this.databaseProduct.find(product => product.Barcode == term);
-    if(foundProduct){
-      this.toast.message("Đã tìm thấy sản phẩm: "+ foundProduct.Name, 'success');
+    if (foundProduct) {
+      this.toast.message("Đã tìm thấy sản phẩm: " + foundProduct.Name, 'success');
       this.searchedProduct = foundProduct;
-    }else{
-      if(term != ''){
-        this.toast.message("Không tìm thấy sản phẩm",'error')
+    } else {
+      if (term != '') {
+        this.toast.message("Không tìm thấy sản phẩm", 'error')
       }
-      
+
     }
   }
 
-  updateHamperProduct(){
+  updateHamperProduct() {
     let foundProductInHamper = this.tempProductList.find(product => product.Barcode == this.searchedProduct.Barcode);
-    if(!foundProductInHamper){
-      const tempProduct = {...this.searchedProduct}
+    if (!foundProductInHamper) {
+      const tempProduct = { ...this.searchedProduct }
       tempProduct.Quantity = this.quantityInput;
       this.tempProductList.push(tempProduct)
     }
@@ -284,7 +331,7 @@ export class Config002HamperDetailComponent implements OnInit {
     this.quantityInput = null;
   }
 
-  updateHamperCompanyLst(company: DTOCompany){
+  updateHamperCompanyLst(company: DTOCompany) {
     let foundIndex = null;
     let foundCompany = this.tempCompanyList.find((company, index) =>{foundIndex = index ;return company.code == company.code});
     
@@ -302,14 +349,20 @@ export class Config002HamperDetailComponent implements OnInit {
     this.hamperForm.get('CompanyList').setValue(this.tempCompanyList)
   }
 
+  updateHamperImg(url: string){
+    
+  }
+
   checkDisable() {
     const barcodeControl = this.hamperForm.controls['InfoHamber'].get('barcode');
     const vietnameseNameControl = this.hamperForm.controls['InfoHamber'].get('vietnameseName');
-    return (barcodeControl.valid && vietnameseNameControl.valid)
+    const currentStatus = this.hamperForm.get('State').value;
+    return (barcodeControl.valid && vietnameseNameControl.valid && (currentStatus == 'Đang soạn thảo' || currentStatus == 'Trả về' || currentStatus == 'Gửi duyệt'));
   }
 
-  resetForm(){
-    if(!this.isFirstCreate){
+
+  resetForm() {
+    if (!this.isFirstCreate) {
       this.hamperForm = this.formBuilder.group({
         State: null,
         CompanyList: [],
@@ -326,7 +379,7 @@ export class Config002HamperDetailComponent implements OnInit {
           vietnameseMaterial: '',
           englishMaterial: '',
           japaneseMaterial: '',
-          image:null,
+          image: null,
           baseUnit: this.defaultItem,
           productSize: this.formBuilder.group({
             long: null,
@@ -358,9 +411,9 @@ export class Config002HamperDetailComponent implements OnInit {
         })
       }, { updateOn: 'blur' });
       this.isFirstCreate = true;
-      this.toast.message("Đã reset form",'error')
+      this.toast.message("Đã reset form", 'error')
     }
-    
+
   }
 
   openDrawer() {
