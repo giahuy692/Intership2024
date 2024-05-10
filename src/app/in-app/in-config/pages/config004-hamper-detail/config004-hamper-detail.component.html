@@ -168,10 +168,10 @@
                                 Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##"  [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##"  [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
                             </div>
                         </div>
                         <div formGroupName="sizeInner" class="group">
@@ -179,10 +179,10 @@
                                 Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
                             </div>
                         </div>
                         <div formGroupName="sizeCartoon" class="group">
@@ -190,10 +190,10 @@
                                 Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-numerictextbox  format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true"  format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
                             </div>
                         </div>
                         <div formGroupName="sizePallet" class="group">
@@ -201,10 +201,10 @@
                                 Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)
                             </kendo-label>
                             <div class="box-group">
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
-                                <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="lenght" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="width" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="height" class="short-textbox"></kendo-numerictextbox>
+                                <kendo-numerictextbox [min]="0" [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" class="kendo-textbox" formControlName="weight" class="medium-textbox"></kendo-numerictextbox>
                             </div>
                         </div>
                     </div>
@@ -219,8 +219,10 @@
                                     <kendo-label class="package">Inner</kendo-label>
                                     <kendo-label class="equal">=</kendo-label>
                                     <kendo-numerictextbox
+                                        [min]="0"
+                                        [autoCorrect]="true"
                                         formControlName="changeInner"
-                                        format="n0"
+                                        format="##"
                                         [readonly]="!barcodeHamper"
                                         class="textbox-change-package">
                                     </kendo-numerictextbox>
@@ -229,13 +231,15 @@
                                 <div class="box">
                                     <kendo-label class="package">Carton</kendo-label>
                                     <kendo-label class="equal">=</kendo-label>
-                                    <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" formControlName="changeCarton" class="textbox-change-package"></kendo-numerictextbox>
+                                    <kendo-numerictextbox  [min]="0"
+                                        [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" formControlName="changeCarton" class="textbox-change-package"></kendo-numerictextbox>
                                     <kendo-label class="title-base-unit">Base unit</kendo-label>
                                 </div>
                                 <div class="box">
                                     <kendo-label class="package">Pallet</kendo-label>
                                     <kendo-label class="equal">=</kendo-label>
-                                    <kendo-numerictextbox format="##" [readonly]="!barcodeHamper" formControlName="changePallet" class="textbox-change-package"></kendo-numerictextbox>
+                                    <kendo-numerictextbox  [min]="0"
+                                        [autoCorrect]="true" format="##" [readonly]="!barcodeHamper" formControlName="changePallet" class="textbox-change-package"></kendo-numerictextbox>
                                     <kendo-label class="title-base-unit">Base unit</kendo-label>
                                 </div>
                             </div>
@@ -263,9 +267,9 @@
             </div>
         </div>
 
-        <!-- <div class="hamper-product-list">
-            <app-product-list [stateHamper]="formHamper.get('status').value"  [products]="dataItemProductInHamper" class="product-list"></app-product-list>
-        </div> -->
+        <div class="hamper-product-list">
+            <app-product-list (sendDataOpenDrawer)="openDrawer()" [atrr.stateHamper]="formHamper.get('status').value?.text"  [products]="dataItemProductInHamper" class="product-list"></app-product-list>
+        </div>
 
         <div class="hamper-company block-hamper">
             <div class="header"> 
