@@ -59,8 +59,36 @@
             padding-left: 10px;
             padding-right: 10px;
 
+            &.disable{
+                opacity: 0.7;
+                cursor: default;
+
+                app-item-company{
+                    >.body>.header{
+                        opacity: 0.7;
+                        pointer-events: none;
+                    }
+                }
+
+                .k-input-inner{
+                    pointer-events: none;
+                }
+                
+                button{
+                    pointer-events: none;
+                }
+
+                .k-dropdownlist{
+                    cursor: default;
+                    &:active{
+                        pointer-events: none;                       
+                    }
+                }
+
+            }
+
             &:last-of-type{
-                padding-bottom: 10px;
+               
                 .hamper-info-content-block{
                     padding-bottom: 10px;
                 }
@@ -91,7 +119,7 @@
                 background-color: #FFFFFF;
                 overflow-y: hidden;
                 overflow-x: auto;
-                
+                             
                 .info-block{
                     display: flex;
                     flex-direction: column;
@@ -99,17 +127,54 @@
                     padding: 10px;
                     padding-top: 5px;
                     gap: 0.5rem;
+
+                    &.disable{
+                        opacity: 0.7;
+                        cursor: default;
+        
+                        app-item-company{
+                            >.body>.header{
+                                opacity: 0.7;
+                                pointer-events: none;
+                            }
+                        }
+        
+                        .k-input-inner{
+                            pointer-events: none;
+                        }
+                        
+
+                        button{
+                            pointer-events: none;
+                        }
+        
+                        .k-dropdownlist{
+                            cursor: default;
+                            &:active{
+                                pointer-events: none;                   
+                            }
+
+                        }
+        
+                    }
                     
                     .input-group{
                         background-color: #FFFFFF;
                         display: flex;                   
                         gap: 0.5rem;
+                        
+                        
                         .label-group{
                             display: flex;
                             align-items: center;
                             height: fit-content;
                             gap: 0.5rem;
-                            
+
+                            &.disable{
+                                cursor: default;
+                                opacity: 0.7;
+                            }
+                                   
                             .label-text{
                                 color: #959DB3;
                                 font-weight: 700;
@@ -128,6 +193,43 @@
                             outline: none;
                             border-color: #DBDEE7;
                             z-index: 0;
+
+                            >.k-input-spinner{
+                                display: none;
+                            }
+
+                            &.disable{
+                                opacity: 0.7;
+                                background-color: #d3d8e7;
+                                font-weight: 700;
+                                color: black;
+                                
+                                >.k-input-inner{
+                                    pointer-events: none;
+                                }
+
+                                &:not(.barcode-input):hover{
+                                    background-color: #d3d8e7;
+                                    border-color: $dark-green;
+                                }
+
+                                
+                            }
+
+                            
+
+                            &.norDisable{
+                                opacity: 0.7;
+                                background-color: transparent;
+
+                                >.k-input-inner{
+                                    pointer-events: none;
+                                }
+
+                                &:hover{
+                                    border-color: $dark-green;
+                                }
+                            }
     
                             &.k-focus{
                                 box-shadow: none;
@@ -135,16 +237,21 @@
                                 border-color: $dark-green;
                             }
     
-                            &:hover{
+                            &:not(.disable):hover{
                                 background-color: transparent;
                                 border-color: $dark-green;
-                                color: black;
-                                
+                                color: black;                              
                             }
 
                             &.center-input{
                                 >.k-input-inner{
                                     text-align: center;
+                                }
+                            }
+
+                            &.right-input{
+                                >.k-input-inner{
+                                    text-align: right;
                                 }
                             }
                            
@@ -177,6 +284,135 @@
                 }
             }
 
+        }
+
+        .drawer{
+            .drawer-content{
+                padding: 10px;
+                .input-group{
+                    background-color: #FFFFFF;
+                    display: flex;                   
+                    gap: 0.5rem;
+                    
+                    &.product-group{
+                        display: flex;
+                        flex-direction: column;
+                    }
+
+                    &.func-group{
+                        margin-top: 10px;
+                    }
+
+                    &.quantity-group{
+                        display: flex;
+                        flex-direction: column;
+                        
+                    }
+
+                    .label-group{
+                        display: flex;
+                        align-items: center;
+                        height: fit-content;
+                        gap: 0.5rem;
+
+                        &.disable{
+                            cursor: default;
+                            opacity: 0.7;
+                        }
+                               
+                        .label-text{
+                            color: #343A40;
+                            font-weight: 700;
+                        }
+                    }
+             
+                    .input{
+                        height: 35px;
+                        border-width: 2px;
+                        border-radius: 2px;
+                        outline: none;
+                        border-color: #DBDEE7;
+                        z-index: 0;
+
+                        
+
+                        >.k-input-spinner{
+                            display: none;
+                        }
+
+                        &.disable{
+                            opacity: 0.7;
+                            background-color: #d3d8e7;
+                            font-weight: 700;
+                            color: black;
+                            
+                            >.k-input-inner{
+                                pointer-events: none;
+                            }
+
+                            &:not(.barcode-input):hover{
+                                background-color: #d3d8e7;
+                                border-color: $dark-green;
+                            }
+
+                            
+                        }
+
+                        
+
+                        &.norDisable{
+                            opacity: 0.7;
+                            background-color: transparent;
+
+                            >.k-input-inner{
+                                pointer-events: none;
+                            }
+
+                            &:hover{
+                                border-color: $dark-green;
+                            }
+                        }
+
+                        &.k-focus{
+                            box-shadow: none;
+                            outline: none;
+                            border-color: $dark-green;
+                        }
+
+                        &:not(.disable):hover{
+                            background-color: transparent;
+                            border-color: $dark-green;
+                            color: black;                              
+                        }
+
+                        &.center-input{
+                            >.k-input-inner{
+                                text-align: center;
+                            }
+                        }
+
+                        &.right-input{
+                            >.k-input-inner{
+                                text-align: right;
+                            }
+                        }
+                       
+                    }
+
+                    .img{
+                        width: 100%;
+                        height: 100%;
+                    }
+                    
+
+
+                    .func-button{
+                        height: 32px;
+                        padding-left: 10px;
+                        padding-right: 10px;
+                    }
+                }
+            }
         }
 
         .footer{

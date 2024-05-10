@@ -4,8 +4,10 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { DTOProduct } from '../../dtos/DTOProduct.dto';
@@ -21,7 +23,7 @@ import { downloadIcon, eyeIcon, pencilIcon, plusIcon, searchIcon, trashIcon, upl
   encapsulation: ViewEncapsulation.None,
 })
 
-export class ProductListComponent implements OnInit {
+export class ProductListComponent implements OnInit, OnChanges {
   @Input() products: DTOProduct[];
   @Input() stateHamper: string; 
   @Output() sendDataOpenDrawer = new EventEmitter(); //send data to open Drawer
@@ -31,6 +33,7 @@ export class ProductListComponent implements OnInit {
   selectedProduct?: string;
   icons = {pencilIcon,eyeIcon,trashIcon,uploadIcon,downloadIcon,plusIcon,searchIcon}
   constructor(private element: ElementRef) {}
+  
   @HostListener('document:click', ['$event'])
   onClose(event: any) {
     const btnActions =
@@ -49,6 +52,14 @@ export class ProductListComponent implements OnInit {
   }
   ngOnInit(): void {
     this.productsDisplay = this.products;
+    this.updateActions();
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['stateHamper'] || changes['products']){
+      this.updateActions();
+    }
+  }
+  updateActions(){
     if (this.stateHamper == 'Đang soạn thảo') {
       this.actions = ['Chỉnh sửa', 'Xóa'];
     } else if (
