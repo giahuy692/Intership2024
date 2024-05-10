@@ -30,6 +30,7 @@ export class ImportImageComponent {
   };
 
   public select(e: SelectEvent){
+    this.srcImage = '';
     const objectFile = e.files;
     this.imagePreview = null;
     const that = this;
@@ -58,6 +59,7 @@ export class ImportImageComponent {
 
   public delete(){
     this.imagePreview = null;
+    this.srcImage = null;
     this.fileSelected.emit('');
   }
 
