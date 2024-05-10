@@ -93,10 +93,24 @@
     
 }
 
-// .disable-aria{
-//     opacity: 0.7;
-//     pointer-events: none;
-// }
+.disable-aria{
+    opacity: 0.7;
+    .kendo-textbox{
+        .k-input-inner{
+            cursor: default;
+        }
+        &.k-focus{
+            user-select: none;
+        } 
+    } 
+
+    .kendo-dropdownlist{
+        cursor: default;
+        &.k-focus{
+            user-select: none;
+        }
+    } 
+}
 
 
 
@@ -242,14 +256,13 @@
         }
         .content-hamper{
             overflow-x: auto;
-            // height: 282px;
             width: 100%;
             box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
             background-color: white;
             .group-item{
                 padding: 0px 20px;
                 .col-span-1 {
-                    margin-right: 10px;
+                    margin-right: 20px;
                     min-width: 377px;
                 }
 
@@ -261,6 +274,7 @@
                 }
                 .group {
                     margin-top: 5px;
+                    padding-right: 15px;
                     .kendo-label {
                         display: flex;
                         color: #959DB3;
@@ -299,6 +313,7 @@
                 .col-span-1 {
 
                     .barcode{
+                        background-color: #BDC2D2;
                         opacity: 0.7;
                     }
                     margin-right: 10px;
@@ -440,6 +455,11 @@
         .content-hamper{
             overflow-y:hidden ;
             height: 440px;
+        }
+
+        .company-disable{
+            pointer-events: none;
+            opacity: 0.7;
         }
     }
 
