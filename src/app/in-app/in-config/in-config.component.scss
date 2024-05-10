@@ -1,58 +1,57 @@
-
-::ng-deep{
-    .k-list-optionlabel.k-selected {
-        background-color: #1A6634; 
-    }
-    .k-checkbox:checked {
-        accent-color: #1A6634;
-        background-color: #1A6634;
-        border: 1px solid #1A6634;
-    }
-    
-    .k-checkbox:focus{
-        box-shadow: none;
-    }
-
-    
-    .k-i-search.k-input-icon.k-icon{
-        display: none;
-    }
-    
-    .k-list-optionlabel{
-        color: black;
-    }
-    .k-list-optionlabel.k-selected:hover{
-        background-color: #1A6634; 
-    }
-    
-    .k-list-item.k-selected {
-        background-color: #1A6634; 
-    }
-    
-    .k-list-item.k-selected:hover{
-        background-color: #1A6634;
-    }
-} 
-
 ::ng-deep {
-  .button-notification {
-    margin-left: 110px;
-    margin-bottom: 32px;
-    border-radius: 10px;
-    border: 0px;
-    .k-notification-content {
-      max-width: 247px;
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      font-size: 13px;
-      line-height: 22px;
-    }
-  }
-  .k-notification-success {
+  .k-list-optionlabel.k-selected {
     background-color: #1a6634;
   }
-  .k-notification-error {
-    background-color: #fd7676;
+  .k-checkbox:checked {
+    accent-color: #1a6634;
+    background-color: #1a6634;
+    border: 1px solid #1a6634;
+  }
+
+  .k-checkbox:focus {
+    box-shadow: none;
+  }
+
+  .k-i-search.k-input-icon.k-icon {
+    display: none;
+  }
+
+  .k-list-optionlabel {
+    color: black;
+  }
+  .k-list-optionlabel.k-selected:hover {
+    background-color: #1a6634;
+  }
+
+  .k-list-item.k-selected {
+    background-color: #1a6634;
+  }
+
+  .k-list-item.k-selected:hover {
+    background-color: #1a6634;
   }
 }
 
+::ng-deep {
+  .k-notification-group {
+    margin-bottom: 32px;
+    .button-notification {
+      margin-left: 110px;
+      border-radius: 10px;
+      border: 0px;
+      .k-notification-content {
+        max-width: 247px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        font-size: 13px;
+        line-height: 22px;
+      }
+    }
+    .k-notification-success {
+      background-color: #1a6634;
+    }
+    .k-notification-error {
+      background-color: #fd7676;
+    }
+  }
+}
