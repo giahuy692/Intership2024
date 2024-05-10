@@ -40,7 +40,7 @@ export class ItemCompanyComponent implements OnInit{
 
 
   ngOnInit(): void {
-    this.searchType1 = this.setValue[0].itemConpany.slice();
+    this.searchType1 = this.setValue[0].itemCompany.slice();
     this.handleSelectedItem(this.selectedItem1, this.selectedItem2, this.selectedItem3, this.selectedItem4, this.selectedItem5)
   }
 
@@ -49,7 +49,7 @@ export class ItemCompanyComponent implements OnInit{
   }
 
   handleSelectedItem(selectedItem1: any, selectedItem2: any, selectedItem3: any, selectedItem4: any, selectedItem5: any){
-    const selectedItems = {code: this.setValue[0].code, state: this.isSelectedCompany ,name: this.setValue[0].name,itemSelected: [{level1: selectedItem1}, {level2: selectedItem2}, {level3: selectedItem3},{level4: selectedItem4},{level5: selectedItem5}]}
+    const selectedItems = {code: this.setValue[0].code,require: this.important ,state: this.isSelectedCompany ,name: this.setValue[0].name,itemSelected: [{level1: selectedItem1}, {level2: selectedItem2}, {level3: selectedItem3},{level4: selectedItem4},{level5: selectedItem5}]}
     this.getValue.emit(selectedItems);
   }
  
@@ -116,7 +116,7 @@ export class ItemCompanyComponent implements OnInit{
   handleFilter(value: string, level: number) {
     switch (level) {
         case 1:
-          this.searchType1 = this.setValue[0].itemConpany.filter((s) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
+          this.searchType1 = this.setValue[0].itemCompany.filter((s) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);
           break;
         case 2:
           this.searchType2 = this.selectedItem1?.child.filter((s: { name: string }) => s.name.toLowerCase().indexOf(value.toLowerCase()) !== -1);

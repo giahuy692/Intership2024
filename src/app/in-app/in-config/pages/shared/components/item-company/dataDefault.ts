@@ -4,7 +4,8 @@ export const DataDefautCompany: Array<DTOCompany> = [
     {
       code: -1,
       name: "",
-      itemConpany: [
+      state:false,
+      itemCompany: [
       ]
     }
   ]

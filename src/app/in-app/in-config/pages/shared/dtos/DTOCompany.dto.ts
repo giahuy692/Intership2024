@@ -3,5 +3,7 @@ import { DTOItemCompany } from "./DTOItemCompany.dto";
 export class DTOCompany{
     code: number;
     name: string;
-    itemConpany: DTOItemCompany[]
+    required?: boolean;
+    state?: boolean;
+    itemCompany: DTOItemCompany[]
 }
