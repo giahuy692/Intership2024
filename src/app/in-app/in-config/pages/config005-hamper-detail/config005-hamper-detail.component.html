@@ -32,434 +32,438 @@
     </div>
   </div>
 
-  <!-- Thong tin HAMPER  FORM -->
-  <div class="hamberDetails">
-    <form [formGroup]="hamberForm">
-      <!-- thong tin hamber -->
-      <div class="hamber-title">
-        <h4 class="hamber-title-text">Thông tin hamper</h4>
-        <h5 class="hamber-title-status">Đang soạn thảo</h5>
-      </div>
-      <div class="hamber-form">
-        <div class="hamberDetails-form">
-          <div class="hamberDetails-form-grid grid-cols-3">
-            <div class="hamberDetails-col col-span-1">
-              <kendo-formfield class="grid-item">
-                <kendo-label
-                  labelCssClass="k-form-label"
-                  [for]="barcode"
-                  text="Barcode Gốc "
-                  ><span class="require-label">(*)</span></kendo-label
-                >
+  <div class="main">
+    <!-- Thong tin HAMPER  FORM -->
+    <div class="hamberDetails">
+      <form [formGroup]="hamberForm">
+        <!-- thong tin hamber -->
+        <div class="hamber-title">
+          <h4 class="hamber-title-text">Thông tin hamper</h4>
+          <h5 class="hamber-title-status">Đang soạn thảo</h5>
+        </div>
+        <div class="hamber-form">
+          <div class="hamberDetails-form">
+            <div class="hamberDetails-form-grid grid-cols-3">
+              <div class="hamberDetails-col col-span-1">
+                <kendo-formfield class="grid-item">
+                  <kendo-label
+                    labelCssClass="k-form-label"
+                    [for]="barcode"
+                    text="Barcode Gốc "
+                    ><span class="require-label">(*)</span></kendo-label
+                  >
 
-                <kendo-textbox
-                  formControlName="barcode"
-                  #barcode
-                  required
-                ></kendo-textbox>
-              </kendo-formfield>
-              <kendo-formfield class="grid-item">
-                <kendo-label
-                  labelCssClass="k-form-label"
-                  [for]="vietnamese"
-                  text="Tên tiếng việt"
-                  ><span class="require-label">(*)</span></kendo-label
-                >
-                <kendo-textbox
-                  formControlName="vietnamese"
-                  #vietnamese
-                  (blur)="createHamperOnBlur()"
-                  required
-                ></kendo-textbox>
-              </kendo-formfield>
-              <kendo-formfield class="grid-item">
-                <kendo-label
-                  labelCssClass="k-form-label"
-                  [for]="english"
-                  text="Tên tiếng Anh"
-                ></kendo-label>
-                <kendo-textbox
-                  formControlName="english"
-                  #english
-                ></kendo-textbox>
-              </kendo-formfield>
-              <kendo-formfield class="grid-item">
-                <kendo-label
-                  labelCssClass="k-form-label"
-                  [for]="japanese"
-                  text="Tên tiếng Nhật"
-                ></kendo-label>
-                <kendo-textbox
-                  formControlName="japanese"
-                  #japanese
-                ></kendo-textbox>
-              </kendo-formfield>
+                  <kendo-textbox
+                    formControlName="barcode"
+                    #barcode
+                    required
+                  ></kendo-textbox>
+                </kendo-formfield>
+                <kendo-formfield class="grid-item">
+                  <kendo-label
+                    labelCssClass="k-form-label"
+                    [for]="vietnamese"
+                    text="Tên tiếng việt"
+                    ><span class="require-label">(*)</span></kendo-label
+                  >
+                  <kendo-textbox
+                    formControlName="vietnamese"
+                    #vietnamese
+                    required
+                    (blur)="onVietnameseBlur()"
+                  ></kendo-textbox>
+                </kendo-formfield>
+                <kendo-formfield class="grid-item">
+                  <kendo-label
+                    labelCssClass="k-form-label"
+                    [for]="english"
+                    text="Tên tiếng Anh"
+                  ></kendo-label>
+                  <kendo-textbox
+                    formControlName="english"
+                    #english
+                  ></kendo-textbox>
+                </kendo-formfield>
+                <kendo-formfield class="grid-item">
+                  <kendo-label
+                    labelCssClass="k-form-label"
+                    [for]="japanese"
+                    text="Tên tiếng Nhật"
+                  ></kendo-label>
+                  <kendo-textbox
+                    formControlName="japanese"
+                    #japanese
+                  ></kendo-textbox>
+                </kendo-formfield>
+              </div>
+              <div class="hamberDetails-col col-span-1">
+                <kendo-formfield class="grid-item">
+                  <kendo-label
+                    labelCssClass="k-form-label"
+                    text="Xuất xứ"
+                  ></kendo-label>
+                  <kendo-dropdownlist
+                    iconClass="fa-solid fa-angle-down"
+                    [textField]="'made'"
+                    [valueField]="'id'"
+                    [valuePrimitive]="true"
+                    [data]="origins"
+                    formControlName="origin"
+                  >
+                  </kendo-dropdownlist>
+                </kendo-formfield>
+                <kendo-formfield class="grid-item">
+                  <kendo-label
+                    labelCssClass="k-form-label"
+                    [for]="materialVietnamese"
+                    text="Chất liệu tiếng Việt"
+                  ></kendo-label>
+                  <kendo-textbox
+                    formControlName="materialVietnamese"
+                    #materialVietnamese
+                  ></kendo-textbox>
+                </kendo-formfield>
+                <kendo-formfield class="grid-item">
+                  <kendo-label
+                    labelCssClass="k-form-label"
+                    [for]="materialEnglish"
+                    text="Chất liệu tiếng Anh"
+                  ></kendo-label>
+                  <kendo-textbox
+                    formControlName="materialEnglish"
+                    #materialEnglish
+                  ></kendo-textbox>
+                </kendo-formfield>
+                <kendo-formfield class="grid-item">
+                  <kendo-label
+                    labelCssClass="k-form-label"
+                    [for]="materialJapanese"
+                    text="Chất liệu tiếng Nhật"
+                  ></kendo-label>
+                  <kendo-textbox
+                    formControlName="materialJapanese"
+                    #materialJapanese
+                  ></kendo-textbox>
+                </kendo-formfield>
+              </div>
+              <app-import-image
+                class="import-image col-span-1"
+              ></app-import-image>
             </div>
-            <div class="hamberDetails-col col-span-1">
+          </div>
+        </div>
+
+        <div class="hamberPack-form">
+          <div class="hamber-title">
+            <h4 class="hamber-title-text">Thông tin đóng gói</h4>
+          </div>
+          <div class="hamberPackDetails-form grid-cols-3">
+            <div class="col-group-form col-span-1">
               <kendo-formfield class="grid-item">
                 <kendo-label
                   labelCssClass="k-form-label"
-                  text="Xuất xứ"
+                  text="Đơn vị sản phẩm (Base unit)"
                 ></kendo-label>
                 <kendo-dropdownlist
                   iconClass="fa-solid fa-angle-down"
-                  [textField]="'made'"
+                  [textField]="'text'"
                   [valueField]="'id'"
                   [valuePrimitive]="true"
-                  [data]="origins"
-                  formControlName="origin"
+                  [data]="unit"
+                  formControlName="baseUnit"
                 >
                 </kendo-dropdownlist>
               </kendo-formfield>
-              <kendo-formfield class="grid-item">
+              <div formGroupName="sizeProduct">
                 <kendo-label
                   labelCssClass="k-form-label"
-                  [for]="materialVietnamese"
-                  text="Chất liệu tiếng Việt"
+                  text="Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g) "
                 ></kendo-label>
-                <kendo-textbox
-                  formControlName="materialVietnamese"
-                  #materialVietnamese
-                ></kendo-textbox>
-              </kendo-formfield>
-              <kendo-formfield class="grid-item">
-                <kendo-label
-                  labelCssClass="k-form-label"
-                  [for]="materialEnglish"
-                  text="Chất liệu tiếng Anh"
-                ></kendo-label>
-                <kendo-textbox
-                  formControlName="materialEnglish"
-                  #materialEnglish
-                ></kendo-textbox>
-              </kendo-formfield>
-              <kendo-formfield class="grid-item">
-                <kendo-label
-                  labelCssClass="k-form-label"
-                  [for]="materialJapanese"
-                  text="Chất liệu tiếng Nhật"
-                ></kendo-label>
-                <kendo-textbox
-                  formControlName="materialJapanese"
-                  #materialJapanese
-                ></kendo-textbox>
-              </kendo-formfield>
-            </div>
-            <app-import-image
-              class="import-image col-span-1"
-            ></app-import-image>
-          </div>
-        </div>
-      </div>
 
-      <div class="hamberPack-form">
-        <div class="hamber-title">
-          <h4 class="hamber-title-text">Thông tin đóng gói</h4>
-        </div>
-        <div class="hamberPackDetails-form grid-cols-3">
-          <div class="col-group-form col-span-1">
-            <kendo-formfield class="grid-item">
+                <div class="hamberPack-form-group">
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="width"
+                      #width
+                      class="small-textbox"
+                    ></kendo-textbox>
+                  </kendo-formfield>
+
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="height"
+                      class="small-textbox"
+                      #height
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="length"
+                      class="small-textbox"
+                      #length
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                  <kendo-formfield class="grid-item big-textbox">
+                    <kendo-textbox
+                      formControlName="weight"
+                      #weight
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                </div>
+              </div>
+              <div formGroupName="sizeInner">
+                <kendo-label
+                  labelCssClass="k-form-label"
+                  text="Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)"
+                ></kendo-label>
+
+                <div class="hamberPack-form-group">
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="width"
+                      #width
+                      class="small-textbox"
+                    ></kendo-textbox>
+                  </kendo-formfield>
+
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="height"
+                      class="small-textbox"
+                      #height
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="length"
+                      class="small-textbox"
+                      #length
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                  <kendo-formfield class="grid-item big-textbox">
+                    <kendo-textbox
+                      formControlName="weight"
+                      #weight
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                </div>
+              </div>
+              <div formGroupName="sizeCartoon">
+                <kendo-label
+                  labelCssClass="k-form-label"
+                  text="Kích thước cartoon (dài x rộng x cao x cân nặng) (cm - g)"
+                ></kendo-label>
+
+                <div class="hamberPack-form-group">
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="width"
+                      #width
+                      class="small-textbox"
+                    ></kendo-textbox>
+                  </kendo-formfield>
+
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="height"
+                      class="small-textbox"
+                      #height
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="length"
+                      class="small-textbox"
+                      #length
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                  <kendo-formfield class="grid-item big-textbox">
+                    <kendo-textbox
+                      formControlName="weight"
+                      #weight
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                </div>
+              </div>
+              <div formGroupName="sizePallet">
+                <kendo-label
+                  labelCssClass="k-form-label"
+                  text="Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)"
+                ></kendo-label>
+
+                <div class="hamberPack-form-group">
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="width"
+                      #width
+                      class="small-textbox"
+                    ></kendo-textbox>
+                  </kendo-formfield>
+
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="height"
+                      class="small-textbox"
+                      #height
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                  <kendo-formfield class="grid-item">
+                    <kendo-textbox
+                      formControlName="length"
+                      class="small-textbox"
+                      #length
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                  <kendo-formfield class="grid-item big-textbox">
+                    <kendo-textbox
+                      formControlName="weight"
+                      #weight
+                    ></kendo-textbox>
+                  </kendo-formfield>
+                </div>
+              </div>
+            </div>
+            <div class="col-group-form col-span-1">
               <kendo-label
                 labelCssClass="k-form-label"
                 text="Đơn vị sản phẩm (Base unit)"
               ></kendo-label>
-              <kendo-dropdownlist
-                iconClass="fa-solid fa-angle-down"
-                [textField]="'made'"
-                [valueField]="'id'"
-                [valuePrimitive]="true"
-                [defaultItem]="defaultUnit"
-                [data]="unit"
-                formControlName="baseUnit"
-              >
-              </kendo-dropdownlist>
-            </kendo-formfield>
-            <div formGroupName="sizeProduct">
-              <kendo-label
-                labelCssClass="k-form-label"
-                text="Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g) "
-              ></kendo-label>
+              <kendo-formfield class="baseUnit">
+                <div class="baseUnit-grid grid-cols-4">
+                  <div class="baseUnit-labelGroup col-span-1">
+                    <kendo-label
+                      labelCssClass="k-form-label"
+                      text="Inner"
+                    ></kendo-label>
 
-              <div class="hamberPack-form-group">
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="width"
-                    #width
-                    class="small-textbox"
-                  ></kendo-textbox>
-                </kendo-formfield>
+                    <kendo-label
+                      labelCssClass="k-form-label"
+                      text="="
+                    ></kendo-label>
+                  </div>
+                  <div class="col-span-2">
+                    <kendo-textbox
+                      formControlName="inner"
+                      #inner
+                    ></kendo-textbox>
+                  </div>
+                  <div class="baseUnit-labelGroup col-span-1">
+                    <kendo-label
+                      labelCssClass="k-form-label"
+                      text="Base Unit"
+                    ></kendo-label>
+                  </div>
+                </div>
+              </kendo-formfield>
+              <kendo-formfield class="baseUnit">
+                <div class="baseUnit-grid grid-cols-4">
+                  <div class="baseUnit-labelGroup col-span-1">
+                    <kendo-label
+                      labelCssClass="k-form-label"
+                      text="Cartoon"
+                    ></kendo-label>
 
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="height"
-                    class="small-textbox"
-                    #height
-                  ></kendo-textbox>
-                </kendo-formfield>
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="length"
-                    class="small-textbox"
-                    #length
-                  ></kendo-textbox>
-                </kendo-formfield>
-                <kendo-formfield class="grid-item big-textbox">
-                  <kendo-textbox
-                    formControlName="weight"
-                    #weight
-                  ></kendo-textbox>
-                </kendo-formfield>
-              </div>
-            </div>
-            <div formGroupName="sizeInner">
-              <kendo-label
-                labelCssClass="k-form-label"
-                text="Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)"
-              ></kendo-label>
+                    <kendo-label
+                      labelCssClass="k-form-label"
+                      text="="
+                    ></kendo-label>
+                  </div>
+                  <div class="col-span-2">
+                    <kendo-textbox
+                      formControlName="cartoon"
+                      #cartoon
+                    ></kendo-textbox>
+                  </div>
+                  <div class="baseUnit-labelGroup col-span-1">
+                    <kendo-label
+                      labelCssClass="k-form-label"
+                      text="Base Unit"
+                    ></kendo-label>
+                  </div>
+                </div>
+              </kendo-formfield>
+              <kendo-formfield class="baseUnit">
+                <div class="baseUnit-grid grid-cols-4">
+                  <div class="baseUnit-labelGroup col-span-1">
+                    <kendo-label
+                      labelCssClass="k-form-label"
+                      text="Pallet"
+                    ></kendo-label>
 
-              <div class="hamberPack-form-group">
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="width"
-                    #width
-                    class="small-textbox"
-                  ></kendo-textbox>
-                </kendo-formfield>
-
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="height"
-                    class="small-textbox"
-                    #height
-                  ></kendo-textbox>
-                </kendo-formfield>
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="length"
-                    class="small-textbox"
-                    #length
-                  ></kendo-textbox>
-                </kendo-formfield>
-                <kendo-formfield class="grid-item big-textbox">
-                  <kendo-textbox
-                    formControlName="weight"
-                    #weight
-                  ></kendo-textbox>
-                </kendo-formfield>
-              </div>
-            </div>
-            <div formGroupName="sizeCartoon">
-              <kendo-label
-                labelCssClass="k-form-label"
-                text="Kích thước cartoon (dài x rộng x cao x cân nặng) (cm - g)"
-              ></kendo-label>
-
-              <div class="hamberPack-form-group">
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="width"
-                    #width
-                    class="small-textbox"
-                  ></kendo-textbox>
-                </kendo-formfield>
-
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="height"
-                    class="small-textbox"
-                    #height
-                  ></kendo-textbox>
-                </kendo-formfield>
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="length"
-                    class="small-textbox"
-                    #length
-                  ></kendo-textbox>
-                </kendo-formfield>
-                <kendo-formfield class="grid-item big-textbox">
-                  <kendo-textbox
-                    formControlName="weight"
-                    #weight
-                  ></kendo-textbox>
-                </kendo-formfield>
-              </div>
-            </div>
-            <div formGroupName="sizePallet">
-              <kendo-label
-                labelCssClass="k-form-label"
-                text="Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)"
-              ></kendo-label>
-
-              <div class="hamberPack-form-group">
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="width"
-                    #width
-                    class="small-textbox"
-                  ></kendo-textbox>
-                </kendo-formfield>
-
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="height"
-                    class="small-textbox"
-                    #height
-                  ></kendo-textbox>
-                </kendo-formfield>
-                <kendo-formfield class="grid-item">
-                  <kendo-textbox
-                    formControlName="length"
-                    class="small-textbox"
-                    #length
-                  ></kendo-textbox>
-                </kendo-formfield>
-                <kendo-formfield class="grid-item big-textbox">
-                  <kendo-textbox
-                    formControlName="weight"
-                    #weight
-                  ></kendo-textbox>
-                </kendo-formfield>
-              </div>
+                    <kendo-label
+                      labelCssClass="k-form-label"
+                      text="="
+                    ></kendo-label>
+                  </div>
+                  <div class="col-span-2">
+                    <kendo-textbox
+                      formControlName="pallet"
+                      #pallet
+                    ></kendo-textbox>
+                  </div>
+                  <div class="baseUnit-labelGroup col-span-1">
+                    <kendo-label
+                      labelCssClass="k-form-label"
+                      text="Base Unit"
+                    ></kendo-label>
+                  </div>
+                </div>
+              </kendo-formfield>
             </div>
           </div>
-          <div class="col-group-form col-span-1">
-            <kendo-label
-              labelCssClass="k-form-label"
-              text="Đơn vị sản phẩm (Base unit)"
-            ></kendo-label>
-            <kendo-formfield class="baseUnit">
-              <div class="baseUnit-grid grid-cols-4">
-                <div class="baseUnit-labelGroup col-span-1">
-                  <kendo-label
-                    labelCssClass="k-form-label"
-                    text="Inner"
-                  ></kendo-label>
+        </div>
+        <div class="hamberOthers-form">
+          <div class="hamber-title">
+            <h4 class="hamber-title-text">Thông tin đóng gói</h4>
+          </div>
+          <div class="hamberOthersDetails-form grid-cols-3">
+            <kendo-formfield class="grid-item col-span-1">
+              <kendo-label
+                labelCssClass="k-form-label"
+                [for]="others"
+                text="Thông số kỹ thuật"
+              ></kendo-label>
 
-                  <kendo-label
-                    labelCssClass="k-form-label"
-                    text="="
-                  ></kendo-label>
-                </div>
-                <div class="col-span-2">
-                  <kendo-textbox formControlName="inner" #inner></kendo-textbox>
-                </div>
-                <div class="baseUnit-labelGroup col-span-1">
-                  <kendo-label
-                    labelCssClass="k-form-label"
-                    text="Base Unit"
-                  ></kendo-label>
-                </div>
-              </div>
-            </kendo-formfield>
-            <kendo-formfield class="baseUnit">
-              <div class="baseUnit-grid grid-cols-4">
-                <div class="baseUnit-labelGroup col-span-1">
-                  <kendo-label
-                    labelCssClass="k-form-label"
-                    text="Cartoon"
-                  ></kendo-label>
-
-                  <kendo-label
-                    labelCssClass="k-form-label"
-                    text="="
-                  ></kendo-label>
-                </div>
-                <div class="col-span-2">
-                  <kendo-textbox
-                    formControlName="cartoon"
-                    #cartoon
-                  ></kendo-textbox>
-                </div>
-                <div class="baseUnit-labelGroup col-span-1">
-                  <kendo-label
-                    labelCssClass="k-form-label"
-                    text="Base Unit"
-                  ></kendo-label>
-                </div>
-              </div>
-            </kendo-formfield>
-            <kendo-formfield class="baseUnit">
-              <div class="baseUnit-grid grid-cols-4">
-                <div class="baseUnit-labelGroup col-span-1">
-                  <kendo-label
-                    labelCssClass="k-form-label"
-                    text="Pallet"
-                  ></kendo-label>
-
-                  <kendo-label
-                    labelCssClass="k-form-label"
-                    text="="
-                  ></kendo-label>
-                </div>
-                <div class="col-span-2">
-                  <kendo-textbox
-                    formControlName="pallet"
-                    #pallet
-                  ></kendo-textbox>
-                </div>
-                <div class="baseUnit-labelGroup col-span-1">
-                  <kendo-label
-                    labelCssClass="k-form-label"
-                    text="Base Unit"
-                  ></kendo-label>
-                </div>
-              </div>
+              <kendo-textbox formControlName="others" #others></kendo-textbox>
             </kendo-formfield>
           </div>
         </div>
+      </form>
+    </div>
+
+    <!-- HAMPER PRODUCT LIST  -->
+    <app-product-list [products]="data"></app-product-list>
+
+    <!-- HAMPER APPLY -->
+    <div class="hamerApply">
+      <div class="hamber-title">
+        <h4 class="hamber-title-text">Hamper áp dụng</h4>
       </div>
-      <div class="hamberOthers-form">
-        <div class="hamber-title">
-          <h4 class="hamber-title-text">Thông tin đóng gói</h4>
+      <div class="hamberForm-content grid-cols-3">
+        <div class="col-span-1">
+          <app-item-company></app-item-company>
         </div>
-        <div class="hamberOthersDetails-form grid-cols-3">
-          <kendo-formfield class="grid-item col-span-1">
-            <kendo-label
-              labelCssClass="k-form-label"
-              [for]="others"
-              text="Thông số kỹ thuật"
-            ></kendo-label>
-
-            <kendo-textbox formControlName="others" #others></kendo-textbox>
-          </kendo-formfield>
+        <div class="col-span-1">
+          <app-item-company></app-item-company>
+        </div>
+        <div class="col-span-1">
+          <app-item-company></app-item-company>
         </div>
       </div>
-    </form>
+    </div>
+
+    <!-- Drawer Hamber -->
+    <app-hamper-drawer
+      [expanded]="showDrawer"
+      [titleText]="'Sản phẩm thuộc hamper'"
+    >
+      <div drawer-content>
+        <button HamperButtons data-type="success" (click)="toggleDrawer()">
+          Đóng Drawer
+        </button>
+      </div>
+    </app-hamper-drawer>
   </div>
-
-  <!-- HAMPER PRODUCT LIST  -->
-  <app-product-list></app-product-list>
-
-  <!-- HAMPER APPLY -->
-  <div class="hamerApply">
-    <div class="hamber-title">
-      <h4 class="hamber-title-text">Hamper áp dụng</h4>
-    </div>
-    <div class="hamberForm-content grid-cols-3">
-      <div class="col-span-1">
-        <app-item-company></app-item-company>
-      </div>
-      <div class="col-span-1">
-        <app-item-company></app-item-company>
-      </div>
-      <div class="col-span-1">
-        <app-item-company></app-item-company>
-      </div>
-    </div>
-  </div>
-
-  <!-- Drawer Hamber -->
-  <app-hamper-drawer
-    [expanded]="showDrawer"
-    [titleText]="'Sản phẩm thuộc hamper'"
-  >
-    <div drawer-content>
-      <button HamperButtons data-type="success" (click)="toggleDrawer()">
-        Đóng Drawer
-      </button>
-    </div>
-  </app-hamper-drawer>
 </div>
 
 <div class="footer">

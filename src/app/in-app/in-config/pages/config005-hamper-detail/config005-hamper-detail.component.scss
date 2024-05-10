@@ -1,5 +1,4 @@
 ::ng-deep .hamberCustom {
-  overflow-y: hidden;
   .header-hamber {
     display: flex;
     justify-content: space-between;
@@ -132,6 +131,9 @@
           height: 33px;
           outline: 1px solid #00000014;
           border-radius: 3px;
+          .k-input-inner {
+            text-align: center;
+          }
           &:hover {
             outline: 1px solid #1a6634;
           }
@@ -247,4 +249,9 @@
   .footer-name {
     padding-right: 16px;
   }
+}
+
+.main {
+  overflow-y: auto;
+  height: 85vh;
 }
