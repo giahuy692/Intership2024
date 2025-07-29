@@ -56,6 +56,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HachiLayoutModule } from './ha-app/ha-layout/ha-layout.module';
+import { PurchaseServicetModule } from './ha-app/ha-purchase/shared/service/purchase-service.module';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { HachiLayoutModule } from './ha-app/ha-layout/ha-layout.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HachiLayoutModule
+    HachiLayoutModule,
+    PurchaseServicetModule
   ],
   providers: [],
   bootstrap: [AppComponent]
