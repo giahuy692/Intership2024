@@ -1,1 +1,32 @@
-<p>header works!</p>
+<div class="header-container">
+  <!-- header-menu-start -->
+  <div class="header-item-container">
+    <div *ngFor="let item of menuItems; let i = index" class="item-container" [class.active]="selectedTab === i"
+      (click)="selectTab(i, $event)">
+
+      <div class="item-area">
+        <div class="item-child">{{ item.label }}<div class="underline-item"></div>
+        </div>
+      </div>
+
+      <div *ngIf="item.path != '/bao-cao'" class="line"></div>
+    </div>
+  </div>
+  <!-- header-menu-end -->
+
+  <!-- header-start -->
+  <div class="header-icon-container">
+    <div class="header-search-icon">
+      <i class="fas fa-search"></i>
+    </div>
+    <div class="header-noti-icon">
+      <i class="far fa-bell"></i>
+      <span class="badge">15</span>
+    </div>
+    <div class="header-avatar-icon">
+      <img class="avt" src="https://i.pravatar.cc/40?u=1" alt="user">
+      <div class="status-dot"></div>
+    </div>
+  </div>
+  <!-- header-end -->
+</div>

@@ -60,7 +60,6 @@ import { HachiLayoutModule } from './ha-app/ha-layout/ha-layout.module';
 @NgModule({
   declarations: [
     AppComponent,
-    
   ],
   imports: [
     BrowserModule,
