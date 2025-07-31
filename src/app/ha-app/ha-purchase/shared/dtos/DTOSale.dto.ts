@@ -9,6 +9,7 @@ export class DTOSale {
         cH4: boolean;
         cH5: boolean;
         cH6: boolean;
+        
     };
 
     constructor(
