@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PurchaseQuoteP001Component } from './pages/purchase-quote-p001/purchase-quote-p001.component';
-import { PurchaseDetailP001Component } from './pages/purchase-detail-p001/purchase-detail-p001.component';
+import { Pur001PriceRequestDetailComponent } from './pages/pur001-price-request-detail/pur001-price-request-detail.component';
+import { Pur001ProductPriceRequestDetailComponent } from './pages/pur001-product-price-request-detail/pur001-product-price-request-detail.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: PurchaseQuoteP001Component
+    component: Pur001PriceRequestDetailComponent
   },
   {
-    path: 'purchase-detail-p001',
-    component: PurchaseDetailP001Component
+    path: 'pur001-price-request-detail',
+    component: Pur001ProductPriceRequestDetailComponent
   }
 ];
 

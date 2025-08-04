@@ -1,22 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LayoutDefaultComponent } from './in-app/in-layout/layout-default/layout-default.component';
 
 
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard/mua-hang',
-    pathMatch: 'full'
-  },
-  
-  {
-    path: 'dashboard',
-        loadChildren: () => 
-        import('./in-app/in-layout/in-layout.module').then(m => m.InLayoutModule)
+    component: LayoutDefaultComponent,
+    children: [
+      {
+        path: 'purchase',
+        loadChildren: () =>
+          import('./in-app/in-purchase/in-purchase.module').then(m => m.InPurchaseModule)
+      },
+      { path: '', redirectTo: 'purchase', pathMatch: 'full' }
+    ]
   }
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

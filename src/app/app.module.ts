@@ -58,16 +58,17 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InPurchaseComponent } from './in-app/in-purchase/in-purchase.component';
 import { InPurchaseModule } from './in-app/in-purchase/in-purchase.module';
+import { InLayoutModule } from './in-app/in-layout/in-layout.module';
 @NgModule({
   declarations: [
     AppComponent,
-    InPurchaseComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     InPurchaseModule,
+    InLayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

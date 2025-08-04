@@ -1,23 +1,25 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { InPurchaseRoutingModule } from './in-purchase-routing.module';
-import { PurchaseQuoteP001Component } from './pages/purchase-quote-p001/purchase-quote-p001.component';
-import { PurchaseDetailP001Component } from './pages/purchase-detail-p001/purchase-detail-p001.component';
+import { Pur001PriceRequestDetailComponent } from './pages/pur001-price-request-detail/pur001-price-request-detail.component';
+import { Pur001ProductPriceRequestDetailComponent } from './pages/pur001-product-price-request-detail/pur001-product-price-request-detail.component';
 
 
 @NgModule({
   declarations: [
-    PurchaseQuoteP001Component,
-    PurchaseDetailP001Component
+    Pur001PriceRequestDetailComponent,
+    Pur001ProductPriceRequestDetailComponent
   ],
   imports: [
     CommonModule,
-    InPurchaseRoutingModule
+    InPurchaseRoutingModule,
+    FormsModule,
   ],
   exports: [
-    PurchaseQuoteP001Component,
-    PurchaseDetailP001Component
+    Pur001PriceRequestDetailComponent,
+    Pur001ProductPriceRequestDetailComponent
   ],
 })
 export class InPurchaseModule { }
