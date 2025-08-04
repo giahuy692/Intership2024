@@ -1,6 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { ModuleDataItem } from '../dto/menu-data-item.dto';
-import { ModuleDataAdmin } from '../in-sitemaps/menu.data-admin';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-layout-default',
@@ -8,9 +6,5 @@ import { ModuleDataAdmin } from '../in-sitemaps/menu.data-admin';
   styleUrls: ['./layout-default.component.scss']
 })
 export class LayoutDefaultComponent {
-  
-  modules :ModuleDataItem[] = ModuleDataAdmin
-  constructor(){
 
-  }
 }

@@ -55,17 +55,19 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HachiLayoutModule } from './ha-app/ha-layout/ha-layout.module';
-import { PurchaseServicetModule } from './ha-app/ha-purchase/shared/service/purchase-service.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InPurchaseComponent } from './in-app/in-purchase/in-purchase.component';
+import { InPurchaseModule } from './in-app/in-purchase/in-purchase.module';
 @NgModule({
   declarations: [
     AppComponent,
+    InPurchaseComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HachiLayoutModule,
-    PurchaseServicetModule
+    BrowserAnimationsModule,
+    InPurchaseModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
