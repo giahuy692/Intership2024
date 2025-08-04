@@ -1,0 +1,149 @@
+::ng-deep {
+    app-header {
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px; 
+            overflow-x: auto;
+            position: relative;
+            max-height: 50px;
+
+            &::after {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 2px;
+                height: 100%;
+                background-color: #BDC2D2; 
+            }
+
+            .header-item-container {
+                display: flex;
+                gap: 5px;
+                align-items: center;
+                height: 100%;
+
+                .item-container {
+                    display: flex;
+                    cursor: pointer;
+                    position: relative;
+                    align-items: center;
+
+                    .item-child {
+                        font-weight: bold;
+                        text-transform: uppercase;
+                        color: #bbbbbb;
+                        position: relative;
+                        height: 50px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        font-size: 16px;
+                        white-space: nowrap;
+                    }
+
+                    .line {
+                        height: 30px;
+                        border-right: 2px solid #bbbbbb;
+                    }
+
+                    .underline-item {
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 0;
+                        height: 3px;
+                        border-radius: 3px;
+                        background-color: #008000;
+                    }
+
+                    &.active .item-child,
+                    &:hover .item-child {
+                        color: #008000;
+                    }
+
+                    &.active .underline-item {
+                        width: 100%;
+                    }
+
+
+                }
+            }
+
+            .header-icon-container {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-right: 30px;
+
+                .header-search-icon {
+                    padding: 15px;
+
+                    i {
+                        font-size: 24px;
+                        color: #5A6276;
+                    }
+                }
+
+                .header-noti-icon {
+                    padding: 15px;
+                    position: relative;
+                    display: inline-block;
+
+                    i {
+                        font-size: 24px;
+                        color: #5A6276;
+                    }
+
+                    .badge {
+                        position: absolute;
+                        top: 12px;
+                        right: 10px;
+                        background-color: #F1802E;
+                        color: white;
+                        font-size: 11px;
+                        border-radius: 50%;
+                        text-align: center;
+                        width: 17px;
+                        height: 17px;
+                        display: flex;
+                        justify-content: center;
+                    }
+                }
+
+                .header-avatar-icon {
+                    padding-right: 10px;
+                    position: relative;
+                    display: inline-block;
+
+                    .avt {
+                        border-radius: 50%;
+                        width: 36px;
+                        height: 36px;
+                        display: block;
+                    }
+
+                    .status-dot {
+                        position: absolute;
+                        bottom: 1px;
+                        right: 7px;
+                        width: 12px;
+                        height: 12px;
+                        background-color: #05d103;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+
+        .item-area {
+            padding: 0 20px;
+
+            .item-child {
+                position: relative;
+            }
+        }
+    }
+}
