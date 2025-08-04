@@ -31,16 +31,12 @@ import { NotificationModule } from "@progress/kendo-angular-notification";
 import { NavigationModule } from '@progress/kendo-angular-navigation';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { LayoutDefaultComponent } from './layout-default/layout-default.component';
-import { HeaderComponent } from './components/header/header.component';
-import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TextBoxModule } from '@progress/kendo-angular-inputs';
 
 
 @NgModule({
   declarations: [
     LayoutDefaultComponent,
-    HeaderComponent,
-    SidebarComponent
   ],
   imports: [
     ButtonModule,
