@@ -1,5 +1,8 @@
 export class DTOSale {
-    businessOnline?: boolean;
+    businessOnline?: {
+        label?: string;
+        state?: boolean;
+    };
     businessStore?: {
         all?: {
             label?: string;

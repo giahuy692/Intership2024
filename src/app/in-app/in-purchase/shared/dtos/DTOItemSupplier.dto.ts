@@ -7,7 +7,7 @@ export class DTOItemSupplier {
     name?: string;
     origin?: DTOOrigin[];
     nameJapan?: string;
-    idBill?: string;
+    codeBill?: number;
     nameBill?: string;
     classify?: string;
     info?: string;

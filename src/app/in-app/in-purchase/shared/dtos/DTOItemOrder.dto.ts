@@ -17,7 +17,6 @@ export class DTOItemOrder {
     timeBuyFirst?: Date;
     timeEstimatedDelivery?: Date;
     descript?: string;
-    interpretation?: string;
     product?: DTOItemSupplier[];
     stateOrder?: string;
 }
