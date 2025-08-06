@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable, of} from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 import { DTOSupplier } from "../dtos/DTOSupplier.dto";
-import { DTOItemOrder } from "../dtos/DTOItemOrder.dto";
+import { DTOOrder } from "../dtos/DTOOrder.dto";
 
 @Injectable({
   providedIn: 'root'
@@ -22,11 +22,11 @@ export class PurchaseService {
         );
     }
 
-    getOrders(): Observable<DTOItemOrder[]> {
-        return this.http.get<DTOItemOrder[]>(this.orderUrl)
+    getOrders(): Observable<DTOOrder[]> {
+        return this.http.get<DTOOrder[]>(this.orderUrl)
         .pipe(
             tap(_ => this.log('fetched orders')),
-            catchError(this.handleError<DTOItemOrder[]>('getOrders', []))
+            catchError(this.handleError<DTOOrder[]>('getOrders', []))
         );
     }
 
