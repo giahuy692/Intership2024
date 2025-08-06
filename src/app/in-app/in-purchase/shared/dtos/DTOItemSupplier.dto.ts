@@ -1,4 +1,4 @@
-import { DTOProperty } from "./DTOProperty.dto";
+import { DTOAttributeProduct } from "./DTOAttributeProduct.dto";
 import { DTOSale } from "./DTOSale.dto";
 
 export class DTOItemSupplier {
@@ -12,7 +12,7 @@ export class DTOItemSupplier {
     classify?: string;
     info?: string;
     img?: string;
-    property?: DTOProperty[];
+    property?: DTOAttributeProduct[];
     sale?: DTOSale[];
 }
 
