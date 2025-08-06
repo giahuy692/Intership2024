@@ -1,10 +1,13 @@
-import { DTOItemSupplier } from "./DTOItemSupplier.dto";
+import { DTOProductSupplier } from "./DTOProductSupplier.dto";
 
 export class DTOSupplier {
-    code?: number;
-    name?: string;
+    code: number;
+    name: string = "";
     date?: Date;
-    state?: string;
-    descrip?: string;
-    itemList?: DTOItemSupplier[];
+    state: string = "";
+    descrip: string = "";
+
+    dtoProductSupplier: DTOProductSupplier[];
+
+    constructor (code: number) { this.code = code};
 }
