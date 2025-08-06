@@ -13,7 +13,7 @@ export class HeaderComponent implements OnInit {
 
   menuItems = [
     { path: '/dashboard/cau-hinh', label: 'CẤU HÌNH' },
-    { path: '/dashboard/mua-hang', label: 'MUA HÀNG' },
+    { path: '/purchase', label: 'MUA HÀNG' },
     { path: '/dashboard/kho-hang', label: 'KHO HÀNG' },
     { path: '/dashboard/dieu-phoi', label: 'ĐIỀU PHỐI' },
     { path: '/dashboard/marketing', label: 'MARKETING' },

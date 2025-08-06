@@ -8,21 +8,30 @@
 
     <div class="sidebar-menu">
         <!-- chính sách start-->
-        <div class="sidebar-menu-group"
-            [routerLinkActive]="['active']"
-            [routerLinkActiveOptions]="{ exact : false}"
-            (mouseenter)="isHovered = true"
-            (mouseleave)="isHovered = false">
-            <div class="sidebar-menu-group-logo" (click)="isDropdownOpen = !isDropdownOpen">
+        <div class="sidebar-menu-group">
+            <div class="sidebar-menu-group-logo" [class.active]="activeGroup === 'chinh-sach' || clickedItem === 'chinh-sach'"
+                (click)="toggleGroup('chinh-sach')">
+
                 <i class="far fa-copy icon-copy"></i>
+
                 <div class="sidebar-menu-group-title">
                     <p>chính sách</p>
                 </div>
-                <i class="fas chevron-icon" [ngClass]="isDropdownOpen ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+
+                <i class="fas chevron-icon"
+                    [ngClass]="activeGroup === 'chinh-sach' ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
             </div>
-            <div class="submenu" *ngIf="isDropdownOpen">
+
+            <div class="submenu" *ngIf="activeGroup === 'chinh-sach'">
                 <li *ngFor="let item of submenuItems">
-                    <div class="submenu-item" [routerLink]="item.path">{{item.label}}</div>
+                    <div class="submenu-item" 
+                    [routerLink]="item.path" 
+                    [ngClass]="{
+                    'active-submenu-item': activeSubmenuPath === item.path,
+                    'clicked-submenu-item': clickedItem === item.path
+                    }"
+                    (click)="onItemClick(item.path)">
+                        {{item.label}}</div>
                 </li>
             </div>
         </div>
@@ -33,7 +42,7 @@
             <li *ngFor="let item of menuList">
                 <div class="menu-list-group">
                     <i class="far fa-copy"></i>
-                <div class="item-of-list" [routerLink]="item.path">{{item.label}}</div>
+                    <div class="item-of-list" [routerLink]="item.path">{{item.label}}</div>
                 </div>
             </li>
         </div>

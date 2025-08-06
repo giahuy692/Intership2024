@@ -8,6 +8,7 @@ import { Pur001ProductPriceRequestDetailComponent } from './pages/pur001-product
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './shared/services/purchase-data.service';
+import { LayoutDefaultComponent } from '../in-layout/layout-default/layout-default.component';
 
 
 @NgModule({
@@ -21,7 +22,7 @@ import { InMemoryDataService } from './shared/services/purchase-data.service';
     InPurchaseRoutingModule,
     HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
+    InMemoryDataService, { dataEncapsulation: false }
     )
   ],
   exports: [
