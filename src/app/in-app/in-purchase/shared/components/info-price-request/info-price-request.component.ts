@@ -3,7 +3,7 @@ import { PurchaseService } from '../../services/purchase.service';
 import { DTOSupplier } from '../../dtos/DTOSupplier.dto';
 
 @Component({
-  selector: 'app-info-quote',
+  selector: 'app-info-request-price',
   templateUrl: './info-price-request.component.html',
   styleUrls: ['./info-price-request.component.scss']
 })
