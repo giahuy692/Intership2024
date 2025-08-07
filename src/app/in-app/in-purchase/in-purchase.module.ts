@@ -10,6 +10,7 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './shared/services/purchase-data.service';
 import { LayoutDefaultComponent } from '../in-layout/layout-default/layout-default.component';
 import { SaleRestrictionComponent } from './shared/components/sale-restriction/sale-restriction.component';
+import { AttributeProductComponent } from './shared/components/attribute-product/attribute-product.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import { SaleRestrictionComponent } from './shared/components/sale-restriction/s
     Pur001PriceRequestDetailComponent,
     Pur001ProductPriceRequestDetailComponent,
     SaleRestrictionComponent,
+    AttributeProductComponent,
   ],
   imports: [
     FormsModule,
