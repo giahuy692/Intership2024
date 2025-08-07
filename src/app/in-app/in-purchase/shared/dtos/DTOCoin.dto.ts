@@ -1,15 +1,8 @@
-import { DTOOrder } from "./DTOOrder.dto";
-import { DTOProductSupplier } from "./DTOProductSupplier.dto";
-
 export class DTOCoin {
-    code: number;
+    code: number = 0;
     name: string = "";
 
     dtoOrderCode!: number;
-    dtoOrder?: DTOOrder;
 
     dtoProductSupplierCode!: number;
-    dtoProductSupplier?: DTOProductSupplier;
-
-    constructor (code: number) { this.code = code};
 }
