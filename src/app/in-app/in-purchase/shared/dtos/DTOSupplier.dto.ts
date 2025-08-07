@@ -1,13 +1,11 @@
 import { DTOProductSupplier } from "./DTOProductSupplier.dto";
 
 export class DTOSupplier {
-    code: number;
+    code: number = 0;
     name: string = "";
-    date?: Date;
+    date: Date | string;
     state: string = "";
     descrip: string = "";
 
     dtoProductSupplier: DTOProductSupplier[];
-
-    constructor (code: number) { this.code = code};
 }

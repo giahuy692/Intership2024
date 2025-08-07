@@ -4,7 +4,7 @@ import { DTOProductSupplier } from "./DTOProductSupplier.dto";
 import { DTOPurchasingUnit } from "./DTOPurchasingUnit.dto";
 
 export class DTOOrder {
-    code: number;
+    code: number = 0;
     priceVat: number = 1;
     reserveQuantity: number = 10;
     quantitySold: number = 1;
@@ -14,12 +14,12 @@ export class DTOOrder {
     po: string = "PO001";
     vat: number = 10;
     timeBuyFirst?: {
-        dateFirst?: Date;
-        dateEnd?: Date;
+        dateFirst: Date | string;
+        dateEnd: Date | string;
     };
     timeEstimatedDelivery?: {
-        dateFirst?: Date;
-        dateEnd?: Date;
+        dateFirst: Date | string;
+        dateEnd: Date | string;
     };
     descript: string = "";
     stateOrder: string = "";
@@ -28,6 +28,4 @@ export class DTOOrder {
     dtoPurchasingUnit: DTOPurchasingUnit[] = [];
     dtoCoin: DTOCoin[] = [];
     dtoProductSupplier: DTOProductSupplier[] = [];
-
-    constructor (code: number) { this.code = code; };
 }

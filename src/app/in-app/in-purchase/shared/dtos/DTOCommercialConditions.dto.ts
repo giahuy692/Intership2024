@@ -1,11 +1,6 @@
-import { DTOOrder } from "./DTOOrder.dto";
-
 export class DTOCommercialConditions {
-    code: number;
+    code: number = 0;
     name: string = ""; 
 
     dtoOrderCode!: number;
-    dtoOrder?: DTOOrder;
-    
-    constructor (code: number) {this.code = code}
 }

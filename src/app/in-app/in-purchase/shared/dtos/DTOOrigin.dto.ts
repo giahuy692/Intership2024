@@ -1,11 +1,6 @@
-import { DTOProductSupplier } from "./DTOProductSupplier.dto";
-
 export class DTOOrigin {
-    code: number;
+    code: number = 0;
     name: string = "";
 
     dtoProductSupplierCode!: number;
-    dtoProductSupplier?: DTOProductSupplier;
-
-    constructor (code: number) {this.code = code}
 }
