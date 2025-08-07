@@ -1,5 +1,6 @@
 import { InMemoryDbService } from 'angular-in-memory-web-api';
 import { Injectable } from '@angular/core';
+import { DTOSale } from '../dtos/DTOSale.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -128,5 +129,29 @@ export class InMemoryDataService implements InMemoryDbService {
     ];
 
     return { suppliers, orders };
+    
+    const saleRestrictions: DTOSale[] = [
+      {
+        code: 1,
+        title: 'Không kinh doanh online',
+        isChecked: true,
+        listChild: []
+      },
+      {
+        code: 2,
+        title: 'Không kinh doanh cửa hàng',
+        isChecked: true,
+        listChild: [
+          { code: 21, title: 'Tất cả', isChecked: false, listChild: [] },
+          { code: 22, title: 'CH Hachi Hachi Pasteur', isChecked: false, listChild: [] },
+          { code: 23, title: 'CH Hachi Hachi Nguyễn Văn Trỗi', isChecked: false, listChild: [] },
+          { code: 24, title: 'CH Hachi Hachi Ba Tháng Hai', isChecked: false, listChild: [] },
+          { code: 25, title: 'CH Hachi Hachi Phú Mỹ Hưng', isChecked: true, listChild: [] },
+          { code: 26, title: 'CH Hachi Hachi Quang Trung', isChecked: false, listChild: [] },
+          { code: 27, title: 'CH Hachi Hachi Đỗ Xuân Hợp', isChecked: true, listChild: [] }
+        ]
+      }
+    ];
+
   }
 }

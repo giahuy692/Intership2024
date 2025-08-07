@@ -9,3 +9,4 @@ export class DTOSupplier {
 
     dtoProductSupplier: DTOProductSupplier[];
 }
+

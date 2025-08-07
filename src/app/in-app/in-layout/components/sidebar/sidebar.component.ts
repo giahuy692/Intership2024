@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { event } from 'jquery';
 import { filter } from 'rxjs/operators';
 
 
@@ -9,32 +10,59 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./sidebar.component.scss']
 })
 export class SidebarComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private router: Router) { }
+  constructor(private router: Router, private route: ActivatedRoute) { }
 
-  isDropdownOpen: boolean = false;
+  activeGroup: string | null = 'chinh-sach';
+  activeSubmenuPath: string = '';
+  clickedItem: string | null = null;
 
-  isHovered: boolean = false;
+  toggleGroup(name: string) {
+    this.activeGroup = this.activeGroup === name ? null : name;
+    this.clickedItem = name;
+  }
 
   ngOnInit(): void {
+    this.checkActiveRoute(this.router.url);
+
     this.router.events
       .pipe(filter((event): event is NavigationEnd => event instanceof NavigationEnd))
-      .subscribe(() => {
-        const currentUrl = this.router.url;
-
-        if (currentUrl.includes('/dashboard/mua-hang') ||
-          this.route.snapshot.queryParams['openDropdown'] === 'chinh-sach') {
-          this.isDropdownOpen = true;
-        } else {
-          this.isDropdownOpen = false;
-        }
-        // const urlTree = this.router.parseUrl(currentUrl);
-        // const queryParams = urlTree.queryParams;
+      .subscribe((event) => {
+      this.checkActiveRoute(event.urlAfterRedirects || event.url);
       });
+  }
 
-    if (this.router.url.includes('/dashboard/mua-hang') ||
-      this.route.snapshot.queryParams['openDropdown'] === 'chinh-sach') {
-      this.isDropdownOpen = true;
+  private checkActiveRoute(url: string): void {
+    if (url.includes('/tinh-trang-hang-hoa')) {
+      this.activeGroup = 'chinh-sach';
+      this.activeSubmenuPath = '/tinh-trang-hang-hoa';
+      this.clickedItem = '/tinh-trang-hang-hoa';
+    } else if (url.includes('/phan-nhom-khai-quan')) {
+      this.activeGroup = 'chinh-sach';
+      this.activeSubmenuPath = '/phan-nhom-khai-quan';
+      this.clickedItem = '/phan-nhom-khai-quan';
+    } else if (url.includes('/quan-ly-khai-quan')) {
+      this.activeGroup = 'chinh-sach';
+      this.activeSubmenuPath = '/quan-ly-khai-quan';
+      this.clickedItem = '/quan-ly-khai-quan';
+    } else if (url.includes('/de-xuat-hang-moi')) {
+      this.activeGroup = 'chinh-sach';
+      this.activeSubmenuPath = '/de-xuat-hang-moi';
+      this.clickedItem = '/de-xuat-hang-moi';
+    } else {
+      this.activeSubmenuPath = url;
+      this.clickedItem = url;
     }
+  }
+
+  // onItemHover(path: string): void {
+  //   this.hoveredItem = path;
+  // }
+
+  // onItemLeave(): void {
+  //   this.hoveredItem = null;
+  // }
+  onItemClick(path: string): void {
+    this.clickedItem = path;
   }
 
 

@@ -9,7 +9,7 @@ const routes: Routes = [
     component: Pur001PriceRequestDetailComponent
   },
   {
-    path: 'pur001-price-request-detail',
+    path: 'pur001-product-price-request-detail',
     component: Pur001ProductPriceRequestDetailComponent
   }
 ];

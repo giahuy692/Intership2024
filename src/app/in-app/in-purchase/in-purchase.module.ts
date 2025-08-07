@@ -12,6 +12,7 @@ import { InputKendoComponent } from './shared/components/input-kendo.component';
 import { DateKendoComponent } from './shared/components/date-kendo.component';
 import { InputAreaKendoComponent } from './shared/components/inputArea-kendo.component';
 import { InfoSuggestComponent } from './shared/components/info-suggest/info-suggest.component';
+import { SaleRestrictionComponent } from './shared/components/sale-restriction/sale-restriction.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { InfoSuggestComponent } from './shared/components/info-suggest/info-sugg
     DateKendoComponent,
     InputAreaKendoComponent,
     InfoSuggestComponent,
+    SaleRestrictionComponent,
   ],
   imports: [
     FormsModule,
@@ -35,6 +37,7 @@ import { InfoSuggestComponent } from './shared/components/info-suggest/info-sugg
   exports: [
     Pur001PriceRequestDetailComponent,
     Pur001ProductPriceRequestDetailComponent,
+    SaleRestrictionComponent,
   ],
 })
 export class InPurchaseModule { }

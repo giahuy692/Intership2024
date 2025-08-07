@@ -31,32 +31,41 @@
             .sidebar-menu {
 
                 .sidebar-menu-group {
-                    background-color: #1A2334;
-                    padding-left: 15px;
-                    width: 100%;
-                    padding-block: 12px;
-                    transition: background-color 0.3s, box-shadow 0.3s;
-
-                    &:hover,
-                    &.active {
-                        opacity: 1;
-                        background-color: #2b3348;
-                        box-shadow: inset 4px 0 0 #00d6a3;
-                    }
+                    padding: 12px 15px;
 
                     .sidebar-menu-group-logo {
                         display: flex;
                         align-items: center;
-                        margin: 15px 0;
+                        padding: 10px 15px;
                         cursor: pointer;
+                        transition: background-color 0.3s, box-shadow 0.3s;
+
+                        &:hover,
+                        &.active {
+                        background-color: #2b3348;
+                        box-shadow: inset 4px 0 0 white;
+
+                        .icon-copy,
+                        .chevron-icon,
+                        .sidebar-menu-group-title p {
+                            color: white;
+                        }
+                    }
 
                         .icon-copy {
-                            font-size: 32px;
+                            font-size: 24px;
                             color: #959DB3;
+                        }
+
+                        .chevron-icon {
+                            font-size: 16px;
+                            color: #959DB3;
+                            margin-left: 45px;
                         }
 
                         .sidebar-menu-group-title {
                             padding-left: 10px;
+                            white-space: nowrap;
 
                             p {
                                 font-size: 16px;
@@ -66,20 +75,15 @@
                                 color: #959DB3;
                             }
                         }
-
-                        .chevron-icon {
-                            font-size: 20px;
-                            color: #959DB3;
-                            margin-left: 45px;
-                        }
                     }
 
                     .submenu {
                         margin-left: 25px;
                         list-style: none;
+                        padding-top: 10px;
 
                         li {
-                            margin-bottom: 20px;
+                            margin-bottom: 10px;
                         }
 
                         .submenu-item {
@@ -87,7 +91,16 @@
                             font-size: 16px;
                             text-decoration: none;
                             text-transform: capitalize;
-                            margin-top: 6px;
+                            cursor: pointer;
+
+                            &:hover,
+                            &.hovered-submenu-item,
+                            &.clicked-submenu-item {
+                                background-color: #2b3348;
+                                box-shadow: inset 4px 0 0 white;
+                                text-decoration: none;
+                                color: white;
+                            }
                         }
                     }
                 }
