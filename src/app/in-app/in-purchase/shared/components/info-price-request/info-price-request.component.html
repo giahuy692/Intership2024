@@ -1,0 +1,38 @@
+<div class="container-quote">
+    <h1>THÔNG TIN ĐỀ NGHỊ BÁO GIÁ</h1>
+    <div class="container-quote__info" *ngIf="supplier">
+        <div class="container-quote__info-left">
+            <app-input-text-kendo
+                [label]="'Mã nhà cung cấp'"
+                [(value)]="supplier.code"
+                [showSearchIcon]="true"
+            ></app-input-text-kendo>
+
+            <app-date-component
+                [label]="'Ngày hiệu lực'"
+                [(value)]="supplier.date"
+            ></app-date-component>
+
+            <app-input-text-kendo
+                [label]="'Tình trạng'"
+                [(value)]="supplier.state"
+                [isReadOnly]="true"
+                [isActiveView]="true"
+                [isActiveColor]="true"
+            ></app-input-text-kendo>
+        </div>
+
+        <div class="container-quote__info-right">
+            <app-input-text-kendo
+                [label]="'Tên nhà cung cấp'"
+                [(value)]="supplier.name"
+                [isDisabled]="true"
+            ></app-input-text-kendo>
+            
+            <app-input-area-component
+                [label]="'Lý do lập đề nghị'"
+                [(value)]="supplier.descrip"
+            ></app-input-area-component>
+        </div>
+    </div>
+</div>
