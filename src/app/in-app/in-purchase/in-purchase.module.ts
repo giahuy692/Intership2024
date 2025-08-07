@@ -11,6 +11,8 @@ import { InMemoryDataService } from './shared/services/purchase-data.service';
 import { LayoutDefaultComponent } from '../in-layout/layout-default/layout-default.component';
 import { SaleRestrictionComponent } from './shared/components/sale-restriction/sale-restriction.component';
 import { AttributeProductComponent } from './shared/components/attribute-product/attribute-product.component';
+import {DropDownsModule} from "@progress/kendo-angular-dropdowns";
+import { InputsModule } from '@progress/kendo-angular-inputs';
 
 
 @NgModule({
@@ -25,9 +27,11 @@ import { AttributeProductComponent } from './shared/components/attribute-product
     CommonModule,
     InPurchaseRoutingModule,
     HttpClientModule,
+    DropDownsModule,
     HttpClientInMemoryWebApiModule.forRoot(
     InMemoryDataService, { dataEncapsulation: false }
-    )
+    ),
+    InputsModule,
   ],
   exports: [
     Pur001PriceRequestDetailComponent,
