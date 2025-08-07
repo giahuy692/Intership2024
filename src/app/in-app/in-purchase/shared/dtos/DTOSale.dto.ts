@@ -1,4 +1,3 @@
-
 export class DTOSale {
   code: number = 1;
   title: string = "";

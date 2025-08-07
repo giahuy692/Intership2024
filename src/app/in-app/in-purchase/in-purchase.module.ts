@@ -9,12 +9,14 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './shared/services/purchase-data.service';
 import { LayoutDefaultComponent } from '../in-layout/layout-default/layout-default.component';
+import { SaleRestrictionComponent } from './shared/components/sale-restriction/sale-restriction.component';
 
 
 @NgModule({
   declarations: [
     Pur001PriceRequestDetailComponent,
     Pur001ProductPriceRequestDetailComponent,
+    SaleRestrictionComponent,
   ],
   imports: [
     FormsModule,
@@ -28,6 +30,7 @@ import { LayoutDefaultComponent } from '../in-layout/layout-default/layout-defau
   exports: [
     Pur001PriceRequestDetailComponent,
     Pur001ProductPriceRequestDetailComponent,
+    SaleRestrictionComponent
   ],
 })
 export class InPurchaseModule { }

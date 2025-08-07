@@ -1,0 +1,40 @@
+<div class="sales-restriction-container">
+    <div class="sales-restriction-title">
+        <h1>thông tin hạn chế bán hàng</h1>
+    </div>
+
+    <div class="sales-restriction-check-container">
+        <div class="non-business-container">
+            <div class="non-sale-onl">
+                <label>
+                    <input type="checkbox" [(ngModel)]="dtoSales[0].isChecked" />
+                    <!-- Không kinh doanh online -->
+                     {{dtoSales[0].title}}
+                </label>
+            </div>
+            <div class="non-sale-store">
+                <label>
+                    <input type="checkbox" [(ngModel)]="dtoSales[1].isChecked"/>
+                    <!-- Không kinh doanh cửa hàng -->
+                     {{dtoSales[1].title}}
+                </label>
+            </div>
+        </div>
+
+        <div class="store-checkboxes" *ngIf="dtoSales[1].isChecked && dtoSales[1].listChild?.length">
+            <div class="store-all">
+                <label>
+                    <input type="checkbox" [checked]="isAllStoresChecked()" (change)="toggleAllStores()" />
+                    <span>Tất cả</span>
+                </label>
+            </div>
+
+            <div class="store-items">
+                <label *ngFor="let store of dtoSales[1].listChild">
+                    <input type="checkbox" [(ngModel)]="store.isChecked"/>
+                    <span>{{store.title}}</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
