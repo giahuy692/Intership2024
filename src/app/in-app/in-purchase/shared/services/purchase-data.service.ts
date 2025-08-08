@@ -24,7 +24,7 @@ export class InMemoryDataService implements InMemoryDbService {
             codeBill: 10000116,
             nameBill: 'Miếng lột mụn nữ 05',
             classify: 'Đổi nhà cung cấp, đổi tên khai quan',
-            img: 'product.png',
+            img: 'default-image.png',
             priceBuy: 123000,
             priceRetail: 180000,
             priceReference: 180000,
@@ -53,7 +53,7 @@ export class InMemoryDataService implements InMemoryDbService {
     const orders = [
       {
         code: 101,
-        priceVat: 10,
+        priceVat: 135000,
         reserveQuantity: 12,
         quantitySold: 120,
         revenue: 100000000,

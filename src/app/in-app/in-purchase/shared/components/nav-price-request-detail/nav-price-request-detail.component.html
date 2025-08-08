@@ -1,4 +1,11 @@
 <div class="container-nav">
-    <app-breadcrumb-kendo-component />
+    <div class="container-nav__link">
+        <app-breadcrumb-kendo-component />
+    </div>
+
+    <div class="container-nav__button">
+        <app-button-kendo-component [icon]="shareIcon" text="GỬI DUYỆT" color="white"></app-button-kendo-component>
+        <app-button-kendo-component [icon]="plusIcon" text="TẠO MỚI" color="green"></app-button-kendo-component>
+    </div>
 </div>
 <div class="container-border"></div>

@@ -1,0 +1,109 @@
+.container-suggest {
+    height: 70px;
+
+    .containner-suggest__info {    
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 50px;
+
+        .containner-suggest__info-tittle {
+            h1 {
+                font-size: 1.28rem;
+                font-weight: 600;
+            }
+        }
+
+        .containner-suggest__info-search {
+            display: flex;
+
+            .containner-suggest__info-search-input {
+                display: flex;
+
+                .search-icon {
+                    padding: 5px 10px;
+                    background-color: #fff;
+                    border: transparent;
+                    border-bottom-left-radius: 2px;
+                    border-top-left-radius: 2px;
+                
+                    i {
+                        color: #919191;
+                    }
+                }
+                input {
+                    height: 32px;
+                    width: 400px;
+                    border: transparent;
+                    outline: none;
+                    font-size: 1.2rem;
+                    margin-right: 10px;
+                    border-bottom-right-radius: 2px;
+                    border-top-right-radius: 2px;
+                }
+            }
+
+            .btn-search {
+                padding: 0 10px;
+                border: none;
+                border-radius: 3px;
+                color: #fff;
+                background-color: #008000;
+
+                i {
+                    padding-right: 5px;
+                }
+            }
+        }
+
+        .containner-suggest__info-button {
+            display: flex;
+
+            .share-icon{
+                padding-right: 10px;
+                button {
+                    border: none;
+                    background-color: #fff;
+                    border-radius: 4px; }
+                i {
+                    padding: 9.5px 10px;
+                    color: #959DB3;
+                    
+                }
+            }
+
+            .template-icon{
+                padding-right: 10px;
+                button {
+                    border: none;
+                    border-radius: 4px;
+                    color: #959DB3;
+                    background-color: #fff;
+                    font-weight: 600;
+                    padding: 0 10px; }
+                i {
+                    padding: 9.5px 10px 9.5px 0;
+                    color: #959DB3;
+                }
+            }
+
+            .plus-icon {
+                button {
+                    border: none;
+                    border-radius: 4px;
+                    color: #ffffff;
+                    font-weight: 600;
+                    background-color: #1A6634;
+                    padding: 0 10px; }
+                i {
+                    padding: 9.5px 10px 9.5px 0;
+                    color: #ffffff;
+                }
+            }
+        }
+    }
+
+    .containner-suggest__list {
+        height: 600px;
+    }
+}

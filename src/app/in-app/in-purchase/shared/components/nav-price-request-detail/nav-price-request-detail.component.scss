@@ -1,6 +1,15 @@
 .container-nav {
     width: 100%;
     padding: 10px;
+    display: flex;
+    justify-content: space-between;
+
+    .container-nav__link {
+        width: 100%;
+    }
+    .container-nav__button {
+        display: flex;
+    }
 }
 
 .container-border {

@@ -1,0 +1,95 @@
+<div class="container-suggest">
+    
+    <div class="containner-suggest__info">
+        <div class="containner-suggest__info-tittle">
+            <h1>THÔNG TIN CHI TIẾT ĐỀ NGHỊ</h1>
+        </div>
+
+        <div class="containner-suggest__info-search">
+            <div class="containner-suggest__info-search-input">
+                <div class="search-icon">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+                <input type="text" 
+                    placeholder="Tìm theo barcode, poscode, tên sản phẩm"/>
+            </div>
+
+            <button class="btn-search">
+                <i class="fa-solid fa-magnifying-glass"></i>Tìm
+            </button>
+        </div>
+
+        <div class="containner-suggest__info-button">
+            <div class="share-icon">
+                <button><i class="fa-solid fa-arrow-up-from-bracket"></i></button>
+            </div>
+            <div class="template-icon">
+                <app-button-kendo-component [icon]="downloadIcon" text="Template" color="gray"></app-button-kendo-component>
+            </div>
+            <div class="plus-icon">
+                <button [routerLink]="['/purchase/pur001-product-price-request-detail']" ><i class="fa-solid fa-plus"></i>Thêm sản phẩm mới</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="containner-suggest__list">
+        <app-grid-kendo-component
+            [data]="mergedRows"
+            [columns]="[
+                { field: 'productName', title: 'Tên sản phẩm', width: 350, template: productTemplate },
+                { field: '', title: '', width: 100, template: RequestTemplate },
+                { field: 'price', title: 'Giá mua (+ VAT)', width: 160, template: buyTemplate },
+                { field: 'price', title: 'Đơn giá lẻ dự kiến', width: 160, template: retailTemplate },
+                { field: 'descript', title: 'Diễn giải', width: 160, template: descriptTemplate },
+                { field: 'classify', title: 'Phân loại', width: 160, template: classifyTemplate },
+                { field: 'stateOrder', title: 'Tình trạng', width: 160, template: stateOrderTemplate }
+            ]">
+        </app-grid-kendo-component>
+
+        <ng-template #productTemplate let-item>
+            <div style="display: flex; gap: 10px;">
+                <img [src]="'assets/' + item.productImg" style="border-radius: 4px;" />
+                <div>
+                    <div>{{ item.productName }}</div>
+                    <div style="font-weight: bold; padding-top: 10px;">{{ item.barcode }} | {{ item.code }}</div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template #RequestTemplate let-item>
+            <div>
+                <div>Đề nghị</div>
+            </div>
+        </ng-template>
+
+        <ng-template #buyTemplate let-item>
+            <div>
+                <div>{{ item.priceBuy | number:'1.0-0' }}</div>
+            </div>
+        </ng-template>
+
+        <ng-template #retailTemplate let-item>
+            <div>
+                <div>{{ item.priceRetail | number:'1.0-0' }}</div>
+            </div>
+        </ng-template>
+
+        <ng-template #descriptTemplate let-item>
+            <div>
+                <div>{{ item.descript}}</div>
+            </div>
+        </ng-template>
+
+        <ng-template #classifyTemplate  let-item>
+            <div>
+                <div>{{ item.classify}}</div>
+            </div>
+        </ng-template>
+
+        <ng-template #stateOrderTemplate let-item>
+            <div>
+                <div>{{ item.stateOrder}}</div>
+            </div>
+        </ng-template>
+    </div>
+</div>
