@@ -23,6 +23,7 @@ import { GridKendoComponent } from './shared/components/grid-kendo.component';
 import { ButtonKendoComponent } from './shared/components/button-kendo.component';
 import { AttributeProductComponent } from './shared/components/attribute-product/attribute-product.component';
 import { InfoSuggestComponent } from './shared/components/info-suggest/info-suggest.component';
+import { DateKendoComponent } from './shared/components/date-kendo.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { InfoSuggestComponent } from './shared/components/info-suggest/info-sugg
     ButtonKendoComponent,
     SaleRestrictionComponent,
     AttributeProductComponent,
+    DateKendoComponent
   ],
   imports: [
     FormsModule,
