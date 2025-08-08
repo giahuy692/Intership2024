@@ -20,6 +20,7 @@ import {DropDownsModule} from "@progress/kendo-angular-dropdowns";
 import { BreadcrumbKendoComponent } from './shared/components/breadcrumd-kendo.component';
 import { NavPriceRequestDetailComponent } from './shared/components/nav-price-request-detail/nav-price-request-detailcomponent';
 import { DateKendoComponent } from './shared/components/date-kendo.component';
+import { PriceRequestInfoComponent } from './shared/components/price-request-info/price-request-info.component';
 
 
 
@@ -36,6 +37,7 @@ import { DateKendoComponent } from './shared/components/date-kendo.component';
     SaleRestrictionComponent,
     NavPriceRequestDetailComponent,
     DateKendoComponent,
+    PriceRequestInfoComponent,
   ],
   imports: [
     FormsModule,

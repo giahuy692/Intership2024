@@ -1,0 +1,69 @@
+::ng-deep {
+    app-price-request-info {
+
+        .price-request-info-container {
+            margin: 18px;
+
+           .price-request-info-title {
+                left: 0;
+                margin-bottom: 15px;
+
+                h1 {
+                    text-transform: uppercase;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #26282E;
+                }
+           } 
+
+           .price-request-info-section {
+                gap: 10px;
+                background-color: white;
+                padding: 10px;
+                display: flex;
+                overflow-y: hidden;
+                overflow-x: scroll;
+
+                .code {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 3px;
+                    padding: 10px;
+
+                    label {
+                        font-weight: 700;
+                        color: #959db3;
+                        padding: 5px 0;
+                        white-space: nowrap;
+                    }
+
+                    input {
+                        height: 33px;
+                        width: 380px;
+                        max-width: 380px;
+                    }
+                }
+
+                .name {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 3px;
+                    padding: 10px;
+
+                    label {
+                        font-weight: 700;
+                        color: #959db3;
+                        padding: 5px 0;
+                        white-space: nowrap;
+                    }
+
+                    input {
+                        height: 33px;
+                        width: 900px;
+                        max-width: 900px;
+                    }
+                }
+           }
+        }
+    }
+}
