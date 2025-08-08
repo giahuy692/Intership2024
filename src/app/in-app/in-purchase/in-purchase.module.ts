@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { InputsModule } from '@progress/kendo-angular-inputs';
+import { InputsModule, NumericTextBoxModule, TextBoxModule } from '@progress/kendo-angular-inputs';
 import { LabelModule } from '@progress/kendo-angular-label';
-import { DatePickerModule } from "@progress/kendo-angular-dateinputs";
+import { DateInputComponent, DateInputsModule, DatePickerModule } from "@progress/kendo-angular-dateinputs";
 import { ButtonModule } from "@progress/kendo-angular-buttons";
 import { NavigationModule } from "@progress/kendo-angular-navigation";
 
@@ -19,6 +19,7 @@ import { AttributeProductComponent } from './shared/components/attribute-product
 import {DropDownsModule} from "@progress/kendo-angular-dropdowns";
 import { BreadcrumbKendoComponent } from './shared/components/breadcrumd-kendo.component';
 import { NavPriceRequestDetailComponent } from './shared/components/nav-price-request-detail/nav-price-request-detailcomponent';
+import { DateKendoComponent } from './shared/components/date-kendo.component';
 
 
 
@@ -34,6 +35,7 @@ import { NavPriceRequestDetailComponent } from './shared/components/nav-price-re
     BreadcrumbKendoComponent,
     SaleRestrictionComponent,
     NavPriceRequestDetailComponent,
+    DateKendoComponent,
   ],
   imports: [
     FormsModule,
@@ -46,11 +48,15 @@ import { NavPriceRequestDetailComponent } from './shared/components/nav-price-re
     InputsModule,
     ButtonModule,
     NavigationModule,
+    DateInputsModule,
+    TextBoxModule,
+    NumericTextBoxModule
   ],
   exports: [
     Pur001PriceRequestDetailComponent,
     Pur001ProductPriceRequestDetailComponent,
     SaleRestrictionComponent,
+    InputKendoComponent,
   ],
 })
 export class InPurchaseModule { }

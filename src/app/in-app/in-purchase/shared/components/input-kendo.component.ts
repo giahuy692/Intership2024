@@ -34,6 +34,7 @@ export class InputKendoComponent {
   @Input() isActiveView = false;
   @Input() isActiveColor = false;
   @Output() valueChange = new EventEmitter<any>();
+  @Input() showSearchIcon = false;
 
   onValueChange(newValue: any): void {
     console.log('Giá trị thay đổi:', newValue);
