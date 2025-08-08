@@ -1,0 +1,22 @@
+.container-quote {
+    
+    h1 {
+        padding: 8px 0 8px;
+        font-size: 1.28rem;
+        font-weight: 600;
+    }
+
+    .container-quote__info {
+        background-color: #fff;
+        padding: 10px 25px 20px 15px;
+        display: flex;
+        gap: 30px;
+
+        .container-quote__info-left {
+            flex: 1;
+        }
+        .container-quote__info-right {
+            flex: 4;
+        }
+    }
+}
