@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { InputsModule, NumericTextBoxModule, TextBoxModule } from '@progress/kendo-angular-inputs';
+import { InputsModule } from '@progress/kendo-angular-inputs';
 import { LabelModule } from '@progress/kendo-angular-label';
 import { DatePickerModule } from "@progress/kendo-angular-dateinputs";
-import { ButtonModule } from "@progress/kendo-angular-buttons";
+import { ButtonsModule } from "@progress/kendo-angular-buttons";
 import { NavigationModule } from "@progress/kendo-angular-navigation";
 import { GridModule } from "@progress/kendo-angular-grid";
 import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
@@ -17,14 +17,14 @@ import { InfoPriceRequestComponent } from './shared/components/info-price-reques
 import { InputKendoComponent } from './shared/components/input-kendo.component';
 import { InputAreaKendoComponent } from './shared/components/inputArea-kendo.component';
 import { SaleRestrictionComponent } from './shared/components/sale-restriction/sale-restriction.component';
-<<<<<<<<< Temporary merge branch 1
 import { AttributeProductComponent } from './shared/components/attribute-product/attribute-product.component';
-import {DropDownsModule} from "@progress/kendo-angular-dropdowns";
-=========
 import { BreadcrumbKendoComponent } from './shared/components/breadcrumd-kendo.component';
 import { NavPriceRequestDetailComponent } from './shared/components/nav-price-request-detail/nav-price-request-detailcomponent';
-import { GridComponentComponent } from './shared/components/grid-component/grid-component.component';
->>>>>>>>> Temporary merge branch 2
+import { GridKendoComponent } from './shared/components/grid-kendo.component';
+import { DateKendoComponent } from './shared/components/date-kendo.component';
+import { InfoSuggestComponent } from './shared/components/info-suggest/info-suggest.component';
+import { ButtonKendoComponent } from './shared/components/button-kendo.component';
+import { PriceRequestInfoComponent } from './shared/components/price-request-info/price-request-info.component';
 
 
 @NgModule({
@@ -34,15 +34,16 @@ import { GridComponentComponent } from './shared/components/grid-component/grid-
     InfoPriceRequestComponent,
     InputKendoComponent,
     InputAreaKendoComponent,
-<<<<<<<<< Temporary merge branch 1
     SaleRestrictionComponent,
     AttributeProductComponent,
-=========
     BreadcrumbKendoComponent,
     SaleRestrictionComponent,
     NavPriceRequestDetailComponent,
-    GridComponentComponent,
->>>>>>>>> Temporary merge branch 2
+    GridKendoComponent,
+    DateKendoComponent,
+    InfoSuggestComponent,
+    ButtonKendoComponent,
+    PriceRequestInfoComponent
   ],
   imports: [
     FormsModule,
@@ -51,15 +52,13 @@ import { GridComponentComponent } from './shared/components/grid-component/grid-
     InputsModule,
     LabelModule,
     DatePickerModule,
-<<<<<<<<< Temporary merge branch 1
     DropDownsModule,
     IconsModule, 
     SVGIconModule,
     InputsModule,
-=========
-    ButtonModule,
+    ButtonsModule,
     NavigationModule,
->>>>>>>>> Temporary merge branch 2
+    GridModule
   ],
   exports: [
     Pur001PriceRequestDetailComponent,
