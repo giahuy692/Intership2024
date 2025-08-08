@@ -4,9 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { InputsModule } from '@progress/kendo-angular-inputs';
 import { LabelModule } from '@progress/kendo-angular-label';
 import { DatePickerModule } from "@progress/kendo-angular-dateinputs";
-import { ButtonModule } from "@progress/kendo-angular-buttons";
+import { ButtonsModule } from "@progress/kendo-angular-buttons";
 import { NavigationModule } from "@progress/kendo-angular-navigation";
-
+import { GridModule } from "@progress/kendo-angular-grid";
+import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
+import { IconsModule, SVGIconModule } from '@progress/kendo-angular-icons';
 
 import { InPurchaseRoutingModule } from './in-purchase-routing.module';
 import { Pur001PriceRequestDetailComponent } from './pages/pur001-price-request-detail/pur001-price-request-detail.component';
@@ -19,7 +21,8 @@ import { InfoSuggestComponent } from './shared/components/info-suggest/info-sugg
 import { SaleRestrictionComponent } from './shared/components/sale-restriction/sale-restriction.component';
 import { BreadcrumbKendoComponent } from './shared/components/breadcrumd-kendo.component';
 import { NavPriceRequestDetailComponent } from './shared/components/nav-price-request-detail/nav-price-request-detailcomponent';
-import { GridComponentComponent } from './shared/components/grid-component/grid-component.component';
+import { GridKendoComponent } from './shared/components/grid-kendo.component';
+import { ButtonKendoComponent } from './shared/components/button-kendo.component';
 
 
 @NgModule({
@@ -34,7 +37,8 @@ import { GridComponentComponent } from './shared/components/grid-component/grid-
     InfoSuggestComponent,
     SaleRestrictionComponent,
     NavPriceRequestDetailComponent,
-    GridComponentComponent,
+    GridKendoComponent,
+    ButtonKendoComponent
   ],
   imports: [
     FormsModule,
@@ -43,8 +47,12 @@ import { GridComponentComponent } from './shared/components/grid-component/grid-
     InputsModule,
     LabelModule,
     DatePickerModule,
-    ButtonModule,
+    ButtonsModule,
     NavigationModule,
+    GridModule,
+    DropDownsModule,
+    IconsModule, 
+    SVGIconModule
   ],
   exports: [
     Pur001PriceRequestDetailComponent,
