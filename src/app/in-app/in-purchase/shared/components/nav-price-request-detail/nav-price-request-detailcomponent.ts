@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { shareIcon, plusIcon, SVGIcon } from '@progress/kendo-svg-icons';
 
 @Component({
   selector: 'app-nav-price-request-detail',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./nav-price-request-detail.component.scss']
 })
 export class NavPriceRequestDetailComponent {
-
+  public shareIcon: SVGIcon = shareIcon;
+  public plusIcon: SVGIcon = plusIcon;
 }
