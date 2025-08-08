@@ -1,0 +1,782 @@
+<div class="hr-task-list-container" *ngIf="onCheckDisplayPolicyTask()">
+    <!-- FILTER AND BUTTON FIELD -->
+    <div *ngIf="isShowHeader" class="header-list-container header header-2"
+        [ngClass]="{'disabled': isSelectingItemGrid}">
+        <!-- FILTER SEARCH -->
+        <div class="filter-container">
+            <div class="title-text">
+                <div *ngIf="typeList == 1">
+                    <span>DANH SÁCH ĐẦU VIỆC </span>
+                    <span class="obligatory" *ngIf="isVisible('im-title-task-list')">(*)</span>
+                </div>
+                <span *ngIf="typeList == 2" class="header-task-toDo">DANH SÁCH ĐẦU VIỆC CẦN THỰC HIỆN</span>
+            </div>
+
+            <app-search-filter-group #search *ngIf="typeList == 1" [clearButton]="true" title=""
+                placeholder="Tìm theo mã, tên, mô tả đầu việc" [fields]="['TaskName', 'Description', 'LSTaskID']"
+                (filterChange)="handleSearchTask($event)">
+            </app-search-filter-group>
+
+            <app-search-filter-group #search *ngIf="typeList == 2 && typeProfile == 1" [clearButton]="true" title=""
+                placeholder="Tìm theo mã, tên, mô tả, thực hiện bởi"
+                [fields]="['TaskName', 'Description', 'AssigneeBy', 'AssigneeName', 'AssigneeID', 'AssigneePositionName', 'LSTaskID']"
+                (filterChange)="handleSearchTask($event)">
+            </app-search-filter-group>
+
+            <app-search-filter-group #search *ngIf="typeList == 2 && typeProfile == 2" [clearButton]="true" title=""
+                placeholder="Tìm theo mã, tên, mô tả, thực hiện bởi, duyệt bởi"
+                [fields]="['TaskName', 'Description', 'AssigneeBy', 'AssigneeName', 'AssigneeID', 'AssigneePositionName',
+                'ApprovedPositionName', 'ApprovedPositionID', 'ApprovedName', 'ApprovedID', 'LSTaskID']"
+                (filterChange)="handleSearchTask($event)">
+            </app-search-filter-group>
+
+            <div class="checkbox-area" *ngIf="typeList == 2 && (typeData !== 1 && typeData !== 2) "
+                (click)="onShowStoppedTask()">
+                <input type="checkbox" class="k-checkbox" id="checkStopTask" [checked]="isShowStoppedTask" />
+                <div class="title-checkbox">Hiển thị việc ngưng / không thực hiện</div>
+            </div>
+        </div>
+
+        <!-- BUTTON -->
+        <div class="button-container" *ngIf="onCheckDisplayGroupButtonAdd()">
+            <!-- Button import -->
+            <button *ngIf="isVisible('btn-add-policy-task')" kendoButton iconClass="k-icon k-i-export" class="addImport"
+                (click)="onImportExcel()">
+            </button>
+            <!-- Button export -->
+            <button *ngIf="typeList == 1" kendoButton iconClass="k-icon k-i-import" class="addExport"
+                (click)="onExportExcel()">
+                Template
+            </button>
+            <!-- Button Thêm đầu việc có sẵn -->
+            <button *ngIf="isVisible('btn-add-policy-task')" kendoButton iconClass="k-icon k-i-plus" class="addBtn"
+                (click)="onClickButtonHeader(10)">
+                Thêm đầu việc có sẵn
+            </button>
+            <!-- Button thêm mới đầu việc bảng đầu việc -->
+            <button *ngIf="isVisible('btn-add-policy-task')" kendoButton iconClass="k-icon k-i-plus" class="addBtn"
+                (click)="onClickButtonHeader(12)">
+                Thêm mới đầu việc
+            </button>
+
+            <!-- Button thêm mới đầu việc boarding -->
+            <button *ngIf="M_A && typeList == 2 && [1, 2, 3, 4].includes(typeData)" kendoButton
+                iconClass="k-icon k-i-plus" class="addBtn" (click)="onClickButtonHeader(13)">
+                Thêm mới đầu việc
+            </button>
+        </div>
+    </div>
+
+    <!-- TASK LIST FIELD -->
+    <div class="task-list-container">
+        <div class="grid-wrapper" [ngClass]="handleSetClassGrid()">
+            <app-p-kendo-grid #grid class="grid scrollable grid-custom" [ngClass]="checkViewOfPermission()"
+                [loading]="isLoading || isLoadingGrid" [data]="listTask" [scrollable]="'none'" [selectable]="selectable"
+                [pageSize]="pageSize" [take]="gridState.take" [skip]="gridState.skip" [sortable]="true"
+                [sort]="gridState.sort" [onPageChangeCallback]="onPageChangeCallback"
+                [getActionDropdownCallback]="getActionDropdownCallback"
+                [onActionDropdownClickCallback]="onActionDropDownClickCallback"
+                [getSelectionPopupCallback]="getSelectionPopupCallback" [onSortChangeCallback]="onSortChangeCallback"
+                [onSelectedPopupBtnCallback]="onSelectedPopupBtnCallback" [rowClass]="rowCallback"
+                [typeMasterDetail]="typeMasterDetail" textExpand="Xem chi tiết ngoại lệ" textCollapse="Thu gọn"
+                (callDataExpand)="callData($event)" [onSelectCallback]="onSelectCallback">
+
+                <ng-container *ngIf="typeList == 1">
+                    <!-- Col-1: Tên đầu việc / Nhân sự -->
+                    <kendo-grid-column title="Tên đầu việc" headerClass="header-name-task" [width]="300">
+                        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                            <div class="col-name-task" [attr.code-task]="dataItem.Code">
+                              <span class="name" [title]="dataItem.TaskName">{{ dataItem.TaskName }}</span>
+                              <div class="d-flex align-items-center">
+                                <span class="LSTaskID" [title]="dataItem.LSTaskID" *ngIf="!!dataItem.LSTaskID">{{ dataItem.LSTaskID }} <span
+                                    class="space-line px-1" *ngIf="typeApplyPosition == 2">|</span> </span>
+                                <span *ngIf="typeApplyPosition == 2 && !dataItem.isExpanded"
+                                      (click)="onExpandDetail(rowIndex, dataItem)"
+                                      class="btn-open-detail">Xem chi tiết</span>
+                                <span *ngIf="typeApplyPosition == 2 && dataItem.isExpanded"
+                                      (click)="onCollapseDetail(rowIndex, dataItem)"
+                                      class="btn-open-detail">Thu gọn</span>
+                              </div>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col giả -->
+                    <kendo-grid-column *ngIf="typeList == 1" headerClass="header-fake" [width]="1"
+                        [hidden]="onCheckDeletableTask()">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col-2: Mô tả -->
+                    <kendo-grid-column title="Mô tả đầu việc" headerClass="header-description" [width]="450">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="col-description" *ngIf="dataItem?.Description">
+                                <span [title]="dataItem?.Description">{{ dataItem?.Description }}</span>
+                            </div>
+                            <span *ngIf="!dataItem?.Description" class="col-description blank-text">
+                                (Trống)
+                            </span>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col-3: Thực hiện bởi -->
+                    <kendo-grid-column title="Thực hiện bởi" [headerClass]="'header-assignee'" class="col-assignee"
+                        [width]="300" field="AssigneeBy">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="box-info">
+                                <span *ngIf="dataItem.TypeAssignee == 3" [style]="onCheckAssigneeBy('Nhân sự áp dụng')"
+                                    [title]="'Nhân sự áp dụng'">
+                                    Nhân sự áp dụng
+                                </span>
+                                <span *ngIf="dataItem.TypeAssignee == 1"
+                                    [style]="onCheckAssigneeBy(dataItem.AssigneeBy)" [title]="dataItem.AssigneeBy">
+                                    {{ dataItem.AssigneeBy }}
+                                </span>
+                                <ng-container *ngIf="dataItem.TypeAssignee == 2">
+                                    <span class="">{{ dataItem.AssigneeBy }}</span>
+                                    <div class="box-id-positon">
+                                        <span>{{ dataItem.AssigneeID }}</span>
+                                        <div *ngIf="checkValueString(dataItem.AssigneeID)" class="line-space"></div>
+                                        <span *ngIf="checkValueString(dataItem.AssigneePositionName)"
+                                            [title]="dataItem.AssigneePositionName">{{ dataItem.AssigneePositionName
+                                            }}</span>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col-4: Duyệt bởi -->
+                    <kendo-grid-column title="Duyệt bởi" headerClass="header-approvedBy" [width]="300"
+                        *ngIf="policyMaster.TypeData === 2">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="col-approvedBy">
+                                <span *ngIf="!dataItem.IsLeaderMonitor" [title]="dataItem.PositionApprovedName">{{
+                                    dataItem.PositionApprovedName }}</span>
+                                <span *ngIf="dataItem.IsLeaderMonitor" class="leader-monitor"
+                                    title="Trưởng đơn vị,Q.lý điểm làm việc">
+                                    <span>Trưởng đơn vị,</span>
+                                    <span>Q.lý điểm làm việc</span>
+                                </span>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col-5: Thứ tự thực hiện -->
+                    <kendo-grid-column title="Thứ tự thực hiện" headerClass="header-orderBy" [width]="150"
+                        field="OrderBy">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="col-orderBy">
+                                <span [title]="dataItem.OrderBy">{{ dataItem.OrderBy }}</span>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+
+                    <!-- Col-6: Thời gian hoàn tất -->
+                    <kendo-grid-column title="Thời gian hoàn tất" headerClass="header-date-duration" [width]="150"
+                        field="DateDuration">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="col-duration">
+                                <span title="{{dataItem.DateDuration + ' ngày'}}" *ngIf="dataItem.DateDuration > 0">{{
+                                    dataItem.DateDuration }} ngày</span>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+
+                    <!-- Col-7: Loại nhân sự áp dụng -->
+                    <kendo-grid-column title="Loại nhân sự áp dụng"
+                        [headerClass]="typeApplyPosition === 2 ? 'header-type-staff invisible' : 'header-type-staff'"
+                        [hidden]="typeApplyPosition === 2" [width]="300">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="col-type-staff">
+                                <div class="text-container">
+                                    <span class="type" [title]="dataItem?.ListStaffType[0]?.TypeStaffName">{{
+                                        dataItem?.ListStaffType[0]?.TypeStaffName }}</span>
+                                </div>
+                                <div class="text-container">
+                                    <span title="{{getListStaffTypeTitle(dataItem)}}" class="num"
+                                        *ngIf="getNumOfListStaffType(dataItem) > 1">
+                                        + {{ getNumOfListStaffType(dataItem) - 1 }} </span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+                </ng-container>
+
+                <!-- Chi tiết ngoại lệ -->
+                <ng-template #detailTemplate let-dataItem1>
+                    <div class="test" style="background-color: white;"
+                        [ngStyle]="{'pointer-events': isSelectingItemGrid && 'none'}">
+                        <div class="treelist-container" [ngClass]="checkViewOfPermission()">
+                            <kendo-treelist #tree class="treelist-custom" [ngClass]="checkViewOfPermission()"
+                                [selectable]="false" [data]="dataItem1?.ListException" [fetchChildren]="fetchChildren"
+                                [hasChildren]="hasChildren" [initiallyExpanded]="initiallyExpanded"
+                                kendoTreeListSelectable kendoTreeListExpandable [rowClass]="handleSetClassRowTreeList">
+
+                                <!-- Col-1: Tên -->
+                                <kendo-treelist-column [expandable]="isExpanded" headerClass="col-treelist-name"
+                                    [width]="430">
+                                    <ng-template kendoTreeListCellTemplate let-dataItem>
+                                        <div title="{{dataItem.PositionName || dataItem.LocationName || dataItem.TypeStaffName}}"
+                                            class="name"
+                                            [ngStyle]="{
+                                                        'font-weight' : onIdentifyDTO(dataItem) === 'DTOHRPolicyLocation' ? '600' : 'normal',
+                                                        'text-decoration' : onIdentifyDTO(dataItem) === 'DTOHRPolicyPosition' ? 'underline' : 'normal'}">
+                                            <fa-icon [icon]="['fas', getIconByDTO(dataItem)]"></fa-icon>
+                                            {{dataItem.PositionName || dataItem.LocationName ||
+                                            dataItem.TypeStaffName}}
+                                        </div>
+                                    </ng-template>
+                                </kendo-treelist-column>
+
+                                <!-- Col-2: ID -->
+                                <kendo-treelist-column headerClass="col-treelist-id">
+                                    <ng-template kendoTreeListCellTemplate let-dataItem>
+                                        <div class="id" title="{{dataItem.PositionID || dataItem.LocationID}}">
+                                            {{dataItem.PositionID || dataItem.LocationID}}
+                                        </div>
+                                    </ng-template>
+                                </kendo-treelist-column>
+
+                                <!-- Col-3: Department Name -->
+                                <kendo-treelist-column headerClass="col-treelist-department">
+                                    <ng-template kendoTreeListCellTemplate let-dataItem>
+                                        <div class="department" [title]="dataItem.DepartmentName">
+                                            {{dataItem.DepartmentName}}
+                                        </div>
+                                    </ng-template>
+                                </kendo-treelist-column>
+
+                                <!-- Col-4: Trưởng đơn vị, Quản lý điểm làm việc -->
+                                <kendo-treelist-column headerClass="col-treelist-role">
+                                    <ng-template kendoTreeListCellTemplate let-dataItem>
+                                        <div class="role">
+                                            <div class="text-1" *ngIf="dataItem.IsLeader" title="Trưởng đơn vị">
+                                                Trưởng đơn vị
+                                            </div>
+                                            <div class="bar" *ngIf="dataItem.IsSupervivor && dataItem.IsLeader">
+                                            </div>
+                                            <div class="text-2"
+                                                [ngClass]="{'text-3': dataItem.IsSupervivor && !dataItem.IsLeader}"
+                                                *ngIf="dataItem.IsSupervivor" title="Quản lý điểm làm việc">Quản
+                                                lý điểm làm việc</div>
+                                        </div>
+                                    </ng-template>
+                                </kendo-treelist-column>
+
+                                <!-- Col-5: Trạng thái -->
+                                <kendo-treelist-column headerClass="col-treelist-status">
+                                    <ng-template kendoTreeListCellTemplate let-dataItem>
+                                        <span [title]="dataItem.StatusName" class="status-name"
+                                            [innerHTML]="dataItem.StatusName | colorStatus: dataItem.Status"></span>
+                                    </ng-template>
+                                </kendo-treelist-column>
+
+                                <!-- Col-6: Button xóa -->
+                                <kendo-treelist-column headerClass="col-treelist-button-delete" [width]="40">
+                                    <ng-template kendoTreeListCellTemplate let-dataItem>
+                                        <div class="icon">
+                                            <ng-container *ngIf="onCheckDisplayButtonException('delete')">
+                                                <span title="Xóa ngoại lệ"
+                                                    (click)="toogleButtonPolicyTaskLimit(dataItem, 'delete', dataItem1)"
+                                                    *ngIf="onCheckDeletableException(dataItem)"
+                                                    class="k-icon k-i-trash"></span>
+                                            </ng-container>
+
+                                            <ng-container
+                                                *ngIf="onCheckDisplayButtonException('stop') && dataItem?.Status === 2">
+                                                <span title="Ngưng áp dụng"
+                                                    (click)="toogleButtonPolicyTaskLimit(dataItem, 'stop')"
+                                                    class="k-icon k-i-minus-outline"></span>
+                                            </ng-container>
+                                        </div>
+                                    </ng-template>
+                                </kendo-treelist-column>
+                            </kendo-treelist>
+                        </div>
+                    </div>
+                </ng-template>
+
+                <!-- Danh sách đầu việc ở trong detail  -->
+                <ng-container *ngIf="typeList == 2">
+                    <!-- Col-1: Mã đầu việc detail -->
+                    <kendo-grid-column title="Mã đầu việc" headerClass="header-id-task" [width]="200">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="col-id-task" [attr.code-task]="dataItem.Code">
+                                <span class="LSTaskID truncate-1-lines" [title]="dataItem.LSTaskID ? dataItem.LSTaskID : 'Không có mã đầu việc'"
+                                      [ngClass]="{ 'task-out-policy': dataItem.Task == null}">
+                                    {{ dataItem.LSTaskID ? dataItem.LSTaskID : '---' }}</span>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col-2: Tên đầu việc / Nhân sự ở trong detail -->
+                    <kendo-grid-column title="Tên đầu việc" headerClass="header-name-task" [width]="300">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="col-name-task" [attr.code-task]="dataItem.Code">
+                                <span class="name" [title]="dataItem.TaskName" [ngClass]="{ 'task-out-policy': dataItem.Task == null,
+                                                                'truncate-1-lines': dataItem.Task == null,
+                                                                'truncate-2-lines': dataItem.Task != null
+                                                            }">{{ dataItem.TaskName }}</span>
+
+                                <div *ngIf="typeData !== 5 && typeData !== 6 && typeData !== 7 && typeData !== 8"
+                                    class="box-date-left">
+                                    <span *ngIf="dataItem.Task == null" class="typeTask">Ngoài bảng đầu việc</span>
+                                    <div *ngIf="!checkExpired(dataItem.IsOverdue) && dataItem.Task == null  && dataItem.ListHRDecisionTaskLog[0]?.Status == 3 && (typeData !== 1 && typeData !== 2)"
+                                        class="line-space"></div>
+                                    <span
+                                        *ngIf="!checkExpired(dataItem.IsOverdue) && dataItem.ListHRDecisionTaskLog[0]?.Status == 3 && (typeData !== 1 && typeData !== 2)"
+                                        class="date-left">Còn
+                                        <span *ngIf="getLeftDateTask(dataItem.EndDate) > 0"
+                                            [ngStyle]="{'color': getColorLeftDate(getLeftDateTask(dataItem.EndDate))}">{{getLeftDateTask(dataItem.EndDate)}}
+                                            ngày</span>
+
+                                        <span *ngIf="getLeftDateTask(dataItem.EndDate) == 0" style="color: #EB273A"
+                                            [title]="'Còn ' + handleGetHoursUntilEndOfDay() + ' giờ'">{{handleGetHoursUntilEndOfDay()}}
+                                            giờ</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col-3: Mô tả ở trong detail -->
+                    <kendo-grid-column title="Mô tả đầu việc" headerClass="header-description" [width]="450">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="col-description" *ngIf="dataItem?.Description">
+                                <span [title]="dataItem?.Description">{{ dataItem?.Description }}</span>
+                            </div>
+                            <span *ngIf="!dataItem?.Description" class="col-description blank-text">
+                                (Trống)
+                            </span>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col-4: Thực hiện bởi ở trong detail -->
+                    <kendo-grid-column title="Thực hiện bởi" [headerClass]="'header-assignee'" class="col-assignee"
+                        [width]="300" field="AssigneePositionName">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="box-info">
+                                <span *ngIf="dataItem.TypeAssignee == 1 || dataItem.TypeAssignee == 3"
+                                    [style]="onCheckAssigneeBy(dataItem.AssigneeBy)" [title]="dataItem.AssigneeBy">
+                                    {{ dataItem.AssigneeBy }}
+                                </span>
+                                <ng-container *ngIf="dataItem.TypeAssignee == 2">
+                                    <span *ngIf="!checkValueString(dataItem.AssigneeID)" class="not-yet-staff">(Chưa
+                                        chọn nhân sự)</span>
+                                    <span class="name-staff">{{ dataItem.AssigneeName }}</span>
+                                    <div class="box-id-positon">
+                                        <span *ngIf="dataItem.AssigneeID">{{ dataItem.AssigneeID }}</span>
+                                        <div *ngIf="checkValueString(dataItem.AssigneeID)" class="line-space"></div>
+                                        <span *ngIf="checkValueString(dataItem.AssigneePositionName)"
+                                            [title]="dataItem.AssigneePositionName">{{ dataItem.AssigneePositionName
+                                            }}</span>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col-5: Duyệt bởi ở trong detail -->
+                    <kendo-grid-column title="Duyệt bởi" headerClass="header-approvedBy" [width]="300"
+                        field="ApprovedPositionName" class="col-approve"
+                        *ngIf="typeData == 2 || typeData == 4 || typeData == 6 || typeData == 8">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="box-info">
+                                <ng-container *ngIf="!dataItem.IsLeaderMonitor">
+                                    <span *ngIf="!checkValueString(dataItem.ApprovedID)" class="not-yet-staff">(Chưa
+                                        chọn nhân sự)</span>
+                                    <span class="name-staff"
+                                        [title]="dataItem.ApprovedName">{{dataItem.ApprovedName}}</span>
+                                    <div class="box-id-positon">
+                                        <span *ngIf="dataItem.ApprovedID"
+                                            [title]="dataItem.ApprovedID">{{dataItem.ApprovedID}}</span>
+                                        <div *ngIf="dataItem.ApprovedID && dataItem.ApprovedName" class="line-space">
+                                        </div>
+                                        <span *ngIf="dataItem.ApprovedName"
+                                            [title]="dataItem.ApprovedPositionName">{{dataItem.ApprovedPositionName}}</span>
+                                    </div>
+                                </ng-container>
+
+                                <span *ngIf="dataItem.IsLeaderMonitor" class="leader-monitor"
+                                    title="Trưởng đơn vị,Q.lý điểm làm việc">
+                                    <span>Trưởng đơn vị,</span>
+                                    <span>Q.lý điểm làm việc</span>
+                                </span>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col-6: Thứ tự thực hiện -->
+                    <kendo-grid-column title="Thứ tự thực hiện" headerClass="header-orderBy" [width]="150"
+                        class="col-orderBy" field="OrderBy">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="col-orderBy">
+                                <span [title]="dataItem.OrderBy">{{ dataItem.OrderBy }}</span>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col-7: Thời gian thực hiện -->
+                    <kendo-grid-column title="Thời gian thực hiện" [headerClass]="'header-duration-do'" field="EndDate"
+                        class="col-duration">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="box-date" [ngStyle]="{'color': getColorExpired(dataItem.IsOverdue)}">
+                                <!-- Icon đầu việc quá hạn -->
+                                <fa-icon *ngIf="checkExpired(dataItem.IsOverdue)" [title]="'Đầu việc đã bị quá hạn'"
+                                    [icon]="['fas', 'triangle-exclamation']">
+                                </fa-icon>
+
+                                <div class="box-duration">
+                                    <span *ngIf="checkValueString(dataItem.EndDate)">
+                                        Hết ngày:
+                                        <span *ngIf="dataItem?.EndDate">
+                                            {{dataItem?.EndDate | date : 'dd/MM/yyyy' : 'Indochina Time' : 'vi_VN'}}
+                                        </span>
+                                        <span class="blank-text" *ngIf="!dataItem?.EndDate">
+                                            (Trống)
+                                        </span>
+                                    </span>
+
+                                    <!-- <span *ngIf="!checkValueString(dataItem.EndDate)"
+                                        [title]="'Hết ngày: ' + (getEndDateByTimeDoing(dataItem.DateDuration) | date:'dd/MM/yyyy':'Indochina Time':'vi_VN')">
+                                        Hết ngày: {{ getEndDateByTimeDoing(dataItem.DateDuration) |
+                                        date:'dd/MM/yyyy':'Indochina Time':'vi_VN' }}
+                                    </span> -->
+
+                                    <!-- Hoàn tất -->
+                                    <ng-container *ngIf="dataItem?.ListHRDecisionTaskLog[0]?.Status == 6">
+                                        <span>
+                                            Hoàn tất:
+                                            <span *ngIf="getCreateTimeOfStatusLog(dataItem?.ListHRDecisionTaskLog, 6)">
+                                                {{getCreateTimeOfStatusLog(dataItem.ListHRDecisionTaskLog, 6) |
+                                                date : 'dd/MM/yyyy' : 'Indochina Time' : 'vi_VN'}}
+                                            </span>
+                                            <span class="blank-text"
+                                                *ngIf="!getCreateTimeOfStatusLog(dataItem?.ListHRDecisionTaskLog, 6)">
+                                                (Trống)
+                                            </span>
+                                        </span>
+                                    </ng-container>
+
+                                    <!-- Ngưng ngày -->
+                                    <span *ngIf="dataItem?.ListHRDecisionTaskLog[0]?.Status == 5">
+                                        Ngưng ngày:
+                                        <span *ngIf="getCreateTimeOfStatusLog(dataItem?.ListHRDecisionTaskLog, 5)">
+                                            {{getCreateTimeOfStatusLog(dataItem.ListHRDecisionTaskLog, 5) | date :
+                                            'dd/MM/yyyy' : 'Indochina Time' : 'vi_VN'}}
+                                        </span>
+                                        <span class="blank-text"
+                                            *ngIf="!getCreateTimeOfStatusLog(dataItem?.ListHRDecisionTaskLog, 5)">
+                                            (Trống)
+                                        </span>
+                                    </span>
+
+                                    <!-- Dừng ngày -->
+                                    <span *ngIf="dataItem?.ListHRDecisionTaskLog[0]?.Status == 2">
+                                        Dừng ngày:
+                                        <span *ngIf="getCreateTimeOfStatusLog(dataItem.ListHRDecisionTaskLog, 2)">
+                                            {{getCreateTimeOfStatusLog(dataItem.ListHRDecisionTaskLog, 2) | date :
+                                            'dd/MM/yyyy' : 'Indochina Time' : 'vi_VN'}}
+                                        </span>
+                                        <span class="blank-text"
+                                            *ngIf="!getCreateTimeOfStatusLog(dataItem?.ListHRDecisionTaskLog, 2)">
+                                            (Trống)
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Col-8: Tình trạng -->
+                    <kendo-grid-column title="Tình trạng" [headerClass]="'header-status'" class="col-status">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="box-status">
+                                <span class="status-name" [innerHTML]="dataItem.ListHRDecisionTaskLog[0]?.StatusName
+                                                | colorStatus: dataItem.ListHRDecisionTaskLog[0]?.Status : 17">
+                                </span>
+
+                                <span class="old-status-name" *ngIf="dataItem.ListHRDecisionTaskLog.length > 1 &&
+                                    dataItem.ListHRDecisionTaskLog[0]?.Status == 2 ||
+                                    dataItem.ListHRDecisionTaskLog[0]?.Status == 5" [innerHTML]="dataItem.ListHRDecisionTaskLog[1]?.StatusName
+                                    | colorStatus: dataItem.ListHRDecisionTaskLog[1]?.Status : 17">
+                                </span>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- Hành động -->
+                    <kendo-grid-column headerClass="header-acion" class="view-col">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="box-action" [ngClass]="{'block-disabled': isSelectingItemGrid}">
+                                <span *ngFor="let action of getActionList(dataItem)" class="icon k-icon {{action}}"
+                                    (click)="onActionList(action, dataItem)"></span>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+                </ng-container>
+
+
+            </app-p-kendo-grid>
+        </div>
+    </div>
+
+    <!-- DIALOG CONFIRM DELETE TASK -->
+    <kendo-dialog class="dialog-delete popup-confirm-custom" [minHeight]="250" [minWidth]="400"
+        *ngIf="isOpenPopupConfirmDelete">
+        <!-- HEADER -->
+        <div class="dialog-header">
+            <span class="k-icon k-i-warning"></span>
+            <div>{{selectedPolicyTaskLimit ? 'Xóa ngoại lệ' : 'Xóa đầu việc'}}</div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="dialog-content">
+            <div class="text-confirm">
+                <span class="text-request-dialog-custom">
+                    Bạn chắc chắn muốn xóa các
+                    {{selectedPolicyTaskLimit ? 'ngoại lệ ' : 'đầu việc '}}
+                    được chọn không ?
+                </span>
+                <!-- <span class="task" *ngIf="seletedTaskToDelete">{{seletedTaskToDelete.TaskName}}</span>
+                <span class="task" *ngIf="selectedPolicyTaskLimit">{{getNameDTO()}}</span> -->
+
+                <!-- <ng-container *ngIf="!seletedTaskToDelete">
+                    <div *ngFor="let item of selectedRowitem.slice(0, 2); let i = index" class="task-of-list">
+                        <span>
+                            {{ item.TaskName }}
+                        </span>
+                    </div>
+                    <span *ngIf="selectedRowitem.length > 2" [title]="getListTaskTitle()">...</span>
+                </ng-container> -->
+            </div>
+            <div class="warning">
+                <span>{{selectedPolicyTaskLimit ? 'Ngoại lệ bị xóa sẽ' : 'Đầu việc bị xóa sẽ'}}</span>
+                <span style="color: #FD7676;">KHÔNG</span>
+                <span>thể khôi phục lại.</span>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="dialog-footer">
+            <!-- Không xóa -->
+            <button kendoButton (click)="closePopupConfirmDeleteTask()">Không xóa</button>
+
+            <button *ngIf="!seletedTaskToDelete && selectedRowitem.length > 0 && !isDecisionTaskToDelete" kendoButton
+                icon="trash" class="btn-delete" (click)="handleDeleteListPolicyTask()">xóa</button>
+
+            <button *ngIf="seletedTaskToDelete && selectedRowitem.length === 0 && !isDecisionTaskToDelete" kendoButton
+                icon="trash" class="btn-delete" (click)="handleDeleteListPolicyTask()">xóa</button>
+
+            <!-- Xóa ngoại lệ -->
+            <button *ngIf="selectedPolicyTaskLimit && !isDecisionTaskToDelete" kendoButton icon="trash"
+                class="btn-delete" (click)="APIDeleteHRPolicyLimit(selectedPolicyTaskLimit)">xóa</button>
+
+            <button *ngIf="isDecisionTaskToDelete" kendoButton icon="trash" class="btn-delete"
+                (click)="APIDeleteHRDecisionTask()">xóa</button>
+        </div>
+    </kendo-dialog>
+
+    <!-- POPUP CONFIRM STOPPED -->
+    <kendo-dialog class="dialog-stopped popup-confirm-custom" [minHeight]="250" [minWidth]="400"
+        *ngIf="isConfirmDialogShow">
+        <div class="dialog-header-stopped" [ngStyle]="{'background-color': getColorDialog()}">
+            <span *ngIf="codeConfirmDialog == 1">MỞ LẠI ĐẦU VIỆC</span>
+            <span *ngIf="codeConfirmDialog == 2">NGƯNG THỰC HIỆN ĐẦU VIỆC</span>
+            <span *ngIf="codeConfirmDialog == 8">KHÔNG THỰC HIỆN ĐẦU VIỆC</span>
+
+        </div>
+
+        <div class="dialog-content-stopped">
+            <div class="text-confirm">
+                <span>Hãy nêu lý do tại sao
+                    <span *ngIf="codeConfirmDialog == 1">mở lại </span>
+                    <span *ngIf="codeConfirmDialog == 2">ngưng thực hiện </span>
+                    <span *ngIf="codeConfirmDialog == 8">không thực hiện </span>
+
+                    <ng-container *ngIf="typeList == 2">
+                        đầu việc
+                        <span *ngIf="listNameSelected.extraTitle == ''" class="text-color"
+                              [attr.title]="listNameSelected.mainTitle">
+                            {{ listNameSelected.mainTitle }}
+                        </span>
+                        <span *ngIf="listNameSelected.extraTitle !== ''" [attr.title]="listNameSelected.extraTitle">
+                            <span class="text-color">{{ listNameSelected.extraPositions.split(' ')[0] }}</span>
+                            <span class="text-normal">&nbsp;
+                                {{ listNameSelected.extraPositions.split(' ').slice(1).join(' ') }}
+                            </span>
+                        </span>
+                    </ng-container>
+                </span>
+
+            </div>
+
+            <div class="box-input">
+                <div class="box-input-reason">
+                        <span class="header-box-input">
+                        Lý do
+                        <span *ngIf="codeConfirmDialog == 1">mở lại đầu việc</span>
+                        <span *ngIf="codeConfirmDialog == 2">ngưng thực hiện đầu việc</span>
+                        <span *ngIf="codeConfirmDialog == 8">không thực hiện đầu việc</span>
+                        <span class="obligatory"> (*)</span>
+                    </span>
+                        <p-kendo-dropdownlist [disabled]="isLoadingReason" [loading]="isLoadingReason" [data]="listReason"
+                        [textField]="'ListName'" [valueField]="'Code'"
+                        (selectionChange)="getValueChangeDropdown($event)"></p-kendo-dropdownlist>
+                </div>
+
+                <div class="box-input-remark">
+                    <span class="header-box-input">Mô tả lý do <span *ngIf="isObligatoryReason"
+                            class="important">(*)</span></span>
+                    <kendo-textarea #remark [resizable]="'none'" [disabled]="isLoadingReason"></kendo-textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="dialog-footer">
+            <button kendoButton class="btn cancel-button" [ngStyle]="{'color': getColorDialog()}"
+                (click)="toggleClosedDialog()">ĐÓNG</button>
+            <button kendoButton class="btn confirm-button" [ngStyle]="{'background-color': getColorDialog()}"
+                (click)="onDiaglogConfirm()">XÁC NHẬN</button>
+        </div>
+    </kendo-dialog>
+
+    <!-- POPUP CHANGE ASSIGNEE/APPROVED -->
+    <kendo-dialog class="dialog-changed popup-confirm-custom" [minHeight]="250" [minWidth]="400"
+        *ngIf="isChangedDialogShow">
+        <div class="dialog-header-changed" [ngStyle]="{'background-color': getColorDialog()}">
+            <span *ngIf="codeConfirmDialog == 3">THỰC HIỆN BỞI</span>
+            <span *ngIf="codeConfirmDialog == 4">DUYỆT BỞI</span>
+        </div>
+
+        <div class="dialog-content-changed">
+            <div class="text-confirm">
+                <span *ngIf="typeList == 2">Bạn đang cập nhật thông tin cho
+                    <span *ngIf="listNameSelected.extraTitle == ''" class="text-color"
+                        [attr.title]="listNameSelected.mainTitle">
+                        {{listNameSelected.mainTitle}}
+                    </span>
+
+                    <span *ngIf="listNameSelected.extraTitle !== ''" [attr.title]="listNameSelected.extraTitle">
+                        <span class="text-color">{{ listNameSelected.extraPositions.split(' ')[0] }}</span>
+                        <span class="text-normal">&nbsp;
+                            {{ listNameSelected.extraPositions.split(' ').slice(1).join(' ') }}
+                        </span>
+                    </span>
+                </span>
+
+            </div>
+
+            <div class="box-input">
+                <div class="box-input-position">
+                    <span *ngIf="codeConfirmDialog == 3" class="header-box-input">
+                        Chức danh thực hiện</span>
+                        <span *ngIf="codeConfirmDialog == 4" class="header-box-input">
+                        Chức danh duyệt</span>
+                    <p-kendo-dropdownlist *ngIf="codeConfirmDialog == 3" [data]="listPositionAssignee"
+                        [textField]="'Text'" [valueField]="'Code'" [defaultItem]="defaultOption"
+                        (selectionChange)="getValueChangeDropdown($event)"></p-kendo-dropdownlist>
+                    <p-kendo-dropdownlist *ngIf="codeConfirmDialog == 4" [data]="listPositionApprove"
+                        [textField]="'Text'" [valueField]="'Code'" [defaultItem]="defaultOption"
+                        (selectionChange)="getValueChangeDropdown($event)"></p-kendo-dropdownlist>
+                </div>
+
+                <div class="box-input-assigneeBy">
+                    <span *ngIf="codeConfirmDialog == 3" class="header-box-input">
+                        Thực hiện bởi</span>
+                    <span *ngIf="codeConfirmDialog == 4" class="header-box-input">
+                        Duyệt bởi</span>
+                    <kendo-dropdownlist #dropdownList [data]="listEmployee"
+                        [textField]="''" [valueField]="'Code'" [disabled]="isDisabledEmployee"
+                        [defaultItem]="defaultOptionEmployee" (selectionChange)="getValueChangeEmployee($event)"
+                        [filterable]="true" (filterChange)="handleFilter($event)">
+                        <ng-template kendoDropDownListValueTemplate let-dataItem let-index="index">
+                            <div class="box-info">
+                                <span>{{handleGetFullName(dataItem)}}</span>
+                                <div *ngIf="dataItem?.StaffID && handleGetFullName(dataItem)" class="line-space"></div>
+                                <span class="ID">{{dataItem?.StaffID}}</span>
+                            </div>
+                        </ng-template>
+                        <ng-template kendoDropDownListItemTemplate let-dataItem let-index="index">
+                            <div
+                                class="d-flex justify-content-between align-items-center col-gap-10 customContentDropdown">
+                                <div class="box-info">
+                                    <span>{{handleGetFullName(dataItem)}}</span>
+                                    <div *ngIf="dataItem?.StaffID && handleGetFullName(dataItem)" class="line-space">
+                                    </div>
+                                    <span class="ID">{{dataItem.StaffID}}</span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </kendo-dropdownlist>
+                </div>
+            </div>
+        </div>
+
+        <div class="dialog-footer">
+            <button kendoButton class="btn cancel-button" [ngStyle]="{'color': getColorDialog()}"
+                (click)="toggleClosedDialog()">ĐÓNG</button>
+            <button kendoButton class="btn confirm-button" [ngStyle]="{'background-color': getColorDialog()}"
+                (click)="onDialogConfirmChangedInfo()">XÁC NHẬN</button>
+        </div>
+    </kendo-dialog>
+
+    <!-- DIALOG CONFIRM SEND/SUCCESS TASK -->
+    <kendo-dialog class="dialog-sent-success popup-confirm-custom" [minHeight]="250" [minWidth]="400"
+        *ngIf="isConfirmDialogSent">
+        <!-- HEADER -->
+        <div class="dialog-header">
+            <span *ngIf="codeConfirmDialog == 5 || codeConfirmDialog == 6">HOÀN TẤT</span>
+            <span *ngIf="codeConfirmDialog == 7">GỬI DUYỆT</span>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="dialog-content">
+            <div class="text-confirm">
+                <span>Bạn chắc chắn muốn
+                    <span *ngIf="codeConfirmDialog == 5 || codeConfirmDialog == 6">hoàn tất </span>
+                    <span *ngIf="codeConfirmDialog == 7">gửi duyệt </span>
+
+                    <ng-container *ngIf="listNameSelected.extraTitle == ''">
+                        đầu việc
+                        <span class="task-name">{{listSelectItemTask[0].TaskName}}</span>
+                        cho
+                    </ng-container>
+                </span>
+
+                <span *ngIf="listNameSelected.extraTitle == ''" [attr.title]="listNameSelected.mainTitle">
+                    <span class="task task-fullName">{{ listNameSelected.mainTitle.split(' - ')[0] }}</span>
+                    <span>-</span>
+                    <span class="task task-id">{{ listNameSelected.mainTitle.split(' - ').slice(1).join(' ') }}</span>
+                </span>
+
+
+
+                <span *ngIf="listNameSelected.extraTitle !== ''" [attr.title]="listNameSelected.extraTitle">
+                    <span class="text-color">{{ listNameSelected.extraPositions.split(' - ')[0] }}</span>
+                    <span class="text-normal">{{ listNameSelected.extraPositions.split(' - ').slice(1).join(' ')
+                        }}</span>
+                </span>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="dialog-footer">
+            <button kendoButton class="btn-close" (click)="toggleClosedDialog()">HỦY BỎ</button>
+            <button kendoButton class="btn-confirm" (click)="onDialogConfirmTask()">XÁC NHẬN</button>
+
+        </div>
+    </kendo-dialog>
+
+    <!-- Import đầu việc -->
+    <app-import-popup *ngIf="statusImport == 2"
+        [uploadEventHandlerCallback]="uploadEventHandlerCallback"></app-import-popup>
+
+    <app-hr-task-adder [TypeApplyPosition]="typeApplyPosition" [DataPolicyTask]="listPolicyTask" [isOpenDialog]="isOpenDialogAddTask"
+        [PolicyMaster]="policyMaster" (closed)="closeDialogAddTask($event)">
+    </app-hr-task-adder>
+</div>

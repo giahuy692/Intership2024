@@ -1,0 +1,27 @@
+<!-- <kendo-dropdownlist id="p-kendo-grid-dropdownlist" [data]="data" (valueChange)="onChange($event)"
+  [defaultItem]="defaultItem" [value]="selectedValue" [valuePrimitive]="true" [textField]="textField"
+  [valueField]="valueField" [popupSettings]="{appendTo:'component'}">
+</kendo-dropdownlist>
+ -->
+
+<!-- <div> -->
+<!-- <kendo-numerictextbox>
+  </kendo-numerictextbox> -->
+<kendo-dropdownlist [data]="arrOperator"  [textField]="'text'" [valueField]="'value'"
+  [popupSettings]="{appendTo:'component'}" [value]="curOperator" (valueChange)="onChange($event, 'curOperator')">
+</kendo-dropdownlist>
+
+<div>
+  <app-p-numeric-textbox propName="day" [spinners]="false" [min]="0" [max]="7" [placeHolder]="'day'" [(ngModel)]="day"
+    (valueChange)="onChange($event, 'day')">
+  </app-p-numeric-textbox>
+
+  <app-p-numeric-textbox propName="hour" [spinners]="false" [min]="0" [max]="24" [placeHolder]="'hour'" [(ngModel)]="hour"
+    (valueChange)="onChange($event,'hour')">
+  </app-p-numeric-textbox>
+
+  <app-p-numeric-textbox propName="minute" [spinners]="false" [min]="0" [max]="60" [placeHolder]="'minute'"
+    [(ngModel)]="minute" (valueChange)="onChange($event,'minute')">
+  </app-p-numeric-textbox>
+</div>
+<!-- </div> -->

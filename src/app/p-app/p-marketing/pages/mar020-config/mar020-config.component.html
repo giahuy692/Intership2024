@@ -1,0 +1,237 @@
+<div class="app-drawer-container">
+    <mat-drawer-container [hasBackdrop]="true">
+        <mat-drawer-content>
+            <div class="app-mar020-config">
+                <!-- Header 1 -->
+                <div class="header header-1">
+                    <app-p-kendo-breadcrumb (loadData)="resetFilter()"></app-p-kendo-breadcrumb>
+                    <!-- Button for status filter -->
+                    <ng-container *ngFor="let item of listStatusID.slice(0, 4); let  i = index">
+                        <button kendoButton class="k-button checkbox-btn-group" [togglable]="isFilterActive"
+                            [selected]="item.isChecked" (selectedChange)="selectedBtnChange($event, i)">
+                            {{item.status}}
+                            <input type="checkbox" class="k-checkbox" [checked]="item.isChecked" disabled>
+                        </button>
+                    </ng-container>
+
+                    <div class="nav-btn nav-crud" style="flex-grow: 1;">
+                        <button kendoButton class="k-button btn-hachi hachi-primary" [disabled]="!isFilterActive"
+                            [icon]="'plus'" *ngIf="isCreator || isMaster" (click)="onAdd(true, false)">
+                            TẠO MỚI
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Header 2 -->
+                <div class="header header-2">
+                    <div class="nav-filter nav-btn">
+                        <!-- Filter (column 1) -->
+                        <div class="filter-btn-group clear-btn-group">
+                            <div class="label">
+                                <span class="k-icon k-i-filter"></span>Lọc dữ liệu
+                            </div>
+                            <button kendoButton class="k-button clear-filter-btn" (click)="resetFilter()">
+                                Reset bộ lọc
+                            </button>
+                        </div>
+
+                        <!-- Search (column 2) -->
+                        <form [formGroup]="searchForm" style="display: flex;">
+                            <div class="filter-btn-group search-btn-group">
+                                <div class="label">
+                                    Tìm kiếm
+                                </div>
+                                <div class="search-btn">
+                                    <span class="k-icon k-i-search"></span>
+
+                                    <kendo-textbox formControlName="SearchQuery" #SearchQuery type="text"
+                                        class="k-textbox" placeholder="Tìm theo tên Cấu hình" [clearButton]="true">
+                                    </kendo-textbox>
+                                </div>
+                            </div>
+
+                            <button kendoButton class="k-button searchBtn" [icon]="'search'" (click)="search()"
+                                [disabled]="!isFilterActive">
+                                TÌM
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="grid-wrapper">
+                    <app-p-kendo-grid class="grid scrollable" [data]="gridView | async" [scrollable]="'none'"
+                        [loading]="loading" [pageable]="true" [pageSizes]="pageSizes" [pageSize]="pageSize"
+                        [skip]="gridState.skip" [take]="gridState.take" [sortable]="true" [sort]="gridState.sort"
+                        [onPageChangeCallback]="onPageChangeCallback" [onSortChangeCallback]="onSortChangeCallback"
+                        [allowedMoreActionDropdown]="allowActionDropdown"
+                        [getActionDropdownCallback]="getActionDropdownCallback"
+                        [onActionDropdownClickCallback]="onActionDropdownClickCallback" [selectable]="selectable"
+                        [onSelectCallback]="onSelectCallback" [onSelectedPopupBtnCallback]="onSelectedPopupBtnCallback"
+                        [getSelectionPopupCallback]="getSelectionPopupCallback">
+
+                        <kendo-grid-column title="Tên cấu hình" field="ConfigName">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div style="display: flex; align-items: center; column-gap: 10px;">
+                                    <div class="img">
+                                        <img loading="lazy" *ngIf="validImg( dataItem.ImageSetting1)"
+                                            [src]='getRes(dataItem.ImageSetting1)'>
+                                    </div>
+                                    <div style="display: flex; flex-direction: column;">
+                                        <b [title]="dataItem.ConfigName">{{dataItem.ConfigName}}</b>
+                                        <a href="{{dataItem.ConfigURL}}" target="_blank"
+                                            [title]="dataItem.ConfigURL">{{dataItem.ConfigURL}}</a>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column title="Mô tả cấu hình" field="ConfigDescription" class="Alias">
+                        </kendo-grid-column>
+
+                        <kendo-grid-column title="Phân loại" field="TypeDataName" class="TypeDataName">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div>{{dataItem.TypeDataName}}</div>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column class="col_status" title="Tình trạng" field="StatusID">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div [ngClass]="{'yellow': dataItem.StatusID == 1, 'green': dataItem.StatusID == 2, 
+                            'red': dataItem.StatusID == 3 || dataItem.StatusID == 4}">
+                                    {{ dataItem.StatusName }}</div>
+                            </ng-template>
+                        </kendo-grid-column>
+                    </app-p-kendo-grid>
+                </div>
+
+                <kendo-dialog #dialog class="deleteDialog" title="Xóa Cấu hình" [hidden]="!deleteDialogOpened"
+                    (close)="deleteDialogOpened = false" [minWidth]="250">
+                    <p style="margin: 30px; text-align: center;">
+                        Bạn chắc chắn muốn xóa vĩnh viễn Config <b>{{Config.ConfigName}}</b> này?</p>
+                    <div class="dialog-footer">
+                        <button kendoButton class="btn-hachi hachi-secondary" (click)="deleteDialogOpened = false"
+                            [icon]="'close'">Không</button>
+                        <button kendoButton class="btn-hachi hachi-warning" (click)="DeleteConfig()"
+                            [icon]="'trash'">Có</button>
+                    </div>
+                </kendo-dialog>
+
+                <kendo-dialog #dialog class="deleteDialog" title="Xóa các Cấu hình đã chọn"
+                    [hidden]="!deleteManyDialogOpened" [minWidth]="250" (close)="closeDeleteDialog()">
+                    <div style="margin: 30px; text-align: center;">
+                        {{ listUpdateConfig.length }} Config bị xóa<br>
+                        sẽ <b><span style="color: #FD7676">KHÔNG</span></b> thể khôi phục lại
+                    </div>
+                    <div class="dialog-footer">
+                        <button kendoButton class="btn-hachi hachi-secondary" (click)="closeDeleteManyDialog()"
+                            [icon]="'close'">Không</button>
+                        <button kendoButton class="btn-hachi hachi-warning" (click)="deleteMany()"
+                            [icon]="'trash'">Có</button>
+                    </div>
+                </kendo-dialog>
+            </div>
+        </mat-drawer-content>
+
+        <mat-drawer #formDrawer [mode]="'over'" position="end">
+            <form class="formConfig k-form" [formGroup]="drawerForm" (keydown.Enter)="keydownEnter($event)">
+                <fieldset>
+                    <legend>Cấu hình web</legend>
+                    <div class="search-config-form">
+                        <div class="image-container" style="margin-top: 10px;">
+                            <div class="first">
+                                <kendo-label text="Hình đại diện"></kendo-label>
+                                <button [disabled]="Config.StatusID == 2" kendoButton [icon]="'export'"
+                                    (click)="onUploadImg(1)" class="btn-hachi hachi-primary hachi-secondary"></button>
+                            </div>
+                            <div class="second">
+                                <img loading="lazy" [src]="getRes(Config.ImageSetting1)" />
+                                <button [disabled]="Config.StatusID == 2"
+                                    class="btn-hachi hachi-warning hachi-secondary" [icon]="'minus-outline'"
+                                    (click)="onClearImg(1)" kendoButton>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="image-container d-block" style="margin-top: 10px;">
+                            <div class="first">
+                                <kendo-label text="Hình bổ sung"></kendo-label>
+                            </div>
+
+                            <div class="d-flex">
+                                <div class="second" *ngFor="let item of [2,3,4,5]">
+                                    <button [disabled]="Config.StatusID == 2" kendoButton [icon]="'export'"
+                                        (click)="onUploadImg(item)"
+                                        class="btn-hachi hachi-primary hachi-secondary"></button>
+                                    <img loading="lazy" [src]="getRes(Config['ImageSetting'+item])" />
+                                    <button [disabled]="Config.StatusID == 2"
+                                        class="btn-hachi hachi-warning hachi-secondary" [icon]="'minus-outline'"
+                                        (click)="onClearImg(item)" kendoButton>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <kendo-formfield>
+                            <kendo-label text="Tên cấu hình" [for]="ConfigName"></kendo-label>
+                            <kendo-textbox #ConfigName formControlName="ConfigName" [(ngModel)]="Config.ConfigName"
+                                [disabled]="isLockAll"></kendo-textbox>
+                        </kendo-formfield>
+
+                        <kendo-formfield>
+                            <kendo-label text="Miêu tả cấu hình" [for]="ConfigDescription"></kendo-label>
+                            <kendo-textarea #ConfigDescription formControlName="ConfigDescription"
+                                [(ngModel)]="Config.ConfigDescription" [disabled]="isLockAll"></kendo-textarea>
+                        </kendo-formfield>
+
+                        <kendo-formfield>
+                            <kendo-label text="Link cấu hình" [for]="ConfigURL"></kendo-label>
+                            <kendo-textbox #ConfigURL formControlName="ConfigURL" [(ngModel)]="Config.ConfigURL"
+                                [disabled]="isLockAll"></kendo-textbox>
+                        </kendo-formfield>
+
+                        <kendo-formfield>
+                            <kendo-label text="Phân loại" [for]="TypeData"></kendo-label>
+                            <p-kendo-dropdownlist [data]="listType" [textField]="'ListName'" [valueField]="'OrderBy'"
+                                [disabled]="isLockAll" [filterable]="true" [valuePrimitive]="true" #TypeData
+                                formControlName="TypeData" [attr.title]="Config.TypeDataName"
+                                (valueChange)="onDropdownlistClick($event)">
+                            </p-kendo-dropdownlist>
+                        </kendo-formfield>
+
+                        <kendo-formfield>
+                            <kendo-label text="Cấu hình bổ sung" [for]="ExtendConfig"></kendo-label>
+                            <kendo-textarea #ExtendConfig formControlName="ExtendConfig"
+                                [(ngModel)]="Config.ExtendConfig" [disabled]="isLockAll"></kendo-textarea>
+                        </kendo-formfield>
+
+                        <kendo-formfield>
+                            <kendo-label text="Ghi chú" [for]="Remark"></kendo-label>
+                            <kendo-textarea #Remark formControlName="Remark" [(ngModel)]="Config.Remark"
+                                [disabled]="isLockAll"></kendo-textarea>
+                        </kendo-formfield>
+
+                        <kendo-formfield>
+                            <kendo-label text="Tình trạng" [for]="StatusID"></kendo-label>
+                            <kendo-dropdownlist #StatusID [data]="listStatusDropdown" textField="StatusName"
+                                valueField="OrderBy" [popupSettings]="{appendTo:'component'}" [valuePrimitive]="true"
+                                [value]="initialConfig.StatusID" (valueChange)="Config.StatusID=$event"
+                                formControlName="StatusID" [itemDisabled]="isItemDisabled">
+                            </kendo-dropdownlist>
+                        </kendo-formfield>
+
+                        <div class="k-form-buttons">
+                            <button kendoButton class="k-button closeBtn" (click)="closeForm()">
+                                Đóng
+                            </button>
+                            <button kendoButton class="k-button updateBtn" (click)="updateConfig(Config)">
+                                {{isAdd ? 'THÊM MỚI' : 'CẬP NHẬT'}}
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </mat-drawer>
+    </mat-drawer-container>
+</div>
+
+<app-folder-popup [pickFileCallback]="pickFileCallback" [GetFolderCallback]="GetFolderCallback"></app-folder-popup>

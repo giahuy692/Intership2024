@@ -1,0 +1,146 @@
+<div class="app-header navbar navbar-expand-lg">
+    <div class="wrapper-header-logo" #companyAnchor>
+        <div class="col-header-center col-logo">
+            <a class="navbar-logo" href="/">
+                <!-- <img class="navbar-logo-full" src="assets/img/logo/logo.svg" alt="CoreUI Logo"> -->
+                <img isLoading="lazy" class="navbar-logo-full" [hidden]="!isLogoVisible()" [src]="getCompanyLogoSrc()"
+                    alt="CoreUI Logo">
+                <img isLoading="lazy" class="navbar-logo-minimized" src="assets/img/logo/3ps.svg" alt="CoreUI Logo"
+                    width="30" height="30">
+            </a>
+        </div>
+
+        <div class="col-header-center col-btn-collapse">
+            <button kendoButton class="k-button k-button-icon" icon="arrow-chevron-down"
+                (click)="toggleCompanyPopup()"></button>
+        </div>
+    </div>
+
+    <div class="wrapper-header-middle">
+        <div class="nav-list">
+            <!-- <div *ngFor="let item of allowModuleList; let i = index"> -->
+            <ng-container *ngFor="let item of allowModuleList; let i = index">
+                <div *ngIf="item.Actived == true" class="nav-item" (click)="onClick(item)"
+                    [ngClass]="{'active': isItemActive(item) }">
+                    <!-- currentModule.Code == item.Code -->
+                    <!-- <div *ngIf="i > 0" class="nav-item-divider"></div> -->
+
+                    <a class="nav-link" aria-current="page">
+                        <!-- (click)="onClick(item)" -->
+                        {{ item?.Name }}
+                    </a>
+                    <!-- <div [ngClass]="{'active-header-border':currentModule.Code == item.Code}"></div> -->
+                    <div *ngIf="isItemActive(item)" class="active-header-border"></div>
+                    <!-- checkActiveMenuParent -->
+                </div>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="wrapper-header-user d-flex">
+        <button kendoButton class="k-button k-button-icon" icon="search" title="Tìm kiếm Sản phẩm"
+            (click)="openSearchProductPopup()"></button>
+        <div class="button_bell" (click)="onOpenPopupNotification(anchorNotification)">
+            <button kendoButton iconClass="fa fa-bell" title="Thông báo" #anchorNotification></button>
+            <span *ngIf="unreadNotifications > 0" class="status-dot">
+                {{ unreadNotifications > 15 ? '15+' : unreadNotifications }}
+            </span>
+        </div>
+        <button kendoButton #userAnchor class="k-button k-button-icon" icon="user" title="Người dùng"
+            (click)="toggleUserPopup()"></button>
+    </div>
+</div>
+
+<kendo-popup id="userMoreActionPopup" #userMoreActionPopup [hidden]="!showUser" [anchor]="userAnchor"
+    [anchorAlign]="{ horizontal:'right', vertical: 'bottom'}" [popupAlign]="{ horizontal:'right', vertical: 'top'}">
+    <div *ngFor="let item of userDropdownList">
+        <div class="popup-item" (click)="onClickUserDropdown(item)">
+            <span class="k-icon k-i-{{ item.Code }}"></span>
+            <span class="popup-item-text">{{ item.Name }}</span>
+        </div>
+    </div>
+</kendo-popup>
+
+<kendo-popup id="companyMoreActionPopup" #companyMoreActionPopup [hidden]="!showCompany" [anchor]="companyAnchor"
+    [anchorAlign]="{ horizontal:'left', vertical: 'bottom'}" [popupAlign]="{ horizontal:'left', vertical: 'top'}">
+    <div *ngFor="let item of companyDropdownList">
+        <div class="popup-item" (click)="onClickCompanyDropdown(item)" [ngClass]="{'active': item.Code == idCompany}">
+            <span class="k-icon k-i-home"></span>
+            <span class="popup-item-text">{{ item.Bieft }}</span>
+        </div>
+    </div>
+</kendo-popup>
+
+<p-changepassword-popup></p-changepassword-popup>
+
+<app-search-product-popup></app-search-product-popup>
+
+<kendo-popup
+  id="notificationsHeaderPopup"
+  class="rowMoreActionPopup"
+  [style.visibility]="isExpandNotifi ? 'visible' : 'hidden'"
+  [anchor]="notiAnchor"
+  [anchorAlign]="{ horizontal: 'center', vertical: 'bottom' }"
+  [popupAlign]="{ horizontal: 'center', vertical: 'top' }"
+  (click)="$event.stopPropagation()"
+>
+  <div class="notification-container">
+    <div class="header_notification">
+      <div class="title">Thông báo</div>
+      <div class="markAsRead">
+        <div>
+          <span class="fa fa-check"></span>
+        </div>
+        <span (click)="markAllAsRead()">Tất cả đã đọc</span>
+      </div>
+    </div>
+    <div class="filter-tabs">
+      <button class="tab-button" [class.active]="filter === -1" (click)="setFilter(-1)">
+        Tất cả <span class="countNotifi">{{ totalNotifications}}</span>
+      </button>
+      <button class="tab-button" [class.active]="filter === 1" (click)="setFilter(1)">
+        Chưa đọc <span class="countNotifi">{{ unreadNotifications }}</span>
+      </button>
+      <button class="tab-button" [class.active]="filter === 2" (click)="setFilter(2)">
+        Đã đọc <span class="countNotifi">{{ readNotifications }}</span>
+      </button>
+    </div>
+    
+
+    <div class="notification-list position-relative">
+      <p-isLoading-spinner [isisLoading]="isLoading"></p-isLoading-spinner>
+      <!-- Duyệt qua từng nhóm thông báo -->
+      <div *ngFor="let group of groupedNotifications">
+        <!-- Header hiển thị ngày -->
+        <div class="notification-group-header" title="{{group.dateLabel}}">
+          {{ group.dateLabel }}
+        </div>
+    
+        <!-- Hiển thị thông báo trong nhóm -->
+        <div
+          *ngFor="let notification of group.notifications"
+          class="notification-item" title="{{notification.Title}}"
+          [class.unread]="notification.Status === 1"
+          (mouseenter)="notification.Status == 2 || getPlainTextLength(notification) >= 100 ? null : markAsRead(notification)"
+        >
+          <!-- <img [src]="notification.Image" alt="icon" class="notification-icon" /> -->
+          <div class="notification-content">
+            <img
+              src="../../../../../assets/img/icon/{{notification.Type == 2 ? 'icon_urgent.svg' : 'icon_info.svg'}}"
+            />
+            <div class="d-flex flex-column pl-1">
+              <div [ngClass]="{'truncate-2-lines': !notification.isExpanded}" class="notification-body" [innerHTML]="handleSafeContent(notification)"></div>
+              <span *ngIf="getPlainTextLength(notification) > 100" class="btn-view-details" (click)="toggleExpand(notification); markAsRead(notification)">
+                {{ notification.isExpanded ? 'Thu gọn' : 'Xem chi tiết' }}
+              </span>
+            </div>
+          </div>
+          <span *ngIf="notification.Status === 1" class="status-dot"></span>
+        </div>
+      </div>
+    </div>
+    <button kendoButton class="k-button btn-hachi hachi-primary seePreNotification"
+    (click)="loadPreviousNotifications()" *ngIf="this.ListNotification.length < this.totalAvailableNotifications && filter == -1">XEM THÔNG BÁO TRƯỚC ĐÓ</button>
+    
+  </div>
+</kendo-popup>

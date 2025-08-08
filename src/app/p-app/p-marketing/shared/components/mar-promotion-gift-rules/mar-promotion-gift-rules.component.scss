@@ -1,0 +1,681 @@
+@import "../../../../../../assets/scss/variable.scss";
+
+
+::ng-deep {
+    .mar-promotion-gift-rules {
+        // padding: 20px;
+
+        .header-list-container {
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            border: none !important;
+
+            .filter-container {
+                width: 50%;
+                display: flex;
+                justify-content: space-between;
+
+                .important {
+                    color: $bad-red;
+                }
+
+                .title-block {
+                    color: rgba(26, 102, 52, 1);
+                    font-size: 16px;
+                    font-weight: 700;
+                    white-space: nowrap;
+                }
+            }
+
+            .button-container {
+                display: flex;
+                gap: 10px;
+            }
+
+
+        }
+
+        .promotion-list-container {
+            .grid-wrapper {
+                // height: 425px !important;
+                height: auto !important;
+                margin-top: 0px !important;
+
+                app-p-kendo-grid {
+                    .myCustomGrid {
+                        table {
+                            border-spacing: 0 15px;
+                        }
+
+                        .k-table {
+                            tr {
+                                position: relative;
+
+                                td:first-child {
+                                    padding-left: 0 !important;
+                                }
+
+                                td {
+                                    background-color: white !important;
+                                }
+
+                                td[aria-colindex="1"] {
+                                    a[aria-label="Expand Details"] {
+                                        position: absolute;
+                                        left: 52px;
+                                        top: 25px;
+                                        display: none !important;
+
+                                    }
+
+                                    a[aria-label="Collapse Details"] {
+                                        position: absolute;
+                                        left: 37px;
+                                        top: -5px;
+                                        display: none !important;
+                                    }
+                                }
+
+                                .box-header {
+                                    display: flex;
+                                    flex-direction: column;
+
+                                    .header-determine {
+                                        text-align: center;
+                                        font-size: 12px;
+                                        color: #5A6276;
+                                        font-weight: lighter;
+                                    }
+                                }
+
+                                td[aria-colindex="3"] {
+                                    // padding-left: 25px;
+                                }
+
+
+                                .k-touch-action-auto:nth-child(2) {
+                                    padding-left: 12px !important;
+                                }
+
+                                th.k-header:not(.k-hierarchy-cell):nth-child(2) {
+                                    padding-left: 10px !important;
+                                }
+
+                                // .col-name{
+                                //     width: 400px;
+
+                                //     .box-name{
+                                //         span{
+                                //             font-weight: 100;
+                                //             color: rgba(13, 153, 255, 1);
+                                //         }
+                                //     }
+
+                                //     kendo-textbox{
+                                //         display: none;
+
+                                //         &:focus{
+                                //             display: flex !important;
+                                //         }
+                                //     }
+
+                                //     &:hover{
+                                //         .box-name{
+                                //             display: none !important;
+                                //         }
+
+                                //         kendo-textbox{
+                                //             display: flex !important;
+                                //         }
+                                //     }
+                                // }
+
+                                .col-name {
+                                    width: 400px;
+                                    display: flex;
+                                    gap: 5px;
+                                    align-items: center;
+                                    // cursor: pointer;
+
+                                    .hidden {
+                                        display: none;
+                                    }
+
+                                    .k-icon {
+                                        cursor: pointer;
+                                    }
+
+                                    .box-input-name {
+                                        .text-name {
+                                            display: block;
+                                            margin-left: 5px;
+                                            font-weight: 100;
+                                            color: rgba(13, 153, 255, 1);
+                                            cursor: pointer;
+                                        }
+
+                                        kendo-textbox {
+                                            display: none;
+
+                                            &:focus {
+                                                display: flex !important;
+                                            }
+
+                                            input {
+                                                font-size: 14px;
+                                            }
+                                        }
+
+                                        .newName {
+                                            display: flex !important;
+                                        }
+
+                                        /* Khi .col-name có class active */
+                                        &.active {
+                                            .text-name {
+                                                display: none !important;
+                                            }
+
+                                            kendo-textbox {
+                                                display: flex !important;
+                                            }
+                                        }
+
+                                        /* Khi focus vào input hoặc có bất kỳ element con nào trong .col-name được focus */
+                                        &:focus-within {
+                                            .text-name {
+                                                display: none !important;
+                                            }
+
+                                            kendo-textbox {
+                                                display: flex !important;
+
+                                            }
+                                        }
+                                    }
+                                }
+
+
+                                .col-rule {
+                                    display: flex;
+                                    gap: 10px;
+                                    color: rgba(13, 153, 255, 1);
+                                    align-items: center;
+
+                                    img {
+                                        height: 15px;
+                                        width: 7px;
+                                    }
+
+                                    .box-input-range {
+                                        .text-range {
+                                            display: block;
+                                            margin-left: 5px;
+                                            cursor: pointer;
+
+                                            span {
+                                                font-weight: 100;
+                                                color: rgba(13, 153, 255, 1);
+                                            }
+                                        }
+
+                                        kendo-numerictextbox {
+                                            display: none;
+                                            width: 40px;
+
+                                            &:focus {
+                                                display: flex !important;
+                                            }
+
+                                            input {
+                                                text-align: left;
+                                                font-size: 14px;
+                                            }
+
+                                            .k-spin-button {
+                                                display: none !important;
+                                            }
+                                        }
+
+                                        .newRange {
+                                            kendo-numerictextbox {
+                                                display: flex !important;
+                                            }
+                                        }
+
+                                        /* Khi .col-name có class active */
+                                        &.active {
+                                            .text-range {
+                                                display: none !important;
+                                            }
+
+                                            kendo-numerictextbox {
+                                                display: flex !important;
+                                            }
+                                        }
+
+                                        /* Khi focus vào input hoặc có bất kỳ element con nào trong .col-name được focus */
+                                        &:focus-within {
+                                            .text-range {
+                                                display: none !important;
+                                            }
+
+                                            kendo-numerictextbox {
+                                                display: flex !important;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .col-method {
+                                    display: flex;
+                                    gap: 10px;
+
+                                    kendo-dropdownlist {
+                                        height: 34px !important;
+
+                                        span {
+                                            width: 180px;
+                                        }
+                                    }
+
+                                    kendo-numerictextbox {
+                                        width: 40px;
+
+                                        input {
+                                            text-align: right;
+                                            font-size: 14px;
+                                        }
+
+                                        .k-spin-button {
+                                            display: none !important;
+                                        }
+                                    }
+                                }
+
+                                td[aria-colindex="6"] {
+                                    text-align: end;
+
+                                    .box-action {
+                                        display: flex;
+                                        gap: 5px;
+                                        justify-content: flex-end;
+
+                                        span {
+                                            font-size: 20px;
+                                            cursor: pointer;
+                                        }
+
+                                        .k-i-delete {
+                                            color: red !important;
+                                        }
+
+                                        .k-i-plus {
+                                            color: rgba(26, 102, 52, 1) !important;
+                                        }
+                                    }
+                                }
+
+                                .master-detail {
+                                    max-height: 178px;
+                                    height: auto;
+                                    background-color: white;
+                                    padding: 5px 40px;
+                                    overflow: auto;
+                                    overflow-x: hidden;
+                                    display: flex;
+                                }
+
+                                .box-product {
+                                    width: 100%;
+                                    display: flex;
+                                    align-items: center;
+                                    height: 100%;
+                                    flex-wrap: wrap;
+                                    gap: 15px 70px;
+
+                                    .text-no-gift {
+                                        width: 100%;
+                                        text-align: center;
+                                    }
+
+                                    .item-product {
+                                        display: flex;
+                                        gap: 15px;
+                                        width: 325px;
+                                        height: 74px;
+
+                                        img {
+                                            height: 65px;
+                                            width: auto;
+                                            object-fit: contain;
+                                            max-height: 74px !important;
+                                            align-self: center;
+                                        }
+
+                                        .box-info-product {
+                                            display: flex;
+
+                                            .box-info {
+                                                display: flex;
+                                                flex-direction: column;
+                                                justify-content: space-between;
+
+                                                .name-product {
+                                                    // width: 220px;
+                                                    max-width: 220px;
+                                                    display: -webkit-box;
+                                                    -webkit-line-clamp: 2;
+                                                    -webkit-box-orient: vertical;
+                                                    overflow: hidden;
+                                                    white-space: normal;
+                                                }
+
+                                                .id-product {
+                                                    max-width: 220px;
+                                                    color: rgba(90, 98, 118, 1);
+                                                    font-weight: 700;
+                                                    overflow: hidden;
+                                                    text-overflow: ellipsis;
+                                                }
+                                            }
+
+                                            .k-i-delete {
+                                                margin-left: 20px;
+                                                margin-top: 3px;
+                                                display: none;
+                                            }
+                                        }
+
+                                        &:hover {
+                                            cursor: pointer;
+
+                                            span {
+                                                color: rgba(26, 102, 52, 1) !important;
+                                            }
+
+                                            .box-info-product {
+                                                .k-i-delete {
+                                                    color: red !important;
+                                                    display: block !important;
+                                                }
+
+                                                .disabledIcon {
+                                                    display: none !important;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+
+                            tr:not([aria-rowindex="1"]) {
+                                height: 74px !important;
+                            }
+                        }
+                    }
+
+                    .k-grid {
+                        height: auto !important;
+                    }
+
+                    .k-hierarchy-col {
+                        width: 0px !important;
+                    }
+                }
+
+                app-p-kendo-grid.disabledGrid {
+                    td.action {
+                        pointer-events: none !important;
+                    }
+
+                    span {
+                        color: black !important;
+                    }
+                }
+
+                app-p-kendo-grid.disabledSelect {
+                    tr {
+                        background-color: white !important;
+
+                        &:hover {
+                            td {
+                                background-color: white !important;
+                            }
+                        }
+                    }
+
+                    th {
+                        input {
+                            pointer-events: none !important;
+                            background-color: #d7d4d4 !important;
+                        }
+                    }
+
+                    td[aria-colindex="2"] {
+                        input {
+                            pointer-events: none !important;
+                            background-color: #d7d4d4 !important;
+                        }
+                    }
+
+                    td[aria-colindex="7"] {
+                        pointer-events: none !important;
+                        opacity: 0.7;
+                    }
+                }
+
+                app-p-kendo-grid.hasExpandedRow {
+                    .myCustomGrid {
+                        .k-table {
+                            tr {
+                                td[aria-colindex="1"] {
+                                    a[aria-label="Expand Details"] {
+                                        position: absolute;
+                                        left: 37px;
+                                        top: -4px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                app-p-kendo-grid .myCustomGrid.k-grid.isDetailGrid tbody:has(a[aria-label="Expand Details"]) tr.k-master-row td:first-child {
+                    padding-left: 0;
+                    width: 0px;
+                }
+
+                // app-p-kendo-grid .myCustomGrid.k-grid.isDetailGrid tbody:has(a[aria-label="Collapse Details"]) .has-exception a {
+                //     margin-top: 4px;
+                // }
+
+                .none-exception-1 .k-hierarchy-cell a,
+                .none-exception-2 .k-hierarchy-cell a {
+                    visibility: hidden;
+                }
+
+                .none-exception-1 .k-hierarchy-cell {
+                    display: flex;
+                    width: 0;
+                }
+
+                .k-grid-aria-root {
+                    max-height: calc(100vh - 229px) !important;
+                    height: auto !important;
+                }
+
+                .grid-onboarding.grid-type-1 .none-exception-1 td[aria-colindex="2"] {
+                    padding-left: 25px;
+                }
+
+                .grid-onboarding.grid-type-2 td[aria-colindex="2"] {
+                    padding-left: 31px;
+                }
+
+                .grid-onboarding.grid-type-1 {
+                    th[aria-colindex="2"] {
+                        padding-left: 25px;
+                    }
+                }
+
+                .grid-onboarding.grid-type-2 {
+                    th[aria-colindex="2"] {
+                        padding-left: 31px;
+                    }
+                }
+
+                .grid-onboarding.grid-type-2 tbody:has(a[aria-label="Collapse Details"]) td[aria-colindex="2"] {
+                    padding-left: 32px !important;
+                }
+
+                .grid-onboarding.grid-type-2 table:has(.k-detail-row) th.k-header:not(.k-hierarchy-cell):nth-child(2) {
+                    padding-left: 32px !important;
+                }
+
+                .grid-onboarding.grid-type-2 tbody:has(a[aria-label="Collapse Details"]) a {
+                    left: 60px !important;
+                }
+
+                // .view {
+                //     .grid-onboarding.grid-type-2 tbody:has(a[aria-label="Collapse Details"]) a {
+                //         left: 20px !important;
+                //     }
+                // }
+
+                .grid-onboarding.grid-type-2 td[aria-colindex="3"],
+                .grid-offboarding.grid-type-2 td[aria-colindex="3"] {
+                    min-width: 370px;
+                }
+
+                .view.on {
+                    td[aria-colindex="3"] {
+                        min-width: 0px !important;
+                    }
+                }
+
+                .grid-offboarding.grid-type-2 tbody:has(a[aria-label="Expand Details"]) tr.k-master-row td[aria-colindex="1"] {
+                    min-width: 30px;
+
+                    a[aria-label="Expand Details"] {
+                        // left: 88px !important;
+                    }
+                }
+
+                .grid-offboarding.grid-type-2.grid-noinput tbody:has(a[aria-label="Expand Details"]) tr.k-master-row td[aria-colindex="1"] {
+                    a[aria-label="Expand Details"] {
+                        left: 43px !important;
+                    }
+                }
+
+                .grid-offboarding.grid-type-2.grid-noinput tbody:has(a[aria-label="Collapse Details"]) tr.k-master-row td[aria-colindex="1"] {
+                    // a[aria-label="Expand Details"] {
+                    //     left: 28px !important;
+                    // }
+
+                    // a[aria-label="Collapse Details"] {
+                    //     left: 28px !important;
+                    // }
+                }
+
+                .grid-offboarding.grid-type-2 tbody:has(a[aria-label="Collapse Details"]) tr.k-master-row td[aria-colindex="1"] {
+                    width: 0 !important;
+                    min-width: 0 !important;
+
+                    // a[aria-label="Expand Details"] {
+                    //     left: 68px !important;
+                    // }
+
+                    // a[aria-label="Collapse Details"] {
+                    //     left: 68px !important;
+                    // }
+                }
+
+                .grid-offboarding.grid-type-2.grid-noinput.grid-approve tbody:has(a[aria-label="Expand Details"]) tr.k-master-row td[aria-colindex="1"] {
+                    a[aria-label="Expand Details"] {
+                        left: 44px !important;
+                    }
+                }
+
+                .grid-offboarding.grid-type-2.grid-noinput.grid-approve tbody:has(a[aria-label="Collapse Details"]) tr.k-master-row td[aria-colindex="1"] {
+                    // a[aria-label="Expand Details"] {
+                    //     left: 28px !important;
+                    // }
+
+                    // a[aria-label="Collapse Details"] {
+                    //     left: 28px !important;
+                    // }
+                }
+
+
+
+                .grid-onboarding.grid-type-2.grid-noinput.grid-stop tbody:has(a[aria-label="Collapse Details"]) {
+                    // a[aria-label="Expand Details"] {
+                    //     left: 20px !important;
+                    // }
+
+                    // a[aria-label="Collapse Details"] {
+                    //     left: 20px !important;
+                    // }
+                }
+
+                .grid-onboarding.grid-type-2.grid-noinput tbody:has(a[aria-label="Expand Details"]) {
+                    a[aria-label="Expand Details"] {
+                        left: 46px !important;
+                    }
+                }
+
+                .grid-onboarding.grid-type-2.grid-noinput tbody:has(a[aria-label="Collapse Details"]) {
+                    a[aria-label="Expand Details"] {
+                        left: 33px !important;
+                    }
+
+                    // a[aria-label="Collapse Details"] {
+                    //     left: 21px !important;
+                    // }
+                }
+            }
+        }
+
+        .button-add-rules {
+            height: 40px;
+            width: 100%;
+            background: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            color: rgba(26, 102, 52, 1);
+            font-size: 13px;
+            border: 1px solid #1A6634;
+
+            &:hover {
+                cursor: pointer !important;
+                opacity: 0.8;
+            }
+        }
+
+        .disabled,
+        .invisible {
+            pointer-events: none;
+            opacity: 0.7;
+            display: none;
+        }
+
+        .disabledInput {
+            pointer-events: none;
+            color: black;
+
+            .text-name {
+                color: black !important;
+            }
+        }
+
+        .disabledBtn {
+            pointer-events: none;
+            opacity: 0.7;
+        }
+    }
+}

@@ -1,0 +1,110 @@
+<div class="app-drawer-container">
+    <mat-drawer-container [hasBackdrop]="true">
+        <mat-drawer #drawer [mode]="'over'" position="end" opened="false">
+            <form class="formSanpham k-form" [formGroup]="form" (keydown.Enter)="keydownEnter($event)">
+                <fieldset>
+                    <legend>SEO</legend>
+
+                    <kendo-formfield>
+                        <kendo-label text="Đường dẫn" [for]="URLDirect">
+                            <span class="symbol">(*)</span>
+                        </kendo-label>
+                        <kendo-textbox formControlName="URLDirect" #URLDirect>
+                        </kendo-textbox>
+                    </kendo-formfield>
+
+                    <kendo-formfield>
+                        <kendo-label text="Tiêu đề" [for]="CustomTitle">
+                        </kendo-label>
+                        <kendo-textbox formControlName="CustomTitle" #CustomTitle>
+                        </kendo-textbox>
+                    </kendo-formfield>
+
+                    <kendo-formfield>
+                        <kendo-label text="Mô tả" [for]="CustomDescription">
+                        </kendo-label>
+                        <textarea formControlName="CustomDescription" #CustomDescription></textarea>
+                    </kendo-formfield>
+                    
+                    <kendo-formfield>
+                        <kendo-label text="Từ khóa" [for]="CustomKeyword">
+                        </kendo-label>
+                        <kendo-textbox formControlName="CustomKeyword" #CustomKeyword>
+                        </kendo-textbox>
+                    </kendo-formfield>
+
+                    <kendo-formfield>
+                        <kendo-label text="H1" [for]="H1">
+                        </kendo-label>
+                        <kendo-textbox formControlName="H1" #H1>
+                        </kendo-textbox>
+                    </kendo-formfield>
+
+
+                    <kendo-formerror>(*) Trường bắt buộc nhập.</kendo-formerror>
+
+                    <div class="k-form-buttons">
+                        <button kendoButton class="btn-hachi hachi-secondary" (click)="closeForm()">Đóng</button>
+                        <button kendoButton class="btn-hachi hachi-primary" (click)="onSubmit()">
+                            {{ isAdd ? 'THÊM MỚI' : 'CẬP NHẬT' }}
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </mat-drawer>
+        <!-- center content -->
+        <mat-drawer-content>
+
+            <div class="app-mar020-seo">
+                <div class="header header-1">
+                    <app-p-kendo-breadcrumb (loadData)="resetFilter()"></app-p-kendo-breadcrumb>
+
+                    <div class="nav-btn nav-crud ml-auto">
+                        <button kendoButton class="btn-hachi hachi-primary" [icon]="'plus'" (click)="onAdd()"
+                            [disabled]="!isFilterActive ">
+                            THÊM MỚI</button>
+                    </div>
+                </div>
+
+                <div class="header header-2">
+                    <app-search-filter-group placeholder="Tìm kiếm" [disabled]="!isFilterActive" label="Tìm kiếm"
+                        (filterChange)="search($event)" (onReset)="resetFilter()" [clearButton]="true"
+                        [fields]="['URLDirect','CustomTitle','CustomDescription','CustomKeyword','H1']">
+                    </app-search-filter-group>
+
+                    <div class="nav-btn nav-crud ml-auto mt-auto">
+                        <button kendoButton class="btn-hachi hachi-secondary hachi-primary" [icon]="'reload'"
+                            (click)="ResetCacheSEO()" [disabled]="!isFilterActive">
+                            LÀM MỚI CACHE</button>
+                    </div>
+                </div>
+
+                <div class="grid-wrapper">
+                    <app-p-kendo-grid class="grid" [data]="gridDSView | async" [scrollable]="'none'" [loading]="loading"
+                        [pageable]="true" [pageSizes]="pageSizes" [pageSize]="pageSize" [skip]="gridDSState.skip"
+                        [take]="gridDSState.take" [onPageChangeCallback]="onPageChangeCallback"
+                        [getActionDropdownCallback]="getActionDropdownCallback"
+                        [onActionDropdownClickCallback]="onActionDropdownClickCallback" [selectable]="selectable"
+                        [onSelectCallback]="onSelectCallback" [onSelectedPopupBtnCallback]="onSelectedPopupBtnCallback"
+                        [getSelectionPopupCallback]="getSelectionPopupCallback">
+
+                        <kendo-grid-column field="URLDirect" title="Đường dẫn">
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="CustomTitle" title="Tiêu đề">
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="CustomDescription" title="Mô tả">
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="CustomKeyword" title="Từ khóa">
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="H1" title="H1">
+                        </kendo-grid-column>
+                    </app-p-kendo-grid>
+                </div>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>

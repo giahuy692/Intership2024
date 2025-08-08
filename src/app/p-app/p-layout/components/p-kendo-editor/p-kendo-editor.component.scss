@@ -1,0 +1,9 @@
+@import "../../../../../assets/scss/variables/colors";
+
+::ng-deep {
+    // app-p-kendo-editor {
+        .k-slider-track-wrap {
+            height: 100% !important;
+        }
+    // }
+}

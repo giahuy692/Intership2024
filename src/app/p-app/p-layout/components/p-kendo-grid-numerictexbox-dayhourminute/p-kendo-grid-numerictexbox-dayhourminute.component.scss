@@ -1,0 +1,21 @@
+::ng-deep {
+    p-kendo-grid-numerictexbox-dayhourminute {
+        flex-direction: column;
+
+        app-p-numeric-textbox {
+            display: inline-block;
+            width: 60px;
+            margin-right: 6px;
+
+            .k-numerictextbox {
+                width: auto;
+                padding: 0;
+
+                .k-input-inner {
+                    width: 100%;
+                    text-align: right;
+                }
+            }
+        }
+    }
+}

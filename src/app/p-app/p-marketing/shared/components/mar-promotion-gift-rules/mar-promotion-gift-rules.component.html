@@ -1,0 +1,192 @@
+<div class="mar-promotion-gift-rules">
+    <!-- FILTER AND BUTTON FIELD -->
+    <div class="header-list-container header header-2">
+        <!-- FILTER SEARCH -->
+        <div class="filter-container">
+            <span class="title-block">QUY ĐỊNH MỨC TẶNG QUÀ <span class="important">(*)</span></span>
+
+            <app-search-filter-group #search [clearButton]="true" title=" " [disabled]="isDisabled || isDisabledSelect"
+                placeholder="Tìm theo barcode, poscode, tên quà tặng"
+                [fields]="['ProductBarcode', 'ProductPoscode', 'ProductName']" (filterChange)="handleSearch($event)">
+            </app-search-filter-group>
+        </div>
+
+        <!-- BUTTON -->
+        <div class="button-container">
+            <!-- Button import -->
+            <button kendoButton iconClass="k-icon k-i-export" (click)="onImportExcel()" class="addImport"
+                [disabled]="isDisabled || isDisabledSelect" [ngClass]="{'disabled': !handleCheckPermission()}">
+            </button>
+            <!-- Button export -->
+            <button kendoButton iconClass="k-icon k-i-import" class="addExport" (click)="onExportExcel()"
+                [disabled]="isDisabled || isDisabledSelect">
+                Template
+            </button>
+        </div>
+    </div>
+
+    <!-- TASK LIST FIELD -->
+    <div class="promotion-list-container">
+        <div class="grid-wrapper">
+            <app-p-kendo-grid #myCustomGrid class="grid scrollable grid-custom" [loading]="isLoading"
+                [data]="listRangeGrid" [scrollable]="'none'" [selectable]="selectable" [take]="gridState.take"
+                [skip]="gridState.skip" [sortable]="true" [sort]="gridState.sort"
+                [getActionDropdownCallback]="getActionDropdownCallback"
+                [onActionDropdownClickCallback]="onActionDropDownClickCallback" [typeMasterDetail]="1"
+                [getSelectionPopupCallback]="getSelectionPopupCallback" [onSortChangeCallback]="onSortChangeCallback"
+                [onSelectedPopupBtnCallback]="onSelectedPopupBtnCallback" [rowClass]="rowCallback"
+                [textExpand]="'Expand Details'" [textCollapse]="'Collapse Details'"
+                [ngClass]="{'hasExpandedRow': hasExpandedRow, 'disabledGrid': !handleCheckPermission(), 'disabledSelect': isDisabledSelect}"
+                (callDataExpand)="callData($event)" [onSelectCallback]="onSelectCallback" [pageable]="false"
+                (detailCollapse)="detailToggleState($event)" (detailExpand)="detailToggleState($event)">
+
+                <kendo-grid-column title="Tên hạn mức" headerClass="header-name-task" [width]="300">
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <div class="col-name">
+                            <span class="k-icon k-font-icon k-i-arrow-chevron-down"
+                                [ngClass]="{ 'hidden': rowIndex === expandedIndex }"
+                                (click)="toggleArrow(rowIndex, dataItem)">
+                            </span>
+                            <span class="k-icon k-font-icon k-i-arrow-chevron-up"
+                                [ngClass]="{ 'hidden': rowIndex !== expandedIndex }"
+                                (click)="toggleArrow(rowIndex, dataItem)">
+                            </span>
+                            {{ rowIndex + 1 }}.
+                            <div class="box-input-name" [class.active]="rowIndex === rowIndexFocus && typeFocus == 1"
+                                [ngClass]="{'disabledInput': !handleCheckPermission() || isDisabled || isDisabledSelect}"
+                                (click)="toggleActive(rowIndex, $event, 1, dataItem)">
+                                <span *ngIf="dataItem?.Name !== ''" class="text-name">{{ dataItem?.Name }}</span>
+
+                                <kendo-textbox #inputElement [ngClass]="{'newName' : dataItem?.Name == ''}"
+                                    [disabled]="isDisabledSelect || isDisabled" placeholder="Tên hạn mức"
+                                    class="input-name" [(ngModel)]="dataItem.Name" (blur)="onChangedValue(dataItem)">
+                                </kendo-textbox>
+                            </div>
+                        </div>
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column headerClass="header-description" [width]="450">
+                    <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                        <div class="box-header">
+                            <span>{{ curPromotion.Category === 16 ? 'Hạn mức' : 'Giá trị đơn hàng' }}</span>
+                            <span *ngIf="curPromotion.Category == 16" class="header-determine">{{ curPromotion.DetermineGift === 0 ? '(số lượng)' : '(giá trị)' }}</span>
+                        </div>
+                    </ng-template>
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <div class="col-rule">
+                            <img src="../../../../../../assets/img/icon/icon-greaterEqual.png">
+                            <div class="box-input-range" (click)="toggleActive(rowIndex, $event, 2, dataItem)"
+                                [ngClass]="{'disabledInput': !handleCheckPermission() 
+                            || isDisabled || isDisabledSelect}"
+                                [class.active]="rowIndex === rowIndexFocus && typeFocus == 2">
+                                <span class="text-range"
+                                    *ngIf="dataItem?.Range !== 0 && dataItem.Quantity !== null">{{dataItem?.Range}}</span>
+
+                                <app-p-numeric-textbox class="input-range" [min]="0" propName=""
+                                    [disabled]="isDisabledSelect || isDisabled"
+                                    [ngClass]="{'newRange' : dataItem?.Range == 0 || dataItem?.Range == null}"
+                                    placeholder="0" [(ngModel)]="dataItem.Range"
+                                    (blur)="onChangedValue(dataItem)"></app-p-numeric-textbox>
+                            </div>
+                        </div>
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column title="Hình thức nhận quà" headerClass="header-description" [width]="450">
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <div class="col-method" [ngClass]="{'disabledInput': !handleCheckPermission()}"
+                            (click)="toggleActive(rowIndex, $event, 3, dataItem)">
+                            <kendo-dropdownlist [data]="getDropdownOptions(dataItem.TypeReceiveGift)"
+                                textField="TypeReciveName" valueField="TypeReceiveGift"
+                                [value]="getSelectedType(dataItem.TypeReceiveGift)"
+                                [disabled]="!handleCheckPermission() || isDisabled || isDisabledSelect"
+                                (valueChange)="handleChangeDropdown(dataItem, $event)">
+                            </kendo-dropdownlist>
+
+                            <div class="box-quantity" *ngIf="dataItem.TypeReceiveGift == 1">
+                                <app-p-numeric-textbox class="input-quantity" [(ngModel)]="dataItem.NoOfGift"
+                                    propName="" [disabled]="!handleCheckPermission() || isDisabled || isDisabledSelect"
+                                    [ngClass]="{'disabledInput': !handleCheckPermission()}" [min]="0"
+                                    (click)="toggleActive(rowIndex, $event, 3, dataItem)"
+                                    (blur)="onChangedValue(dataItem)"></app-p-numeric-textbox>
+                                <span> món quà/lần nhận</span>
+                            </div>
+                        </div>
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column title="" headerClass="header-description" [width]="450">
+                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                        <div class="box-action" *ngIf="handleCheckPermission()">
+                            <span class="k-icon k-font-icon k-i-delete"
+                                [ngClass]="{'disabledInput': isDisabled || isDisabledSelect}"
+                                (click)="onDeleteByAction(dataItem); toggleActive(rowIndex, $event, 4, dataItem)">
+                            </span>
+                            <span class="k-icon k-font-icon k-i-plus"
+                                *ngIf="dataItem.Code !== 0"
+                                [ngClass]="{'disabledInput': dataItem.Code == 0 || isDisabled || isDisabledSelect}"
+                                (click)="handleOpenAddGift(dataItem); toggleActive(rowIndex, $event, 4, dataItem)">
+                            </span>
+                        </div>
+                    </ng-template>
+                </kendo-grid-column>
+
+
+                <!-- Chi tiết ngoại lệ -->
+                <ng-template #detailTemplate kendoGridDetailTemplate let-dataItem1>
+                    <div class="box-product">
+                        <div class="text-no-gift" *ngIf="dataItem1?.ListGift.length == 0">Chưa có quà tặng được thêm
+                        </div>
+                        <ng-container *ngIf="dataItem1.ListGift.length > 0">
+                            <div *ngFor="let item of dataItem1.ListGift" class="item-product"
+                                [ngClass]="{'disabledInput': !handleCheckPermission() || isDisabled || isDisabledSelect}">
+                                <img [src]="item.ProductImage" alt="" (error)="onImageError($event)">
+                                <div class="box-info-product">
+                                    <div class="box-info">
+                                        <span class="name-product">{{item.ProductName}}</span>
+                                        <span class="id-product">{{item.ProductBarcode}}</span>
+                                    </div>
+                                    <span class="k-icon k-font-icon k-i-delete"
+                                        [ngClass]="{'disabledIcon': !handleCheckPermission() || isDisabled || isDisabledSelect}"
+                                        (click)="APIDeleteCOPOLPromotionGift(item)"></span>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                </ng-template>
+
+                <!-- <ng-template kendoGridDetailTemplate let-dataItem1>
+                    <div class="test" style="background-color: white;" *ngFor="let item of dataItem1.products">
+                        <div>
+                            {{item.name}}
+                        </div>
+                    </div>
+                </ng-template> -->
+
+            </app-p-kendo-grid>
+        </div>
+        <div class="button-add-rules" (click)="handleAddNew()"
+            [ngClass]="{'invisible': !handleCheckPermission() || keyWordSearch, 'disabledBtn': isDisabled || isDisabledSelect || !handleDisplayBtnAdd()}">
+            <span class="k-icon k-font-icon k-i-plus"></span>
+            Thêm mức mới
+        </div>
+    </div>
+    <kendo-dialog #dialog id="deleteDialog" class="deleteDialog" title="Xóa định mức"
+        [hidden]="!isShowDeleteRangeDialog" (close)="onCloseDialogDelete()" [minWidth]="250">
+        <p style="margin: 30px; text-align: center">
+            Bạn chắc chắn muốn xóa vĩnh viễn định mức này
+        </p>
+        <div class="dialog-footer">
+            <button kendoButton class="btn-hachi hachi-secondary" (click)="onCloseDialogDelete()" [icon]="'close'">
+                Không
+            </button>
+            <button kendoButton class="btn-hachi hachi-warning" (click)="DeleteRange()" [icon]="'trash'">
+                Có
+            </button>
+        </div>
+    </kendo-dialog>
+
+    <!-- Import công việc -->
+    <!-- <app-import-popup [uploadEventHandlerCallback]="uploadEventHandlerCallback"></app-import-popup> -->
+</div>

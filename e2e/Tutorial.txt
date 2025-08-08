@@ -1,0 +1,25 @@
+Hướng dẫn kiểm thử tự động với Playwright
+Playwright cho phép tự động hóa việc kiểm thử các tính năng, luồng nghiệp vụ, kiểm tra giao diện (style), thời gian phản hồi và dữ liệu trả về từ API của ứng dụng.
+ 
+- Automation Testing các tính năng ( có thể test tất cả nhưng sẽ không tối ưu bằng test từng tính năng).
+- Có thể chạy bằng lệnh hoặc CI/CD khi commit và push lên nhánh đã cấu hình ( vì sử dụng git server nên không CI/CD như github action của được -> sử dụng jenkins ở git server cho việc CI/CD).
+- Phải viết test script cho từng tính năng hoặc 1 luồng
+ 
+ npx playwright install 
+ 
+Lệnh chạy test: 
++ codegen để lấy thông tin các thao tác cần test: 
+npx playwright codegen http://localhost:4200/#/login
++ lệnh chạy tất cả các test: 
+npx playwright test --config e2e/playwright.config.ts --headed
++ lệnh chạy từng test 1 (Thêm đường dẫn thư mục của file muốn chạy test):
+npx playwright test e2e/src/p-hri/hri020/hri020-news.test.spec.ts --config=e2e/playwright.config.ts --headed 
+npx playwright test e2e/src/p-marketing/mar021-discount-gift-list/mar021-discount-gift-list.component.spec.ts --config=e2e/playwright.config.ts --headed 
+npx playwright test e2e/src/login.test.spec.ts --config=e2e/playwright.config.ts --headed
+npx playwright test src/p-purchase/config009-tax-list/config009-tax-list.test.spec.ts --config=e2e/playwright.config.ts --headed
+ 
+Nghiên cứu thêm:
+- kiểm tra style trên giao diện khi chạy test
+- kiểm tra time reponse của api
+- kiểm tra data list của reponse (VD: data lớn kiểm tra 1 hoặc nhiều trường có đúng hay không v,v...).
+ 

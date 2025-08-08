@@ -1,0 +1,153 @@
+@import "../../../../../../assets/scss/variable.scss";
+
+::ng-deep {
+    .app-hr-new-info {
+        .section {
+            display: flex;
+            .Title {
+                color: var(--color-text-content, #26282e);
+                font-family: $font-family;
+                font-size: 16px;
+                font-weight: 700;
+
+                .section-tab {
+                    color: #bbc0bb;
+
+                    &.active,
+                    &:hover {
+                        color: $gray-900;
+                        cursor: pointer;
+                    }
+                }
+            }
+            .languages {
+                margin-left: auto;
+                font-style: normal;
+                font-weight: normal;
+                font-size: 13px;
+                line-height: 20px;
+                color: #bbc0bb;
+
+                .active,
+                :hover {
+                    color: #626662;
+                    cursor: pointer;
+                }
+            }
+
+            .borderRight {
+                border-right: 1px solid #bbc0bb;
+                padding-right: 5px;
+                margin-right: 5px;
+            }
+        }
+
+        .body {
+            background-color: $white;
+            margin-top: 10px;
+
+            .articleInformation {
+                .symbol {
+                    padding-left: 3px;
+                    color: $dark-red !important;
+                }
+                .fst-italic {
+                    font-style: italic;
+                }
+                overflow-x: scroll;
+                kendo-gridlayout {
+                    kendo-gridlayout-item {
+                        .item {
+                            display: flex;
+                            flex-direction: column;
+                            padding-left: 15px;
+                            label {
+                                color: #959db3;
+                                font-size: 13px;
+                                font-weight: 700;
+                            }
+                            .k-dropdownlist {
+                                min-width: 250px;
+                                .k-input-inner {
+                                    .k-input-value-text {
+                                        width: 210px !important;
+                                        white-space: initial;
+                                        overflow: hidden;
+                                        display: -webkit-inline-box;
+                                        -webkit-line-clamp: 1;
+                                        -webkit-box-orient: vertical;
+                                        text-overflow: ellipsis;
+                                    }
+                                }
+                            }
+                            .k-textbox {
+                                width: 98%;
+                                min-width: 500px;
+                            }
+                            app-p-textarea {
+                                height: 90%;
+                            }
+                            .k-textarea {
+                                width: 97%;
+                                height: 80%;
+                                min-width: 500px;
+                            }
+                        }
+                        .item1 {
+                            padding-top: 15px;
+                            min-width: 300px;
+                        }
+                        .item2 {
+                            min-width: 300px;
+                        }
+                        .item3 {
+                            min-width: 300px;
+                        }
+                        .item4 {
+                            padding-top: 15px;
+                            padding-right: 10px;
+                        }
+                        .item5 {
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+
+            .Content {
+                height: calc(93vh - 144px);
+                #editor {
+                    height: calc(93vh - 144px);
+                    .k-editor {
+                        height: calc(93vh - 144px) !important;
+                        .k-editor-content {
+                            height: calc(93vh - 144px) !important;
+                            .k-content {
+                                height: calc(93vh - 144px);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        &.scroll {
+            max-height: calc(100vh - 160px);
+            overflow-y: scroll;
+            overflow-x: hidden;
+        }
+        .preview {
+            .title {
+                margin: 12px 0;
+                font-weight: bold;
+                font-size: 16px;
+                display: flex;
+                justify-content: space-between;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+        }
+    }
+}
