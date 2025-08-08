@@ -1,0 +1,250 @@
+::ng-deep {
+    app-attribute-product {
+        .block-attribute {
+            margin: 18px;
+
+            // block-attribute-title start
+            .block-attribute-title {
+                left: 0;
+                margin-bottom: 15px;
+
+                h1 {
+                    text-transform: uppercase;
+                    font-size: 16px;
+                    font-weight: bold;
+                    color: #26282E;
+                }
+            }
+
+            // block-attribute-title end
+
+            .section {
+                gap: 10px;
+                background-color: white;
+                padding: 10px;
+                display: flex;
+                overflow-y: hidden;
+                overflow-x: scroll;
+
+                // column1 start
+                .column1 {
+                    min-width: 270px;
+                    width: 377px;
+
+                    .item1,
+                    .item2,
+                    .item3,
+                    .item4,
+                    .item5 {
+                        label {
+                            font-weight: 700;
+                            color: #959db3;
+                            padding: 5px 0;
+                            white-space: nowrap;
+
+                            .impose {
+                                color: red;
+                            }
+                        }
+                    }
+                }
+
+                // column1 end
+
+                // column2 start
+                .column2 {
+                    min-width: max-content;
+                    width: 420px;
+
+                    .item1 {
+                        label {
+                            font-weight: 700;
+                            color: #959db3;
+                            padding: 5px 0;
+                            white-space: nowrap;
+
+                            .impose {
+                                color: red;
+                            }
+                        }
+                    }
+
+                    .item2,
+                    .item3,
+                    .item4,
+                    .item5,
+                    .item6 {
+                        label {
+                            font-weight: 700;
+                            color: #959db3;
+                            padding: 5px 0;
+                            white-space: nowrap;
+                        }
+
+                        .item-grid {
+                            display: flex;
+                            gap: 17px;
+                            justify-content: space-between;
+
+                            .item_item1,
+                            .item_item2,
+                            .item_item3 {
+                                kendo-numerictextbox {
+                                    .k-input {
+                                        font-size: 13px;
+                                        border-radius: 3px;
+                                        box-shadow: 1px 3px 6px 1px rgba(128, 128, 128, 0.2);
+                                    }
+
+                                    .k-input-inner {
+                                        padding: 4px 8px;
+                                        height: 33px;
+                                        max-height: 33px;
+                                        width: 65px;
+                                        text-align: center;
+                                        color: #26282e;
+                                        font-size: 13px;
+                                    }
+
+                                    .k-spin-button,
+                                    .k-spin-buttons {
+                                        display: none !important;
+                                    }
+                                }
+                            }
+
+                            .item_item4 {
+                                kendo-numerictextbox {
+                                    .k-input {
+                                        border-radius: 3px;
+                                        box-shadow: 1px 3px 6px 1px rgba(128, 128, 128, 0.2);
+                                    }
+
+                                    .k-input-inner {
+                                        padding: 4px 8px;
+                                        height: 33px;
+                                        max-height: 33px;
+                                        width: 135px;
+                                        text-align: center;
+                                        font-size: 13px;
+                                        color: #26282e;
+                                    }
+
+                                    .k-spin-button,
+                                    .k-spin-buttons {
+                                        display: none !important;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .item7 {
+                        margin-top: 8px;
+
+                        .exp {
+                            display: flex;
+                            justify-content: space-between;
+
+                            label {
+                                display: flex;
+                                gap: 2px;
+                                align-items: center;
+                                font-size: 13px;
+                                color: #959db3;
+                                font-weight: 700;
+
+                                input[type="checkbox"] {
+                                    accent-color: #008000;
+                                    cursor: pointer;
+                                    border-color: #959db3;
+                                    margin-left: 7px;
+                                }
+                            }
+                        }
+
+                        kendo-numerictextbox {
+                            .k-input {
+                                border-radius: 3px;
+                                box-shadow: 1px 3px 6px 1px rgba(128, 128, 128, 0.2);
+                            }
+
+                            .k-input-inner {
+                                padding: 4px 8px;
+                                height: 33px;
+                                max-height: 33px;
+                                width: 135px;
+                                text-align: right;
+                                font-size: 13px;
+                                color: #26282e;
+                            }
+
+                            .k-spin-button,
+                            .k-spin-buttons {
+                                display: none !important;
+                            }
+                        }
+                    }
+                }
+
+                // column2 end
+
+                // column3 start
+                .column3 {
+                    min-width: max-content;
+                    width: 377px;
+
+                    .item1 {
+
+                        label {
+                            font-weight: 700;
+                            color: #959db3;
+                            padding: 5px 0;
+                            white-space: nowrap;
+                        }
+
+                        .item_item1 {
+                            display: flex;
+                            align-items: center;
+                            gap: 10px;
+                            padding-bottom: 5px;
+
+                            label {
+                                width: 60px;
+                            }
+
+                            b {
+                                font-weight: 700;
+                                color: #959db3;
+                            }
+
+                            kendo-numerictextbox {
+                                width: 160px !important;
+
+                                .k-input {
+                                    border-radius: 3px;
+                                    box-shadow: 1px 3px 6px 1px rgba(128, 128, 128, 0.2);
+                                }
+
+                                .k-input-inner {
+                                    padding: 4px 8px;
+                                    height: 33px;
+                                    max-height: 33px;
+                                    width: 100%;
+                                    text-align: right;
+                                    font-size: 13px;
+                                    color: #26282e;
+                                }
+
+                                .k-spin-button,
+                                .k-spin-buttons {
+                                    display: none !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

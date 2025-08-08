@@ -1,0 +1,203 @@
+<div class="block-attribute">
+    <div class="block-attribute-title">
+        <h1>Thuộc tính sản phẩm</h1>
+    </div>
+    <div class="section">
+        <div class="column1">
+            <div class="item item1">
+                <label>Phân cấp nhóm 1 <span class="impose">(*)</span></label>
+                <div class="component-container">
+                    <kendo-dropdownlist [data]="filteredAreaList" [defaultItem]="{ id: null, name: '--Chọn--' }"
+                        [textField]="'name'" [valueField]="'id'" [(ngModel)]="selectedArea" [filterable]="true"
+                        (filterChange)="onFilterChange($event)">
+                    </kendo-dropdownlist>
+                </div>
+            </div>
+            <div class="item item2">
+                <label>Phân cấp nhóm 2 <span class="impose">(*)</span></label>
+                <div class="component-container">
+                    <kendo-dropdownlist [data]="filteredAreaList" [defaultItem]="{ id: null, name: '--Chọn--' }"
+                        [textField]="'name'" [valueField]="'id'" [(ngModel)]="selectedArea" [filterable]="true"
+                        (filterChange)="onFilterChange($event)">
+                    </kendo-dropdownlist>
+                </div>
+            </div>
+            <div class="item item3">
+                <label>Phân cấp nhóm 3 <span class="impose">(*)</span></label>
+                <div class="component-container">
+                    <kendo-dropdownlist [data]="filteredAreaList" [defaultItem]="{ id: null, name: '--Chọn--' }"
+                        [textField]="'name'" [valueField]="'id'" [(ngModel)]="selectedArea" [filterable]="true"
+                        (filterChange)="onFilterChange($event)">
+                    </kendo-dropdownlist>
+                </div>
+            </div>
+            <div class="item item4">
+                <label>Phân cấp nhóm 4 <span class="impose">(*)</span></label>
+                <div class="component-container">
+                    <kendo-dropdownlist [data]="filteredAreaList" [defaultItem]="{ id: null, name: '--Chọn--' }"
+                        [textField]="'name'" [valueField]="'id'" [(ngModel)]="selectedArea" [filterable]="true"
+                        (filterChange)="onFilterChange($event)">
+                    </kendo-dropdownlist>
+                </div>
+            </div>
+            <div class="item item5">
+                <label>Phân cấp nhóm 5 <span class="impose">(*)</span></label>
+                <div class="component-container">
+                    <kendo-dropdownlist [data]="filteredAreaList" [defaultItem]="{ id: null, name: '--Chọn--' }"
+                        [textField]="'name'" [valueField]="'id'" [(ngModel)]="selectedArea" [filterable]="true"
+                        (filterChange)="onFilterChange($event)">
+                    </kendo-dropdownlist>
+                </div>
+            </div>
+        </div>
+        <div class="column2">
+            <div class="item item1">
+                <label>Đơn vị sản phẩm (Base unit)<span class="impose">(*)</span></label>
+                <div class="component-container">
+                    <kendo-dropdownlist [data]="filteredAreaList" [defaultItem]="{ id: null, name: '--Chọn--' }"
+                        [textField]="'name'" [valueField]="'id'" [(ngModel)]="selectedArea" [filterable]="true"
+                        (filterChange)="onFilterChange($event)">
+                    </kendo-dropdownlist>
+                </div>
+            </div>
+            <div class="item item2">
+                <label>Kích thước sản phẩm (dài x rộng x cao x cân nặng) (cm - g)</label>
+                <div class="item-grid">
+                    <div class="item_item1">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1" >
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item2">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item3">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item4">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                </div>
+            </div>
+            <div class="item item3">
+                <label>Kích thước inner (dài x rộng x cao x cân nặng) (cm - g)</label>
+                <div class="item-grid">
+                    <div class="item_item1">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item2">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item3">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item4">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                </div>
+            </div>
+            <div class="item item4">
+                <label>Kích thước carton (dài x rộng x cao x cân nặng) (cm - g)</label>
+                <div class="item-grid">
+                    <div class="item_item1">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item2">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item3">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item4">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                </div>
+            </div>
+            <div class="item item5">
+                <label>Kích thước pallet (dài x rộng x cao x cân nặng) (cm - g)</label>
+                <div class="item-grid">
+                    <div class="item_item1">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item2">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item3">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item4">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                </div>
+            </div>
+            <div class="item item6">
+                <label>Kích thước đóng gói (dài x rộng x cao x cân nặng) (cm - g)</label>
+                <div class="item-grid">
+                    <div class="item_item1">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item2">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item3">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                    <div class="item_item4">
+                        <kendo-numerictextbox [min]="0" [max]="10000" [step]="1">
+                        </kendo-numerictextbox>
+                    </div>
+                </div>
+            </div>
+            <div class="item item7">
+                <div class="exp">
+                    <label>Hạn sử dụng cảnh báo (ngày)</label>
+                    <label>
+                        <div>Quản lý date</div>
+                        <input type="checkbox">
+                    </label>
+                </div>
+                <kendo-numerictextbox></kendo-numerictextbox>
+            </div>
+        </div>
+        <div class="column3">
+            <div class="item item1">
+                <label>Quy đổi quy cách sản phẩm</label>
+                <div class="item_item1">
+                    <label>Inner</label>
+                    <b>=</b>
+                    <kendo-numerictextbox></kendo-numerictextbox>
+                    <span>Base unit</span>
+                </div>
+                <div class="item_item1">
+                    <label>Carton</label>
+                    <b>=</b>
+                    <kendo-numerictextbox></kendo-numerictextbox>
+                    <span>Base unit</span>
+                </div>
+                <div class="item_item1">
+                    <label>Pallet</label>
+                    <b>=</b>
+                    <kendo-numerictextbox></kendo-numerictextbox>
+                    <span>Base unit</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
