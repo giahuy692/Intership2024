@@ -1,64 +1,64 @@
 import { LayoutPortalComponent } from "../layout-portal/layout-portal.component";
 
 export const ModuleDataAdmin: Array<any> = [
-    //PORTAL
-    {
-        Code: 'portal',
-        ModuleID: 'portal', // cần bổ sung trường này để khi user vào portal service có thể tìm thấy module
-        Name: 'Portal',
-        Actived: false,
-        Link: 'portal/portal001-exam-list',
-        Path: 'portal',
-        LoadChildren: () => import('../../p-portal/p-portal.module').then(m => m.PPortalModule),
-        component: LayoutPortalComponent,
-        ListMenu: [
-            {
-                Name: "Kiểm tra năng lực",
-                Actived: false,
-                Code: "portal001-exam-list",
-                Link: "/portal/portal001-exam-list",
-                Icon: "spell-check",
-                Type: 'function',
-                LstChild: [
-                    {
-                        Name: "Đợt đánh giá",
-                        Actived: false,
-                        Code: "portal001-exam-detail",
-                        Link: "/portal/portal001-exam-detail",
-                        Type: 'function',
-                        LstChild: [],
-                    }
-                ],
-            },
-            {
-                Name: "Phiếu lương",
-                Actived: false,
-                Code: "portal003-paycheck-detail",
-                Link: "/portal/portal003-paycheck-detail",
-                Icon: "dollar",
-                Type: 'function',
-                LstChild: [],
-            },
-            {
-                Name: "Tra cứu chính sách",
-                Actived: false,
-                Code: "portal002-news-list",
-                Link: "/portal/portal002-news-list",
-                Icon: "circle-info",
-                Type: 'function',
-                LstChild: [
-                    {
-                        Name: "Chi tiết chính sách",
-                        Actived: false,
-                        Code: "portal002-news-detail",
-                        Link: "/portal/portal002-news-detail",
-                        Type: 'function',
-                        LstChild: [],
-                    },
-                ],
-            },
-        ]
-    },
+    // //PORTAL
+    // {
+    //     Code: 'portal',
+    //     ModuleID: 'portal', // cần bổ sung trường này để khi user vào portal service có thể tìm thấy module
+    //     Name: 'Portal',
+    //     Actived: false,
+    //     Link: 'portal/portal001-exam-list',
+    //     Path: 'portal',
+    //     LoadChildren: () => import('../../p-portal/p-portal.module').then(m => m.PPortalModule),
+    //     component: LayoutPortalComponent,
+    //     ListMenu: [
+    //         {
+    //             Name: "Kiểm tra năng lực",
+    //             Actived: false,
+    //             Code: "portal001-exam-list",
+    //             Link: "/portal/portal001-exam-list",
+    //             Icon: "spell-check",
+    //             Type: 'function',
+    //             LstChild: [
+    //                 {
+    //                     Name: "Đợt đánh giá",
+    //                     Actived: false,
+    //                     Code: "portal001-exam-detail",
+    //                     Link: "/portal/portal001-exam-detail",
+    //                     Type: 'function',
+    //                     LstChild: [],
+    //                 }
+    //             ],
+    //         },
+    //         {
+    //             Name: "Phiếu lương",
+    //             Actived: false,
+    //             Code: "portal003-paycheck-detail",
+    //             Link: "/portal/portal003-paycheck-detail",
+    //             Icon: "dollar",
+    //             Type: 'function',
+    //             LstChild: [],
+    //         },
+    //         {
+    //             Name: "Tra cứu chính sách",
+    //             Actived: false,
+    //             Code: "portal002-news-list",
+    //             Link: "/portal/portal002-news-list",
+    //             Icon: "circle-info",
+    //             Type: 'function',
+    //             LstChild: [
+    //                 {
+    //                     Name: "Chi tiết chính sách",
+    //                     Actived: false,
+    //                     Code: "portal002-news-detail",
+    //                     Link: "/portal/portal002-news-detail",
+    //                     Type: 'function',
+    //                     LstChild: [],
+    //                 },
+    //             ],
+    //         },
+    //     ]
+    // },
     //Enterprise
     {
         Code: 'dev',
@@ -2015,6 +2015,31 @@ export const ModuleDataAdmin: Array<any> = [
             // }
             //     ]
             // }
+            {
+                Name: "Quản lý Danh mục",
+                Actived: false,
+                Code: "enterprisecatalog",
+                Link: "/config/config009-enterprise-contry",
+                Type: 'group',
+                LstChild: [
+                    {
+                        Name: "Quốc gia",
+                        Actived: false,
+                        Code: "config009-enterprise-contry",
+                        Link: "/config/config009-enterprise-contry",
+                        Type: 'function',
+                        LstChild: []
+                    },
+                    {
+                        Name: "Đơn vị hành chính",
+                        Actived: false,
+                        Code: "config010-enterprise-adminunit",
+                        Link: "/config/config010-enterprise-adminunit",
+                        Type: 'function',
+                        LstChild: []
+                    },
+                ]
+            }, 
         ]
     },
     //LOG
