@@ -1,0 +1,80 @@
+<!-- START CONTENT -->
+<kendo-drawer-content>
+    <div class="config009-enterprise-country">
+
+        <!-- HEADER 1: BREAD CUM AND BUTTON CREATE -->
+        <div class="header header-1">
+            <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
+            <div class="nav-btn nav-crud">
+                <button kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
+                    (click)="  onOpendDrawer(0)" [disabled]="">
+                    TẠO MỚI
+                </button>
+
+            </div>
+        </div>
+
+        <!-- HEADER 2: SEARCH -->
+        <div class="header header-2">
+            <div id="functionbar">
+                <app-search-filter-group placeholder="Tìm theo tên Quốc gia" [fields]="[ ]"
+                    (valueChange)="onSearch($event)" (onReset)="onResetFilter()" [ignoreCase]="true" #search>
+                </app-search-filter-group>
+            </div>
+        </div>
+
+        <div class="grid-wrapper">
+            <app-p-kendo-grid class="grid" [data]="dataCompany_System" [scrollable]="'none'" [loading]="loading"
+                [pageable]="false" [getActionDropdownCallback]="getActionDropdownCallback"
+                [onActionDropdownClickCallback]="onActionDropdownClickCallback">
+
+                <kendo-grid-column field="VNName" title="Tên công ty" class="col_nameCompany"
+                    headerClass="col_nameCompany" [width]="300">
+
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <div class="Image_NameCompany">
+                            <div class="PaddingImg">
+                                <img loading="lazy" class="ImageCompany" src="{{dataItem.URLLogo}}" alt="">
+                            </div>
+
+                            <div class="inforCompany">
+                                <div class="NameCompany" title="{{dataItem.VNName}}">{{dataItem.VNName}}</div>
+
+                                <div class="infor">
+                                    <span title="{{dataItem.Code}}"> {{dataItem.Code}} | </span>
+                                    <span *ngIf="dataItem.CompanyID"
+                                        title="{{dataItem.CompanyID}}">{{dataItem.CompanyID}} | </span>
+                                    <span title="{{dataItem.Bieft}}"> {{dataItem.Bieft}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+
+
+                </kendo-grid-column>
+                <kendo-grid-column field="Address" title="Địa chỉ" class="col_address" headerClass="col_address"
+                    [width]="500">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <div class="text-ellipsis" title="{{dataItem.Address}}">{{dataItem.Address}}</div>
+                    </ng-template>
+                </kendo-grid-column>
+
+                <kendo-grid-column field="Country" title="Quốc gia" class="col_country" headerClass="col_country"
+                    [width]="250">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <div class="CountryCompany" title="{{dataItem.CountryName}}">{{dataItem.CountryName}}</div>
+                    </ng-template>
+                </kendo-grid-column>
+                <kendo-grid-column field="TypeCompanyName" title="Phân loại" class="col_classify"
+                    headerClass="col_classify" [width]="250">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <div class="TypeCompany" title="{{dataItem.TypeCompanyName}}">{{dataItem.TypeCompanyName}}</div>
+
+                    </ng-template>
+                </kendo-grid-column>
+            </app-p-kendo-grid>
+        </div>
+
+    </div>
+</kendo-drawer-content>
+<!-- END CONTENT -->

@@ -15,6 +15,8 @@ import { ConfigSalesAttributeComponent } from './shared/components/config-sales-
 import { ConfigProductLabelComponent } from './shared/components/config-product-label/config-product-label.component';
 import { ConfigWebDisplayComponent } from './shared/components/config-web-display/config-web-display.component';
 import { ConfigHistoryPopupComponent } from './shared/components/config-history-popup/config-history-popup.component';
+import { Config009EnterpriseCountryComponent } from './pages/config009-enterprise-country/config009-enterprise-country.component';
+
 
 
 @NgModule({
@@ -31,6 +33,7 @@ import { ConfigHistoryPopupComponent } from './shared/components/config-history-
     ConfigProductLabelComponent,
     ConfigWebDisplayComponent,
     ConfigHistoryPopupComponent,
+    Config009EnterpriseCountryComponent,
   ],
   imports: [
     PConfigRoutingModule,

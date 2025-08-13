@@ -2019,14 +2019,14 @@ export const ModuleDataAdmin: Array<any> = [
                 Name: "Quản lý Danh mục",
                 Actived: false,
                 Code: "enterprisecatalog",
-                Link: "/config/config009-enterprise-contry",
+                Link: "/config/config009-enterprise-country",
                 Type: 'group',
                 LstChild: [
                     {
                         Name: "Quốc gia",
                         Actived: false,
-                        Code: "config009-enterprise-contry",
-                        Link: "/config/config009-enterprise-contry",
+                        Code: "config009-enterprise-country",
+                        Link: "/config/config009-enterprise-country",
                         Type: 'function',
                         LstChild: []
                     },

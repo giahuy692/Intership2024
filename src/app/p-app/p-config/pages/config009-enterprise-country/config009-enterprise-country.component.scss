@@ -1,0 +1,146 @@
+@import "../../../../../assets/scss/variable.scss";
+
+::ng-deep {
+    app-config009-enterprise-country {
+
+        @mixin read-only {
+            opacity: 1 !important;
+            background-color: $gray-100 !important;
+            cursor: not-allowed !important;
+            pointer-events: none !important;
+        }
+
+        .text-ellipsis {
+            // max-height: 1.4em;
+            line-height: 1.2em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            white-space: normal;
+        }
+
+        // START GENERAL
+        .disableInput {
+            &.k-textbox {
+                .k-input-inner {
+                    @include read-only();
+                }
+            }
+
+            &.k-dropdownlist {
+                &:read-only {
+                    @include read-only()
+                }
+            }
+        }
+
+        .k-treeview-leaf {
+            padding-left: 13px;
+
+            i {
+                padding-right: 13px;
+            }
+        }
+
+        .d-flex_around {
+            display: flex !important;
+            justify-content: space-around !important;
+            align-items: center !important;
+        }
+
+        .d-flex_between {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+
+        .font-w {
+            font-weight: 700;
+        }
+
+        .d-flex {
+            display: flex !important;
+            align-items: center;
+        }
+
+        .f-wrap {
+            flex-wrap: wrap;
+        }
+
+        .row-gap {
+            row-gap: 5px;
+        }
+
+        .col-gap {
+            column-gap: 5px;
+        }
+
+        .d-flex_both {
+            display: flex !important;
+            align-items: center !important;
+            column-gap: 5px;
+        }
+
+        .d-flex_column {
+            display: flex !important;
+            flex-direction: column !important;
+            row-gap: 5px;
+        }
+
+        .mt-10 {
+            margin-top: 10px;
+        }
+
+        .pr-30 {
+            padding-left: 30px;
+        }
+
+        .d-block {
+            display: block;
+        }
+
+        .custom-gap {
+            column-gap: 5px;
+        }
+
+        // END GENERAL
+
+        // Body content
+        .k-drawer-content {
+            .config009-enterprise-country {
+
+                // START HEADER
+                .header-1 {
+                    display: flex;
+                    justify-content: space-between;
+                    padding-right: 10px;
+                    padding-left: 5px;
+
+                }
+
+                .header-2 {
+                    padding-left: 15px !important;
+                }
+
+                .header {
+                    .nav-crud {
+                        margin-left: auto;
+
+                        .onAddBtn {
+                            height: 32px;
+                            margin-top: auto;
+                            background-color: $dark-green !important;
+                            color: white;
+                            font-size: 11px;
+                            font-weight: bold;
+                            min-width: 78px;
+                        }
+                    }
+                }
+                // END HEADER    
+            }
+        }
+    }
+}
