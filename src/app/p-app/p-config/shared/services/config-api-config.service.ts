@@ -1,7 +1,9 @@
 //#region [begin using]
 import { Injectable } from '@angular/core';
-import { ApiMethodType, DTOAPI, DTOConfig } from 'src/app/p-lib';
+import { ApiMethodType, DTOAPI, DTOConfig, DTOResponse, PS_CommonService } from 'src/app/p-lib';
 import { EnumConfig } from 'src/app/p-lib/enum/config.enum';
+import { DTOCountry } from '../dto/DTOCountry';
+import { DeveloperApiConfigService } from 'src/app/p-app/p-developer/shared/services/developer-api-config.service';
 //#endregion [end using]
 
 @Injectable({
@@ -9,7 +11,10 @@ import { EnumConfig } from 'src/app/p-lib/enum/config.enum';
 })
 export class ConfigApiConfigService {
 
-	constructor() { }
+	constructor(
+		public api: PS_CommonService,
+		public config: DeveloperApiConfigService,
+	) {}
 
 	//#region [begin coding]
 	//#endregion [end coding]
@@ -285,6 +290,16 @@ export class ConfigApiConfigService {
 			GetListCountry: new DTOAPI({
 				method: ApiMethodType.post,
 				url: EnumConfig.GetListCountry
+			}),
+
+			DeleteCountry: new DTOAPI({
+				method: ApiMethodType.post,
+				url: EnumConfig.GetListCountry
+			}),
+
+			UpdateCountry: new DTOAPI({
+				method: ApiMethodType.post,
+				url: EnumConfig.UpdateCountry
 			}),
 
 			GetListProvince: new DTOAPI({

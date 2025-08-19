@@ -97,4 +97,7 @@ export class EnumConfig {
     static UpdateTaxGroup: string;
     static DeleteTaxGroup: string;
     static UpdateTaxGroupStatus: string;
+
+    static DeleteCountry: string;
+    static UpdateCountry: string;
 }
