@@ -1,7 +1,15 @@
 @import "../../../../../assets/scss/variable.scss";
 
 ::ng-deep {
+      .k-drawer-wrapper {
+    scrollbar-color: unset !important;
+}
+
+   
     app-config009-enterprise-country {
+   
+
+
 
         @mixin read-only {
             opacity: 1 !important;
@@ -20,6 +28,8 @@
             -webkit-box-orient: vertical;
             white-space: normal;
         }
+
+
 
         // START GENERAL
         .disableInput {
@@ -107,39 +117,184 @@
 
         // END GENERAL
 
-        // Body content
-        .k-drawer-content {
-            .config009-enterprise-country {
+        .Drawer-right {
 
-                // START HEADER
-                .header-1 {
-                    display: flex;
-                    justify-content: space-between;
-                    padding-right: 10px;
-                    padding-left: 5px;
+            kendo-drawer-container {
+
+                .k-overlay {
+                    position: absolute;
 
                 }
 
-                .header-2 {
-                    padding-left: 15px !important;
-                }
+                kendo-drawer {
+                    position: absolute !important;
 
-                .header {
-                    .nav-crud {
-                        margin-left: auto;
+                    .wrapper-drawer-right {
+                        width: 400px;
 
-                        .onAddBtn {
-                            height: 32px;
-                            margin-top: auto;
-                            background-color: $dark-green !important;
-                            color: white;
-                            font-size: 11px;
-                            font-weight: bold;
-                            min-width: 78px;
+                        .header-drawer-right {
+                            display: flex;
+                            align-items: center;
+                            // padding: 10px 16px 10px 16px;
+                            height: 40px;
+                            border-bottom: 1px solid #000;
+                            column-gap: 10px;
+                        }
+
+                        h3 {
+                            margin: 0;
+                            color: $dark-green;
+                            font-size: 13px;
+                            font-weight: 700;
                         }
                     }
+
+                    .content-drawer-right {
+                        height: calc(100vh - 176px);
+                        overflow: hidden;
+                        overflow-y: auto;
+                        padding: 10px 16px 10px 16px;
+
+                        .customLabel:has(.VNName .ng-invalid.ng-touched, .VNName .ng-invalid.ng-dirty) {
+                            .lable {
+                                .name {
+                                    color: red;
+                                }
+                            }
+                        }
+
+                        .customLabel:has(.BieftRequire .ng-invalid.ng-touched, .BieftRequire .ng-invalid.ng-dirty) {
+                            .lable {
+                                .name {
+                                    color: red;
+                                }
+                            }
+                        }
+
+                        .customLabel {
+                            margin-bottom: 10px;
+
+                            .lable {
+                                margin-bottom: 5px;
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+
+                                .labelName {
+                                    font-weight: 700;
+                                    color: #343A40;
+
+                                    .symbol {
+                                        padding-left: 5px;
+                                        color: $dark-red;
+                                        font-weight: bold;
+                                    }
+
+                                    .line {
+                                        font-size: 17px;
+                                    }
+
+                                    .codeCompany {
+                                        color: #1A6634;
+                                        font-weight: 700;
+                                    }
+                                }
+
+                                .labelSystem {
+                                    .isSystem {
+                                        font-weight: 700;
+                                        color: #343A40;
+                                    }
+                                }
+                            }
+
+                            .k-textarea {
+                                textarea {
+                                    min-height: 68px !important;
+                                }
+                            }
+                        }
+
+                        kendo-label {
+                            display: block;
+
+                            .k-label {
+                                margin-bottom: 5px;
+                                font-weight: 700;
+                            }
+                        }
+
+                    }
+
+                    .footer-drawer-right {
+                        display: flex;
+                        align-items: center;
+                        height: 50px;
+                        padding: 10px 16px 10px 16px;
+                        column-gap: 10px;
+                        border-top: 1px solid #5a6276;
+
+                        .hachi-danger {
+                            background-color: $bad-red;
+                        }
+                    }
+
                 }
-                // END HEADER    
+
+
+                // Body content
+                .k-drawer-content {
+                    .config009-enterprise-country {
+
+                        // START HEADER
+                        .header-1 {
+                            display: flex;
+                            justify-content: space-between;
+                            padding-right: 10px;
+                            padding-left: 5px;
+
+                        }
+
+                        .header-2 {
+                            padding-left: 15px !important;
+
+                        }
+
+                        .header {
+                            .nav-crud {
+                                margin-left: auto;
+
+                                .onAddBtn {
+                                    height: 32px;
+                                    margin-top: auto;
+                                    background-color: $dark-green !important;
+                                    color: white;
+                                    font-size: 11px;
+                                    font-weight: bold;
+                                    min-width: 78px;
+                                }
+                            }
+                        }
+
+                        .grid-wrapper {
+                            margin: 0 5px;
+                            
+                            app-p-kendo-grid {
+                                .myCustomGrid.k-grid {
+                                    tr {
+                                        &:not(.k-grouping-row) {
+                                            td:first-child {
+                                                padding-left: 12px !important;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // END HEADER    
+                    }
+                }
             }
         }
     }
