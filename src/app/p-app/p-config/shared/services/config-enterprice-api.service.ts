@@ -403,7 +403,7 @@ export class ConfigEnterpriceApiService {
   }
 
   // Xóa tỉnh
-  DeleteProvince(dto: DTOProvince) {
+  DeleteProvince(dtos: DTOProvince[]) {
     let that = this;
 
     return new Observable<DTOResponse>((obs) => {
@@ -411,7 +411,7 @@ export class ConfigEnterpriceApiService {
         .connect(
           that.config.getAPIList().DeleteProvince.method,
           that.config.getAPIList().DeleteProvince.url,
-          JSON.stringify(dto)
+          JSON.stringify(dtos)
         )
         .subscribe(
           (res: any) => {
@@ -451,14 +451,14 @@ export class ConfigEnterpriceApiService {
   }
 
   // Xóa quận huyện
-  DeleteDistrict(dto: DTODistrict) {
+  DeleteDistrict(dtos: DTODistrict[]) {
     let that = this;
     return new Observable<DTOResponse>((obs) => {
       that.api
         .connect(
           that.config.getAPIList().DeleteDistrict.method,
           that.config.getAPIList().DeleteDistrict.url,
-          JSON.stringify(dto)
+          JSON.stringify(dtos)
         )
         .subscribe(
           (res: any) => {
