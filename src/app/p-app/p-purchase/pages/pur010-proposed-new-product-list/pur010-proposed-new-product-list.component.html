@@ -1,0 +1,374 @@
+<div class="main">
+    <!-- HEADER-1 -->
+    <div class="header header-1" [ngClass]="{'disabled-block': isFilterDisable || isLoading}">
+        <app-p-kendo-breadcrumb (loadData)="handleLoadFilter()"></app-p-kendo-breadcrumb>
+        <div class="button-group">
+            <app-checkbox-button-group title="Đang soạn thảo" [field]="'StatusID'" [value]="0" [checked]="isDraft"
+                (selectedChange)="handleFilterChange($event, 'isDraft', false)"
+                (filterChange)="handleFilterChange($event, 'filterDraftStatus')">
+            </app-checkbox-button-group>
+            <app-checkbox-button-group title="Gửi duyệt" [field]="'StatusID'" [value]="1" [checked]="isSent"
+                (selectedChange)="handleFilterChange($event, 'isSent', false)"
+                (filterChange)="handleFilterChange($event, 'filterSendStatus')">
+            </app-checkbox-button-group>
+            <app-checkbox-button-group title="Đã duyệt" [field]="'StatusID'" [value]="2" [checked]="isApproved"
+                (selectedChange)="handleFilterChange($event, 'isApproved', false)"
+                (filterChange)="handleFilterChange($event, 'filterApprovedStatus')">
+            </app-checkbox-button-group>
+            <app-checkbox-button-group title="Ngưng áp dụng" [field]="'StatusID'" [value]="3" [checked]="isSuspended"
+                (selectedChange)="handleFilterChange($event, 'isSuspended', false)"
+                (filterChange)="handleFilterChange($event, 'filterSuspendedStatus')">
+            </app-checkbox-button-group>
+        </div>
+        <div class="btnWrapper">
+            <!-- Button import -->
+            <button *ngIf="isMaster || isCreator" kendoButton iconClass="k-icon k-i-export" class="addImport"
+                (click)="onImportExcel()" [ngClass]="{ 'disabled': isFilterDisable }"
+                [attr.tabindex]="isFilterDisable ? -1 : null" [disabled]="isFilterDisable">
+            </button>
+
+            <!-- Button export -->
+            <button *ngIf="isMaster || isCreator" kendoButton iconClass="k-icon k-i-import" class="addExport"
+                (click)="onExportExcel()" [ngClass]="{ 'disabled': isFilterDisable }"
+                [attr.tabindex]="isFilterDisable ? -1 : null" [disabled]="isFilterDisable">
+                Template
+            </button>
+            <button kendoButton iconClass="k-icon k-i-plus" class="btn-hachi hachi-primary" (click)="openDetail(true)"
+                *ngIf="isMaster || isCreator">
+                TẠO MỚI
+            </button>
+        </div>
+    </div>
+
+    <!-- HEADER-2 -->
+    <div class="header header-2" [ngClass]="{'disabled-block': isFilterDisable || isLoading}">
+        <!-- FILTER BY TERM -->
+        <app-search-filter-group placeholder="Tìm theo barcode, tên sản phẩm" class="filter-search"
+            [fields]="['Barcode', 'ProductName']" (filterChange)="handleFilterChange($event, 'filterSearch')"
+            (onReset)="hanldeResetFilter()">
+        </app-search-filter-group>
+
+        <!-- FILTER TYPE APPLY -->
+        <kendo-label text="Nhà cung cấp">
+            <div class="in-label">
+                <p-kendo-dropdownlist [(ngModel)]="curSuppier"
+                    (valueChange)="handleChangeDropdownFilter('supplier', $event)" [filterable]="true"
+                    textField="VNName" valueField="Code" [data]="ListSupplier" class="filter-by-typeapply"
+                    [hasValueNull]="true">
+                </p-kendo-dropdownlist>
+            </div>
+        </kendo-label>
+
+        <kendo-label text="Phân nhóm cấp 1">
+            <div class="in-label">
+                <p-kendo-dropdownlist [(ngModel)]="curGroup1"
+                    (valueChange)="handleChangeDropdownFilter('groupID1', $event)" textField="GroupName"
+                    valueField="Code" [data]="listGroup1" class="filter-by-typeapply" [hasValueNull]="true">
+                </p-kendo-dropdownlist>
+            </div>
+        </kendo-label>
+    </div>
+
+    <!-- DANH SÁCH BẢNG ĐẦU VIỆC -->
+    <div class="grid-wrapper">
+        <app-p-kendo-grid class="grid scrollable" [ngClass]="{'pagerDisable': isFilterDisable}" [data]="gridView"
+            [scrollable]="'none'" [loading]="isLoading" [selectable]="selectable" [pageable]="true"
+            [pageSizes]="pageSizes" [pageSize]="pageSize" [take]="gridState.take" [skip]="gridState.skip"
+            [sortable]="true" [sort]="gridState.sort" [onPageChangeCallback]="onPageChangeCallback"
+            [getActionDropdownCallback]="getActionDropdownCallback"
+            [onActionDropdownClickCallback]="onActionDropDownClickCallback"
+            [getSelectionPopupCallback]="getSelectionPopupCallback"
+            [onSelectedPopupBtnCallback]="onSelectedPopupBtnCallback" [onSelectCallback]="onSelectCallback">
+
+            <!-- COL-1 -->
+            <kendo-grid-column title="Sản phẩm" class="coll1" [width]="300">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="collum-area collum-area ">
+                        <div class="image">
+                            <img (error)="onImageError($event)" src="{{dataItem.URLImage}}" />
+                        </div>
+                        <div class="info">
+                            <div [ngClass]="{'blank-text': !dataItem.ProductName || dataItem.ProductName === ''}"
+                                [title]="'Tên sản phẩm: ' + (dataItem.ProductName && dataItem.ProductName !== '' ? dataItem.ProductName : '(Trống)')"
+                                class="name">
+                                {{ dataItem.ProductName && dataItem.ProductName !== '' ? dataItem.ProductName : '(Trống)' }}
+                            </div>
+
+
+                            <div class="info-footer">
+                                <div *ngIf="dataItem.Barcode" [ngClass]="{'blank-text': !dataItem.Barcode}"
+                                    [title]="'Barcode: ' + (dataItem.Barcode ?? '(Trống)')" class="barcode color-gray">
+                                    {{dataItem.Barcode ?? "(Trống)"}}
+                                </div>
+                                <div *ngIf="dataItem.Barcode && dataItem.OriginName" class="line">
+                                    |
+                                </div>
+                                <div *ngIf="dataItem.OriginName" [ngClass]="{'blank-text': !dataItem.OriginName}"
+                                    [title]="'Xuất xứ: ' + (dataItem.OriginName ?? '(Trống)')"
+                                    class="origin color-gray">
+                                    {{dataItem.OriginName ?? "(Trống)"}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+
+            <!-- COL-2 -->
+            <kendo-grid-column [width]="200" title="Nhà cung cấp" class="col2">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="collum-area">
+                        <div [title]="'Tên nhà cung cấp: ' + (dataItem.PartnerName ?? '(Trống)')"
+                            [ngClass]="{'blank-text': !dataItem.PartnerName}" class="nameSup">
+                            {{dataItem.PartnerName ?? "(Trống)"}}
+                        </div>
+                        <div [title]="'Mã nhà cung cấp: ' + (dataItem.PartnerID ?? '(Trống)')"
+                            [ngClass]="{'blank-text': !dataItem.PartnerID}" class="idSup">
+                            {{dataItem.PartnerID ?? "(Trống)"}}
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+
+            <!-- COL-3 -->
+            <kendo-grid-column [width]="350" title="Phân nhóm cấp 1" class="col3" headerClass="flex-center-col">
+                <ng-template kendoGridHeaderTemplate let-dataItem>
+                    <div>
+                        <div>Phân nhóm</div>
+                        <div>Cấp 1</div>
+                    </div>
+                </ng-template>
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="collum-area">
+                        <div [title]="'Tên phân nhóm cấp 1: ' + (dataItem.GroupName1 && dataItem.GroupName1 !== '' ? dataItem.GroupName1 : '(Trống)')"
+                            [ngClass]="{'blank-text': !dataItem.GroupName1 || dataItem.GroupName1 === ''}"
+                            class="name flex-center-col">
+                            {{ dataItem.GroupName1 && dataItem.GroupName1 !== '' ? dataItem.GroupName1 : '(Trống)' }}
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+
+            <!-- COL-4 -->
+            <kendo-grid-column [minResizableWidth]="500" [width]="500" title="Giá mua (-VAT)" class="col4">
+                <ng-template kendoGridHeaderTemplate let-dataItem>
+                    <div>
+                        <div>Giá mua</div>
+                        <div>(-VAT)</div>
+                    </div>
+                </ng-template>
+
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="collum-area">
+                        <div [title]="'Giá mua (-VAT): ' + (dataItem.CurrencyInName && dataItem.CurrencyInName !== '' ? dataItem.CurrencyInName : '(Trống)') + ' ' + ((dataItem.Bid ?? 0) | number:'1.0-3')"
+                            class="name">
+                            <span
+                                [ngClass]="{'blank-text': !dataItem.CurrencyInName || dataItem.CurrencyInName === ''}">
+                                {{ dataItem.CurrencyInName && dataItem.CurrencyInName !== '' ? dataItem.CurrencyInName : '(Trống)' }}
+                            </span>
+                            <span>{{ formatToK(dataItem.Bid) }}</span>
+                        </div>
+
+                        <div [title]="'VAT giá mua: ' + ((dataItem.VATIn ?? 0) | number:'1.2') + '%'" class="dou-block">
+                            <div class="text">VAT<span>:</span></div>
+                            <span class="value">{{ (dataItem.VATIn ?? 0) | number:'1.2' }}%</span>
+                        </div>
+
+                        <div [title]="'Điều kiện thương mai: ' + (dataItem.CommercialTermName && dataItem.CommercialTermName !== '' ? dataItem.CommercialTermName : '(Trống)')"
+                            class="dou-block">
+                            <div class="text">Incoterm<span>:</span></div>
+                            <span
+                                [ngClass]="{'blank-text': !dataItem.CommercialTermName || dataItem.CommercialTermName === ''}"
+                                class="value bold-text">
+                                {{ dataItem.CommercialTermName && dataItem.CommercialTermName !== '' ? dataItem.CommercialTermName : '(Trống)' }}
+                            </span>
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+
+            <!-- COL-5 -->
+            <kendo-grid-column [width]="350" title="Đơn giá lẻ (-VAT)" class="col5">
+                <ng-template kendoGridHeaderTemplate let-dataItem>
+                    <div>
+                        <div>Đơn giá lẻ</div>
+                        <div>(-VAT)</div>
+                    </div>
+                </ng-template>
+
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="collum-area">
+                        <div [title]="'Giá bán lẻ (-VAT): '
+                        + (dataItem.CurrencyOutName && dataItem.CurrencyOutName !== '' ? dataItem.CurrencyOutName : '(Trống)')
+                        + ' '
+                        + ((dataItem.UnitPrice ?? 0) | number:'1.0-3')" class="name">
+
+                            <span
+                                [ngClass]="{'blank-text': !dataItem.CurrencyOutName || dataItem.CurrencyOutName === ''}">
+                                {{ dataItem.CurrencyOutName && dataItem.CurrencyOutName !== '' ? dataItem.CurrencyOutName : '(Trống)' }}
+                            </span>
+                            <span>{{ formatToK(dataItem.UnitPrice) }}</span>
+                        </div>
+
+                        <div [title]="'VAT giá bán lẻ: ' + ((dataItem.VATOut ?? 0) | number:'1.2') + '%'"
+                            class="dou-block">
+                            <div class="text">VAT<span>:</span></div>
+                            <span class="value">{{ (dataItem.VATOut ?? 0) | number:'1.2' }}%</span>
+                        </div>
+
+                        <div [title]="'Margin: ' + (dataItem.Margin ?? 0) + '%'" class="dou-block marginblock">
+                            <div class="text">Margin<span>:</span></div>
+                            <span class="value bold-text">{{dataItem.Margin ? roundToTwoDecimal(dataItem.Margin) : 0}}%</span>
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+
+            <!-- COL-6 -->
+            <kendo-grid-column [width]="350" title="Giá gốc hàng nhập khẩu" class="col6" headerClass="flex-center-col">
+                <ng-template kendoGridHeaderTemplate let-dataItem>
+                    <div>
+                        <div>Giá gốc</div>
+                        <div>hàng NK</div>
+                    </div>
+                </ng-template>
+
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="collum-area">
+                        <div [title]="'Giá gốc nhập khẩu: '
+                        + (dataItem.CurrencyImportName && dataItem.CurrencyImportName !== '' ? dataItem.CurrencyImportName : '(Trống)')
+                        + ' '
+                        + ((dataItem.ImportPrice ?? 0) | number:'1.0-3')" class="name flex-center-col">
+
+                            <span
+                                [ngClass]="{'blank-text': !dataItem.CurrencyImportName || dataItem.CurrencyImportName === ''}">
+                                {{ dataItem.CurrencyImportName && dataItem.CurrencyImportName !== '' ? dataItem.CurrencyImportName : '(Trống)' }}
+                            </span>
+                            <span>{{ formatToK(dataItem.ImportPrice) }}</span>
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>`
+
+            <!-- COL-7 -->
+            <kendo-grid-column [width]="350" title="Kế hoạch bán hàng" class="col7">
+                <ng-template kendoGridHeaderTemplate let-dataItem>
+                    <div>
+                        <div>Kế hoạch</div>
+                        <div>bán hàng</div>
+                    </div>
+                </ng-template>
+
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="collum-area">
+                        <div [title]="'Số lượng bán/tháng : ' + ((dataItem.QtyMonthSale ?? 0) | number:'1.0-3')"
+                            class="dou-block">
+
+                            <div class="text">SL<span>:</span></div>
+                            <span class="value">
+                                {{ (dataItem.QtyMonthSale ?? 0) | number:'1.0-3'}}
+                            </span>
+                        </div>
+
+                        <div [title]="'Doanh thu/tháng : ' + ((dataItem.AmountMonthSale ?? 0) | number:'1.0-3')"
+                            class="dou-block marginblock">
+                            <div class="text">DT<span>:</span></div>
+                            <span class="value">
+                                {{formatToK(dataItem.AmountMonthSale)}}
+                            </span>
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+
+            <!-- COL-8 -->
+            <kendo-grid-column [width]="350" title="Kế hoạch nhập hàng" class="col8">
+                <ng-template kendoGridHeaderTemplate let-dataItem>
+                    <div>
+                        <div>Kế hoạch</div>
+                        <div>nhập hàng</div>
+                    </div>
+                </ng-template>
+
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="collum-area">
+                        <div [title]="'SL dự trữ : ' + ((dataItem.QtyMore ?? 0) | number:'1.0-3')" class="dou-block">
+                            <div class="text">SL dự trữ<span>:</span></div>
+                            <span class="value">{{ (dataItem.QtyMore ?? 0 ) | number:'1.0-3'}}</span>
+                        </div>
+
+                        <div [title]="'SL tối thiểu : ' + ((dataItem.MinQuantity ?? 0) | number:'1.0-3')"
+                            class="dou-block marginblock">
+                            <div class="text">SL tối thiểu<span>:</span></div>
+                            <span class="value">{{ (dataItem.MinQuantity ?? 0) | number:'1.0-3'}}</span>
+                        </div>
+
+                        <div [title]="'SL đặt đầu tiên: ' + ((dataItem.QtyFirstOrder ?? 0) | number:'1.0-3')"
+                            class="dou-block marginblock">
+                            <div class="text">SL đặt đầu tiên<span>:</span></div>
+                            <span class="value">{{ (dataItem.QtyFirstOrder ?? 0) | number:'1.0-3'}}</span>
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+
+            <!-- COL-9 -->
+            <kendo-grid-column [width]="700" title="Diễn giải" class="col9 description-col overflow-text-2">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="collum-area">
+                        <div [title]="'Diễn giải: ' + (dataItem.Remark ?? '(Trống)')"
+                            [ngClass]="{'blank-text': !dataItem.Remark}" class="remark">
+                            {{ dataItem.Remark == null || dataItem.Remark == '' ? '(Trống)' : dataItem.Remark }}
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+
+            <!-- COL-4 -->
+            <kendo-grid-column [width]="300" field="StatusName" title="Tình trạng" headerClass="flex-end-col"
+                class="flex-end-col col-status">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <span class="status-name"
+                        [innerHTML]="dataItem.StatusName | colorStatus: dataItem.StatusID">{{dataItem.StatusName}}</span>
+                </ng-template>
+            </kendo-grid-column>
+        </app-p-kendo-grid>
+    </div>
+
+    <!-- POPUP XÁC NHẬN XÓA ĐỀ XUẤT HÀNG MỚI -->
+    <kendo-dialog class="dialog-delete popup-confirm-custom" [minHeight]="250" [minWidth]="400"
+        *ngIf="isDialogConfirmDeleteShow">
+        <!-- HEADER -->
+        <div class="dialog-header">
+            <span class="k-icon k-i-warning"></span>
+            <div>{{'Xóa sản phẩm' | uppercase}}</div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="dialog-content">
+            <div class="text-confirm">
+                <span class="text-request-dialog-custom">Bạn chắc chắn muốn xoá các sản phẩm đề xuất được chọn không
+                    ?</span>
+                <!-- <div *ngFor="let item of listSelectedTaskBoardToDelete.slice(0, 3); let i = index" class="policy-name-text">
+                    <span *ngIf="i >= 0 && i < 2" title="{{item.PolicyName}}">
+                        {{item.PolicyName}}
+                    </span>
+                    <span class="deletePlus" *ngIf="i == 2" title="{{handleGetRemainingPolicyNames()}}">+{{listSelectedTaskBoardToDelete.length - 2}} bảng đầu việc</span>
+                </div> -->
+            </div>
+            <div class="warning">
+                <span>Sản phẩm đề xuất bị xoá sẽ</span>
+                <span style="color: #FD7676;">KHÔNG</span>
+                <span>thể khôi phục lại.</span>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="dialog-footer">
+            <button kendoButton (click)="handleCloseDialog()" class="cancel-button">Không xóa</button>
+            <button kendoButton icon="trash" class="btn-delete" (click)="handleDeleteNewProposal()">xóa</button>
+        </div>
+    </kendo-dialog>
+</div>
+
+<app-import-popup [uploadEventHandlerCallback]="uploadEventHandlerCallback"></app-import-popup>

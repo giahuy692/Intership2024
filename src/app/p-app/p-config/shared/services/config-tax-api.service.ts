@@ -5,7 +5,6 @@ import { ConfigApiConfigService } from './config-api-config.service';
 import { toDataSourceRequest, State } from '@progress/kendo-data-query';
 import { HttpHeaders } from "@angular/common/http";
 import { DTODetailConfProduct } from "../dto/DTOConfProduct";
-import { stringify } from "querystring";
 import { DTOTaxGroup } from "../dto/DTOTaxGroup";
 import { DTOTax } from "../dto/DTOTax";
 import { LayoutApiConfigService } from "src/app/p-app/p-layout/services/layout-api-config.service";

@@ -1,80 +1,169 @@
-<!-- START CONTENT -->
-<kendo-drawer-content>
-    <div class="config009-enterprise-country">
+<div class="Drawer-right">
+    <kendo-drawer-container>
 
-        <!-- HEADER 1: BREAD CUM AND BUTTON CREATE -->
-        <div class="header header-1">
-            <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
-            <div class="nav-btn nav-crud">
-                <button kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
-                    (click)="  onOpendDrawer(0)" [disabled]="">
-                    TẠO MỚI
-                </button>
+        <!-- START DRAWER RIGHT -->
+        <kendo-drawer #drawerRight mode="overlay" [(expanded)]="isOpenDrawer" fillMode="flat" [position]="'end'"
+            [(autoCollapse)]="isautoCollapse" width="428px">
+            <ng-template kendoDrawerTemplate let-item let-dataItem>
 
-            </div>
-        </div>
 
-        <!-- HEADER 2: SEARCH -->
-        <div class="header header-2">
-            <div id="functionbar">
-                <app-search-filter-group placeholder="Tìm theo tên Quốc gia" [fields]="[ ]"
-                    (valueChange)="onSearch($event)" (onReset)="onResetFilter()" [ignoreCase]="true" #search>
-                </app-search-filter-group>
-            </div>
-        </div>
+                <!-- <form [formGroup]="formData"> -->
+                <!-- <form [formGroup]="form"> -->
+                <div class="wrapper-drawer-right">
+                    <div class="header-drawer-right">
+                        <span class="icon-header-right"></span>
+                        <h3>THÔNG TIN QUỐC GIA</h3>
+                    </div>
 
-        <div class="grid-wrapper">
-            <app-p-kendo-grid class="grid" [data]="dataCompany_System" [scrollable]="'none'" [loading]="loading"
-                [pageable]="false" [getActionDropdownCallback]="getActionDropdownCallback"
-                [onActionDropdownClickCallback]="onActionDropdownClickCallback">
+                    <div class="content-drawer-right" [formGroup]="CountryForm">
+                        <!--  -->
 
-                <kendo-grid-column field="VNName" title="Tên công ty" class="col_nameCompany"
-                    headerClass="col_nameCompany" [width]="300">
+                        <kendo-label class="k-form customLabel">
+                            <div class="lable">
+                                <span class="labelName">
+                                    <span class="name">Tên Tiếng Việt</span>
+                                    <span class="symbol">(*)</span>
+                                </span>
 
-                    <ng-template kendoGridCellTemplate let-dataItem>
-                        <div class="Image_NameCompany">
-                            <div class="PaddingImg">
-                                <img loading="lazy" class="ImageCompany" src="{{dataItem.URLLogo}}" alt="">
                             </div>
 
-                            <div class="inforCompany">
-                                <div class="NameCompany" title="{{dataItem.VNName}}">{{dataItem.VNName}}</div>
+                            <app-p-textbox class=" VNName" [propName]="'VNName'" formControlName="VNName"
+                              [(ngModel)]="dataCountryForm.VNName" required>
+                            </app-p-textbox>
+                        </kendo-label>
 
-                                <div class="infor">
-                                    <span title="{{dataItem.Code}}"> {{dataItem.Code}} | </span>
-                                    <span *ngIf="dataItem.CompanyID"
-                                        title="{{dataItem.CompanyID}}">{{dataItem.CompanyID}} | </span>
-                                    <span title="{{dataItem.Bieft}}"> {{dataItem.Bieft}}</span>
-                                </div>
+                        <kendo-label class="k-form customLabel">
+                            <div class="lable">
+                                <span class="labelName">
+                                    <span class="name">Tên 日本語</span>
+                                </span>
                             </div>
-                        </div>
-                    </ng-template>
+                            <app-p-textbox class="JPName" [propName]="'JPName'"
+                             formControlName="JPName" [(ngModel)]="dataCountryForm.JPName">
+                            </app-p-textbox>
+                        </kendo-label>
 
+                        <kendo-label class="k-form customLabel">
+                            <div class="lable">
+                                <span class="labelName">
+                                    <span class="name">Tên English</span>
+                                </span>
+                            </div>
+                            <app-p-textbox class="ENName" [propName]="'ENName'"
+                                [(ngModel)]="dataCountryForm.ENName" formControlName="ENName">
+                            </app-p-textbox>
+                        </kendo-label>
 
-                </kendo-grid-column>
-                <kendo-grid-column field="Address" title="Địa chỉ" class="col_address" headerClass="col_address"
-                    [width]="500">
-                    <ng-template kendoGridCellTemplate let-dataItem>
-                        <div class="text-ellipsis" title="{{dataItem.Address}}">{{dataItem.Address}}</div>
-                    </ng-template>
-                </kendo-grid-column>
+                        <kendo-label class="k-form customLabel">
+                            <div class="lable">
+                                <span class="labelName">
+                                    <span class="name">Tên Xuất xứ</span>
+                                    <span class="symbol">(*)</span>
+                                </span>
 
-                <kendo-grid-column field="Country" title="Quốc gia" class="col_country" headerClass="col_country"
-                    [width]="250">
-                    <ng-template kendoGridCellTemplate let-dataItem>
-                        <div class="CountryCompany" title="{{dataItem.CountryName}}">{{dataItem.CountryName}}</div>
-                    </ng-template>
-                </kendo-grid-column>
-                <kendo-grid-column field="TypeCompanyName" title="Phân loại" class="col_classify"
-                    headerClass="col_classify" [width]="250">
-                    <ng-template kendoGridCellTemplate let-dataItem>
-                        <div class="TypeCompany" title="{{dataItem.TypeCompanyName}}">{{dataItem.TypeCompanyName}}</div>
+                            </div>
 
-                    </ng-template>
-                </kendo-grid-column>
-            </app-p-kendo-grid>
-        </div>
+                            <app-p-textbox class="VNOrigin" [propName]="'VNOrigin'"
+                             formControlName="VNOrigin" [(ngModel)]="dataCountryForm.VNOrigin" required>
+                            </app-p-textbox>
+                        </kendo-label>
 
-    </div>
-</kendo-drawer-content>
+                        <kendo-label class="k-form customLabel">
+                            <div class="lable">
+                                <span class="labelName">
+                                    <span class="name">Mã Hành Chính</span>
+                                    <span class="symbol">(*)</span>
+                                </span>
+
+                            </div>
+
+                            <app-p-textbox class="CountryID" [propName]="'CountryID'"
+                             formControlName="CountryID" [(ngModel)]="dataCountryForm.CountryID" [disabled]="isAction === 1" required>
+                            </app-p-textbox>
+                        </kendo-label>
+
+                        <kendo-label class="k-form customLabel">
+                            <div class="lable">
+                                <span class="labelName">
+                                    <span class="name">Thứ tự hiển thị</span>
+                                </span>
+
+                            </div>
+
+                            <app-p-textbox class="OrderBy" [propName]="'OrderBy'"
+                             formControlName="OrderBy" [(ngModel)]="dataCountryForm.OrderBy">
+                            </app-p-textbox>
+                        </kendo-label>
+
+                    </div>
+
+                    <!-- FOOTER, BUTTON -->
+                    <div class="footer-drawer-right d-flex col-gap">
+                        <button class="btn-hachi hachi-secondary" kendoButton (click)=" onOpendDrawer(3)  ">
+                            ĐÓNG
+                        </button>
+                        <button kendoButton class="btn-hachi hachi-primary" (click)="onUpdateCountry()">
+                            {{isAction == 0 ? "TẠO MỚI" : dataCountryForm.IsSystem ? "CẬP NHẬT HỆ THỐNG" : "CẬP NHẬT"}}
+                        </button>
+                        <button *ngIf="isAction === 1" kendoButton class="btn-hachi hachi-danger">
+                            XOÁ
+                        </button>
+                    </div>
+                </div>
+                <!-- </form> -->
+            </ng-template>
+        </kendo-drawer>
+        <!-- END DRAWER RIGHT -->
+
+        <!-- START CONTENT -->
+        <kendo-drawer-content>
+            <div class="config009-enterprise-country">
+
+                <!-- HEADER 1: BREAD CUM AND BUTTON CREATE -->
+                <div class="header header-1">
+                    <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
+                    <div class="nav-btn nav-crud">
+                        <button kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
+                            (click)="onOpendDrawer(0)" [disabled]="">
+                            TẠO MỚI
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- HEADER 2: SEARCH -->
+                <div class="header header-2">
+                    <div id="functionbar">
+                        <app-search-filter-group placeholder="Tìm theo tên Quốc gia"
+                            [fields]="['VNName', 'JPName', 'ENName']" (filterChange)="onSearch($event)"
+                            (onReset)="onResetFilter()" [ignoreCase]="true" #search>
+                        </app-search-filter-group>
+                    </div>
+                </div>
+
+                <div class="grid-wrapper">
+                    <app-p-kendo-grid class="grid" [data]="gridCountries" [scrollable]="'none'" [loading]="loading"
+                        [pageable]="false" [getActionDropdownCallback]="getActionDropdownCallback"
+                        [onActionDropdownClickCallback]="onActionDropdownClickCallback">
+
+                        <kendo-grid-column field="VNName" title="Tên Quốc gia" class="col_address"
+                            headerClass="col_address" [width]="280">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="text-ellipsis" title="{{dataItem.VNName}}">{{dataItem.VNName}}</div>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="VNOrigin" title="Tên Xuất Xứ" class="col_country"
+                            headerClass="col_country">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="CountryCompany" title="{{dataItem.VNOrigin}}">{{dataItem.VNOrigin}}</div>
+                            </ng-template>
+                        </kendo-grid-column>
+                    </app-p-kendo-grid>
+                </div>
+
+            </div>
+        </kendo-drawer-content>
+    </kendo-drawer-container>
+</div>
 <!-- END CONTENT -->

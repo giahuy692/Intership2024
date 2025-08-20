@@ -1,0 +1,343 @@
+@import "../../../../../assets/scss/variable.scss";
+
+::ng-deep {
+    .app-config009-tax-list {
+        kendo-drawer-container {
+            position: relative;
+
+            .k-overlay {
+                position: absolute;
+                // width: calc(100% - 219px) !important;
+                // left: 219px !important;
+            }
+
+            kendo-drawer {
+                height: calc(-86px + 100vh) !important;
+                margin-top: 55px;
+
+                .k-drawer-wrapper {
+                    width: 420px !important;
+                    overflow: hidden;
+                    scrollbar-color: unset !important;
+
+                    .header-drawer {
+                        padding-left: 10px;
+                        padding-top: 15px;
+                        padding-bottom: 15px;
+                        border-bottom: 1px solid $gray-300;
+
+                        .title-header {
+                            font-weight: 700;
+                            color: #1a6634;
+                            font-size: 13px;
+                        }
+                    }
+
+                    .body-drawer {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 10px;
+                        padding: 10px 10px;
+                        height: calc(100vh - 190px);
+                        overflow-y: scroll;
+                        overflow-x: hidden;
+
+                        form {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 10px;
+
+                            .box-2-55 {
+                                display: flex;
+                                gap: 15px;
+
+                                app-p-textbox,
+                                p-kendo-dropdownlist kendo-dropdownlist {
+                                    width: 185px;
+                                }
+                            }
+
+                            .box-73 {
+                                display: flex;
+                                gap: 15px;
+
+                                app-p-textbox {
+                                    width: 287px;
+                                }
+
+                                kendo-numerictextbox {
+                                    width: 88px;
+                                }
+                            }
+
+                            .box-input {
+                                display: flex;
+                                flex-direction: column;
+                                gap: 8px;
+
+                                .label-input {
+                                    font-weight: 700;
+                                }
+
+                                .impose {
+                                    color: $bad-red;
+                                    font-style: normal;
+                                }
+
+                                app-p-textbox,
+                                kendo-numerictextbox,
+                                app-p-textarea {
+                                    outline: 1.5px solid #dbdee7;
+                                    box-shadow: none;
+                                    border-radius: 1px;
+
+                                    &:hover {
+                                        outline: 1.5px solid black;
+                                    }
+
+                                    kendo-textbox {
+                                        width: 100%;
+                                    }
+
+                                    textarea {
+                                        resize: none;
+                                    }
+                                }
+
+                                app-p-textarea {
+                                    height: 65px;
+
+                                    kendo-textarea {
+                                        height: 100%;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .footer-drawer {
+                        display: flex;
+                        gap: 10px;
+
+                        .btnControl {
+                            background-color: $white;
+                            position: absolute;
+                            bottom: 0;
+                            height: 45px;
+                            padding: 0 10px;
+                            width: 100%;
+                            z-index: 100;
+                            display: flex;
+                            align-items: center;
+                            border-top: 1px solid $gray-300;
+                            box-shadow: 1px 3px 6px 6px rgba(143, 155, 166, 0.2);
+
+                            button {
+                                width: 95px;
+                                margin-right: 10px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            padding-right: 10px !important;
+            overflow-x: auto;
+            width: calc(100vw - 220px);
+
+            &.header-1 {
+                .button-group {
+                    display: flex;
+                    gap: 10px;
+                }
+            }
+
+            &.header-2 {
+                padding: 10px;
+                gap: 20px !important;
+
+                .filter-search {
+                    .k-input-md {
+                        width: 485px !important;
+                    }
+                }
+
+                kendo-label {
+                    .k-label {
+                        color: $gray-700;
+                        font-weight: 700;
+                        margin-bottom: 6px;
+                    }
+
+                    .in-label {
+                        display: flex;
+                        gap: 5px;
+
+                        .filter-by-date {
+                            .dropdownlistCustom {
+                                width: fit-content;
+                            }
+
+                            .k-input-inner {
+                                min-width: 45px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .btnWrapper {
+            display: flex;
+            gap: 10px;
+        }
+
+        .grid-wrapper {
+            app-p-kendo-grid {
+                kendo-grid {
+                    .k-grid-header {
+                        .k-header {
+                            font-weight: 600;
+                            color: $gray-700;
+                        }
+                    }
+
+                    .k-grid-aria-root {
+                        width: calc(100vw - 220px);
+                        overflow-x: auto;
+                    }
+
+                    th[aria-colindex="1"] {
+                        padding-left: 30px !important;
+                    }
+
+                    .flex-center-col {
+                        .k-link {
+                            justify-content: center !important;
+                        }
+                    }
+
+                    .flex-end-col {
+                        .k-link {
+                            justify-content: end !important;
+                            padding-right: 20px;
+                        }
+                    }
+
+                    .name-col {
+                        .name-tax {
+                            width: 200px;
+                            max-width: 200px;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                            display: -webkit-box;
+                            -webkit-line-clamp: 2;
+                            line-clamp: 2;
+                            -webkit-box-orient: vertical;
+                            max-height: 50px;
+                            white-space: normal;
+                        }
+
+                        .info-tax {
+                            display: flex;
+                            gap: 5px;
+                            align-items: center;
+                            font-weight: 600;
+                            color: #5a6276;
+
+                            .space-line {
+                                height: 13px;
+                                width: 2px;
+                                background-color: #5a6276;
+                            }
+                        }
+                    }
+                    .group-col {
+                        white-space: normal;
+                    }
+
+                    .group-col,
+                    .ogrin-col,
+                    .material-col,
+                    .unit-col {
+                        text-align: center;
+                    }
+
+                    .rate-col {
+                        padding-left: 20px;
+                        padding-right: 20px;
+
+                        .box-rate {
+                            display: flex;
+                            flex-direction: column;
+
+                            .rate-nk,
+                            .rate-ttdb,
+                            .rate-bvmt {
+                                display: flex;
+                                justify-content: space-between;
+                                gap: 5px;
+
+                                .rate-label {
+                                    font-weight: 700;
+                                    width: 45px;
+                                    display: flex;
+                                    justify-content: space-between;
+                                }
+                                .rate-code {
+                                    margin-left: 5px;
+                                }
+                                .rate-value {
+                                    color: #008000;
+                                    font-weight: 700;
+                                }
+                            }
+                        }
+                    }
+
+                    .vat-col {
+                        padding-left: 20px;
+                        padding-right: 20px;
+
+                        .box-vat {
+                            display: flex;
+                            flex-direction: column;
+
+                            .vat-in,
+                            .vat-out {
+                                display: flex;
+                                justify-content: space-between;
+                                gap: 5px;
+
+                                .vat-label {
+                                    font-weight: 700;
+                                    width: 31px;
+                                    display: flex;
+                                    justify-content: space-between;
+                                }
+                                .vat-code {
+                                    margin-left: 5px;
+                                }
+                                .vat-value {
+                                    color: #008000;
+                                    font-weight: 700;
+                                }
+                            }
+                        }
+                    }
+
+                    .status-col {
+                        text-align: end;
+                        padding-right: 20px;
+                    }
+                }
+            }
+        }
+    }
+}

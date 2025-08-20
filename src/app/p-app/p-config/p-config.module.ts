@@ -15,6 +15,8 @@ import { ConfigSalesAttributeComponent } from './shared/components/config-sales-
 import { ConfigProductLabelComponent } from './shared/components/config-product-label/config-product-label.component';
 import { ConfigWebDisplayComponent } from './shared/components/config-web-display/config-web-display.component';
 import { ConfigHistoryPopupComponent } from './shared/components/config-history-popup/config-history-popup.component';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { Config009EnterpriseCountryComponent } from './pages/config009-enterprise-country/config009-enterprise-country.component';
 import { Config010EnterpriseAdminunitComponent } from './pages/config010-enterprise-adminunit/config010-enterprise-adminunit.component';
 
@@ -40,6 +42,8 @@ import { Config010EnterpriseAdminunitComponent } from './pages/config010-enterpr
   imports: [
     PConfigRoutingModule,
     PLayoutModule,
+    CommonModule,
+    HttpClientModule,
   ],
   schemas: [
     CUSTOM_ELEMENTS_SCHEMA,
@@ -53,4 +57,5 @@ import { Config010EnterpriseAdminunitComponent } from './pages/config010-enterpr
     ConfigWebDisplayComponent,
   ]
 })
-export class PConfigModule { }
+export class PConfigModule { 
+}

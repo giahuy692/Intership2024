@@ -1,0 +1,388 @@
+<div class="app-config009-tax-list">
+    <kendo-drawer-container id="drawerContainerRight" class="drawer-container">
+        <kendo-drawer id="drawerRight" #drawerRight position="end" mode="overlay" [(expanded)]="isOpenDrawer" [(autoCollapse)]="isAutoCollapse"
+            class="drawer">
+            <ng-template kendoDrawerHeaderTemplate>
+                <div class="drawer-content">
+                    <div class="header-drawer">
+                        <span class="title-header">THÔNG TIN KHAI QUAN</span>
+                    </div>
+                    <div class="body-drawer">
+                        <form class="form" [formGroup]="MultiForm">
+                            <div class="box-2-55">
+                                <div class="box-input">
+                                    <span class="label-input">Mã khai quan<span class="impose"> (*)</span></span>
+                                    <app-p-textbox formControlName="TaxID" [disabled]="!isEdit"></app-p-textbox>
+                                </div>
+
+                                <div class="box-input">
+                                    <span class="label-input">HSCode</span>
+                                    <app-p-textbox formControlName="HSCode" [disabled]="!isEdit"></app-p-textbox>
+                                </div>
+                            </div>
+
+                            <div class="box-1">
+                                <div class="box-input">
+                                    <span class="label-input">Tên khai quan đầy đủ</span>
+                                    <app-p-textarea formControlName="TaxDescription" [readonly]="!isEdit" rows="2">
+                                    </app-p-textarea>
+                                </div>
+                            </div>
+
+                            <div class="box-1">
+                                <div class="box-input">
+                                    <span class="label-input">Tên tiếng việt<span class="impose"> (*)</span></span>
+                                    <app-p-textbox formControlName="TaxName" [disabled]="!isEdit"></app-p-textbox>
+                                </div>
+                            </div>
+
+                            <div class="box-1">
+                                <div class="box-input">
+                                    <span class="label-input">Tên tiếng Anh</span>
+                                    <app-p-textbox formControlName="ENName" [disabled]="!isEdit"></app-p-textbox>
+                                </div>
+                            </div>
+
+                            <div class="box-1">
+                                <div class="box-input">
+                                    <span class="label-input">Tên tiếng Nhật</span>
+                                    <app-p-textbox formControlName="JPName" [disabled]="!isEdit"></app-p-textbox>
+                                </div>
+                            </div>
+
+                            <div class="box-2-55">
+                                <div class="box-input">
+                                    <span class="label-input">Phân loại<span class="impose"> (*)</span></span>
+                                    <p-kendo-dropdownlist [data]="listTaxGroup" [valuePrimitive]="true"
+                                        [filterable]="true" [textField]="'GroupName'" [valueField]="'Code'"
+                                        (valueChange)="onChangeValueDropdown($event,'TaxGroup')"
+                                        formControlName="TaxGroup" [disabled]="!isEdit"></p-kendo-dropdownlist>
+                                </div>
+
+                                <div class="box-input">
+                                    <span class="label-input">Xuất sứ<span class="impose"> (*)</span></span>
+                                    <p-kendo-dropdownlist [data]="listCountry" [valuePrimitive]="true"
+                                        [filterable]="true" [textField]="'VNName'" [valueField]="'Code'"
+                                        (valueChange)="onChangeValueDropdown($event,'Origin')" formControlName="Origin"
+                                        [disabled]="!isEdit"></p-kendo-dropdownlist>
+                                </div>
+                            </div>
+
+                            <div class="box-2-55">
+                                <div class="box-input">
+                                    <span class="label-input">Đơn vị<span class="impose"> (*)</span></span>
+                                    <p-kendo-dropdownlist [data]="listUnit" [valuePrimitive]="true" [filterable]="true"
+                                        [textField]="'VNPackingUnit'" [valueField]="'Code'"
+                                        (valueChange)="onChangeValueDropdown($event,'UnitID')" formControlName="UnitID"
+                                        [disabled]="!isEdit"></p-kendo-dropdownlist>
+                                </div>
+
+                                <div class="box-input">
+                                    <span class="label-input">Chất liệu</span>
+                                    <app-p-textbox formControlName="Material" [disabled]="!isEdit"></app-p-textbox>
+                                </div>
+                            </div>
+
+                            <div class="box-1">
+                                <div class="box-input">
+                                    <span class="label-input">Thuế nhập khẩu<span class="impose"> (*)</span></span>
+                                    <div class="box-73">
+                                        <app-p-textbox formControlName="IMTaxCode" [disabled]="!isEdit"
+                                            placeHolder="Mã thuế"></app-p-textbox>
+                                        <app-p-numeric-textbox [spinners]="false" [format]="'n2 \\%'" [min]="0"
+                                            [max]="100" formControlName="IMTaxRate" [disabled]="!isEdit"
+                                            placeHolder="0.00 %"  [decimals]="2">
+                                        </app-p-numeric-textbox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box-1">
+                                <div class="box-input">
+                                    <span class="label-input">Thuế tiêu thụ đặc biệt</span>
+                                    <div class="box-73">
+                                        <app-p-textbox formControlName="TTDBTaxCode" [disabled]="!isEdit"
+                                            placeHolder="Mã thuế">
+                                        </app-p-textbox>
+                                        <app-p-numeric-textbox [spinners]="false" [format]="'n2 \\%'" [min]="0"
+                                            [max]="100" formControlName="TTDBTaxRate" [disabled]="!isEdit"
+                                            placeHolder="0.00 %" [decimals]="2">
+                                        </app-p-numeric-textbox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box-1">
+                                <div class="box-input">
+                                    <span class="label-input row">
+                                        <span class="col-6">Thuế bảo vệ môi trường</span>
+                                        <span class="col-3">Số quy đổi</span>
+                                        <span class="col-3">Mức tính</span>
+                                    </span>
+                                    <div class="box-73">
+                                        <app-p-textbox formControlName="BVMTTaxCode" [disabled]="!isEdit"
+                                            placeHolder="Mã thuế">
+                                        </app-p-textbox>
+                                        <app-p-textbox formControlName="UnitBVMT" [disabled]="!isEdit"
+                                            placeHolder="Đơn vị tính">
+                                        </app-p-textbox>
+
+                                        <app-p-numeric-textbox [spinners]="false" [format]="'n4'" [min]="0"
+                                            [decimals]="4" formControlName="BaseBVMT" [disabled]="!isEdit"
+                                            placeHolder="0.0000">
+                                        </app-p-numeric-textbox>
+                                        <app-p-numeric-textbox [spinners]="false" [format]="'n0'"
+                                            formControlName="BVMTTaxRate" [disabled]="!isEdit" placeHolder="0" >
+                                        </app-p-numeric-textbox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box-1">
+                                <div class="box-input">
+                                    <span class="label-input row">
+                                        <span class="col-6">VAT<span class="impose"> (*)</span></span>
+                                        <span class="col-3">Đầu vào</span>
+                                        <span class="col-3">Đầu ra</span>
+                                    </span>
+                                    <div class="box-73">
+                                        <app-p-textbox formControlName="VATInCode" [disabled]="!isEdit"
+                                            placeHolder="Mã thuế"></app-p-textbox>
+
+                                        <app-p-numeric-textbox [spinners]="false" [format]="'# \\%'" [min]="0"
+                                            [max]="100" formControlName="VATInRate" [disabled]="!isEdit"
+                                            placeHolder="0 %">
+                                        </app-p-numeric-textbox>
+                                        <app-p-numeric-textbox [spinners]="false" [format]="'# \\%'" [min]="0"
+                                            [max]="100" formControlName="VATOutRate" [disabled]="!isEdit"
+                                            placeHolder="0 %">
+                                        </app-p-numeric-textbox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="box-1">
+                                <div class="box-input">
+                                    <span class="label-input">Ghi chú</span>
+                                    <app-p-textarea [resizable]="false" formControlName="Remark" [disabled]="!isEdit">
+                                    </app-p-textarea>
+                                </div>
+                            </div>
+
+                            <div class="box-1">
+                                <div class="box-input">
+                                    <span class="label-input">Tình trạng</span>
+                                    <p-kendo-dropdownlist [data]="listStatus" [valuePrimitive]="true"
+                                        [textField]="'StatusName'" [valueField]="'StatusID'"
+                                        (valueChange)="onChangeValueDropdown($event,'StatusID')"
+                                        formControlName="StatusID" [disabled]="currentItemTax.Code == 0"
+                                        [itemDisabled]="isItemDisabled.bind(this)"></p-kendo-dropdownlist>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="footer-drawer">
+                        <!-- BUTTON CONTROL -->
+                        <div class="btnControl">
+                            <button (click)="handleCloseDrawer()" kendoButton
+                                class="btn-hachi hachi-primary hachi-secondary">
+                                đóng
+                            </button>
+
+                            <button *ngIf="isCreate && isEdit" kendoButton class="btn-hachi hachi-primary"
+                                (click)="onUpdateTax()">TẠO MỚI</button>
+
+                            <button *ngIf="!isCreate && isUpdateButton" kendoButton class="btn-hachi hachi-primary"
+                                (click)="onUpdateTax()">CẬP NHẬT</button>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </kendo-drawer>
+
+        <kendo-drawer-content>
+            <div class="header header-1">
+                <app-p-kendo-breadcrumb></app-p-kendo-breadcrumb>
+
+                <div class="button-group">
+                    <app-checkbox-button-group title="Đang soạn thảo" [field]="'Status'" [value]="0"
+                        [checked]="isNew_checked" (selectedChange)="onSelectedBtnChange($event, 'isNew_checked')">
+                    </app-checkbox-button-group>
+
+                    <app-checkbox-button-group title="Gửi duyệt" [field]="'Status'" [value]="1"
+                        [checked]="isSent_checked" (selectedChange)="onSelectedBtnChange($event, 'isSent_checked')">
+                    </app-checkbox-button-group>
+
+                    <app-checkbox-button-group title="Đã duyệt" [field]="'Status'" [value]="2"
+                        [checked]="isApproved_checked"
+                        (selectedChange)="onSelectedBtnChange($event, 'isApproved_checked')">
+                    </app-checkbox-button-group>
+
+                    <app-checkbox-button-group title="Ngưng áp dụng" [field]="'Status'" [value]="3"
+                        [checked]="isStopped_checked"
+                        (selectedChange)="onSelectedBtnChange($event, 'isStopped_checked')">
+                    </app-checkbox-button-group>
+                </div>
+
+                <div class="btnWrapper">
+                    <div class="file-btn-group">
+                        <button kendoButton *ngIf="M_C" id="onUploadBtn" class="k-button" [icon]="'export'"
+                            (click)="onImportExcel()"></button>
+                    </div>
+
+                    <div class="file-btn-group">
+                        <button kendoButton *ngIf="M_C" id="onDownloadBtn" class="k-button" [icon]="'import'"
+                            (click)="APIGetTemplate()">Template</button>
+                    </div>
+                    <button kendoButton *ngIf="M_C" iconClass="k-icon k-i-plus" class="btn-hachi hachi-primary"
+                        (click)="openDrawer(1)">
+                        TẠO MỚI
+                    </button>
+                </div>
+            </div>
+
+            <div class="header header-2">
+                <!-- FILTER BY TERM -->
+                <app-search-filter-group placeholder="Tìm theo mã, tên khai quan" class="filter-search"
+                    [disabled]="!isFilterActive" (filterChange)="handleSearch($event)" (onReset)="onResetFilter()"
+                    [fields]="['TaxID', 'TaxName', 'TaxDescription']">
+                </app-search-filter-group>
+            </div>
+
+            <div class="grid-wrapper grid-hiring">
+                <app-p-kendo-grid p-p-kendo-gridclass="grid scrollable" [data]="gridTaxList" [scrollable]="'none'"
+                    [loading]="isLoading" [selectable]="selectable" [pageable]="true" [pageSizes]="pageSizes"
+                    [pageSize]="pageSize" [take]="gridState.take" [skip]="gridState.skip" [sortable]="true"
+                    [sort]="gridState.sort" [onPageChangeCallback]="onPageChangeCallback"
+                    [getActionDropdownCallback]="getActionDropdownCallback"
+                    [onActionDropdownClickCallback]="onActionDropDownClickCallback"
+                    [getSelectionPopupCallback]="getSelectionPopupCallback"
+                    [onSelectedPopupBtnCallback]="onSelectedPopupBtnCallback" [onSelectCallback]="onSelectCallback">
+                    <!-- COL-1 -->
+                    <kendo-grid-column field="DecisionName" title="Tên khai quan" class="name-col" [width]="600">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="name-tax" [title]="dataItem.TaxName">
+                                {{dataItem.TaxName}}
+                            </div>
+
+                            <div class="info-tax">
+                                <span class="code-tax" [title]="dataItem.TaxID">{{dataItem.TaxID}}</span>
+                                <div class="space-line" *ngIf="dataItem.HSCode"></div>
+                                <span class="HSCode-tax" [title]="dataItem.HSCode">{{dataItem.HSCode}}</span>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- COL-2 -->
+                    <kendo-grid-column title="Phân nhóm" headerClass="flex-center-col" class="group-col" [width]="500">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="group-name-tax" [title]="dataItem.TaxGroupName">
+                                {{dataItem.TaxGroupName}}
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- COL-3 -->
+                    <kendo-grid-column title="Xuất xứ" headerClass="flex-center-col" class="ogrin-col" [width]="300">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <span class="origin-tax" [title]="dataItem.OriginName">{{dataItem.OriginName}}</span>
+                        </ng-template>
+                    </kendo-grid-column>
+
+
+                    <!-- COL-4 -->
+                    <kendo-grid-column title="Chất liệu" headerClass="flex-center-col" class="material-col"
+                        [width]="300">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <span class="material-tax" [title]="dataItem.Material">{{dataItem.Material}}</span>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- COL-5 -->
+                    <kendo-grid-column title="Đơn vị" headerClass="flex-center-col" class="unit-col" [width]="300">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <span class="material-tax" [title]="dataItem.UnitName">{{dataItem.UnitName}}</span>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- COL-6 -->
+                    <kendo-grid-column title="Biểu thuế" headerClass="flex-center-col" class="rate-col" [width]="520">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="box-rate">
+                                <div class="rate-nk">
+                                    <span class="d-flex">
+                                        <span class="rate-label">NK<span>:</span></span>
+                                        <span class="rate-code"
+                                            [title]="dataItem.IMTaxCode">{{dataItem.IMTaxCode}}</span>
+                                    </span>
+                                    <span class="rate-value"
+                                        [title]="'Thuế nhập khẩu: ' + ((dataItem.IMTaxRate ?? 0) | number:'1.2') + '%'">
+                                        {{ (dataItem.IMTaxRate ?? 0) | number:'1.2'}}%
+                                    </span>
+                                </div>
+                                <div class="rate-ttdb">
+                                    <span class="d-flex">
+                                        <span class="rate-label">TTĐB<span>:</span></span>
+                                        <span class="rate-code"
+                                            [title]="dataItem.TTDBTaxCode">{{dataItem.TTDBTaxCode}}</span>
+                                    </span>
+                                    <span class="rate-value"
+                                        [title]="'Thuế tiêu thụ đặc biệt: ' + ((dataItem.TTDBTaxRate ?? 0) | number:'1.2') + '%'">
+                                        {{ (dataItem.TTDBTaxRate ?? 0) | number:'1.2'}}%
+                                    </span>
+                                </div>
+                                <div class="rate-bvmt">
+                                    <span class="d-flex">
+                                        <span class="rate-label">BVMT<span>:</span></span>
+                                        <span class="rate-code"
+                                            [title]="dataItem.BVMTTaxCode">{{dataItem.BVMTTaxCode}}</span>
+                                    </span>
+                                    <span class="rate-value"
+                                        [title]="'Số quy đổi: ' + ((dataItem.BaseBVMT ?? 0) | number:'1.4')">
+                                        {{ (dataItem.BaseBVMT ?? 0) | number:'1.4'}}
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- COL-7 -->
+                    <kendo-grid-column title="VAT" headerClass="flex-center-col" class="vat-col" [width]="520">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <div class="box-vat">
+                                <div class="vat-in">
+                                    <span class="d-flex">
+                                        <span class="vat-label">Vào<span>:</span></span>
+                                        <span class="vat-code"
+                                            [title]="dataItem.VATInCode">{{dataItem.VATInCode}}</span>
+                                    </span>
+                                    <span class="vat-value" [title]="((dataItem.VATInRate ?? 0) | number:'1.2') + '%'">
+                                        {{ (dataItem.VATInRate ?? 0) | number:'1.2' }}%
+                                    </span>
+                                </div>
+                                <div class="vat-out">
+                                    <span class="vat-label">Ra<span>:</span></span>
+                                    <span class="vat-code" [title]="dataItem.VATOutCode">{{dataItem.VATOutCode}}</span>
+                                    <span class="vat-value" [title]="((dataItem.VATOutRate ?? 0) | number:'1.2') + '%'">
+                                        {{ (dataItem.VATOutRate ?? 0) | number:'1.2' }}%
+                                    </span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </kendo-grid-column>
+
+                    <!-- COL-8 -->
+                    <kendo-grid-column title="Tình trạng" headerClass="flex-end-col" class="status-col" [width]="600">
+                        <ng-template kendoGridCellTemplate let-dataItem>
+                            <span [title]="'Tình trạng: ' + dataItem?.StatusName" class="status-name"
+                                [innerHTML]="dataItem?.StatusName | colorStatus: dataItem?.StatusID"></span>
+                        </ng-template>
+                    </kendo-grid-column>
+                </app-p-kendo-grid>
+            </div>
+        </kendo-drawer-content>
+    </kendo-drawer-container>
+
+    <app-import-popup [uploadEventHandlerCallback]="uploadEventHandlerCallback"></app-import-popup>
+
+</div>

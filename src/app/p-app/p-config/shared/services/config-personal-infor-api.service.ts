@@ -5,7 +5,7 @@ import { DTOUpdate } from 'src/app/p-app/p-ecommerce/shared/dto/DTOUpdate';
 import { DTOPersonalCertificate, DTOPersonalInfo, DTOPersonalContact, DTOPersonalAddress } from 'src/app/p-app/p-hri/shared/dto/DTOPersonalInfo.dto';
 import { DTOResponse, PS_CommonService, Ps_UtilObjectService } from 'src/app/p-lib';
 import { ConfigApiConfigService } from './config-api-config.service';
-
+import { DTOCountry } from '../dto/DTOCountry';
 @Injectable({
   providedIn: 'root'
 })
@@ -269,13 +269,40 @@ export class ConfigPersonalInforApiService {
     });
   }
 
-  GetListCountry() {
-    let that = this;
-    return new Observable<DTOResponse>(obs => {
-      that.api.connect(that.config.getAPIList().GetListCountry.method,
-        that.config.getAPIList().GetListCountry.url,
-        JSON.stringify(toDataSourceRequest({}))).subscribe(
-          (res: any) => {
+    GetListCountry(gridState?: State) {
+        let that = this;
+        return new Observable<DTOResponse>((obs) => {
+            that.api.connect(
+                that.config.getAPIList().GetListCountry.method,
+                that.config.getAPIList().GetListCountry.url,
+                JSON.stringify(toDataSourceRequest(gridState))
+            ).subscribe((res: any) => {
+                obs.next(res);
+                obs.complete();
+            },
+                (errors) => {
+                    obs.error(errors);
+                    obs.complete();
+                }
+            );
+        });
+    }
+
+
+    /**
+     * Cập nhật thông tin quốc gia  
+     * @param DTO DTOCountry
+     * @returns 
+     */
+    UpdateCountry(DTO: DTOCountry) {
+      let that = this;
+      return new Observable<DTOResponse>(obs => {
+        this.api.connect(
+          that.config.getAPIList().UpdateCountry.method,
+          that.config.getAPIList().UpdateCountry.url,
+          JSON.stringify(DTO) 
+        ).subscribe(
+          (res: DTOResponse) => {
             obs.next(res);
             obs.complete();
           }, errors => {
@@ -283,8 +310,8 @@ export class ConfigPersonalInforApiService {
             obs.complete();
           }
         )
-    })
-  }
+      })
+    }
 
   GetListProvince(gridState: State) {
     let that = this;
