@@ -165,9 +165,12 @@
                     Đóng
                 </button>
                 <button kendoButton class="k-button btn-hachi updateBtn" (click)="onUpdateProvince()">
-                    {{selectedProvince?.Code > 0 ? "Cập nhật" : "Tạo mới"}}
+                    {{apiProvinceForm.controls['Code'].value > 0
+                    ? "CẬP NHẬT"
+                    : apiProvinceForm.controls['Code'].value == 0
+                    ? "TẠO MỚI" : ""}}
                 </button>
-                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="openDialogProvince()" *ngIf="selectedProvince?.Code > 0">
+                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="openDialogProvince()" *ngIf="apiProvinceForm.controls['Code'].value > 0">
                     Xóa
                 </button>
                 </div>
