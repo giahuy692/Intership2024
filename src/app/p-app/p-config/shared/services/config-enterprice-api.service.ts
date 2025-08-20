@@ -12,6 +12,8 @@ import { DTORole } from '../dto/DTOConfEnterpriseRole.dto';
 import { DTODepartment } from 'src/app/p-app/p-hri/shared/dto/DTODepartment.dto';
 import { DTOPermission } from '../dto/DTOPermission';
 import { DTOPartner } from 'src/app/p-app/p-purchase/shared/dto/DTOPartner';
+import { DTOProvince } from '../dto/DTOProvince';
+import { DTODistrict } from '../dto/DTODistrict';
 
 @Injectable({
   providedIn: 'root',
@@ -53,7 +55,7 @@ export class ConfigEnterpriceApiService {
   }
 
   // cập nhập vai trò
-  // yêu cầu truyền một Item 
+  // yêu cầu truyền một Item
   UpdateRoles(dto: DTORole){
     let that = this;
 
@@ -78,7 +80,7 @@ export class ConfigEnterpriceApiService {
   }
 
   // Xóa vai trò
-  // yêu cầu truyền một Item 
+  // yêu cầu truyền một Item
   DeleteRoles(dto: DTORole){
     let that = this;
 
@@ -331,7 +333,7 @@ export class ConfigEnterpriceApiService {
     });
   }
 
-  // Api này gốc là ở Hri nhưng ở câu hình doanh nghiệp API GetListModuleAPITree không lấy ra các 
+  // Api này gốc là ở Hri nhưng ở câu hình doanh nghiệp API GetListModuleAPITree không lấy ra các
   // api của module hri thế nên nhưng trang sử dụng api này sẽ bị lỗi -> bổ sung để các UI có thể dùng
   GetListDepartment(dto: DTODepartment) {
 		let that = this;
@@ -352,4 +354,122 @@ export class ConfigEnterpriceApiService {
 
 
   //#endregion
+
+  // Lấy danh sách cây hành chính
+  GetListProvinceTree(state: State) {
+    console.log(state);
+    let that = this;
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().GetListProvinceTree.method,
+          that.config.getAPIList().GetListProvinceTree.url,
+          JSON.stringify(toDataSourceRequest(state))
+        )
+        .subscribe(
+          (res: DTOResponse) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
+
+  // Cập nhật tỉnh
+  UpdateProvince(dto: DTOProvince) {
+    let that = this;
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().UpdateProvince.method,
+          that.config.getAPIList().UpdateProvince.url,
+          JSON.stringify(dto)
+        )
+        .subscribe(
+          (res: any) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
+
+  // Xóa tỉnh
+  DeleteProvince(dto: DTOProvince) {
+    let that = this;
+
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().DeleteProvince.method,
+          that.config.getAPIList().DeleteProvince.url,
+          JSON.stringify(dto)
+        )
+        .subscribe(
+          (res: any) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
+
+  // Cập nhật quận huyện
+  UpdateDistrict(dto: DTODistrict) {
+    let that = this;
+
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().UpdateDistrict.method,
+          that.config.getAPIList().UpdateDistrict.url,
+          JSON.stringify(dto)
+        )
+        .subscribe(
+          (res: any) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
+
+  // Xóa quận huyện
+  DeleteDistrict(dto: DTODistrict) {
+    let that = this;
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().DeleteDistrict.method,
+          that.config.getAPIList().DeleteDistrict.url,
+          JSON.stringify(dto)
+        )
+        .subscribe(
+          (res: any) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
 }

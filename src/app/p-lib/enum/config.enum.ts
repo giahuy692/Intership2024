@@ -97,4 +97,11 @@ export class EnumConfig {
     static UpdateTaxGroup: string;
     static DeleteTaxGroup: string;
     static UpdateTaxGroupStatus: string;
+
+    // QUẢN LÝ DOANH MỤC
+    static GetListProvinceTree: string;
+    static UpdateProvince: string;
+    static DeleteProvince: string;
+    static UpdateDistrict: string;
+    static DeleteDistrict: string;
 }
