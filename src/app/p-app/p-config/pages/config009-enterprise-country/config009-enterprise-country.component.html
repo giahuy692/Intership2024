@@ -27,8 +27,7 @@
 
                             </div>
 
-                            <app-p-textbox class=" VNName" [propName]="'VNName'" formControlName="VNName"
-                              [(ngModel)]="dataCountryForm.VNName" required>
+                            <app-p-textbox class=" VNName" [propName]="'VNName'" formControlName="VNName" required>
                             </app-p-textbox>
                         </kendo-label>
 
@@ -38,8 +37,7 @@
                                     <span class="name">Tên 日本語</span>
                                 </span>
                             </div>
-                            <app-p-textbox class="JPName" [propName]="'JPName'"
-                             formControlName="JPName" [(ngModel)]="dataCountryForm.JPName">
+                            <app-p-textbox class="JPName" [propName]="'JPName'" formControlName="JPName">
                             </app-p-textbox>
                         </kendo-label>
 
@@ -49,8 +47,7 @@
                                     <span class="name">Tên English</span>
                                 </span>
                             </div>
-                            <app-p-textbox class="ENName" [propName]="'ENName'"
-                                [(ngModel)]="dataCountryForm.ENName" formControlName="ENName">
+                            <app-p-textbox class="ENName" [propName]="'ENName'" formControlName="ENName">
                             </app-p-textbox>
                         </kendo-label>
 
@@ -63,8 +60,7 @@
 
                             </div>
 
-                            <app-p-textbox class="VNOrigin" [propName]="'VNOrigin'"
-                             formControlName="VNOrigin" [(ngModel)]="dataCountryForm.VNOrigin" required>
+                            <app-p-textbox class="VNOrigin" [propName]="'VNOrigin'" formControlName="VNOrigin" required>
                             </app-p-textbox>
                         </kendo-label>
 
@@ -77,8 +73,8 @@
 
                             </div>
 
-                            <app-p-textbox class="CountryID" [propName]="'CountryID'"
-                             formControlName="CountryID" [(ngModel)]="dataCountryForm.CountryID" [disabled]="isAction === 1" required>
+                            <app-p-textbox class="CountryID" [propName]="'CountryID'" formControlName="CountryID"
+                                [disabled]="isAction === 1" required>
                             </app-p-textbox>
                         </kendo-label>
 
@@ -90,8 +86,7 @@
 
                             </div>
 
-                            <app-p-textbox class="OrderBy" [propName]="'OrderBy'"
-                             formControlName="OrderBy" [(ngModel)]="dataCountryForm.OrderBy">
+                            <app-p-textbox class="OrderBy" [propName]="'OrderBy'" formControlName="OrderBy">
                             </app-p-textbox>
                         </kendo-label>
 
@@ -103,9 +98,12 @@
                             ĐÓNG
                         </button>
                         <button kendoButton class="btn-hachi hachi-primary" (click)="onUpdateCountry()">
-                            {{isAction == 0 ? "TẠO MỚI" : dataCountryForm.IsSystem ? "CẬP NHẬT HỆ THỐNG" : "CẬP NHẬT"}}
+                            {{isAction == 0 ? "TẠO MỚI" : "CẬP NHẬT"}}
                         </button>
-                        <button *ngIf="isAction === 1" kendoButton class="btn-hachi hachi-danger">
+                        <button 
+                        *ngIf="isAction === 1" 
+                        kendoButton class="btn-hachi hachi-danger"
+                        (click)="onActionDropdownClick({ Link: 'delete', Code: 'trash', Name: 'Xóa', Actived: true }, dataCountry)">
                             XOÁ
                         </button>
                     </div>
@@ -164,6 +162,20 @@
 
             </div>
         </kendo-drawer-content>
+
+        <!-- START DIALOG DELETE -->
+        <app-p-kendo-dialog *ngIf="opened" [title]="'XÓA QUỐC GIA'" (close)="onCloseDialog()"
+            (handleButton)="onDeleteDialog('yes')" [iconButton]="'delete'" [dialogType]="1"
+            [iconTitle]="'k-icon k-i-warning'">
+            <div class="text-center">
+                Bạn có chắc chắn muốn xóa Quốc Gia <br> <strong>{{dataCountry.VNName }}</strong>
+                <p class="content-sub">
+                   Quốc Gia bị xóa sẽ <span style="color: red">KHÔNG</span> thể khôi phục lại.
+                </p>
+            </div>
+        </app-p-kendo-dialog>
+        <!-- END DIALOG DELETE -->
+
     </kendo-drawer-container>
 </div>
 <!-- END CONTENT -->
