@@ -16,6 +16,7 @@ import { ConfigProductLabelComponent } from './shared/components/config-product-
 import { ConfigWebDisplayComponent } from './shared/components/config-web-display/config-web-display.component';
 import { ConfigHistoryPopupComponent } from './shared/components/config-history-popup/config-history-popup.component';
 import { Config009EnterpriseCountryComponent } from './pages/config009-enterprise-country/config009-enterprise-country.component';
+import { Config010EnterpriseAdminunitComponent } from './pages/config010-enterprise-adminunit/config010-enterprise-adminunit.component';
 
 
 
@@ -34,6 +35,7 @@ import { Config009EnterpriseCountryComponent } from './pages/config009-enterpris
     ConfigWebDisplayComponent,
     ConfigHistoryPopupComponent,
     Config009EnterpriseCountryComponent,
+    Config010EnterpriseAdminunitComponent
   ],
   imports: [
     PConfigRoutingModule,
