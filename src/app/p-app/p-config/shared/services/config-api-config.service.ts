@@ -294,7 +294,7 @@ export class ConfigApiConfigService {
 
 			DeleteCountry: new DTOAPI({
 				method: ApiMethodType.post,
-				url: EnumConfig.GetListCountry
+				url: EnumConfig.DeleteCountry
 			}),
 
 			UpdateCountry: new DTOAPI({

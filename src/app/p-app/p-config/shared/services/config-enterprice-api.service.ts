@@ -12,6 +12,7 @@ import { DTORole } from '../dto/DTOConfEnterpriseRole.dto';
 import { DTODepartment } from 'src/app/p-app/p-hri/shared/dto/DTODepartment.dto';
 import { DTOPermission } from '../dto/DTOPermission';
 import { DTOPartner } from 'src/app/p-app/p-purchase/shared/dto/DTOPartner';
+import { DTOCountry } from '../dto/DTOCountry';
 
 @Injectable({
   providedIn: 'root',
@@ -22,11 +23,11 @@ export class ConfigEnterpriceApiService {
     public config: ConfigApiConfigService,
     public cacheService: Ps_UtilCacheService,
     public layoutConfig: LayoutApiConfigService
-  ) {}
+  ) { }
 
   // lấy danh sách Vai trò
   // yêu cầu truyền filter kendo và keywword
-  GetListRoles(gridState: State, keyword: string){
+  GetListRoles(gridState: State, keyword: string) {
     let that = this;
     const ListHamperRequestParam = {
       Filter: toDataSourceRequest(gridState),
@@ -54,7 +55,7 @@ export class ConfigEnterpriceApiService {
 
   // cập nhập vai trò
   // yêu cầu truyền một Item 
-  UpdateRoles(dto: DTORole){
+  UpdateRoles(dto: DTORole) {
     let that = this;
 
     return new Observable<DTOResponse>((obs) => {
@@ -79,7 +80,7 @@ export class ConfigEnterpriceApiService {
 
   // Xóa vai trò
   // yêu cầu truyền một Item 
-  DeleteRoles(dto: DTORole){
+  DeleteRoles(dto: DTORole) {
     let that = this;
 
     return new Observable<DTOResponse>((obs) => {
@@ -242,7 +243,7 @@ export class ConfigEnterpriceApiService {
     });
   }
 
-  GetListPartnerDropdown(dto:DTOPartner) {
+  GetListPartnerDropdown(dto: DTOPartner) {
     let that = this;
     return new Observable<DTOResponse>((obs) => {
       that.api
@@ -265,7 +266,7 @@ export class ConfigEnterpriceApiService {
   }
 
   //phải có Code,InvNo
-  GetPartner(dto:DTOPartner) {
+  GetPartner(dto: DTOPartner) {
     let that = this;
     return new Observable<DTOResponse>((obs) => {
       that.api
@@ -287,7 +288,7 @@ export class ConfigEnterpriceApiService {
     });
   }
 
-  UpdatePartner(dto:DTOPartner) {
+  UpdatePartner(dto: DTOPartner) {
     let that = this;
     return new Observable<DTOResponse>((obs) => {
       that.api
@@ -309,7 +310,7 @@ export class ConfigEnterpriceApiService {
     });
   }
 
-  DeletePartner(dto:DTOPartner) {
+  DeletePartner(dto: DTOPartner) {
     let that = this;
     return new Observable<DTOResponse>((obs) => {
       that.api
@@ -334,22 +335,91 @@ export class ConfigEnterpriceApiService {
   // Api này gốc là ở Hri nhưng ở câu hình doanh nghiệp API GetListModuleAPITree không lấy ra các 
   // api của module hri thế nên nhưng trang sử dụng api này sẽ bị lỗi -> bổ sung để các UI có thể dùng
   GetListDepartment(dto: DTODepartment) {
-		let that = this;
-		return new Observable<DTODepartment[]>(obs => {
-			that.api.connect(that.config.getAPIList().GetListDepartment.method,
-				that.config.getAPIList().GetListDepartment.url,
-				JSON.stringify(dto)).subscribe(
-					(res: DTODepartment[]) => {
-						obs.next(res);
-						obs.complete();
-					}, errors => {
-						obs.error(errors);
-						obs.complete();
-					}
-				)
-		});
-	}
+    let that = this;
+    return new Observable<DTODepartment[]>(obs => {
+      that.api.connect(that.config.getAPIList().GetListDepartment.method,
+        that.config.getAPIList().GetListDepartment.url,
+        JSON.stringify(dto)).subscribe(
+          (res: DTODepartment[]) => {
+            obs.next(res);
+            obs.complete();
+          }, errors => {
+            obs.error(errors);
+            obs.complete();
+          }
+        )
+    });
+  }
 
 
   //#endregion
+
+  GetListCountry(gridState?: State) {
+    let that = this;
+    return new Observable<DTOResponse>((obs) => {
+      that.api.connect(
+        that.config.getAPIList().GetListCountry.method,
+        that.config.getAPIList().GetListCountry.url,
+        JSON.stringify(toDataSourceRequest(gridState))
+      ).subscribe((res: any) => {
+        obs.next(res);
+        obs.complete();
+      },
+        (errors) => {
+          obs.error(errors);
+          obs.complete();
+        }
+      );
+    });
+  }
+
+
+  /**
+   * Cập nhật thông tin quốc gia  
+   * @param DTO DTOCountry
+   * @returns 
+   */
+  UpdateCountry(DTO: DTOCountry) {
+    let that = this;
+    return new Observable<DTOResponse>(obs => {
+      this.api.connect(
+        that.config.getAPIList().UpdateCountry.method,
+        that.config.getAPIList().UpdateCountry.url,
+        JSON.stringify(DTO)
+      ).subscribe(
+        (res: DTOResponse) => {
+          obs.next(res);
+          obs.complete();
+        }, errors => {
+          obs.error(errors);
+          obs.complete();
+        }
+      )
+    })
+  }
+
+  /**
+       * Xóa khai báo hải quan
+       * @param DTO DTOCountry
+       * @returns 
+       */
+      DeleteCountry(DTO: DTOCountry[]) {
+          let that = this;
+          return new Observable<DTOResponse>(obs => {
+              this.api.connect(
+                  that.config.getAPIList().DeleteCountry.method,
+                  that.config.getAPIList().DeleteCountry.url,
+                  JSON.stringify(DTO)
+              ).subscribe(
+                  (res: DTOResponse) => {
+                      obs.next(res);
+                      obs.complete();
+                  }, errors => {
+                      obs.error(errors);
+                      obs.complete();
+                  }
+              )
+          })
+      }
+
 }
