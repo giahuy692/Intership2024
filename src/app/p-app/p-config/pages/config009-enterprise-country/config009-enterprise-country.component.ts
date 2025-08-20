@@ -10,18 +10,15 @@ import { DTOLSProvince } from 'src/app/p-app/p-ecommerce/shared/dto/DTOLSProvinc
 import { DTOLSWard } from 'src/app/p-app/p-ecommerce/shared/dto/DTOLSWard.dto';
 import { DTODataPermission } from '../../shared/dto/DTODataPermission';
 import { DTOActionPermission } from 'src/app/p-app/p-layout/dto/DTOActionPermission';
-import { DeveloperAPIService } from 'src/app/p-app/p-developer/shared/services/developer-api.service';
 import { LayoutService } from 'src/app/p-app/p-layout/services/layout.service';
-import { ConfigPersonalInforApiService } from '../../shared/services/config-personal-infor-api.service';
-import { MarNewsProductAPIService } from 'src/app/p-app/p-marketing/shared/services/marnewsproduct-api.service';
 import { PS_HelperMenuService } from 'src/app/p-app/p-layout/services/p-menu.helper.service';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { Ps_UtilObjectService } from 'src/app/p-lib';
 import { DTOCFFile } from 'src/app/p-app/p-layout/dto/DTOCFFolder.dto';
 import { MenuDataItem } from 'src/app/p-app/p-layout/dto/menu-data-item.dto';
 import { DTOPermission } from 'src/app/p-app/p-layout/dto/DTOPermission';
 import { DTOCountry } from '../../shared/dto/DTOCountry';
-import { ConfigApiConfigService } from '../../shared/services/config-api-config.service';
+import { ConfigEnterpriceApiService } from '../../shared/services/config-enterprice-api.service';
 
 @Component({
   selector: 'app-config009-enterprise-country',
@@ -145,62 +142,41 @@ export class Config009EnterpriseCountryComponent implements OnInit {
 
   constructor(
     public layoutService: LayoutService,
-    public apiServiceConf: ConfigPersonalInforApiService,
+    public apiServiceConf: ConfigEnterpriceApiService,
     private changeDetector: ChangeDetectorRef,
     public menuService: PS_HelperMenuService,
     private formBuilder: FormBuilder,
-    private countryServiceAPI: ConfigApiConfigService, 
 
   ) {
     this.loadFormData()
   }
 
   ngOnInit(): void {
-    // let that = this
-    // // phân quyền  
-    // this.menuService.changePermission().pipe(takeUntil(this.ngUnsubscribe$)).subscribe((res: DTOPermission) => {
-    //   if (Ps_UtilObjectService.hasValue(res) && that.justLoadedPer) {
-    //     that.actionPerm = distinct(res.ActionPermission, 'ActionType');
-    //     that.isAllPers = that.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
-    //     that.isCanCreate = that.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
-    //     that.isCanApproved = that.actionPerm.findIndex((s) => s.ActionType == 3) > -1 || false;
-
-    //     that.justLoadedPer = false;
-    //   }
-    // });
-
-    // this.menuService.changePermissionAPI().pipe(takeUntil(this.ngUnsubscribe$)).subscribe((res) => {
-    //   if (Ps_UtilObjectService.hasValue(res) && this.justLoadedChangePermissionAPI) {
-    //     this.justLoadedChangePermissionAPI = false
-    //     this.getApi()
-    //   }
-    // })
-
     // Check permission
-        let changePermissionSst = this.menuService.changePermission().pipe(takeUntil(this.destroy)).subscribe((res: DTOPermission) => {
-          if (Ps_UtilObjectService.hasValue(res) && this.justLoaded) {
-            this.justLoaded = false;
-            this.actionPerm = distinct(res.ActionPermission, 'ActionType');
-    
-            this.isMaster = this.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
-            this.isCreator = this.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
-            this.isApprover = this.actionPerm.findIndex((s) => s.ActionType == 3) > -1 || false;
-    
-            this.M_A = this.isMaster || this.isApprover;
-            this.M_C = this.isMaster || this.isCreator;
-          }
-        })
-    
-        let permissionAPI = this.menuService.changePermissionAPI().subscribe((res) => {
-          if (Ps_UtilObjectService.hasValue(res) && this.justLoadedChangePermissionAPI) {
-            this.justLoadedChangePermissionAPI = false
-            this.onLoadDefault();
-          }
-        })
-        this.arrUnsubscribe.push(changePermissionSst, permissionAPI);
+    let changePermissionSst = this.menuService.changePermission().pipe(takeUntil(this.destroy)).subscribe((res: DTOPermission) => {
+      if (Ps_UtilObjectService.hasValue(res) && this.justLoaded) {
+        this.justLoaded = false;
+        this.actionPerm = distinct(res.ActionPermission, 'ActionType');
 
-        this.onActionDropdownClickCallback = this.onActionDropdownClick.bind(this)
-        this.getActionDropdownCallback = this.getActionDropdown.bind(this)
+        this.isMaster = this.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
+        this.isCreator = this.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
+        this.isApprover = this.actionPerm.findIndex((s) => s.ActionType == 3) > -1 || false;
+
+        this.M_A = this.isMaster || this.isApprover;
+        this.M_C = this.isMaster || this.isCreator;
+      }
+    })
+
+    let permissionAPI = this.menuService.changePermissionAPI().subscribe((res) => {
+      if (Ps_UtilObjectService.hasValue(res) && this.justLoadedChangePermissionAPI) {
+        this.justLoadedChangePermissionAPI = false
+        this.onLoadDefault();
+      }
+    })
+    this.arrUnsubscribe.push(changePermissionSst, permissionAPI);
+
+    this.onActionDropdownClickCallback = this.onActionDropdownClick.bind(this)
+    this.getActionDropdownCallback = this.getActionDropdown.bind(this)
   }
 
   //dùng này để tránh lỗi ng0100
@@ -251,46 +227,46 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     this.filterStatus.filters = [];
 
     if (Ps_UtilObjectService.hasListValue(this.filterSearch.filters)) {
-        // if (this.tempSearch[0].value != '') {
-        this.gridState.filter.filters.push(this.filterSearch);
-        console.log(this.gridState.filter.filters);
+      // if (this.tempSearch[0].value != '') {
+      this.gridState.filter.filters.push(this.filterSearch);
+      console.log(this.gridState.filter.filters);
     }
   }
 
   /**
   * Hàm load dữ liệu mặc định
   */
-    onLoadDefault() {
-  
-      this.onLoadFilter();
-      this.APIGetListCountry(this.gridState);
-  
-      this.CountryForm = this.onLoadForm();
-      this.CountryForm.patchValue(new DTOCountry);
-    }
+  onLoadDefault() {
 
-     /**
-     * Load form
-     */
-      onLoadForm(): UntypedFormGroup {
-        const form = this.formBuilder.group({});
-        const dto = new DTOCountry();
-    
-        // Lặp qua các trường trong DTO và gán giá trị mặc định cho form
-        Object.keys(dto).forEach((key) => {
-          const value = dto[key];  // Lấy giá trị từ DTO
-    
-          // Gán giá trị mặc định vào form control
-          form.addControl(
-            key,
-            this.formBuilder.control(value, key === 'Code' ? Validators.required : null)
-          );
-        });
-    
-        return form;
-      }
+    this.onLoadFilter();
+    this.APIGetListCountry(this.gridState);
 
-  //#region Hàm cập nhật dữ liệu mới
+    this.CountryForm = this.onLoadForm();
+    this.CountryForm.patchValue(new DTOCountry);
+  }
+
+  /**
+  * Load form
+  */
+  onLoadForm(): UntypedFormGroup {
+    const form = this.formBuilder.group({});
+    const dto = new DTOCountry();
+
+    // Lặp qua các trường trong DTO và gán giá trị mặc định cho form
+    Object.keys(dto).forEach((key) => {
+      const value = dto[key];  // Lấy giá trị từ DTO
+
+      // Gán giá trị mặc định vào form control
+      form.addControl(
+        key,
+        this.formBuilder.control(value, key === 'Code' ? Validators.required : null)
+      );
+    });
+
+    return form;
+  }
+
+  //#region Hàm cập nhật/tạo mới dữ liệu
   onUpdateCountry() {
     if (!Ps_UtilObjectService.hasValueString(this.CountryForm.getRawValue().VNName)) {
       return this.layoutService.onWarning('Vui lòng nhập Tên Tiếng Việt');
@@ -305,38 +281,14 @@ export class Config009EnterpriseCountryComponent implements OnInit {
       this.APIUpdateCountry();
     }
   }
-
-
-  APIUpdateCountry() {
-    this.isLoading = true;
-    let a = this.apiServiceConf.UpdateCountry(this.CountryForm.getRawValue()).subscribe(res => {
-      if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
-        this.layoutService.onSuccess(this.CountryForm.getRawValue().Code != 0 ? 'Cập nhật thành công' : 'Tạo mới thành công');
-        this.handleCloseDrawer();
-      } else {
-        this.layoutService.onError(`Đã xảy ra lỗi khi ${this.CountryForm.getRawValue().Code != 0 ? 'cập nhật khai quan' : 'tạo mới khai quan'}: ${res.ErrorString}`)
-      }
-      this.isLoading = false;
-      this.APIGetListCountry(this.gridState);
-    })
-    this.arrUnsubscribe.push(a);
-    
-  }
   //#endregion
 
-   /**
-   * Đóng drawer
-   */
+  /**
+  * Đóng drawer
+  */
   handleCloseDrawer(): void {
     this.isOpenDrawer = false;
     this.CountryForm.reset();
-  }
-
-  // =========================== CAll ALL API ===========================
-  getApi() {
-    // this.APIGetListCompany(this.gridState)
-    // this.APIGetNationality()
-    this.APIGetListCountry(this.gridState);
   }
 
   @ViewChild('search', { static: false }) searchComponent: any;
@@ -350,12 +302,29 @@ export class Config009EnterpriseCountryComponent implements OnInit {
 
   //=========================== DRAWER ===========================
   onOpendDrawer(type: number, data: DTOCountry = new DTOCountry()) {
-    if (type == 0 || type == 1) {
-      this.onActionEdit(type, data)
-      this.isOpenDrawer = true
-      this.isautoCollapse = false
-    } else if (type == 3) {
-      this.isOpenDrawer = false
+    if (type === 3) {
+      this.handleCloseDrawer();
+      return;
+    }
+
+    this.isOpenDrawer = true;
+
+    if (type === 0) {
+      this.isAction = 0;
+      this.CountryForm.reset(this.formDataDefault);
+      this.CountryForm.get('CountryID')?.enable();
+    } else if (type === 1 && Ps_UtilObjectService.hasValue(data)) {
+      this.isAction = 1;
+      this.CountryForm.reset({
+        Code: data.Code ?? 0,
+        CountryID: data.CountryID ?? '',
+        VNName: data.VNName ?? '',
+        JPName: data.JPName ?? '',
+        ENName: data.ENName ?? '',
+        VNOrigin: data.VNOrigin ?? '',
+        OrderBy: data.OrderBy ?? 1,
+      });
+      this.CountryForm.get('CountryID')?.disable();
     }
 
   }
@@ -413,128 +382,6 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   }
   //#endregion
 
-  //#region  xử lý gọi api cho dropdown country, province, district
-  // onFilterAddress(code: number, field: string) {
-  //   this.gridStateCPDW.filter.filters = []
-  //   if (Ps_UtilObjectService.hasValue(code)) { // kiểm tra code có null không
-  //     if (field == 'Country') {
-  //       this.gridStateCPDW.filter.filters.push(({ field: 'Country', operator: 'eq', value: code }))
-  //       // this.APIGetListProvince(this.gridStateCPDW)
-  //       this.notSelectedProvince = false;
-  //       this.dataCountryForm.Country = code
-
-  //     }
-  //     else if (field == 'Province') {
-  //       this.gridStateCPDW.filter.filters.push(({ field: 'Province', operator: 'eq', value: code }))
-  //       this.APIGetListDistrict(this.gridStateCPDW)
-  //       this.notSelectedDistrict = false;
-  //       this.dataCountryForm.Province = code
-  //     }
-  //     else if (field == 'District') {
-  //       this.gridStateCPDW.filter.filters.push(({ field: 'District', operator: 'eq', value: code }))
-  //       this.APIGetListWard(this.gridStateCPDW)
-  //       this.notSelectedWard = false;
-  //       this.dataCountryForm.District = code
-  //     }
-  //     else if (field == 'Ward') {
-  //       this.dataCountryForm.Ward = code
-  //     }
-  //   }
-  //   else {  //trường hợp chọn dropdown value null
-  //     if (code == null && field == 'Country') {
-  //       this.notSelectedProvince = true;
-  //       this.notSelectedDistrict = true;
-  //       this.notSelectedWard = true;
-  //       this.dataCountryForm.Country = code
-  //       this.dataCountryForm.Province = code
-  //       this.dataCountryForm.District = code
-  //       this.dataCountryForm.Ward = code
-  //     }
-  //     else if (code == null && field == 'Province') {
-  //       this.notSelectedDistrict = true;
-  //       this.notSelectedWard = true;
-  //       this.dataCountryForm.Province = code
-  //       this.dataCountryForm.District = code
-  //       this.dataCountryForm.Ward = code
-  //     }
-  //     else if (code == null && field == 'District') {
-  //       this.notSelectedWard = true;
-  //       this.dataCountryForm.District = code
-  //       this.dataCountryForm.Ward = code
-
-  //     }
-
-  //   }
-  // }
-  // //#endregion
-
-  //#region Xử lý khi giá trị dropdown thay đổi country, province, district
-  selectionDropdownChange(e: any, field: string): void {
-    // this.onFilterAddress(e, field)
-
-    // dropdown thay đổi thì reset lại giá trị, trường hợp chọn giá trị khác
-    if (field == 'Country') {
-      // this.notSelectedDistrict = true;
-      // this.notSelectedWard = true;
-      // this.ProvinceRef.reset()
-      // this.DistrictRef.reset()
-      // this.WardRef.reset()
-    } else if (field == 'Province') {
-      // this.notSelectedWard = true;
-      // this.DistrictRef.reset()
-      // this.WardRef.reset()
-    }
-    else if (field == 'District') {
-      // this.WardRef.reset()
-    }
-  }
-  //#endregion
-
-  //#region xử lý button Thêm/cập nhật form tới api 
-  // onUpdateAdd() {
-  //   this.dataCountryForm.VNName = this.dataCountryForm.VNName.trim()
-  //   this.dataCountryForm.Bieft = this.dataCountryForm.Bieft.trim()
-  //   const sel = this.listNationality.find(x => x.Code === this.dataCountryForm.Country);
-  //   this.dataCountryForm.CountryName = sel?.VNName ?? '';
-
-  //   if (this.dataCountryForm.Code == 0 && this.checkCode(this.dataCountryForm.CompanyID)) { //kiển tra mã bị trùng
-  //     this.layoutService.onWarning(`Mã công ty đã tồn tại`)
-  //   }
-  //   else {
-  //     if (
-  //       Ps_UtilObjectService.hasValueString(this.dataCountryForm.VNName) &&
-  //       Ps_UtilObjectService.hasValueString(this.dataCountryForm.Bieft) &&
-  //       Ps_UtilObjectService.hasValueString(this.dataCountryForm.URLLogo) &&
-  //       Ps_UtilObjectService.hasValueString(this.dataCountryForm.CompanyID)
-  //     ) {
-  //       this.expandedRight = this.flagSuccess === true;
-  //     }
-  //     else {
-  //       const fieldsToCheck = [
-  //         { name: 'VNName', message: 'nhập tên công ty ' },
-  //         { name: 'Bieft', message: 'nhập tên viết tắt' },
-  //         { name: 'URLLogo', message: 'chọn hình ảnh Logo' },
-  //         { name: 'CompanyID', message: 'nhập mã công ty' },
-  //       ];
-
-  //       fieldsToCheck.forEach(field => {
-  //         if (!Ps_UtilObjectService.hasValueString(this.dataCountryForm[field.name])) {
-  //           this.layoutService.onWarning(`Vui lòng ${field.message}`)
-  //         }
-  //       });
-  //     }
-  //   }
-  // }
-  // //#endregion 
-
-  //hàm kiểm tra trùng mã công ty
-  checkCode(dataCode: any) {
-    let check = this.dataCompany_System.filter(res => dataCode == res.CompanyID)
-    if (Ps_UtilObjectService.hasListValue(check)) {
-      return true
-    }
-  }
-
   //#region search trong dropdown
   handleFilterNational(value: string) {
     const v = (value ?? '').toLowerCase();
@@ -553,15 +400,33 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     this.opened = false;
   }
 
-  // onDeleteDialog(status: string): void {
-  //   if (status == 'yes') {
+  onDeleteDialog(status: string): void {
+    console.log('%c[onDeleteDialog] fired', 'color:#0aa;font-weight:bold;', { status, time: new Date().toISOString() });
 
-  //     this.APIDeleteCompany(this.dataCompany);
-  //     this.opened = false;
-  //   } else {
-  //     this.opened = false;
-  //   }
-  // }
+    if (status !== 'yes') {
+      console.log('[onDeleteDialog] user canceled → close dialog');
+      this.opened = false;
+      return;
+    }
+
+    console.log('[onDeleteDialog] current dataCountry =', this.dataCountry);
+    const code = this.dataCountry?.Code
+
+    console.log('[onDeleteDialog] extracted code =', code);
+    if (!Ps_UtilObjectService.hasValue(code)) {
+      console.warn('[onDeleteDialog] missing code → abort delete');
+      this.layoutService.onWarning('Không xoá được Quốc gia');
+      this.opened = false;
+      return;
+    }
+
+    const payload: DTOCountry[] = [{ Code: code } as DTOCountry];
+    console.log('[onDeleteDialog] calling APIDeleteCountry with payload =', payload);
+    this.APIDeleteCountry(payload);
+    this.opened = false;
+
+
+  }
   //#endregion
 
   // =========================== DROPDOWN ===========================
@@ -583,6 +448,12 @@ export class Config009EnterpriseCountryComponent implements OnInit {
       }
     }
   }
+
+  // =========================== CAll ALL API ===========================
+  getApi() {
+    this.APIGetListCountry(this.gridState);
+  }
+
   // =========================== API ===========================
 
   //#region API GET LIST
@@ -612,6 +483,83 @@ export class Config009EnterpriseCountryComponent implements OnInit {
       );
 
     this.arrUnsubscribe.push(this.GetListCountrySst);
+  }
+  //#endregion
+
+  //#region API UpdateCountry
+  APIUpdateCountry() {
+    this.isLoading = true;
+    let a = this.apiServiceConf.UpdateCountry(this.CountryForm.getRawValue()).subscribe(res => {
+      if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
+        this.layoutService.onSuccess(this.CountryForm.getRawValue().Code != 0 ? 'Cập nhật thành công' : 'Tạo mới thành công');
+        this.handleCloseDrawer();
+      } else {
+        this.layoutService.onError(`Đã xảy ra lỗi khi ${this.CountryForm.getRawValue().Code != 0 ? 'cập nhật quốc gia' : 'tạo mới quốc gia'}: ${res.ErrorString}`)
+      }
+      this.isLoading = false;
+      this.APIGetListCountry(this.gridState);
+    })
+    this.arrUnsubscribe.push(a);
+
+  }
+  //#endregion
+
+  //#region
+  APIDeleteCountry(itemDelete: DTOCountry[] = []) {
+    console.log('[APIDeleteCountry] ENTER', { itemDelete, dataCountry: this.dataCountry });
+
+    const def = this.apiServiceConf.config.getAPIList().DeleteCountry;
+
+    const payload: DTOCountry[] =
+      Array.isArray(itemDelete) && itemDelete.length
+        ? itemDelete.map(x => ({ Code: x.Code } as DTOCountry)) // chỉ giữ field cần thiết
+        : (this.dataCountry?.Code
+          ? [{ Code: this.dataCountry.Code } as DTOCountry]
+          : []);
+
+    console.log('[DeleteCountry DEF]', def.method, def.url, 'payload =', payload);
+
+    if (!payload.length) {
+      this.layoutService.onWarning('Không tìm thấy Quốc gia để xoá');
+      return;
+    }
+
+    this.isLoading = true;
+
+    this.apiServiceConf.DeleteCountry(payload)
+      .pipe(
+        takeUntil(this.ngUnsubscribe$),
+        finalize(() => {
+          this.isLoading = false;
+          this.APIGetListCountry({ ...this.gridState });
+        })
+      )
+      .subscribe({
+        next: (res) => {
+          console.log('[APIDeleteCountry] res =', res);
+          const affected =
+            typeof res?.ObjectReturn === 'number' ? res.ObjectReturn :
+              typeof res?.ObjectReturn === 'boolean' ? (res.ObjectReturn ? 1 : 0) :
+                typeof res?.ObjectReturn === 'object' && res?.ObjectReturn?.AffectRows ? res.ObjectReturn.AffectRows : undefined;
+
+          if (res?.StatusCode === 0) {
+            this.layoutService.onSuccess('Xóa quốc gia thành công');
+            this.handleCloseDrawer();
+
+            // Cập nhật UI ngay 
+            if (Array.isArray(this.gridCountries)) {
+              const toDelete = new Set(payload.map(p => p.Code));
+              this.gridCountries = this.gridCountries.filter(x => !toDelete.has(x.Code));
+            }
+          } else {
+            this.layoutService.onError(`Xoá không thành công: ${res?.ErrorString ?? 'không có bản ghi bị ảnh hưởng'}`);
+          }
+        },
+        error: (err) => {
+          const msg = err?.error?.ErrorString ?? err?.message ?? String(err);
+          this.layoutService.onError(`Đã xảy ra lỗi khi xóa quốc gia: ${msg}`);
+        }
+      });
   }
   //#endregion
 
@@ -655,90 +603,14 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   //   this.arrUnsubscribe.push(this.DeleteCompany_sst);
   // }
   //#endregion
-  //#region API DELETE
-  // APIDeleteCountry(dataDelete: DTOCountry) {
 
-  //   this.DeleteCountry_sst = this.apiService.DeleteCountry(dataDelete).pipe(takeUntil(this.ngUnsubscribe$)).subscribe(
-  //       (res) => {
-  //         this.loading = false;
-  //         if (
-  //           Ps_UtilObjectService.hasValue(res) &&
-  //           Ps_UtilObjectService.hasValue(res.ObjectReturn) &&
-  //           res.StatusCode == 0
-  //         ) {
-  //           this.layoutService.onSuccess(`Xóa ${tx} thành công`);
-  //         } else {
-  //           const err = res?.ErrorString ?? 'Không xác định';
-  //           this.layoutService.onError(`Đã xảy ra lỗi khi xóa ${tx}: ${err}`);
-  //         }
-  //         this.APIGetListCountry(this.gridState);
-  //       },
-  //       (error) => {
-  //         this.loading = false;
-  //         this.layoutService.onError(`Đã xảy ra lỗi khi xóa ${tx}: ${error}`);
-  //         this.APIGetListCountry(this.gridState);
-  //       }
-  //     );
 
-  //   this.arrUnsubscribe.push(this.DeleteCountry_sst);
-  // }
-  //#endregion
-
-  //#region API UPDATE
-  // APIUpdateCompany(dataUpdate: DTOCompany) {
-  //   this.flagSuccess = false
-  //   const tx = dataUpdate.IsSystem === true ? 'Hệ thống' : 'Công ty'
-  //   const txAdd_Up = dataUpdate.Code === 0 ? 'Thêm mới' : 'Cập nhật'
-  //   this.UpdateCompany_sst = this.apiService.UpdateCompany(dataUpdate).pipe(takeUntil(this.ngUnsubscribe$)).subscribe(
-  //     (res) => {
-  //       if (Ps_UtilObjectService.hasValue(res) && Ps_UtilObjectService.hasValue(res.ObjectReturn) && res.StatusCode == 0) {
-  //         this.layoutService.onSuccess(`${txAdd_Up} ${tx} thành công`)
-  //         this.flagSuccess = true
-  //       }
-  //       else {
-  //         this.layoutService.onError(`Đã xảy ra lỗi khi cập nhật ${tx}: ${res.ErrorString}`)
-  //         this.flagSuccess = false
-  //       }
-  //       this.APIGetListCompany(this.gridState)
-  //     },
-  //     (error) => {
-  //       this.layoutService.onError(`Đã xảy ra lỗi khi cập nhật ${tx}: ${error}`)
-  //       this.APIGetListCompany(this.gridState)
-  //       this.flagSuccess = false
-  //     }
-  //   )
-
-  //   this.arrUnsubscribe.push(this.UpdateCompany_sst);
-  // }
-  //#endregion
-
-  //#region API GET NATIONALITY
-  APIGetNationality() {
-    this.GetNationality_sst = this.apiServiceConf.GetListCountry()
-      .pipe(takeUntil(this.ngUnsubscribe$))
-      .subscribe((res: any) => {
-        if (Ps_UtilObjectService.hasValue(res) && Ps_UtilObjectService.hasValue(res.ObjectReturn) && res.StatusCode == 0) {
-          const data: DTOCountry[] = res.ObjectReturn.Data as DTOCountry[];
-          this.listNationality = data;
-          this.listNationalityFilter = data;
-        } else {
-          this.layoutService.onError(`Đã xảy ra lỗi khi lấy Danh sách Quốc gia: ${res.ErrorString}`);
-        }
-      }, (err) => {
-        this.layoutService.onError(`Đã xảy ra lỗi khi lấy Danh sách Quốc gia: ${err}`);
-      });
-  }
-  //#endregion
 
   //  =========================== ngOnDestroy ===========================
   ngOnDestroy(): void {
     this.arrUnsubscribe.forEach((s) => {
       s?.unsubscribe();
     });
-
     this.ngUnsubscribe$.unsubscribe();
-
   }
-
-
 }

@@ -288,31 +288,6 @@ export class ConfigPersonalInforApiService {
         });
     }
 
-
-    /**
-     * Cập nhật thông tin quốc gia  
-     * @param DTO DTOCountry
-     * @returns 
-     */
-    UpdateCountry(DTO: DTOCountry) {
-      let that = this;
-      return new Observable<DTOResponse>(obs => {
-        this.api.connect(
-          that.config.getAPIList().UpdateCountry.method,
-          that.config.getAPIList().UpdateCountry.url,
-          JSON.stringify(DTO) 
-        ).subscribe(
-          (res: DTOResponse) => {
-            obs.next(res);
-            obs.complete();
-          }, errors => {
-            obs.error(errors);
-            obs.complete();
-          }
-        )
-      })
-    }
-
   GetListProvince(gridState: State) {
     let that = this;
     return new Observable<DTOResponse>(obs => {
