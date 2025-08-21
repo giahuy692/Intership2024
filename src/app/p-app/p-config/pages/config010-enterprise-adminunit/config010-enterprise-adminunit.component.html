@@ -29,7 +29,7 @@
                 <!-- Button Thêm mới Tỉnh Thành, Phường Xã -->
                 <div class="nav-btn nav-crud">
                     <button kendoButton class="k-button onAddBtn"
-                            [icon]="'plus'"
+                            imageUrl="assets/img/icon/icon_city.svg"
                             (click)="onAddNewProvince()"
                             *ngIf="!isDistrictSelected">
                         THÊM MỚI TỈNH THÀNH
@@ -37,13 +37,13 @@
 
                     <ng-container *ngIf="isDistrictSelected">
                         <button kendoButton class="k-button onAddBtn"
-                                [icon]="'plus'"
+                                imageUrl="assets/img/icon/icon_city.svg"
                                 (click)="onAddNewProvince()">
                             THÊM MỚI TỈNH THÀNH
                         </button>
 
                         <button kendoButton class="k-button onAddBtn"
-                                [icon]="'plus'"
+                                imageUrl="assets/img/icon/icon_house.svg"
                                 (click)="onAddNewDistrict()">
                             THÊM MỚI PHƯỜNG XÃ
                         </button>
@@ -73,7 +73,7 @@
                     </kendo-treelist-column>
                         <ng-template kendoTreeListCellTemplate let-dataItem>
                                 <span class="iconImg">
-                                    <img loading="lazy" [src]="dataItem.ProvinceID ? 'assets/img/icon/icon_share.svg' : 'assets/img/icon/icon_departmentGray.svg'" alt="">
+                                    <img loading="lazy" [src]="dataItem.ProvinceID ? 'assets/img/icon/icon_city.svg' : 'assets/img/icon/icon_house.svg'" alt="">
                                 </span>
                             <span [ngClass]="{'VNProvince': dataItem.VNProvince, }" [title]="dataItem.VNProvince">{{ dataItem.VNProvince }}</span>
                             
@@ -85,7 +85,7 @@
                 </kendo-treelist-span-column>
 
                 <!-- COLUMN 2 -->
-                <kendo-treelist-column field="IsDelete" [width]="12">
+                <kendo-treelist-column field="IsDelete" [width]="15">
                     <ng-template kendoTreeListCellTemplate let-dataItem>
                         <span [ngClass]="dataItem.IsDelete ? 'inactive' : 'active'">
                             {{ dataItem.IsDelete ? 'Ngừng áp dụng' : 'Áp dụng' }}
@@ -279,7 +279,7 @@
      
     </app-p-kendo-dialog>
 
-    <kendo-popup #stylePopup class="stylePopup" [style.visibility]="isPopupVisible() " [anchor]="getAnchor()"
+    <kendo-popup #stylePopup *ngIf="popupShow" class="stylePopup" [style.visibility]="isPopupVisible()" [anchor]="getAnchor()"
         [anchorAlign]="{ horizontal:'left', vertical: 'top'}" [popupAlign]="{ horizontal:'right', vertical: topValue}">
 
         <div  *ngFor="let item of menuItemList; let i = index" class="popup-item" (click)="onClickMenuDropdownItem(item )">

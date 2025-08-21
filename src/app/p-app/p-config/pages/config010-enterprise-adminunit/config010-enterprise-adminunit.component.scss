@@ -88,6 +88,9 @@
               color: white;
               font-size: 11px;
               font-weight: bold;
+              img{
+                filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(359deg) brightness(101%) contrast(101%);
+              }
             }
           }
         }
@@ -124,14 +127,22 @@
           td {
             padding: unset;
             .iconImg{
-              padding: 0 15px
+              padding: 0 15px;
+              
+              img {
+                height: 25px;
+                filter: invert(70%) sepia(7%) saturate(717%) hue-rotate(186deg) brightness(87%) contrast(94%);
+              }
+              
             }
             &:first-child{
               .k-icon.k-i-none,
               kendo-icon {
                 width: 32px;
               }
+              
             }
+            
           }
   
           tr.k-alt {
