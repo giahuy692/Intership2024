@@ -5,7 +5,7 @@
         <mat-drawer-content>
             <div class="header header-1">
                 <div class="breadcumb">
-                    <app-p-kendo-breadcrumb (loadData)="loadAPI()"></app-p-kendo-breadcrumb>
+                    <app-p-kendo-breadcrumb (loadData)="loadProvince()"></app-p-kendo-breadcrumb>
                 </div>
 
                 <!-- Checkbox: Áp dụng, Ngưng áp dụng -->
@@ -28,7 +28,7 @@
 
                 <!-- Button Thêm mới Tỉnh Thành, Phường Xã -->
                 <div class="nav-btn nav-crud">
-                    <button kendoButton class="k-button onAddBtn"
+                    <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
                             imageUrl="assets/img/icon/icon_city.svg"
                             (click)="onAddNewProvince()"
                             *ngIf="!isDistrictSelected">
@@ -36,13 +36,13 @@
                     </button>
 
                     <ng-container *ngIf="isDistrictSelected">
-                        <button kendoButton class="k-button onAddBtn"
+                        <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
                                 imageUrl="assets/img/icon/icon_city.svg"
                                 (click)="onAddNewProvince()">
                             THÊM MỚI TỈNH THÀNH
                         </button>
 
-                        <button kendoButton class="k-button onAddBtn"
+                        <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
                                 imageUrl="assets/img/icon/icon_house.svg"
                                 (click)="onAddNewDistrict()">
                             THÊM MỚI PHƯỜNG XÃ
