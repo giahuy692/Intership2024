@@ -425,7 +425,6 @@ export class ConfigEnterpriceApiService {
 
   // Lấy danh sách cây hành chính
   GetListProvinceTree(state: State) {
-    console.log(state);
     let that = this;
     return new Observable<DTOResponse>((obs) => {
       that.api
