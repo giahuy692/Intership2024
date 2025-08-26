@@ -1,12 +1,7 @@
 @import "../../../../../assets/scss/variable.scss";
 
-::ng-deep {
-
-  .red{
-    background-color: red !important;
-  }
-
-  //css cho dropdowntree header2
+::ng-deep  {
+  app-config010-enterprise-adminunit {
  
     .k-treeview{
       .k-treeview-leaf {
@@ -25,7 +20,9 @@
           padding: 0 15px;
         }
          //dialog confirm
-        .dialogAPI{
+        .dialog{
+          display: flex;
+          flex-direction: column;
           .k-dialog-content {
             font-size: 16px;
             height: 150px;
@@ -46,8 +43,8 @@
             padding: 0px 0px;
             font-size: 14px;
             .popup-item{
-              color: #ffffff;
-              background-color: #bdc2d2;
+              color: $white;
+              background-color: $blue-gray;
               padding: 6px 8px !important;
               padding-right: 32px !important;
               span{
@@ -55,7 +52,7 @@
               }
               &:hover{
                 cursor: pointer;
-                background-color: #5c6873;
+                background-color: $gray-700;
               }
             }
           }
@@ -83,9 +80,10 @@
             margin-top: auto;
             .onAddBtn {
               height: 32px;
+              margin-left: 10px;
               margin-top: auto;
               background-color: $dark-green;
-              color: white;
+              color: $white;
               font-size: 11px;
               font-weight: bold;
               img{
@@ -104,7 +102,7 @@
         }
     }//TREELIST STYLES
     .treelist-wrapper {
-        margin-top: 8px;
+        margin: 8px 0;
         
         .k-treelist.k-grid {
           // background-color: #edeff3 !important;
@@ -118,6 +116,7 @@
           .k-grid-content {
             overflow-x: hidden !important;
             background-color: unset;
+            padding-bottom: 5px;
           }
   
           .child-text {
@@ -146,7 +145,7 @@
           }
   
           tr.k-alt {
-            background-color: white;
+            background-color: $white;
           }
   
           //selected item
@@ -157,10 +156,10 @@
             .text-name,
             .text-id,
             .k-button {
-              color: white;
+              color: $white;
             }
             .btn-action{
-              border-left: 1px solid white;
+              border-left: 1px solid $white;
             }
   
             img[src*="icon"] {
@@ -172,14 +171,14 @@
           tr.k-selected > td {
             background-color: unset;
             .k-icon,span{
-              color: white !important;
+              color: $white !important;
             }
           }
   
           tr {
-            background-color: white !important;
+            background-color: $white !important;
             .btn-action,.test{
-              border-left: 1px solid #BDC2D2;
+              border-left: 1px solid $blue-gray;
               .horizontal{
                display: flex;
                justify-content: center;
@@ -190,12 +189,12 @@
             &:hover {
               background-color: rgba(26, 102, 52, 0.33) !important;
               td{
-                .k-icon,span{
-                  color: #5A6276;
-                }
+                // .k-icon,span{
+                //   color: #5A6276;
+                // }
               }
               .btn-action{
-                border-left: 1px solid white;
+                border-left: 1px solid $white;
               }
             }
             
@@ -236,7 +235,7 @@
                   &.k-hover,
                   &:focus,
                   &.k-focus {
-                    background: #bdc2d2 !important;
+                    background: $blue-gray !important;
                   }
   
                   kendo-icon-wrapper {
@@ -249,12 +248,9 @@
                 }
               }
 
-              .active {
-                color: #008000;
-              }
-
-              .inactive {
-                color: red;
+              .titleIsDelete {
+                float: right;
+                padding-right: 25px;
               }
             }
           }
@@ -281,7 +277,7 @@
             width: 100%;
   
             &:last-child {
-              border-left: 1px solid #edeff3 !important;
+              border-left: 1px solid $gray-100 !important;
               text-align: center;
               height: 58px;
             }
@@ -300,8 +296,8 @@
           }
   
           tr {
-            border-top: 4px solid #edeff3 !important;
-            border-bottom: 4px solid #edeff3 !important;
+            border-top: 4px solid $gray-100 !important;
+            border-bottom: 4px solid $gray-100 !important;
             position: relative !important;
             height: 58px;
           }
@@ -326,28 +322,44 @@
         textarea{
           min-height: 0;
         }
-        .formInfoProvince{
+        .formInfo{
+          height: 100%;
           padding: 0 !important;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
           .impose{
             font-weight: 700;
             color: $bad-red;
           }
-          fieldset{
+          legend{
+            padding: 10px 15px !important ;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background-color: $white
+          }
+          .field{
             margin-right: 0 !important;
-            legend{
-              padding: 10px !important ;
-              position: fixed;
-              z-index: 1;
-              background-color: white
-            }
-            .formProvince{
-              padding: 10px 15px;
-              margin-top: 50px;
-              margin-bottom: 20px;
+            flex: 1;
+            overflow-y: auto; 
+            .formProvinceAndDistrict{
+              height: 100%;
+              padding: 10px 15px 0 15px;
               display: flex;
               flex-direction: column;
               gap: 10px;
               .item{
+                .label-impose {
+                  display: flex;
+                  gap: 5px;
+                  padding-bottom: 5px;
+
+                  .label-item {
+                    color: #343A40;
+                    font-weight: 700;
+                  }
+                }
                 .label{
                   color: #343A40;
                   font-weight: 700;
@@ -355,6 +367,7 @@
                 }
               }
               .item6{
+                padding-bottom: 20px;
                 .label {
                   height: 22px;
                 }
@@ -370,31 +383,40 @@
                       
                       input[type="radio"]{
                         margin-right: 10px;
-                        accent-color: #008000;
+                        accent-color: $worse-green;
                       }
                     }
                 }
               }
             }
           }
-          .k-form-buttons{
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);;
-             width: 100%;
-             display: flex;
-             flex-direction: row;
-             bottom: 30px !important;
-             background-color: white;
-             height: 50px;
-             align-items: center;
-             .k-button:first-child{
-               margin-left: 15px;
-             }
-             .closeBtn{
-               background-color: $white;
-               color: $dark-green;
-               box-shadow: #343A40;
-             }
-           }
+          .form-footer {
+            position: sticky;
+            bottom: 0;
+            background-color: $white;
+            z-index: 3;       
+            .required-note {
+              padding-left: 15px;
+            }
+            .k-form-buttons{
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);;
+              width: 100%;
+              display: flex;
+              flex-direction: row;
+              bottom: 30px !important;
+              background-color: $white;
+              border-top: 1px solid #5a6276;
+              height: 50px;
+              align-items: center;
+              .closeBtn{
+                margin-left: 15px;
+                background-color: $white;
+                color: $dark-green;
+                box-shadow: #343A40;
+              }
+            }
+          }  
         }
     }
+  }
 }

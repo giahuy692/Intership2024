@@ -56,11 +56,26 @@ export class Config010EnterpriseAdminunitComponent {
   isApplied: boolean = true;
   isStopped: boolean = false;
 
-  // Biến để quản lý trạng thái disable của các trường ProvinceID và DistrictID
+  // Biến để quản lý trạng thái disable của các trường Province
   isProvinceIdDisabled: boolean = false;
-  isDistrictIdDisabled: boolean = false;
+  isVNProvinceDisabled: boolean = false;
+  isJPProvinceDisabled: boolean = false;
+  isENProvinceDisabled: boolean = false;
+  isOrderByProvinceDisabled: boolean = false;
 
-  // Biến để quản lý form hiện tại
+  // Biến để quản lý trạng thái disable của các trường District
+  isDistrictIdDisabled: boolean = false;
+  isVNDistrictDisabled: boolean = false;
+  isJPDistrictDisabled: boolean = false;
+  isENDistrictDisabled: boolean = false;
+  isProvinceDisabled: boolean = false;
+  isOrderByDistrictDisabled: boolean = false;
+
+  // Biến để quản lý trạng thái ẩn của button thêm tỉnh thành và các trường bắt buộc
+  isBtnHide: boolean = false;
+  isImpose: boolean = false;
+
+  // Biến để quản lý chọn form
   selectedForm: 'province' | 'district';
 
   // Biến để quản lý anchor hiện tại
@@ -71,7 +86,7 @@ export class Config010EnterpriseAdminunitComponent {
   justLoadedPer: boolean = true;
   actionPerm: DTOActionPermission[] = [];
   isAllPers: boolean = true;
-  isCanCreate: boolean = true;
+  isCanCreate: boolean = false;
 
   // Biến để quản lý việc hủy đăng ký các Observable
   ngUnsubscribe = new Subject<void>();
@@ -112,6 +127,7 @@ export class Config010EnterpriseAdminunitComponent {
   // Biến để quản lý item đã chọn trong treelist
   selectedProvince: DTOProvince;
   selectedDistrict: DTODistrict;
+  isProvinceSelected: boolean = false;
   isDistrictSelected: boolean = false;
 
   //reset expand tree
@@ -162,8 +178,12 @@ export class Config010EnterpriseAdminunitComponent {
           //   that.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
           // that.isCanCreate =
           //   that.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
-
-          // that.justLoadedPer = false;
+          // Set trạng thái nút thêm mới
+          if (that.isAllPers || that.isCanCreate) {
+            this.isBtnHide = true;
+            this.isImpose = true;
+          }
+          that.justLoadedPer = false;
         }
       });
 
@@ -186,20 +206,27 @@ export class Config010EnterpriseAdminunitComponent {
     this.apiGetListProvinceTree();
   }
 
-  // Reset filter
+  // region Tìm kiếm và Lọc
+  // Hàm xử lý Reset filter
   onResetFilter(e) {
     if (Ps_UtilObjectService.hasListValue(this.collapsedIds)) {
       for (const id of this.collapsedIds) {
         this.treelist.expand(id);
       }
     }
-
+    this.loading = true;
     this.isApplied = true;
     this.isStopped = false;
 
     this.loadData();
     this.selectedProvince = null;
+    this.isProvinceSelected = false;
     this.isDistrictSelected = false;
+
+    
+    setTimeout(() => {
+      this.loading = false;
+    }, 250);
   }
 
   // Xử lý tìm kiếm
@@ -235,37 +262,51 @@ export class Config010EnterpriseAdminunitComponent {
 
     return null;
   }
+  //endRegion
 
-  //Hàm mở form add province
+
+  // region Action Form
+  // Hàm mở form add province
   onAddNewProvince() {
-    if (this.isAllPers || this.isCanCreate) {
-      this.selectedForm = 'province';
-      this.currentProvinceForm = null;
-      this.apiProvinceForm.reset({ Code: 0, Country: 1, IsDelete: 0 });
+    this.selectedForm = 'province';
+    this.currentProvinceForm = null;
+    this.apiProvinceForm.reset({ Code: 0, Country: 1, IsDelete: 0, OrderBy: 1 });
 
-      this.isProvinceIdDisabled = false;
-      this.drawer.open();
-    }
+    this.isProvinceIdDisabled = false;
+    this.drawer.open();
   }
 
-  //Hàm mở form add district
-  onAddNewDistrict() {
-    if (this.isAllPers || this.isCanCreate) {
-      this.selectedForm = 'district';
-      this.currentDistrictForm = null;
-      this.apiDistrictFrom.reset({ Code: 0, IsDelete: 0 });
+  // Hàm mở form add district
+  onAddNewDistrict(districtItem?: DTODistrict) {
+    this.selectedForm = 'district';
+    this.currentDistrictForm = null;
 
-      this.isDistrictIdDisabled = false;
-      this.drawer.open();
+    // Tìm Province tương ứng
+    let provinceCode: number | null = null;
+
+    if (districtItem) {
+      // Nếu truyền vào District cụ thể thì tìm Province chứa nó
+      provinceCode = this.findProvinceIdByDistrict(districtItem);
+    } else if (this.selectedProvince) {
+      // Nếu đang chọn Province thì lấy Code luôn
+      provinceCode = this.selectedProvince.Code;
+    } else if (this.selectedDistrict) {
+      // Nếu đang chọn District thì tìm Province chứa District đó
+      provinceCode = this.findProvinceIdByDistrict(this.selectedDistrict);
     }
+
+    // Reset form, set Province cho District mới
+    this.apiDistrictFrom.reset({
+      Code: 0,
+      IsDelete: 0,
+      OrderBy: 1,
+      Province: provinceCode,
+    });
+
+    this.isDistrictIdDisabled = false;
+    this.drawer.open();
   }
 
-  // Ngăn chặn hành vi mặc định của phím Enter trên form
-  onKeyDown(event: KeyboardEvent): void {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-    }
-  }
 
   // Hàm đóng form
   onCloseForm() {
@@ -305,12 +346,14 @@ export class Config010EnterpriseAdminunitComponent {
   openDialogDistrict() {
     this.dialogDistrict = true;
   }
+  //endRegion
 
   // Xử lý sự kiện khi chọn item trong treelist
   onSelectionChange(e: any) {
     if (!e.items || e.items.length === 0) {
       this.selectedProvince = null;
       this.selectedDistrict = null;
+      this.isProvinceSelected = false;
       this.isDistrictSelected = false;
       return;
     }
@@ -321,6 +364,7 @@ export class Config010EnterpriseAdminunitComponent {
     if (dataItem.hasOwnProperty('DistrictID')) {
       this.selectedDistrict = dataItem as DTODistrict;
       // this.selectedProvince = null;
+      this.isProvinceSelected = false;
       this.isDistrictSelected = true;
       this.selectedForm = 'district';
     }
@@ -328,12 +372,14 @@ export class Config010EnterpriseAdminunitComponent {
     else if (dataItem.hasOwnProperty('ProvinceID')) {
       this.selectedProvince = dataItem as DTOProvince;
       // this.selectedDistrict = null;
+      this.isProvinceSelected = true;
       this.isDistrictSelected = false;
       this.selectedForm = 'province';
     } else {
       this.selectedProvince = null;
       this.selectedDistrict = null;
       this.isDistrictSelected = false;
+      this.isProvinceSelected = false;
     }
     this.popupShow = false;
   }
@@ -497,7 +543,7 @@ export class Config010EnterpriseAdminunitComponent {
     return children && children.length > 0;
   };
 
-  // Update API
+  // API Update PRovince
   apiUpdateProvince(dto: DTOProvince) {
     let ctx = `Cập nhật thông tin Province`;
     this.loading = true;
@@ -527,64 +573,15 @@ export class Config010EnterpriseAdminunitComponent {
       );
   }
 
-  // Update Province
+  // hàm xử lý Update Province
   onUpdateProvince() {
     const updateProvince: DTOProvince = this.apiProvinceForm.getRawValue();
     if (!Ps_UtilObjectService.hasValueString(updateProvince.VNProvince)) {
-      this.layoutService.onError('Bạn chưa nhập vào Tên Tiếng Việt');
-    } else if (!Ps_UtilObjectService.hasValue(updateProvince.ProvinceID)) {
-      this.layoutService.onError('Bạn chưa nhập Mã hành chính');
+      this.layoutService.onError('Đã xảy ra lỗi khi tạo mới (cập nhật) đổi tượng: Bạn chưa nhập vào Tên Tiếng Việt');
+    } else if (!Ps_UtilObjectService.hasValueString(updateProvince.ProvinceID)) {
+      this.layoutService.onError('Đã xảy ra lỗi khi tạo mới (cập nhật) đổi tượng: Bạn chưa nhập Mã hành chính');
     } else {
       this.apiUpdateProvince(updateProvince);
-    }
-  }
-
-  // Update District
-  onUpdateDistrict() {
-    const updateDistrict: DTODistrict = this.apiDistrictFrom.getRawValue();
-    if (!Ps_UtilObjectService.hasValueString(updateDistrict.VNDistrict)) {
-      this.layoutService.onError('Bạn chưa nhập vào Tên Tiếng Việt');
-    } else if (
-      !Ps_UtilObjectService.hasValueString(updateDistrict.DistrictID)
-    ) {
-      this.layoutService.onError('Bạn chưa nhập Mã hành chính');
-    } else if (!Ps_UtilObjectService.hasValue(updateDistrict.Province)) {
-      this.layoutService.onError('Bạn chưa chọn Tỉnh thành');
-    } else {
-      this.apiUpdateDistrict(updateDistrict);
-    }
-  }
-
-  // Xóa Province
-  onDeleteProvince() {
-    const deleteProvince: DTOProvince = this.apiProvinceForm.getRawValue();
-    if (
-      Ps_UtilObjectService.hasValue(deleteProvince.Code) &&
-      deleteProvince.Code > 0
-    ) {
-      if (
-        Ps_UtilObjectService.hasListValue(deleteProvince.ListDistrict) &&
-        deleteProvince.ListDistrict.length > 0
-      ) {
-        this.layoutService.onError(
-          `Không thể xóa tỉnh "${deleteProvince.VNProvince}" vì đang có ${deleteProvince.ListDistrict.length} quận/huyện trực thuộc.`
-        );
-      } else {
-        this.apiDeleteProvince([deleteProvince]);
-      }
-      this.dialogProvince = false;
-    }
-  }
-
-  // Xóa District
-  onDeleteDistrict() {
-    const deleteDistrict: DTODistrict = this.apiDistrictFrom.getRawValue();
-    if (
-      Ps_UtilObjectService.hasValue(deleteDistrict.Code) &&
-      deleteDistrict.Code > 0
-    ) {
-      this.apiDeleteDistrict([deleteDistrict]);
-      this.dialogDistrict = false;
     }
   }
 
@@ -618,6 +615,22 @@ export class Config010EnterpriseAdminunitComponent {
       );
   }
 
+  // Hàm xử lý Update District
+  onUpdateDistrict() {
+    const updateDistrict: DTODistrict = this.apiDistrictFrom.getRawValue();
+    if (!Ps_UtilObjectService.hasValueString(updateDistrict.VNDistrict)) {
+      this.layoutService.onError('Đã xảy ra lỗi khi tạo mới (cập nhật) đổi tượng: Bạn chưa nhập vào Tên Tiếng Việt');
+    } else if (
+      !Ps_UtilObjectService.hasValueString(updateDistrict.DistrictID)
+    ) {
+      this.layoutService.onError('Đã xảy ra lỗi khi tạo mới (cập nhật) đổi tượng: Bạn chưa nhập Mã hành chính');
+    } else if (!Ps_UtilObjectService.hasValue(updateDistrict.Province)) {
+      this.layoutService.onError('Đã xảy ra lỗi khi tạo mới (cập nhật) đổi tượng: Bạn chưa chọn Tỉnh thành');
+    } else {
+      this.apiUpdateDistrict(updateDistrict);
+    }
+  }
+
   // API Xóa Province
   apiDeleteProvince(dtos: DTOProvince[]) {
     let ctx = `Xóa thông tin Tỉnh thành`;
@@ -645,6 +658,27 @@ export class Config010EnterpriseAdminunitComponent {
           this.apiGetListProvinceTree();
         }
       );
+  }
+
+  // Hàm xử lý xóa Province
+  onDeleteProvince() {
+    const deleteProvince: DTOProvince = this.apiProvinceForm.getRawValue();
+    if (
+      Ps_UtilObjectService.hasValue(deleteProvince.Code) &&
+      deleteProvince.Code > 0
+    ) {
+      if (
+        Ps_UtilObjectService.hasListValue(deleteProvince.ListDistrict) &&
+        deleteProvince.ListDistrict.length > 0
+      ) {
+        this.layoutService.onError(
+          `Đã xảy ra lỗi khi xóa đổi tượng: Không thể xóa tỉnh "${deleteProvince.VNProvince}" vì đang có ${deleteProvince.ListDistrict.length} quận/huyện trực thuộc.`
+        );
+      } else {
+        this.apiDeleteProvince([deleteProvince]);
+      }
+      this.dialogProvince = false;
+    }
   }
 
   // API Xóa District
@@ -676,8 +710,21 @@ export class Config010EnterpriseAdminunitComponent {
         }
       );
   }
+
+  // Hàm xử lý xóa District
+  onDeleteDistrict() {
+    const deleteDistrict: DTODistrict = this.apiDistrictFrom.getRawValue();
+    if (
+      Ps_UtilObjectService.hasValue(deleteDistrict.Code) &&
+      deleteDistrict.Code > 0
+    ) {
+      this.apiDeleteDistrict([deleteDistrict]);
+      this.dialogDistrict = false;
+    }
+  }
   //endRegion
 
+  // region Popup
   // Hiển thị trạng thái của popup
   isPopupVisible() {
     return this.popupShow ? 'visible' : 'hidden';
@@ -762,9 +809,31 @@ export class Config010EnterpriseAdminunitComponent {
           { id: 5, iconName: 'delete', text: 'Xóa phường xã' }
         );
       }
-    }
+    } else {
+      if ('ProvinceID' in dataItem) {
+        this.selectedProvince = dataItem as DTOProvince;
+        this.selectedDistrict = null;
+        this.selectedForm = 'province';
 
-    this.menuItemList = [...this.menuItemList];
+        this.apiProvinceForm.patchValue(dataItem);
+
+        this.menuItemList.push(
+          { id: 6, iconName: 'preview', text: 'Xem chi tiết' }
+        );
+      } else if ('DistrictID' in dataItem) {
+        this.selectedDistrict = dataItem as DTODistrict;
+        this.selectedProvince = null;
+        this.selectedForm = 'district';
+
+        this.apiDistrictFrom.patchValue({ ...dataItem });
+
+        this.menuItemList.push(
+          { id: 7, iconName: 'preview', text: 'Xem chi tiết' },
+        );
+      }
+
+      this.menuItemList = [...this.menuItemList];
+    }
   }
 
   /**
@@ -805,9 +874,27 @@ export class Config010EnterpriseAdminunitComponent {
         } else if (id == 2) {
           this.onAddNewProvince();
         } else if (id == 3) {
-          this.onAddNewDistrict();
+          this.onAddNewDistrict(this.selectedDistrict);
         } else if (id == 0) {
           this.openDialogProvince();
+        } else if (id == 6) {
+          this.apiProvinceForm.reset();
+          this.currentProvinceForm = this.searchTree(
+            this.listProvinceTree,
+            this.selectedProvince.Code
+          );
+          this.apiProvinceForm.patchValue({
+            ...this.selectedProvince,
+            Code: this.currentProvinceForm.Code,
+            IsDelete: Number(this.selectedProvince.IsDelete),
+          });
+          this.isProvinceIdDisabled = true;
+          this.isVNProvinceDisabled = true;
+          this.isJPProvinceDisabled = true;
+          this.isENProvinceDisabled = true;
+          this.isOrderByProvinceDisabled = true;
+          this.apiProvinceForm.get('IsDelete')?.disable();
+          this.drawer.open();
         }
       } else {
         if (id == 4) {
@@ -832,9 +919,36 @@ export class Config010EnterpriseAdminunitComponent {
             this.drawer.open();
           }
         } else if (id == 3) {
-          this.onAddNewDistrict();
+          this.onAddNewDistrict(this.selectedDistrict);
         } else if (id == 5) {
           this.openDialogDistrict();
+        } else if (id == 7) {
+          this.apiDistrictFrom.reset();
+
+          if (this.selectedDistrict) {
+            this.currentDistrictForm = this.searchTree(
+              this.listProvinceTree,
+              this.selectedDistrict.Code
+            );
+
+            this.apiDistrictFrom.patchValue({
+              ...this.selectedDistrict,
+              Code: this.selectedDistrict.Code,
+              IsDelete: Number(this.selectedDistrict.IsDelete),
+              Province:
+                this.findProvinceIdByDistrict(this.selectedDistrict) ?? null,
+            });
+
+            this.selectedForm = 'district';
+            this.isDistrictIdDisabled = true;
+            this.isVNDistrictDisabled = true;
+            this.isJPDistrictDisabled = true;
+            this.isENDistrictDisabled = true;
+            this.isProvinceDisabled = true;
+            this.isOrderByDistrictDisabled = true;
+            this.apiDistrictFrom.get('IsDelete')?.disable();
+            this.drawer.open();
+          }
         }
       }
     }
@@ -854,6 +968,7 @@ export class Config010EnterpriseAdminunitComponent {
     );
     return province ? province.Code : null;
   }
+  //endRegion
 
   // Xử lý sự kiện khi component bị hủy
   ngOnDestroy(): void {

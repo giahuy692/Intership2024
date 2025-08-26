@@ -27,27 +27,39 @@
                 </div>
 
                 <!-- Button Thêm mới Tỉnh Thành, Phường Xã -->
-                <div class="nav-btn nav-crud">
-                    <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                            imageUrl="assets/img/icon/icon_city.svg"
-                            (click)="onAddNewProvince()"
-                            *ngIf="!isDistrictSelected">
-                        THÊM MỚI TỈNH THÀNH
-                    </button>
+                <div class="nav-btn nav-crud" >
+                    <div *ngIf="isBtnHide" class="contain-btn">
+                        <ng-container >
+                                <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
+                                    imageUrl="assets/img/icon/icon_city.svg"
+                                    (click)="onAddNewProvince()"
+                                    *ngIf="!isProvinceSelected && !isDistrictSelected">
+                                THÊM MỚI TỈNH THÀNH
+                            </button>
 
-                    <ng-container *ngIf="isDistrictSelected">
-                        <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                                imageUrl="assets/img/icon/icon_city.svg"
-                                (click)="onAddNewProvince()">
-                            THÊM MỚI TỈNH THÀNH
-                        </button>
+                            <ng-container *ngIf="isProvinceSelected">
+                                <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
+                                        imageUrl="assets/img/icon/icon_city.svg"
+                                        (click)="onAddNewProvince()">
+                                    THÊM MỚI TỈNH THÀNH
+                                </button>
 
-                        <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                                imageUrl="assets/img/icon/icon_house.svg"
-                                (click)="onAddNewDistrict()">
-                            THÊM MỚI PHƯỜNG XÃ
-                        </button>
-                    </ng-container>
+                                <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
+                                        imageUrl="assets/img/icon/icon_house.svg"
+                                        (click)="onAddNewDistrict()">
+                                    THÊM MỚI PHƯỜNG XÃ
+                                </button>
+                            </ng-container>
+
+                            <ng-container *ngIf="isDistrictSelected">
+                                <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
+                                        imageUrl="assets/img/icon/icon_house.svg"
+                                        (click)="onAddNewDistrict()">
+                                    THÊM MỚI PHƯỜNG XÃ
+                                </button>
+                            </ng-container>
+                        </ng-container>
+                    </div>
                 </div>
             </div>
 
@@ -77,7 +89,8 @@
                                 </span>
                             <span [ngClass]="{'VNProvince': dataItem.VNProvince, }" [title]="dataItem.VNProvince">{{ dataItem.VNProvince }}</span>
                             
-                            <span [ngStyle]="{'font-style': dataItem.VNDistrict ? 'italic' : 'normal'}"
+                            <span  class="font-weight-400"
+                                    [ngStyle]="{'font-style': dataItem.VNDistrict ? 'italic' : 'normal'}"
                                     [title]="dataItem.VNProvince || dataItem.VNDistrict">
                                 {{ dataItem.VNDistrict }}
                             </span>
@@ -85,9 +98,9 @@
                 </kendo-treelist-span-column>
 
                 <!-- COLUMN 2 -->
-                <kendo-treelist-column field="IsDelete" [width]="15">
+                <kendo-treelist-column field="IsDelete" [width]="40">
                     <ng-template kendoTreeListCellTemplate let-dataItem>
-                        <span [ngClass]="dataItem.IsDelete ? 'inactive' : 'active'">
+                        <span class="titleIsDelete"[ngClass]="dataItem.IsDelete ? 'color-red' : 'color-green'">
                             {{ dataItem.IsDelete ? 'Ngừng áp dụng' : 'Áp dụng' }}
                         </span>
                     </ng-template>
@@ -110,101 +123,145 @@
         <!-- Drawer Tỉnh Thành-->
         <mat-drawer #formDrawer [mode]="'over'" position="end" disableClose>
             
-            <form class="formInfoProvince k-form" (keydown)="onKeyDown($event)" [formGroup]="apiProvinceForm" *ngIf="selectedForm === 'province'">
+            <div class="formInfo k-form" [formGroup]="apiProvinceForm" *ngIf="selectedForm === 'province'">
             <ng-container>
                 <!-- PROVINCE FORM -->
-                <fieldset [disabled]="false">
                 <legend>THÔNG TIN TỈNH THÀNH</legend>
-                    <div class="formProvince">
-                        <div class="item item1">
-                            <div class="label">Tên Tiếng Việt  <span class="impose"> (*) </span></div>
-                            <app-p-textbox  formControlName="VNProvince" propName="VNProvince" #VNProvince></app-p-textbox>
-                        </div>
-
-                        <div class="item item2">
-                            <div class="label">Tên 日本語 </div>
-                            <app-p-textbox  formControlName="JPProvince" propName="JPProvince" #JPProvince></app-p-textbox>
-                        </div>
-                        
-                        <div class="item item3">
-                            <div class="label">Tên English </div>
-                            <app-p-textbox  formControlName="ENProvince" propName="ENProvince" #ENProvince></app-p-textbox>
-                        </div>
-
-                        <div class="item item4">
-                            <div class="label">Mã hành chính <span class="impose"> (*) </span></div>
-                            <app-p-textbox formControlName="ProvinceID" propName="ProvinceID" [disabled]="isProvinceIdDisabled" #ProvinceID></app-p-textbox>
-                        </div>
-
-                        <div class="item item5">
-                            <div class="label">Thứ tự hiển thị</div>
-                            <app-p-numeric-textbox  formControlName="OrderBy" propName="OrderBy" [format]="'n0'"  [spinners]="false" [min]="0" #OrderBy></app-p-numeric-textbox>
-                        </div>
-
-                        <div class="item item6">
-                            <div class="label">Tình trạng</div>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <input type="radio" formControlName="IsDelete" [value]="0" #IsDelete/>
-                                        <span>Áp dụng</span>
+                <div class="field">
+                        <div class="formProvinceAndDistrict">
+                            <div class="item item1">
+                                <div class="label-impose">
+                                    <div class="label-item"> Tên Tiếng Việt </div>
+                                    <div *ngIf="isImpose">
+                                        <ng-container >
+                                            <span class="impose"> (*) </span>
+                                        </ng-container>
                                     </div>
-                                    <div class="radio-item">
-                                        <input type="radio" formControlName="IsDelete" [value]="1" #IsDelete/>
-                                        <span>Ngưng áp dụng</span>
+                                </div>
+                                <app-p-textbox  formControlName="VNProvince" propName="VNProvince" [disabled]="isVNProvinceDisabled" #VNProvince></app-p-textbox>
+                            </div>
+
+                            <div class="item item2">
+                                <div class="label">Tên 日本語 </div>
+                                <app-p-textbox  formControlName="JPProvince" propName="JPProvince" [disabled]="isJPProvinceDisabled" #JPProvince></app-p-textbox>
+                            </div>
+                            
+                            <div class="item item3">
+                                <div class="label">Tên English </div>
+                                <app-p-textbox  formControlName="ENProvince" propName="ENProvince"  [disabled]="isENProvinceDisabled" #ENProvince></app-p-textbox>
+                            </div>
+
+                            <div class="item item4">
+                                <div class="label-impose">
+                                    <div class="label-item"> Mã hành chính </div>
+                                    <div *ngIf="isImpose">
+                                        <ng-container >
+                                            <span class="impose"> (*) </span>
+                                        </ng-container>
                                     </div>
-                                
+                                </div>
+                                <app-p-textbox formControlName="ProvinceID" propName="ProvinceID" [disabled]="isProvinceIdDisabled" #ProvinceID></app-p-textbox>
+                            </div>
+
+                            <div class="item item5">
+                                <div class="label">Thứ tự hiển thị</div>
+                                <app-p-numeric-textbox  formControlName="OrderBy" propName="OrderBy" [format]="'n0'"  [spinners]="false" [min]="0" [disabled]="isOrderByProvinceDisabled" #OrderBy></app-p-numeric-textbox>
+                            </div>
+
+                            <div class="item item6">
+                                <div class="label">Tình trạng</div>
+                                    <div class="radio-group">
+                                        <div class="radio-item">
+                                            <input type="radio" formControlName="IsDelete" [value]="0" #IsDelete class="k-radio"/>
+                                            <span>Áp dụng</span>
+                                        </div>
+                                        <div class="radio-item">
+                                            <input type="radio" formControlName="IsDelete" [value]="1" #IsDelete class="k-radio"/>
+                                            <span>Ngưng áp dụng</span>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
-
-                        <i><span class="impose">(*) Thông tin bắt buộc nhập </span></i>
+                </div>
+                <div class="form-footer">
+                    <div class="required-note" *ngIf="isImpose">
+                        <i><span class="impose">(*) Thông tin bắt buộc nhập</span></i>
                     </div>
-                </fieldset>
-    
-                <div class="k-form-buttons">
-                <button kendoButton class="k-button btn-hachi closeBtn" (click)="onCloseForm()">
-                    Đóng
-                </button>
-                <button kendoButton class="k-button btn-hachi updateBtn" (click)="onUpdateProvince()">
-                    {{apiProvinceForm.controls['Code'].value > 0
-                    ? "CẬP NHẬT"
-                    : apiProvinceForm.controls['Code'].value == 0
-                    ? "TẠO MỚI" : ""}}
-                </button>
-                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="openDialogProvince()" *ngIf="apiProvinceForm.controls['Code'].value > 0">
-                    Xóa
-                </button>
+                    <div class="k-form-buttons">
+                        <button kendoButton class="k-button btn-hachi closeBtn" (click)="onCloseForm()">
+                            Đóng
+                        </button>
+                        <div *ngIf="isBtnHide">
+                            <ng-container >
+                                <button kendoButton class="k-button btn-hachi updateBtn" (click)="onUpdateProvince()">
+                                    {{apiProvinceForm.controls['Code'].value > 0
+                                    ? "CẬP NHẬT"
+                                    : apiProvinceForm.controls['Code'].value == 0
+                                    ? "TẠO MỚI" : ""}}
+                                </button>
+                            </ng-container>
+                        </div>
+                        <div *ngIf="isBtnHide">
+                            <ng-container >
+                                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="openDialogProvince()" *ngIf="apiProvinceForm.controls['Code'].value > 0">
+                                    Xóa
+                                </button>
+                            </ng-container>
+                        </div>
+                    </div>
                 </div>
             </ng-container>
-            </form>
+            </div>
             
-            <form class="formInfoProvince k-form" (keydown)="onKeyDown($event)" [formGroup]="apiDistrictFrom" *ngIf="selectedForm === 'district'" >
+            <div class="formInfo k-form" [formGroup]="apiDistrictFrom" *ngIf="selectedForm === 'district'" >
             <ng-container>
                 <!-- WARRD FORM -->
-                <fieldset [disabled]="false">
                 <legend>THÔNG TIN PHƯỜNG XÃ</legend>
-                    <div class="formProvince">
+                <div class="field">
+                    <div class="formProvinceAndDistrict">
                         <div class="item item1">
-                            <div class="label">Tên Tiếng Việt  <span class="impose"> (*) </span></div>
-                            <app-p-textbox  formControlName="VNDistrict" propName="VNDistrict" #VNDistrict></app-p-textbox>
+                            <div class="label-impose">
+                                <div class="label-item">Tên Tiếng Việt </div> 
+                                <div *ngIf="isImpose">
+                                    <ng-container >
+                                        <span class="impose"> (*) </span>
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <app-p-textbox  formControlName="VNDistrict" propName="VNDistrict" [disabled]="isVNDistrictDisabled" #VNDistrict></app-p-textbox>
                         </div>
 
                         <div class="item item2">
                             <div class="label">Tên 日本語 </div>
-                            <app-p-textbox  formControlName="JPDistrict" propName="JPDistrict" #JPDistrict></app-p-textbox>
+                            <app-p-textbox  formControlName="JPDistrict" propName="JPDistrict" [disabled]="isJPDistrictDisabled" #JPDistrict></app-p-textbox>
                         </div>
                         
                         <div class="item item3">
                             <div class="label">Tên English </div>
-                            <app-p-textbox  formControlName="ENDistrict" propName="ENDistrict" #ENDistrict></app-p-textbox>
+                            <app-p-textbox  formControlName="ENDistrict" propName="ENDistrict" [disabled]="isENDistrictDisabled" #ENDistrict></app-p-textbox>
                         </div>
 
                         <div class="item item4">
-                            <div class="label">Mã hành chính <span class="impose"> (*) </span></div>
+                            <div class="label-impose">
+                                <div class="label-item"> Mã hành chính </div>
+                                <div *ngIf="isImpose">
+                                    <ng-container >
+                                        <span class="impose"> (*) </span>
+                                    </ng-container>
+                                </div>
+                            </div>
                             <app-p-textbox  formControlName="DistrictID" propName="DistrictID" [disabled]="isDistrictIdDisabled" #DistrictID></app-p-textbox>
                         </div>
 
                         <div class="item item4">
-                            <div class="label">Tỉnh thành <span class="impose"> (*) </span></div>
+                            <div class="label-impose">
+                                <div class="label-item"> Tỉnh thành </div>
+                                <div *ngIf="isImpose">
+                                    <ng-container >
+                                        <span class="impose"> (*) </span>
+                                    </ng-container>
+                                </div>
+                            </div>
                             <p-kendo-dropdownlist
                                 [data]="listProvinceTree"
                                 formControlName="Province"
@@ -213,70 +270,86 @@
                                 [valuePrimitive]="true"
                                 [filterable]="true"
                                 (valueChange)="onSelectedDropdownList($event)"
+                                [disabled]="isProvinceDisabled"
                                 >
                             </p-kendo-dropdownlist>
                         </div>
 
                         <div class="item item5">
                             <div class="label">Thứ tự hiển thị</div>
-                            <app-p-numeric-textbox  formControlName="OrderBy" propName="OrderBy" [format]="'n0'"  [spinners]="false" [min]="0" #OrderBy></app-p-numeric-textbox>
+                            <app-p-numeric-textbox  formControlName="OrderBy" propName="OrderBy" [format]="'n0'"  [spinners]="false" [min]="0" [disabled]="isOrderByDistrictDisabled" #OrderBy></app-p-numeric-textbox>
                         </div>
 
                         <div class="item item6">
                             <div class="label">Tình trạng</div>
                             <div class="radio-group">
                                 <div class="radio-item">
-                                    <input type="radio" formControlName="IsDelete" [value]="0" #IsDelete/>
+                                    <input type="radio" formControlName="IsDelete" [value]="0" #IsDelete class="k-radio"/>
                                     <span>Áp dụng</span>
                                 </div>
                                 <div class="radio-item">
-                                    <input type="radio" formControlName="IsDelete" [value]="1" #IsDelete/>
+                                    <input type="radio" formControlName="IsDelete" [value]="1" #IsDelete class="k-radio"/>
                                     <span>Ngưng áp dụng</span>
                                 </div>
                             </div>
                         </div>
-
-                        <i><span class="impose">(*) Thông tin bắt buộc nhập </span></i>
                     </div>
-                </fieldset>
+                </div>
     
-                <div class="k-form-buttons">
-                <button kendoButton class="k-button btn-hachi closeBtn" (click)="onCloseForm()">
-                    Đóng
-                </button>
-                <button kendoButton class="k-button btn-hachi updateBtn" (click)="onUpdateDistrict()">
-                    {{apiDistrictFrom.controls['Code'].value > 0
-                    ? "CẬP NHẬT"
-                    : apiDistrictFrom.controls['Code'].value == 0
-                    ? "TẠO MỚI" : ""}}
-                </button>
-                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="openDialogDistrict()" *ngIf="apiDistrictFrom.controls['Code'].value > 0">
-                    XÓA
-                </button>
+                <div class="form-footer">
+                    <div class="required-note" *ngIf="isImpose">
+                        <i><span class="impose">(*) Thông tin bắt buộc nhập</span></i>
+                    </div>
+                    <div class="k-form-buttons">
+                        <button kendoButton class="k-button btn-hachi closeBtn" (click)="onCloseForm()">
+                            Đóng
+                        </button>
+                        <div *ngIf="isBtnHide">
+                            <ng-container >
+                                <button kendoButton class="k-button btn-hachi updateBtn" (click)="onUpdateDistrict()">
+                                    {{apiDistrictFrom.controls['Code'].value > 0
+                                    ? "CẬP NHẬT"
+                                    : apiDistrictFrom.controls['Code'].value == 0
+                                    ? "TẠO MỚI" : ""}}
+                                </button>
+                            </ng-container>
+                        </div>
+                        <div *ngIf="isBtnHide">
+                            <ng-container >
+                                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="openDialogDistrict()" *ngIf="apiDistrictFrom.controls['Code'].value > 0">
+                                    XÓA
+                                </button>
+                            </ng-container>
+                        </div>
+                    </div>
                 </div>
             </ng-container>
-            </form>
+            </div>
         </mat-drawer>
 
     </mat-drawer-container>
-    <app-p-kendo-dialog *ngIf="dialogProvince" class="dialogAPI" [title]="'Xác nhận Xóa Đơn vị Tỉnh Thành'"
+    <app-p-kendo-dialog *ngIf="dialogProvince" class="dialog" [title]="'Xác nhận Xóa Đơn vị Tỉnh Thành'"
     (close)="closeDialogProvince()" (handleButton)="onDeleteProvince()"
     [cancelText]="'KHÔNG'"
-    [actionText]="'Có'"
+    [actionText]="'CÓ'"
     [dialogType]="1"
     >
-      <p>Bạn có chắc chắn muốn Xóa Đơn vị <span style="color: green">{{apiProvinceForm.controls['VNProvince'].value}}</span> này? </p>
-     
+        <div>   
+            <p>Bạn có chắc chắn muốn xóa đơn vị Tỉnh thành <span class="color-green">{{apiProvinceForm.controls['VNProvince'].value}}</span> này? </p>
+            <p>Đơn vị xóa sẽ <span class="color-red">KHÔNG</span> thể khôi phục lại.</p>
+        </div>
     </app-p-kendo-dialog>
 
-    <app-p-kendo-dialog *ngIf="dialogDistrict" class="dialogAPI" [title]="'Xác nhận Xóa Đơn vị Phường Xã'"
+    <app-p-kendo-dialog *ngIf="dialogDistrict" class="dialog" [title]="'Xác nhận Xóa Đơn vị Phường Xã'"
     (close)="closeDialogDistrict()" (handleButton)="onDeleteDistrict()"
     [cancelText]="'KHÔNG'"
-    [actionText]="'Có'"
+    [actionText]="'CÓ'"
     [dialogType]="1"
     >
-        <p>Bạn có chắc chắn muốn Xóa Đơn vị <span style="color: green">{{apiDistrictFrom.controls['VNDistrict'].value}}</span> này? </p>
-     
+        <div>
+            <p>Bạn có chắc chắn muốn xóa đơn vị Phường/Xã <span class="color-green">{{apiDistrictFrom.controls['VNDistrict'].value}}</span> này? </p>
+            <p>Đơn vị xóa sẽ <span class="color-red">KHÔNG</span> thể khôi phục lại.</p>
+        </div>
     </app-p-kendo-dialog>
 
     <kendo-popup #stylePopup *ngIf="popupShow" class="stylePopup" [style.visibility]="isPopupVisible()" [anchor]="getAnchor()"
