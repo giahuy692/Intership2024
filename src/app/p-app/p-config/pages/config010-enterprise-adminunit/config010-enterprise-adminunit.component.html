@@ -30,10 +30,10 @@
                 <div class="nav-btn nav-crud" >
                     <div *ngIf="isBtnHide" class="contain-btn">
                         <ng-container >
-                                <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                                    imageUrl="assets/img/icon/icon_city.svg"
-                                    (click)="onAddNewProvince()"
-                                    *ngIf="!isProvinceSelected && !isDistrictSelected">
+                            <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
+                                imageUrl="assets/img/icon/icon_city.svg"
+                                (click)="onAddNewProvince()"
+                                *ngIf="!isProvinceSelected && !isDistrictSelected">
                                 THÊM MỚI TỈNH THÀNH
                             </button>
 
@@ -90,7 +90,10 @@
                             <span [ngClass]="{'VNProvince': dataItem.VNProvince, }" [title]="dataItem.VNProvince">{{ dataItem.VNProvince }}</span>
                             
                             <span  class="font-weight-400"
-                                    [ngStyle]="{'font-style': dataItem.VNDistrict ? 'italic' : 'normal'}"
+                                    [ngStyle]="{
+                                        'font-weight': dataItem.VNProvince && !dataItem.VNDistrict ? 'bold' : 'normal',
+                                        'font-style': dataItem.VNDistrict ? 'italic' : 'normal'
+                                    }"
                                     [title]="dataItem.VNProvince || dataItem.VNDistrict">
                                 {{ dataItem.VNDistrict }}
                             </span>

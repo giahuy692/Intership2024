@@ -78,6 +78,9 @@
           .nav-crud {
             margin-left: auto;
             margin-top: auto;
+            .contain-btn {
+              display: flex;
+            }
             .onAddBtn {
               height: 32px;
               margin-left: 10px;
