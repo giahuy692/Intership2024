@@ -135,7 +135,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
 
         // this.MC = this.isMaster || this.isCreator;
 
-        this.isAllPers = false;
+        this.isAllPers = true;
         this.isCanCreate = false;
       }
     })
@@ -233,18 +233,43 @@ export class Config009EnterpriseCountryComponent implements OnInit {
 
   //#region Hàm cập nhật/tạo mới dữ liệu
   onUpdateCountry() {
-    if (!Ps_UtilObjectService.hasValueString(this.CountryForm.getRawValue().VNName)) {
-      return this.layoutService.onWarning('Vui lòng nhập Tên Tiếng Việt');
+    const country: DTOCountry = this.CountryForm.getRawValue();
+    const isCreate = this.isAction === 0;
+    const ctx = `${isCreate ? 'tạo mới' : 'cập nhật'} thông tin Quốc Gia`;
+
+    if (!Ps_UtilObjectService.hasValueString(country.VNName)) {
+      this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: Bạn chưa nhập Tên Tiếng Việt`);
+      return;
     }
-    if (!Ps_UtilObjectService.hasValueString(this.CountryForm.getRawValue().VNOrigin)) {
-      return this.layoutService.onWarning('Vui lòng nhập Tên Xuất xứ');
+
+    if (!Ps_UtilObjectService.hasValueString(country.VNOrigin)) {
+      this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: Bạn chưa nhập Tên Xuất xứ`);
+      return;
     }
-    if (this.isAction === 0 && !Ps_UtilObjectService.hasValueString(this.CountryForm.getRawValue().CountryID)) {
-      return this.layoutService.onWarning('Vui lòng nhập Mã hành chính');
+
+    if (isCreate && !Ps_UtilObjectService.hasValueString(country.CountryID)) {
+      this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: Bạn chưa nhập Mã hành chính`);
+      return;
     }
-    else {
-      this.APIUpdateCountry(this.CountryForm.getRawValue());
+
+    // Nếu là cập nhật → kiểm tra thay đổi
+  if (!isCreate) {
+    const fieldsToCheck: (keyof DTOCountry)[] = [
+      'VNName', 'VNOrigin', 'CountryID', 'JPName', 'ENName', 'OrderBy'
+    ];
+
+    const isChanged = fieldsToCheck.some(
+      field => (country[field] ?? '').toString().trim() !== (this.dataCountry[field] ?? '').toString().trim()
+    );
+
+    if (!isChanged) {
+      this.layoutService.onWarning(`Đã xảy ra lỗi khi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật`);
+      return;
     }
+  }
+
+  // Gọi API
+  this.APIUpdateCountry(country);
   }
   //#endregion
 
@@ -284,18 +309,21 @@ export class Config009EnterpriseCountryComponent implements OnInit {
       this.isAction = 0;
       this.CountryForm.reset(this.formDataDefault);
       this.CountryForm.get('CountryID')?.enable();
+      this.dataCountry = new DTOCountry();
 
     } else if (type === 1 && Ps_UtilObjectService.hasValue(data)) {
       this.isAction = 1;
       this.CountryForm.reset(); // clear state
       this.CountryForm.patchValue(data); // gán DTO vào form
       this.CountryForm.get('CountryID')?.disable();
+      this.dataCountry = { ...data };
 
     } else if (type === 2 && Ps_UtilObjectService.hasValue(data)) {
       this.isAction = 2;
       this.CountryForm.reset();
       this.CountryForm.patchValue(data);
       this.CountryForm.disable();
+      this.dataCountry = { ...data };
     }
 
     if (!(this.isAllPers || this.isCanCreate)) {
