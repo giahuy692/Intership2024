@@ -199,7 +199,16 @@ export class Config010EnterpriseAdminunitComponent {
   }
 
   // region Tìm kiếm và Lọc
-  // Hàm xử lý Reset filter
+  /**
+   * Đặt lại toàn bộ bộ lọc và tải lại dữ liệu gốc.
+   *
+   * @param {Event} e - Sự kiện click nút reset filter.
+   *
+   * - Mở lại tất cả các node trong TreeList.
+   * - Reset các biến chọn tỉnh, quận/huyện, về checkbox áp dụng.
+   * - Gọi loadData() để tải lại dữ liệu.
+   * - Hiển thị trạng thái loading trong 250ms.
+   */
   onResetFilter(e) {
     if (Ps_UtilObjectService.hasListValue(this.collapsedIds)) {
       for (const id of this.collapsedIds) {
@@ -258,7 +267,11 @@ export class Config010EnterpriseAdminunitComponent {
 
 
   // region Action Form
-  // Hàm mở form add province
+  /**
+   * Mở form thêm mới tỉnh/thành phố.
+   * - Reset form province
+   * - Mở drawer chứa form nhập liệu.
+   */
   onAddNewProvince() {
     this.selectedForm = 'province';
     this.currentProvinceForm = null;
@@ -273,7 +286,6 @@ export class Config010EnterpriseAdminunitComponent {
     this.selectedForm = 'district';
     this.currentDistrictForm = null;
 
-    // Tìm Province tương ứng
     let provinceCode: number | null = null;
 
     if (districtItem) {
@@ -355,7 +367,6 @@ export class Config010EnterpriseAdminunitComponent {
     // Nếu chọn District
     if (dataItem.hasOwnProperty('DistrictID')) {
       this.selectedDistrict = dataItem as DTODistrict;
-      // this.selectedProvince = null;
       this.isProvinceSelected = false;
       this.isDistrictSelected = true;
       this.selectedForm = 'district';
@@ -363,7 +374,6 @@ export class Config010EnterpriseAdminunitComponent {
     // Nếu chọn Province
     else if (dataItem.hasOwnProperty('ProvinceID')) {
       this.selectedProvince = dataItem as DTOProvince;
-      // this.selectedDistrict = null;
       this.isProvinceSelected = true;
       this.isDistrictSelected = false;
       this.selectedForm = 'province';
@@ -567,9 +577,9 @@ export class Config010EnterpriseAdminunitComponent {
   // hàm xử lý Update Province
   onUpdateProvince() {
     const updateProvince: DTOProvince = this.apiProvinceForm.getRawValue();
-    const isCreate = Number(updateProvince.Code) === 0;
+    const isAddForm = Number(updateProvince.Code) === 0;
 
-    let ctx = `${isCreate ? 'tạo mới' : 'cập nhật'} thông tin Tỉnh thành`;
+    let ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Tỉnh thành`;
     if (!Ps_UtilObjectService.hasValueString(updateProvince.VNProvince)) {
       this.layoutService.onError(`Đã xảy ra lỗi ${ctx}: Bạn chưa nhập Tên Tiếng Việt`);
       return;
@@ -578,7 +588,7 @@ export class Config010EnterpriseAdminunitComponent {
       this.layoutService.onError(`Đã xảy ra lỗi ${ctx}: Bạn chưa nhập Mã hành chính`);
       return;
     }
-    if (!isCreate && JSON.stringify(updateProvince) === JSON.stringify(this.originalProvinceData)) {
+    if (!isAddForm && JSON.stringify(updateProvince) === JSON.stringify(this.originalProvinceData)) {
       this.layoutService.onWarning(`Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`);
       return;
     }
@@ -619,9 +629,9 @@ export class Config010EnterpriseAdminunitComponent {
   // Hàm xử lý Update District
   onUpdateDistrict() {
     const updateDistrict: DTODistrict = this.apiDistrictFrom.getRawValue();
-    const isCreate = Number(updateDistrict.Code) === 0;
+    const isAddForm = Number(updateDistrict.Code) === 0;
 
-    let ctx = `${isCreate ? 'tạo mới' : 'cập nhật'} thông tin Phường xã`;
+    let ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Phường xã`;
     if (!Ps_UtilObjectService.hasValueString(updateDistrict.VNDistrict)) {
       this.layoutService.onError(`Đã xảy ra lỗi ${ctx}: Bạn chưa nhập Tên Tiếng Việt`);
       return;
@@ -635,7 +645,7 @@ export class Config010EnterpriseAdminunitComponent {
       return;
     }
 
-    if (!isCreate && JSON.stringify(updateDistrict) === JSON.stringify(this.originalDistrictData)) {
+    if (!isAddForm && JSON.stringify(updateDistrict) === JSON.stringify(this.originalDistrictData)) {
       this.layoutService.onWarning(`Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`);
       return;
     }
@@ -758,6 +768,15 @@ export class Config010EnterpriseAdminunitComponent {
     return null;
   }
 
+  /**
+   * Lắng nghe sự kiện click để đóng popup khi click ra ngoài.
+   *
+   * @param {MouseEvent} event - Sự kiện click
+   *
+   * - Lấy phần tử anchor hiện tại.
+   * - Nếu click bên ngoài anchor và popup đang mở → đóng popup.
+   * - Gọi `cdr.detectChanges()` để cập nhật giao diện.
+   */
   @HostListener('document:click', ['$event'])
   clickout(event) {
     var anchor = this.getAnchor();
@@ -773,7 +792,6 @@ export class Config010EnterpriseAdminunitComponent {
   }
 
   // Xử lý sự kiện click để hiển thị popup
-
   togglePopup(index, item) {
     event.stopPropagation();
 
@@ -857,11 +875,13 @@ export class Config010EnterpriseAdminunitComponent {
    *   + id = 2 → Thêm mới Province.
    *   + id = 3 → Thêm mới District thuộc Province.
    *   + id = 0 → Mở dialog xác nhận xóa Province.
+   *   + id = 6 → Xem chi tiết Province (disable tất cả các trường, mở drawer).
    *
    * - Nếu đang chọn District (`selectedDistrict` có giá trị):
    *   + id = 4 → Mở form chỉnh sửa District (reset + patchValue dữ liệu cũ, disable ID, mở drawer).
    *   + id = 3 → Thêm mới District.
    *   + id = 5 → Mở dialog xác nhận xóa District.
+   *   + id = 7 → Xem chi tiết District (disable tất cả các trường, mở drawer).
    *
    * Sau khi xử lý xong thì ẩn popup dropdown.
    *
