@@ -1,13 +1,13 @@
 @import "../../../../../assets/scss/variable.scss";
 
 ::ng-deep {
-      .k-drawer-wrapper {
-    scrollbar-color: unset !important;
-}
+    .k-drawer-wrapper {
+        scrollbar-color: unset !important;
+    }
 
-   
+
     app-config009-enterprise-country {
-   
+
 
 
 
@@ -131,13 +131,16 @@
 
                     .wrapper-drawer-right {
                         width: 400px;
+                        display: flex;
+                        flex-direction: column;
+                        height: 100%;
 
                         .header-drawer-right {
                             display: flex;
                             align-items: center;
                             // padding: 10px 16px 10px 16px;
                             height: 40px;
-                            border-bottom: 1px solid #000;
+                            border-bottom: 1px solid $black;
                             column-gap: 10px;
                         }
 
@@ -158,7 +161,7 @@
                         .customLabel:has(.VNName .ng-invalid.ng-touched, .VNName .ng-invalid.ng-dirty) {
                             .lable {
                                 .name {
-                                    color: red;
+                                    color: $bad-red;
                                 }
                             }
                         }
@@ -166,7 +169,7 @@
                         .customLabel:has(.BieftRequire .ng-invalid.ng-touched, .BieftRequire .ng-invalid.ng-dirty) {
                             .lable {
                                 .name {
-                                    color: red;
+                                    color: $bad-red;
                                 }
                             }
                         }
@@ -195,7 +198,7 @@
                                     }
 
                                     .codeCompany {
-                                        color: #1A6634;
+                                        color: $dark-green;
                                         font-weight: 700;
                                     }
                                 }
@@ -226,6 +229,12 @@
 
                     }
 
+                    .impose {
+                        font-weight: 700;
+                        color: $bad-red;
+                        margin: 5px 16px;
+                    }
+
                     .footer-drawer-right {
                         display: flex;
                         align-items: center;
@@ -233,6 +242,11 @@
                         padding: 10px 16px 10px 16px;
                         column-gap: 10px;
                         border-top: 1px solid #5a6276;
+
+                        .hachi-secondary {
+                            color: $dark-green;
+                            border-color: $dark-green;
+                        }
 
                         .hachi-danger {
                             background-color: $bad-red;
@@ -268,7 +282,7 @@
                                     height: 32px;
                                     margin-top: auto;
                                     background-color: $dark-green !important;
-                                    color: white;
+                                    color: $white;
                                     font-size: 11px;
                                     font-weight: bold;
                                     min-width: 78px;
@@ -278,13 +292,17 @@
 
                         .grid-wrapper {
                             margin: 0 5px;
-                            
+
                             app-p-kendo-grid {
-                                .myCustomGrid.k-grid {
-                                    tr {
-                                        &:not(.k-grouping-row) {
-                                            td:first-child {
-                                                padding-left: 12px !important;
+                                .myCustomGrid {
+                                    height: calc(100vh - 215px);
+
+                                    .k-grid {
+                                        tr {
+                                            &:not(.k-grouping-row) {
+                                                td:first-child {
+                                                    padding-left: 12px !important;
+                                                }
                                             }
                                         }
                                     }

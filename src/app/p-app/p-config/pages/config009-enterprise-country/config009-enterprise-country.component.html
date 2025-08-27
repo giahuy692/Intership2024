@@ -22,12 +22,13 @@
                             <div class="lable">
                                 <span class="labelName">
                                     <span class="name">Tên Tiếng Việt</span>
-                                    <span class="symbol">(*)</span>
+                                    <span class="symbol" *ngIf="isAllPers || isCanCreate">(*)</span>
                                 </span>
 
                             </div>
 
-                            <app-p-textbox class=" VNName" [propName]="'VNName'" formControlName="VNName" required>
+                            <app-p-textbox class=" VNName" [propName]="'VNName'" formControlName="VNName"
+                                [disabled]="isAction === 2 || !(isAllPers || isCanCreate)" required>
                             </app-p-textbox>
                         </kendo-label>
 
@@ -37,7 +38,8 @@
                                     <span class="name">Tên 日本語</span>
                                 </span>
                             </div>
-                            <app-p-textbox class="JPName" [propName]="'JPName'" formControlName="JPName">
+                            <app-p-textbox class="JPName" [propName]="'JPName'" formControlName="JPName"
+                                [disabled]="isAction === 2 || !(isAllPers || isCanCreate)">
                             </app-p-textbox>
                         </kendo-label>
 
@@ -47,7 +49,8 @@
                                     <span class="name">Tên English</span>
                                 </span>
                             </div>
-                            <app-p-textbox class="ENName" [propName]="'ENName'" formControlName="ENName">
+                            <app-p-textbox class="ENName" [propName]="'ENName'" formControlName="ENName"
+                                [disabled]="isAction === 2 || !(isAllPers || isCanCreate)">
                             </app-p-textbox>
                         </kendo-label>
 
@@ -55,12 +58,13 @@
                             <div class="lable">
                                 <span class="labelName">
                                     <span class="name">Tên Xuất xứ</span>
-                                    <span class="symbol">(*)</span>
+                                    <span class="symbol" *ngIf="isAllPers || isCanCreate">(*)</span>
                                 </span>
 
                             </div>
 
-                            <app-p-textbox class="VNOrigin" [propName]="'VNOrigin'" formControlName="VNOrigin" required>
+                            <app-p-textbox class="VNOrigin" [propName]="'VNOrigin'" formControlName="VNOrigin"
+                                [disabled]="isAction === 2 || !(isAllPers || isCanCreate)" required>
                             </app-p-textbox>
                         </kendo-label>
 
@@ -68,13 +72,13 @@
                             <div class="lable">
                                 <span class="labelName">
                                     <span class="name">Mã Hành Chính</span>
-                                    <span class="symbol">(*)</span>
+                                    <span class="symbol" *ngIf="isAllPers || isCanCreate">(*)</span>
                                 </span>
 
                             </div>
 
                             <app-p-textbox class="CountryID" [propName]="'CountryID'" formControlName="CountryID"
-                                [disabled]="isAction === 1" required>
+                                [disabled]="isAction === 1 || isAction === 2 || !(isAllPers || isCanCreate)" required>
                             </app-p-textbox>
                         </kendo-label>
 
@@ -86,24 +90,28 @@
 
                             </div>
 
-                            <app-p-textbox class="OrderBy" [propName]="'OrderBy'" formControlName="OrderBy">
+                            <app-p-textbox class="OrderBy" [propName]="'OrderBy'" formControlName="OrderBy"
+                                [disabled]="isAction === 2 || !(isAllPers || isCanCreate)">
                             </app-p-textbox>
                         </kendo-label>
 
                     </div>
 
+                    <i *ngIf="isAllPers || isCanCreate">
+                        <span class="impose">(*) Thông tin bắt buộc nhập </span>
+                    </i>
                     <!-- FOOTER, BUTTON -->
                     <div class="footer-drawer-right d-flex col-gap">
-                        <button class="btn-hachi hachi-secondary" kendoButton (click)=" onOpendDrawer(3)  ">
+                        <button class="btn-hachi hachi-secondary" kendoButton (click)=" onOpendDrawer(3)">
                             ĐÓNG
                         </button>
-                        <button kendoButton class="btn-hachi hachi-primary" (click)="onUpdateCountry()">
+                        <button *ngIf="isAction !== 2" kendoButton class="btn-hachi hachi-primary"
+                            (click)="onUpdateCountry()" [disabled]="!(isAllPers || isCanCreate)">
                             {{isAction == 0 ? "TẠO MỚI" : "CẬP NHẬT"}}
                         </button>
-                        <button 
-                        *ngIf="isAction === 1" 
-                        kendoButton class="btn-hachi hachi-danger"
-                        (click)="onActionDropdownClick({ Link: 'delete', Code: 'trash', Name: 'Xóa', Actived: true }, dataCountry)">
+                        <button *ngIf="isAction === 1" kendoButton class="btn-hachi hachi-danger"
+                            (click)="onActionDropdownClick({ Link: 'delete', Code: 'trash', Name: 'Xóa', Actived: true }, dataCountry)"
+                            [disabled]="!(isAllPers || isCanCreate)">
                             XOÁ
                         </button>
                     </div>
@@ -121,8 +129,9 @@
                 <div class="header header-1">
                     <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
                     <div class="nav-btn nav-crud">
-                        <button kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
-                            (click)="onOpendDrawer(0)" [disabled]="">
+                        <button *ngIf="isAllPers || isCanCreate" kendoButton
+                            class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
+                            (click)="onOpendDrawer(0)">
                             TẠO MỚI
                         </button>
 
@@ -165,12 +174,12 @@
 
         <!-- START DIALOG DELETE -->
         <app-p-kendo-dialog *ngIf="opened" [title]="'XÓA QUỐC GIA'" (close)="onCloseDialog()"
-            (handleButton)="onDeleteDialog('yes')" [iconButton]="'delete'" [dialogType]="1"
+            (handleButton)="onDeleteDialog(0)" [iconButton]="'delete'" [dialogType]="1"
             [iconTitle]="'k-icon k-i-warning'">
             <div class="text-center">
                 Bạn có chắc chắn muốn xóa Quốc Gia <br> <strong>{{dataCountry.VNName }}</strong>
                 <p class="content-sub">
-                   Quốc Gia bị xóa sẽ <span style="color: red">KHÔNG</span> thể khôi phục lại.
+                    Quốc Gia bị xóa sẽ <span style="color: red">KHÔNG</span> thể khôi phục lại.
                 </p>
             </div>
         </app-p-kendo-dialog>
