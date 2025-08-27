@@ -56,20 +56,10 @@ export class Config010EnterpriseAdminunitComponent {
   isApplied: boolean = true;
   isStopped: boolean = false;
 
-  // Biến để quản lý trạng thái disable của các trường Province
+  // Biến để quản lý trạng thái disable của các trường Province và các trường District và trường Mã hành chính
   isProvinceIdDisabled: boolean = false;
-  isVNProvinceDisabled: boolean = false;
-  isJPProvinceDisabled: boolean = false;
-  isENProvinceDisabled: boolean = false;
-  isOrderByProvinceDisabled: boolean = false;
-
-  // Biến để quản lý trạng thái disable của các trường District
   isDistrictIdDisabled: boolean = false;
-  isVNDistrictDisabled: boolean = false;
-  isJPDistrictDisabled: boolean = false;
-  isENDistrictDisabled: boolean = false;
-  isProvinceDisabled: boolean = false;
-  isOrderByDistrictDisabled: boolean = false;
+  isFeildDisabled: boolean = false;
 
   // Biến để quản lý trạng thái ẩn của button thêm tỉnh thành và các trường bắt buộc
   isBtnHide: boolean = false;
@@ -913,10 +903,7 @@ export class Config010EnterpriseAdminunitComponent {
             IsDelete: Number(this.selectedProvince.IsDelete),
           });
           this.isProvinceIdDisabled = true;
-          this.isVNProvinceDisabled = true;
-          this.isJPProvinceDisabled = true;
-          this.isENProvinceDisabled = true;
-          this.isOrderByProvinceDisabled = true;
+          this.isFeildDisabled = true;
           this.apiProvinceForm.get('IsDelete')?.disable();
           this.drawer.open();
         }
@@ -966,11 +953,7 @@ export class Config010EnterpriseAdminunitComponent {
 
             this.selectedForm = 'district';
             this.isDistrictIdDisabled = true;
-            this.isVNDistrictDisabled = true;
-            this.isJPDistrictDisabled = true;
-            this.isENDistrictDisabled = true;
-            this.isProvinceDisabled = true;
-            this.isOrderByDistrictDisabled = true;
+            this.isFeildDisabled = true;
             this.apiDistrictFrom.get('IsDelete')?.disable();
             this.drawer.open();
           }

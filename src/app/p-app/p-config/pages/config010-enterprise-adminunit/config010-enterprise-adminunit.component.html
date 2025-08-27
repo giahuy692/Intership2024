@@ -141,17 +141,17 @@
                                         </ng-container>
                                     </div>
                                 </div>
-                                <app-p-textbox  formControlName="VNProvince" propName="VNProvince" [disabled]="isVNProvinceDisabled" #VNProvince></app-p-textbox>
+                                <app-p-textbox  formControlName="VNProvince" propName="VNProvince" [disabled]="isFeildDisabled" #VNProvince></app-p-textbox>
                             </div>
 
                             <div class="item item2">
                                 <div class="label">Tên 日本語 </div>
-                                <app-p-textbox  formControlName="JPProvince" propName="JPProvince" [disabled]="isJPProvinceDisabled" #JPProvince></app-p-textbox>
+                                <app-p-textbox  formControlName="JPProvince" propName="JPProvince" [disabled]="isFeildDisabled" #JPProvince></app-p-textbox>
                             </div>
                             
                             <div class="item item3">
                                 <div class="label">Tên English </div>
-                                <app-p-textbox  formControlName="ENProvince" propName="ENProvince"  [disabled]="isENProvinceDisabled" #ENProvince></app-p-textbox>
+                                <app-p-textbox  formControlName="ENProvince" propName="ENProvince"  [disabled]="isFeildDisabled" #ENProvince></app-p-textbox>
                             </div>
 
                             <div class="item item4">
@@ -168,7 +168,7 @@
 
                             <div class="item item5">
                                 <div class="label">Thứ tự hiển thị</div>
-                                <app-p-numeric-textbox  formControlName="OrderBy" propName="OrderBy" [format]="'n0'"  [spinners]="false" [min]="0" [disabled]="isOrderByProvinceDisabled" #OrderBy></app-p-numeric-textbox>
+                                <app-p-numeric-textbox  formControlName="OrderBy" propName="OrderBy" [format]="'n0'"  [spinners]="false" [min]="0" [disabled]="isFeildDisabled" #OrderBy></app-p-numeric-textbox>
                             </div>
 
                             <div class="item item6">
@@ -231,17 +231,17 @@
                                     </ng-container>
                                 </div>
                             </div>
-                            <app-p-textbox  formControlName="VNDistrict" propName="VNDistrict" [disabled]="isVNDistrictDisabled" #VNDistrict></app-p-textbox>
+                            <app-p-textbox  formControlName="VNDistrict" propName="VNDistrict" [disabled]="isFeildDisabled" #VNDistrict></app-p-textbox>
                         </div>
 
                         <div class="item item2">
                             <div class="label">Tên 日本語 </div>
-                            <app-p-textbox  formControlName="JPDistrict" propName="JPDistrict" [disabled]="isJPDistrictDisabled" #JPDistrict></app-p-textbox>
+                            <app-p-textbox  formControlName="JPDistrict" propName="JPDistrict" [disabled]="isFeildDisabled" #JPDistrict></app-p-textbox>
                         </div>
                         
                         <div class="item item3">
                             <div class="label">Tên English </div>
-                            <app-p-textbox  formControlName="ENDistrict" propName="ENDistrict" [disabled]="isENDistrictDisabled" #ENDistrict></app-p-textbox>
+                            <app-p-textbox  formControlName="ENDistrict" propName="ENDistrict" [disabled]="isFeildDisabled" #ENDistrict></app-p-textbox>
                         </div>
 
                         <div class="item item4">
@@ -273,14 +273,14 @@
                                 [valuePrimitive]="true"
                                 [filterable]="true"
                                 (valueChange)="onSelectedDropdownList($event)"
-                                [disabled]="isProvinceDisabled"
+                                [disabled]="isFeildDisabled"
                                 >
                             </p-kendo-dropdownlist>
                         </div>
 
                         <div class="item item5">
                             <div class="label">Thứ tự hiển thị</div>
-                            <app-p-numeric-textbox  formControlName="OrderBy" propName="OrderBy" [format]="'n0'"  [spinners]="false" [min]="0" [disabled]="isOrderByDistrictDisabled" #OrderBy></app-p-numeric-textbox>
+                            <app-p-numeric-textbox  formControlName="OrderBy" propName="OrderBy" [format]="'n0'"  [spinners]="false" [min]="0" [disabled]="isFeildDisabled" #OrderBy></app-p-numeric-textbox>
                         </div>
 
                         <div class="item item6">
