@@ -314,6 +314,26 @@
                         // END HEADER    
                     }
                 }
+
+                app-p-kendo-dialog {
+                    .k-dialog {
+                        transform: scale(1);         // mặc định
+                        transform-origin: center;    // scale từ giữa dialog
+                    }
+                    .k-dialog-content {
+                        font-size: 18px;      // chữ to hơn
+                        line-height: 1.5;
+                    }
+
+                    .k-dialog-titlebar {
+                        font-size: 20px;      // tiêu đề dialog
+                        font-weight: bold
+                    }
+
+                    .content-sub {
+                        font-size: 16px;
+                    }
+                }
             }
         }
     }

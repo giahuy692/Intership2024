@@ -165,19 +165,28 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   //=========================== SEARCH ===========================
   //#region Search
   onSearch(event: CompositeFilterDescriptor): void {
-    const value = (event?.filters?.[0] as FilterDescriptor)?.value?.toString().trim();
+  const rawValue = (event?.filters?.[0] as FilterDescriptor)?.value?.toString().trim() ?? '';
 
-    const hasValue = Ps_UtilObjectService.hasValueString(value);
+  const keyword = rawValue
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+    .toLowerCase();
 
-    this.gridState.filter.filters = hasValue ? [{ field: 'VNName', operator: 'contains', value }] : [];
-
-    this.filterSearch = hasValue ? { logic: 'or', filters: this.gridState.filter.filters } : null;
-
-    this.tempSearch = this.filterSearch;
-
-    this.onLoadFilter();
-    this.APIGetListCountry(this.gridState);
+  if (!Ps_UtilObjectService.hasValueString(keyword)) {
+    this.gridCountries = [...this.allCountries]; // reset
+  } else {
+    this.gridCountries = this.allCountries.filter(c => {
+      const vnName = (c.VNName ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+        .toLowerCase();
+      return vnName.includes(keyword);
+    });
   }
+}
+
   //#endregion
 
   onResetFilter() {
