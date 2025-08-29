@@ -1,0 +1,123 @@
+@import "../../../../../assets/scss/variable.scss";
+
+::ng-deep {
+  app-config011-enterprise-unituom {
+
+    #config011-enterprise-unituom {
+
+      // Body content
+      .mat-drawer-content {
+        height: 100%;
+        padding: 0 15px;
+      }
+        
+      //HEADER
+      .header-1 {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .k-breadcrumb-container{
+          padding-left: 0 !important;
+        }
+      }
+      .header-2 {
+        padding-left: 0px !important;
+      }
+
+      .header {
+        .nav-crud {
+          margin-left: auto;
+          margin-left: auto;
+          .onAddBtn {
+              height: 32px;
+              margin-top: auto;
+              background-color: $dark-green !important;
+              color: $white;
+              font-size: 11px;
+              font-weight: bold;
+              min-width: 78px;
+          }
+        }
+      }
+
+      //form - drawer
+      .mat-drawer{
+        padding: 0 !important;
+        height: 100%; transition: none !important;
+        .formInfo{
+          height: 100%;
+          padding: 0 !important;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          .impose{
+            font-weight: 700;
+            color: $bad-red;
+          }
+          legend{
+            padding: 10px 15px !important ;
+            position: sticky;
+            top: 0;
+            z-index: 2;
+            background-color: $white
+          }
+          .field{
+            margin-right: 0 !important;
+            flex: 1;
+            overflow-y: auto; 
+            .formPackingUnit{
+              height: 100%;
+              padding: 10px 15px 0 15px;
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+              .item{
+                .label-impose {
+                  display: flex;
+                  gap: 5px;
+                  padding-bottom: 5px;
+
+                  .label-item {
+                    color: #343A40;
+                    font-weight: 700;
+                  }
+                }
+                .label{
+                  color: #343A40;
+                  font-weight: 700;
+                  padding-bottom: 5px;
+                }
+              }
+            }
+          }
+          .form-footer {
+            position: sticky;
+            bottom: 0;
+            background-color: $white;
+            z-index: 3;       
+            .required-note {
+              padding-left: 15px;
+            }
+            .k-form-buttons{
+              box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);;
+              width: 100%;
+              display: flex;
+              flex-direction: row;
+              bottom: 30px !important;
+              background-color: $white;
+              border-top: 1px solid #5a6276;
+              height: 50px;
+              align-items: center;
+              .closeBtn{
+                margin-left: 15px;
+                background-color: $white;
+                color: $dark-green;
+                box-shadow: #343A40;
+              }
+            }
+          }
+        }     
+      }
+    }
+  }
+}
