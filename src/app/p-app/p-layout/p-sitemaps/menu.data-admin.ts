@@ -2038,6 +2038,14 @@ export const ModuleDataAdmin: Array<any> = [
                         Type: 'function',
                         LstChild: []
                     },
+                    {
+                        Name: "Đơn vị tính",
+                        Actived: false,
+                        Code: "config011-enterprise-unituom",
+                        Link: "/config/config011-enterprise-unituom",
+                        Type: 'function',
+                        LstChild: []
+                    },
                 ]
             }, 
         ]
