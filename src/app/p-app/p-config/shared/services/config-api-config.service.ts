@@ -7,14 +7,14 @@ import { DeveloperApiConfigService } from 'src/app/p-app/p-developer/shared/serv
 //#endregion [end using]
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root'
 })
 export class ConfigApiConfigService {
 
-	constructor(
-		public api: PS_CommonService,
-		public config: DeveloperApiConfigService,
-	) {}
+  constructor(
+    public api: PS_CommonService,
+    public config: DeveloperApiConfigService,
+  ) { }
 
   //#region [begin coding]
   //#endregion [end coding]
@@ -292,20 +292,20 @@ export class ConfigApiConfigService {
         url: EnumConfig.GetListCountry
       }),
 
-			DeleteCountry: new DTOAPI({
-				method: ApiMethodType.post,
-				url: EnumConfig.DeleteCountry
-			}),
+      DeleteCountry: new DTOAPI({
+        method: ApiMethodType.post,
+        url: EnumConfig.DeleteCountry
+      }),
 
-			UpdateCountry: new DTOAPI({
-				method: ApiMethodType.post,
-				url: EnumConfig.UpdateCountry
-			}),
+      UpdateCountry: new DTOAPI({
+        method: ApiMethodType.post,
+        url: EnumConfig.UpdateCountry
+      }),
 
-			GetListProvince: new DTOAPI({
-				method: ApiMethodType.post,
-				url: EnumConfig.GetListProvince
-			}),
+      GetListProvince: new DTOAPI({
+        method: ApiMethodType.post,
+        url: EnumConfig.GetListProvince
+      }),
 
       GetListDistrict: new DTOAPI({
         method: ApiMethodType.post,
@@ -380,6 +380,10 @@ export class ConfigApiConfigService {
       DeleteDistrict: new DTOAPI({
         method: ApiMethodType.post,
         url: EnumConfig.DeleteDistrict,
+      }),
+      GetFolderWithFile: new DTOAPI({
+        method: ApiMethodType.post,
+        url: EnumConfig.GetFolderWithFile,
       }),
       //#endregion
     };

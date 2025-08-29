@@ -106,4 +106,7 @@ export class EnumConfig {
     static DeleteDistrict: string;
     static DeleteCountry: string;
     static UpdateCountry: string;
+
+    static GetFolderWithFile: string;
+
 }

@@ -2038,6 +2038,21 @@ export const ModuleDataAdmin: Array<any> = [
                         Type: 'function',
                         LstChild: []
                     },
+
+
+
+
+
+
+
+                    {
+                        Name: "Tem nhãn",
+                        Actived: false,
+                        Code: "config012-enterprise-sticker",
+                        Link: "/config/config012-enterprise-sticker",
+                        Type: 'function',
+                        LstChild: []
+                    },
                 ]
             }, 
         ]

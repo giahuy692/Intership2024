@@ -3,6 +3,7 @@ import {
   DTOResponse,
   PS_CommonService,
   Ps_UtilCacheService,
+  Ps_UtilObjectService,
 } from 'src/app/p-lib';
 import { ConfigApiConfigService } from './config-api-config.service';
 import { LayoutApiConfigService } from 'src/app/p-app/p-layout/services/layout-api-config.service';
@@ -15,6 +16,7 @@ import { DTOPartner } from 'src/app/p-app/p-purchase/shared/dto/DTOPartner';
 import { DTOCountry } from '../dto/DTOCountry';
 import { DTOProvince } from '../dto/DTOProvince';
 import { DTODistrict } from '../dto/DTODistrict';
+import { DTOCFFolder } from 'src/app/p-app/p-layout/dto/DTOCFFolder.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -539,4 +541,25 @@ export class ConfigEnterpriceApiService {
         );
     });
   }
+
+    GetFolderWithFile(childPath: string = '', id: number) {
+      let that = this;
+      //nếu có id > 0 thì get folder root, nếu có path thì get folder con
+      let param = {
+        'ID': Ps_UtilObjectService.hasValueString(childPath) ? 0 : id,//news = 8
+        'Folder': childPath
+      }
+      return new Observable<DTOCFFolder>(obs => {
+        that.api.connect(that.config.getAPIList().GetFolderWithFile.method,
+          that.config.getAPIList().GetFolderWithFile.url, JSON.stringify(param)).subscribe(
+            (res: DTOCFFolder) => {
+              obs.next(res);
+              obs.complete();
+            }, errors => {
+              obs.error(errors);
+              obs.complete();
+            }
+          )
+      });
+    }
 }

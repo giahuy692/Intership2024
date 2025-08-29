@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { PConfigComponent } from './p-config.component';
 import { Config009EnterpriseCountryComponent } from './pages/config009-enterprise-country/config009-enterprise-country.component';
 import { Config010EnterpriseAdminunitComponent } from './pages/config010-enterprise-adminunit/config010-enterprise-adminunit.component';
+import { Config012EnterpriseStickerComponent } from './pages/config012-enterprise-sticker/config012-enterprise-sticker.component';
 
 
 const routes: Routes = [
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'config010-enterprise-adminunit/:idCompany',
         component: Config010EnterpriseAdminunitComponent,
+      },
+      {
+        path: 'config012-enterprise-sticker/:idCompany',
+        component: Config012EnterpriseStickerComponent,
       },
     ]
   },
