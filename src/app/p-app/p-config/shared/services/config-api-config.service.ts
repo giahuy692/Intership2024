@@ -381,6 +381,14 @@ export class ConfigApiConfigService {
         method: ApiMethodType.post,
         url: EnumConfig.DeleteDistrict,
       }),
+      UpdatePackingUnit: new DTOAPI({
+        method: ApiMethodType.post,
+        url: EnumConfig.UpdatePackingUnit,
+      }),
+      DeletePackingUnit: new DTOAPI({
+        method: ApiMethodType.post,
+        url: EnumConfig.DeletePackingUnit,
+      })
       //#endregion
     };
   }

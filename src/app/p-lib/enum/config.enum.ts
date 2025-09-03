@@ -106,4 +106,6 @@ export class EnumConfig {
     static DeleteDistrict: string;
     static DeleteCountry: string;
     static UpdateCountry: string;
+    static UpdatePackingUnit: string;
+    static DeletePackingUnit: string;
 }

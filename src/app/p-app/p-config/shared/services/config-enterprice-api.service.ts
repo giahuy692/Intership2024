@@ -15,6 +15,7 @@ import { DTOPartner } from 'src/app/p-app/p-purchase/shared/dto/DTOPartner';
 import { DTOCountry } from '../dto/DTOCountry';
 import { DTOProvince } from '../dto/DTOProvince';
 import { DTODistrict } from '../dto/DTODistrict';
+import { DTOPackingUnit } from '../dto/DTOPackingUnit';
 
 @Injectable({
   providedIn: 'root',
@@ -525,6 +526,72 @@ export class ConfigEnterpriceApiService {
         .connect(
           that.config.getAPIList().DeleteDistrict.method,
           that.config.getAPIList().DeleteDistrict.url,
+          JSON.stringify(dtos)
+        )
+        .subscribe(
+          (res: any) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
+
+  // Lấy danh sách đơn vị tính
+  GetListPackingUnit(gridState?: State) {
+    let that = this;
+    return new Observable<DTOResponse>((obs) => {
+      that.api.connect(
+        that.config.getAPIList().GetListPackingUnit.method,
+        that.config.getAPIList().GetListPackingUnit.url,
+        JSON.stringify(toDataSourceRequest(gridState))
+      ).subscribe((res: any) => {
+        obs.next(res);
+        obs.complete();
+      },
+        (errors) => {
+          obs.error(errors);
+          obs.complete();
+        }
+      );
+    });
+  }
+
+  // Cập nhật đơn vị tính
+  UpdatePackingUnit(dto: DTOPackingUnit) {
+    let that = this;
+
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().UpdatePackingUnit.method,
+          that.config.getAPIList().UpdatePackingUnit.url,
+          JSON.stringify(dto)
+        )
+        .subscribe(
+          (res: any) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
+
+  DeletePackingUnit(dtos: DTOPackingUnit[]) {
+    let that = this;
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().DeletePackingUnit.method,
+          that.config.getAPIList().DeletePackingUnit.url,
           JSON.stringify(dtos)
         )
         .subscribe(
