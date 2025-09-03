@@ -11,8 +11,23 @@
         padding: 0 15px;
       }
         
+       //dialog confirm
+        .dialog{
+          display: flex;
+          flex-direction: column;
+          .k-dialog-content {
+            font-size: 16px;
+            height: 150px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+          }
+        }
+
       //HEADER
       .header-1 {
+        height: 50px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -39,6 +54,16 @@
           }
         }
       }
+
+      .grid-wrapper {
+        margin: 0;
+
+        app-p-kendo-grid {
+          .myCustomGrid {
+            height: calc(100vh - 215px);
+        }
+    }
+  }
 
       //form - drawer
       .mat-drawer{

@@ -7,8 +7,8 @@
             <div class="header header-1">
                 <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
                 <div class="nav-btn nav-crud">
-                    <button kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
-                    (click)="onOpendDrawer()" [disabled]="">
+                    <button *ngIf="isBtnHide" kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
+                    (click)="onOpendDrawer(0)" [disabled]="">
                     TẠO MỚI
                     </button>
                 </div>
@@ -18,7 +18,7 @@
             <div class="header header-2">
                 <div id="functionbar">
                     <app-search-filter-group placeholder="Tìm theo tên Đơn vị tính" [fields]="['VNPackingUnit']" (valueChange)="onSearch($event)"
-                    (onReset)="onResetFilter()">
+                    (onReset)="onResetFilter()" #search>
                     </app-search-filter-group>
                 </div>
             </div>
@@ -29,21 +29,21 @@
                 [getActionDropdownCallback]="getActionDropdownCallback" [onActionDropdownClickCallback]="onActionDropdownClickCallback"> 
 
                     <kendo-grid-column field="VNPackingUnit" title="Tên Tiếng Việt" class="col_nameVN" headerClass="col_nameVN"
-                    [width]="400">
+                    [width]="300">
                         <ng-template kendoGridCellTemplate let-dataItem>
                             <div class="text-ellipsis" title="{{dataItem.VNPackingUnit}}">{{dataItem.VNPackingUnit}}</div>
                         </ng-template>
                     </kendo-grid-column>
 
                     <kendo-grid-column field="JPPackingUnit" title="Tên 日本語" class="col_nameJP" headerClass="col_nameJP"
-                    [width]="400">
+                    [width]="300">
                         <ng-template kendoGridCellTemplate let-dataItem>
                             <div class="text-ellipsis" title="{{dataItem.JPPackingUnit}}">{{dataItem.JPPackingUnit}}</div>
                         </ng-template>
                     </kendo-grid-column>
 
                     <kendo-grid-column field="ENPackingUnit" title="Tên English" class="col_nameEN" headerClass="col_nameEN"
-                    [width]="400">
+                    [width]="300">
                         <ng-template kendoGridCellTemplate let-dataItem>
                             <div class="text-ellipsis" title="{{dataItem.ENPackingUnit}}">{{dataItem.ENPackingUnit}}</div>
                         </ng-template>
@@ -66,43 +66,43 @@
                             <div class="item item1">
                                 <div class="label-impose">
                                     <div class="label-item"> Tên Tiếng Việt </div>
-                                    <div>
+                                    <div *ngIf="isImpose">
                                         <ng-container >
                                             <span class="impose"> (*) </span>
                                         </ng-container>
                                     </div>
                                 </div>
-                                <app-p-textbox  formControlName="VNPackingUnit" propName="VNPackingUnit" #VNPackingUnit></app-p-textbox>
+                                <app-p-textbox  formControlName="VNPackingUnit" propName="VNPackingUnit" [disabled]="isFeildDisabled" #VNPackingUnit></app-p-textbox>
                             </div>
 
                             <div class="item item2">
                                 <div class="label">Tên 日本語 </div>
-                                <app-p-textbox  formControlName="JPPackingUnit" propName="JPPackingUnit" #JPPackingUnit></app-p-textbox>
+                                <app-p-textbox  formControlName="JPPackingUnit" propName="JPPackingUnit" [disabled]="isFeildDisabled" #JPPackingUnit></app-p-textbox>
                             </div>
                             
                             <div class="item item3">
                                 <div class="label">Tên English </div>
-                                <app-p-textbox  formControlName="ENPackingUnit" propName="ENPackingUnit" #ENPackingUnit></app-p-textbox>
+                                <app-p-textbox  formControlName="ENPackingUnit" propName="ENPackingUnit" [disabled]="isFeildDisabled" #ENPackingUnit></app-p-textbox>
                             </div>
 
                             <div class="item item4">
                                 <div class="label">Thứ tự hiển thị</div>
-                                <app-p-numeric-textbox  formControlName="OrderBy" propName="OrderBy" [format]="'n0'"  [spinners]="false" [min]="0" #OrderBy></app-p-numeric-textbox>
+                                <app-p-numeric-textbox  formControlName="OrderBy" propName="OrderBy" [disabled]="isFeildDisabled" [format]="'n0'"  [spinners]="false" [min]="0" #OrderBy></app-p-numeric-textbox>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-footer">
-                    <div class="required-note">
+                    <div class="required-note" *ngIf="isImpose" >
                         <i><span class="impose">(*) Thông tin bắt buộc nhập</span></i>
                     </div>
                     <div class="k-form-buttons">
                         <button kendoButton class="k-button btn-hachi closeBtn" (click)="onCloseForm()">
                             Đóng
                         </button>
-                        <div>
+                        <div *ngIf="isBtnHide">
                             <ng-container >
-                                <button kendoButton class="k-button btn-hachi updateBtn" (click)="onUpdateDistrict()">
+                                <button kendoButton class="k-button btn-hachi updateBtn" (click)="onUpdatePackingUnit()">
                                     {{apiPackingUnitForm.controls['Code'].value > 0
                                     ? "CẬP NHẬT"
                                     : apiPackingUnitForm.controls['Code'].value == 0
@@ -110,9 +110,9 @@
                                 </button>
                             </ng-container>
                         </div>
-                        <div>
+                        <div *ngIf="isBtnHide">
                             <ng-container >
-                                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="openDialogDistrict()" *ngIf="apiPackingUnitForm.controls['Code'].value > 0">
+                                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="openDialogPakingUnit()" *ngIf="apiPackingUnitForm.controls['Code'].value > 0">
                                     XÓA
                                 </button>
                             </ng-container>
@@ -123,5 +123,19 @@
             </div>
         </mat-drawer>
         <!-- END DRAWER RIGHT -->
+
     </mat-drawer-container>
+
+    <!-- START DIALOG DELETE -->
+    <app-p-kendo-dialog *ngIf="dialog" class="dialog" [title]="'Xác nhận Xóa Đơn vị tính'"
+    (close)="closeDialogPakingUnit()" (handleButton)="onDeletePackingUnit(0)"
+    [cancelText]="'KHÔNG'"
+    [actionText]="'CÓ'"
+    [dialogType]="1"
+    >
+        <div>
+            <p>Bạn có chắc chắn muốn xóa đơn vị tính <span class="color-green"><strong>{{dataPackingUnit.VNPackingUnit }}</strong></span> này? </p>
+            <p>Đơn vị xóa sẽ <span class="color-red">KHÔNG</span> thể khôi phục lại.</p>
+        </div>
+    </app-p-kendo-dialog>
 </div>
