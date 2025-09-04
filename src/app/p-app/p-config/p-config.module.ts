@@ -20,6 +20,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { Config009EnterpriseCountryComponent } from './pages/config009-enterprise-country/config009-enterprise-country.component';
 import { Config010EnterpriseAdminunitComponent } from './pages/config010-enterprise-adminunit/config010-enterprise-adminunit.component';
 import { Config011EnterpriseUnituomComponent } from './pages/config011-enterprise-unituom/config011-enterprise-unituom.component';
+import { Config012EnterpriseStickerComponent } from './pages/config012-enterprise-sticker/config012-enterprise-sticker.component';
 
 
 
@@ -38,8 +39,7 @@ import { Config011EnterpriseUnituomComponent } from './pages/config011-enterpris
     ConfigWebDisplayComponent,
     ConfigHistoryPopupComponent,
     Config009EnterpriseCountryComponent,
-    Config010EnterpriseAdminunitComponent,
-    Config011EnterpriseUnituomComponent
+    Config010EnterpriseAdminunitComponent
   ],
   imports: [
     PConfigRoutingModule,
