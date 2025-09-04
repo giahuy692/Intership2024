@@ -67,7 +67,6 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   opened: boolean = false;
 
   // variable of unsubcribe
-  GetListCountrySst: Subscription; //ssb lấy ds quốc gia
   arrUnsubscribe: Subscription[] = []; //mảng lưu sst để huỷ sau
   ngUnsubscribe$ = new Subject<void>(); //subject hỗ trợ takeUntil để unsubscribe
 
@@ -165,27 +164,27 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   //=========================== SEARCH ===========================
   //#region Search
   onSearch(event: CompositeFilterDescriptor): void {
-  const rawValue = (event?.filters?.[0] as FilterDescriptor)?.value?.toString().trim() ?? '';
+    const rawValue = (event?.filters?.[0] as FilterDescriptor)?.value?.toString().trim() ?? '';
 
-  const keyword = rawValue
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-    .toLowerCase();
+    const keyword = rawValue
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+      .toLowerCase();
 
-  if (!Ps_UtilObjectService.hasValueString(keyword)) {
-    this.gridCountries = [...this.allCountries]; // reset
-  } else {
-    this.gridCountries = this.allCountries.filter(c => {
-      const vnName = (c.VNName ?? '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-        .toLowerCase();
-      return vnName.includes(keyword);
-    });
+    if (!Ps_UtilObjectService.hasValueString(keyword)) {
+      this.gridCountries = [...this.allCountries]; // reset
+    } else {
+      this.gridCountries = this.allCountries.filter(c => {
+        const vnName = (c.VNName ?? '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+          .toLowerCase();
+        return vnName.includes(keyword);
+      });
+    }
   }
-}
 
   //#endregion
 
@@ -262,24 +261,114 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     }
 
     // Nếu là cập nhật → kiểm tra thay đổi
-  if (!isCreate) {
-    const fieldsToCheck: (keyof DTOCountry)[] = [
-      'VNName', 'VNOrigin', 'CountryID', 'JPName', 'ENName', 'OrderBy'
-    ];
+    if (!isCreate) {
+      const isChanged = Object.keys(country).some((key) => {
+        const newVal = (country as any)[key]?.toString().trim() ?? '';
+        const oldVal = (this.dataCountry as any)[key]?.toString().trim() ?? '';
+        return newVal !== oldVal;
+      });
 
-    const isChanged = fieldsToCheck.some(
-      field => (country[field] ?? '').toString().trim() !== (this.dataCountry[field] ?? '').toString().trim()
-    );
-
-    if (!isChanged) {
-      this.layoutService.onWarning(`Đã xảy ra lỗi khi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật`);
-      return;
+      if (!isChanged) {
+        // this.layoutService.onWarning(`Đã xảy ra lỗi khi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật`);
+        return;
+      }
     }
-  }
 
-  // Gọi API
-  this.APIUpdateCountry(country);
+    // Gọi API
+    this.APIUpdateCountry(country);
   }
+//   onUpdateCountry() {
+//     // Đặt touched để hiển thị lỗi validate
+//     this.CountryForm.markAllAsTouched();
+
+//     // Enable tạm control đang disable (vd: CountryID khi edit)
+//     const reDisableKeys: string[] = [];
+//     Object.keys(this.CountryForm.controls).forEach(k => {
+//       const ctl = this.CountryForm.get(k);
+//       if (ctl && ctl.disabled) {
+//         reDisableKeys.push(k);
+//         ctl.enable({ emitEvent: false });
+//       }
+//     });
+
+//     // Cập nhật lại trạng thái form
+//     this.CountryForm.updateValueAndValidity({ emitEvent: false });
+
+//     if (this.CountryForm.invalid) {
+//       // Thu thập lỗi
+//       const invalids = this.collectInvalid(this.CountryForm); // [{key, errs}]
+//       const first = invalids[0];
+
+//       const errorFields = invalids.map(x => {
+//         const label = this.fieldLabels?.[x.key] || x.key;
+//         return `${label} ${x.key == 'CountryID' ? '(bắt buộc)' : ''}`;
+//       }).join(', ');
+
+//       this.layoutService.onWarning(`Vui lòng kiểm tra và điền đầy đủ: ${errorFields}`);
+
+//       this.focusFirstInvalid(first?.key);
+//       return;
+//     }
+
+//     const country: DTOCountry = this.CountryForm.getRawValue();
+//     const isCreate = this.isAction === 0;
+//     const ctx = `${isCreate ? 'tạo mới' : 'cập nhật'} thông tin Quốc Gia`;
+
+//     // Nếu là cập nhật → kiểm tra thay đổi
+//     if (!isCreate) {
+//       const isChanged = Object.keys(country).some((key) => {
+//         const newVal = (country as any)[key]?.toString().trim() ?? '';
+//         const oldVal = (this.dataCountry as any)[key]?.toString().trim() ?? '';
+//         return newVal !== oldVal;
+//       });
+
+//       if (!isChanged) {
+//         this.layoutService.onWarning(`Dữ liệu không có thay đổi, không cần cập nhật`);
+//         return;
+//       }
+//     }
+
+//     // Gọi API
+//     this.APIUpdateCountry(country);
+//   }
+
+//   /**
+//    * Thu thập danh sách control invalid trong form
+//    */
+//   collectInvalid(form: FormGroup): { key: string, errs: any }[] {
+//     const invalids: { key: string, errs: any }[] = [];
+
+//     Object.keys(form.controls).forEach(key => {
+//       const control = form.get(key);
+//       if (control && control.invalid) {
+//         invalids.push({ key, errs: control.errors });
+//       }
+//     });
+
+//     return invalids;
+//   }
+
+//   // ánh xạ tên field trong form → nhãn hiển thị cho thông báo lỗi
+//   fieldLabels: { [key: string]: string } = {
+//     CountryID: 'Mã hành chính',
+//     VNName: 'Tên Tiếng Việt',
+//     VNOrigin: 'Xuất xứ',
+//     JPName: 'Tên Tiếng Nhật',
+//     ENName: 'Tên Tiếng Anh',
+//     OrderBy: 'Thứ tự hiển thị',
+//     IsSystem: 'Hệ thống'
+//   };
+
+//   /**
+//  * Focus vào control invalid đầu tiên trong form
+//  */
+// focusFirstInvalid(key?: string) {
+//   if (!key) return;
+//   const el = document.querySelector(`[formControlName="${key}"]`) as HTMLElement;
+//   if (el) {
+//     el.focus();
+//   }
+// }
   //#endregion
 
   /**
@@ -423,9 +512,8 @@ export class Config009EnterpriseCountryComponent implements OnInit {
             this.loading = false;
 
             if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
-              const data: DTOCountry[] = res?.ObjectReturn?.Data ?? [];
-              this.gridCountries = data;
-              this.allCountries = data;
+              this.gridCountries = res.ObjectReturn.Data;
+              this.allCountries = res.ObjectReturn.Data;
             } else {
               this.layoutService.onError(
                 `Đã xảy ra lỗi khi lấy Danh sách quốc gia: ${res?.ErrorString ?? 'Không xác định'}`
@@ -464,13 +552,21 @@ export class Config009EnterpriseCountryComponent implements OnInit {
             this.APIGetListCountry({ ...this.gridState });
           })
         )
-        .subscribe((res) => {
+        .subscribe((res: any) => {
           if (res?.StatusCode === 0) {
-            this.layoutService.onSuccess(country.Code ? 'Cập nhật thành công' : 'Tạo mới thành công');
+            this.layoutService.onSuccess(
+              country.Code ? 'Cập nhật thành công' : 'Tạo mới thành công'
+            );
             this.handleCloseDrawer();
           } else {
-            this.layoutService.onError(`Lỗi: ${res?.ErrorString ?? 'không xác định'}`);
+            this.layoutService.onError(
+              `Đã xảy ra lỗi khi cập nhật quốc gia: ${res?.ErrorString ?? 'không xác định'}`
+            );
           }
+        }, (error) => {
+          this.layoutService.onError(
+            `Không thể gọi API cập nhật quốc gia: ${error}`
+          );
         })
     );
   }
@@ -498,12 +594,22 @@ export class Config009EnterpriseCountryComponent implements OnInit {
             this.APIGetListCountry({ ...this.gridState });
           })
         )
-        .subscribe(res => {
-          res?.StatusCode === 0
-            ? (this.layoutService.onSuccess('Xoá Quốc gia thành công'), this.handleCloseDrawer())
-            : this.layoutService.onError(`Xoá không thành công: ${res?.ErrorString ?? 'không có bản ghi bị ảnh hưởng'}`);
+        .subscribe((res: any) => {
+          if (res?.StatusCode === 0) {
+            this.layoutService.onSuccess('Xoá Quốc gia thành công');
+            this.handleCloseDrawer();
+          } else {
+            this.layoutService.onError(
+              `Xoá không thành công: ${res?.ErrorString ?? 'không có bản ghi bị ảnh hưởng'}`
+            );
+          }
+        }, (error) => {
+          this.layoutService.onError(
+            `Không thể gọi API xoá Quốc gia: ${error}`
+          );
         })
     );
+
   }
   //#endregion
 
