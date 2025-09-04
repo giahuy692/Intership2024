@@ -353,6 +353,8 @@ export class Config010EnterpriseAdminunitComponent {
     // Nếu chọn District
     if (dataItem.hasOwnProperty('DistrictID')) {
       this.currentDistrictForm = dataItem as DTODistrict;
+      this.currentProvinceForm =
+      this.listProvinceTree.find((p: DTOProvince) => p.Code === this.currentDistrictForm.Province) || null;
       this.isProvinceSelected = false;
       this.isDistrictSelected = true;
       this.selectedForm = 'district';
