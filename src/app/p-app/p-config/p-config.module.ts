@@ -39,7 +39,9 @@ import { Config012EnterpriseStickerComponent } from './pages/config012-enterpris
     ConfigWebDisplayComponent,
     ConfigHistoryPopupComponent,
     Config009EnterpriseCountryComponent,
-    Config010EnterpriseAdminunitComponent
+    Config010EnterpriseAdminunitComponent,
+    Config011EnterpriseUnituomComponent,
+    Config012EnterpriseStickerComponent,
   ],
   imports: [
     PConfigRoutingModule,

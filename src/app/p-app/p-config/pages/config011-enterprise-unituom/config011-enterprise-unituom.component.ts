@@ -338,7 +338,7 @@ export class Config011EnterpriseUnituomComponent implements OnInit{
       this.layoutService.onWarning(`Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`);
       return;
     }
-    this.APIUpdatePackingUnit(updatePackingUnit);
+    // this.APIUpdatePackingUnit(updatePackingUnit);
   } 
 
   // Hàm xử lý xóa đơn vị tính

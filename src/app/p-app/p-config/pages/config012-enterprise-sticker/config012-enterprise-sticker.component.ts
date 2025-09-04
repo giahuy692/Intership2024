@@ -453,7 +453,7 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   // lấy foler chứa ảnh 
   GetFolderWithFile(childPath) {
     if (this.layoutService.getFolderDialog()) {
-      return this.apiServiceConf.GetFolderWithFile(childPath, 16);
+      return this.MarServiceAPI.GetFolderWithFile(childPath, 16);
     }
   }
   onFileSelected(event: Event): void {
