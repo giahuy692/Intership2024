@@ -108,4 +108,7 @@ export class EnumConfig {
     static UpdateCountry: string;
     static UpdatePackingUnit: string;
     static DeletePackingUnit: string;
+
+    static GetFolderWithFile: string;
+
 }

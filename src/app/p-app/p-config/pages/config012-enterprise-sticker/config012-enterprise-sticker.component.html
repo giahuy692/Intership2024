@@ -1,0 +1,151 @@
+<div class="Drawer-right">
+    <kendo-drawer-container>
+        <!-- START DRAWER RIGHT -->
+        <kendo-drawer #drawerRight mode="overlay" [(expanded)]="isOpenDrawer" fillMode="flat" [position]="'end'"
+            [(autoCollapse)]="isautoCollapse" width="428px">
+            <ng-template kendoDrawerTemplate let-item let-dataItem>
+
+
+                <!-- <form [formGroup]="formData"> -->
+                <!-- <form [formGroup]="form"> -->
+                <div class="wrapper-drawer-right">
+                    <div class="header-drawer-right">
+                        <span class="icon-header-right"></span>
+                        <h3>THÔNG TIN TEM NHÃN</h3>
+                    </div>
+
+                    <div class="content-drawer-right" [formGroup]="StickerForm">
+                        <!-- stickerName start -->
+                        <kendo-label class="k-form customLabel">
+                            <div class="lable">
+                                <span class="labelName">
+                                    <span class="name">Tên tem nhãn</span>
+                                    <span class="symbol">(*)</span>
+                                </span>
+
+                            </div>
+
+                            <app-p-textbox class=" StickName" [propName]="'StickName'" formControlName="StickName"
+                                [disabled]="isAction === 2" required>
+                            </app-p-textbox>
+                        </kendo-label>
+                        <!-- stickerName end -->
+
+                        <!-- remark start -->
+                        <kendo-label class="k-form d-block customLabel">
+                            <div class="lable">
+                                <span class="labelName">Ghi chú</span>
+                            </div>
+                            <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
+                            <app-p-textarea class="Remark" [propName]="'Remark'" formControlName="Remark"
+                                [disabled]="isAction === 2">
+                            </app-p-textarea>
+                        </kendo-label>
+                        <!-- remark end -->
+
+                        <kendo-label class="k-form customLabel">
+                            <div class="uploadFile">
+                                <div class="labelUpload">
+                                    <span class="name"> Tên File</span> 
+                                    <span class="k-icon k-i-export" (click)="onUploadFileName()"></span>
+                                </div>
+                                <app-p-textbox class=" FileName" [propName]="'FileName'" formControlName="FileName"
+                                    [disabled]="isAction === 1 || isAction === 2">
+                                </app-p-textbox>
+                            </div>
+                        </kendo-label>
+                    </div>
+
+                    <i>
+                        <span class="impose">(*) Thông tin bắt buộc nhập </span>
+                    </i>
+
+                    <!-- FOOTER, BUTTON -->
+                    <div class="footer-drawer-right d-flex col-gap">
+                        <button class="btn-hachi hachi-secondary" kendoButton (click)=" onOpendDrawer(3)">
+                            ĐÓNG
+                        </button>
+                        <button *ngIf="isAction !== 2" kendoButton class="btn-hachi hachi-primary"
+                            (click)="onUpdateSticker()">
+                            {{isAction == 0 ? "TẠO MỚI" : "CẬP NHẬT"}}
+                        </button>
+                        <button *ngIf="isAction === 1" kendoButton class="btn-hachi hachi-danger"
+                            (click)="onActionDropdownClick({ Link: 'delete', Code: 'trash', Name: 'Xóa', Actived: true }, dataSticker)">
+                            XOÁ
+                        </button>
+                    </div>
+                </div>
+                <!-- </form> -->
+            </ng-template>
+        </kendo-drawer>
+        <!-- END DRAWER RIGHT -->
+
+        <!-- START CONTENT -->
+        <kendo-drawer-content>
+
+            <div class="config012-enterprise-sticker">
+
+                <!-- HEADER 1: BREAD CUM AND BUTTON CREATE -->
+                <div class="header header-1">
+                    <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
+                    <div class="nav-btn nav-crud">
+                        <button
+                        *ngIf="isAllPers || isCanCreate" 
+                        kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
+                            (click)="onOpendDrawer(0)">
+                            TẠO MỚI
+                        </button>
+
+                    </div>
+                </div>
+
+                <!-- HEADER 2: SEARCH -->
+                <div class="header header-2">
+                    <div id="functionbar">
+                        <app-search-filter-group placeholder="Tìm theo tên Tem nhãn" [fields]="['StickName']"
+                            (filterChange)="onSearch($event)" (onReset)="onResetFilter()" [ignoreCase]="true" #search>
+                        </app-search-filter-group>
+                    </div>
+                </div>
+
+                <!-- grid -->
+                <div class="grid-wrapper">
+                    <app-p-kendo-grid class="grid" [data]="gridStickers" [scrollable]="'none'" [loading]="loading"
+                        [pageable]="false" [getActionDropdownCallback]="getActionDropdownCallback"
+                        [onActionDropdownClickCallback]="onActionDropdownClickCallback">
+
+                        <kendo-grid-column field="StickName" title="Tên Tem nhãn" class="col_sticker"
+                            headerClass="col_sticker" [width]="280">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="text-ellipsis" title="{{dataItem.StickName}}">{{dataItem.StickName}}</div>
+                            </ng-template>
+                        </kendo-grid-column>
+
+                        <kendo-grid-column field="Remark" title="Ghi chú" class="col_remark" headerClass="col_remark">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <div class="Remark" title="{{dataItem.Remark}}">{{dataItem.Remark}}</div>
+                            </ng-template>
+                        </kendo-grid-column>
+                    </app-p-kendo-grid>
+                </div>
+
+            </div>
+        </kendo-drawer-content>
+
+        <!-- START DIALOG DELETE -->
+        <app-p-kendo-dialog *ngIf="opened" [title]="'XÓA TEM NHÃN'" (close)="onCloseDialog()"
+            (handleButton)="onDeleteDialog(0)" [iconButton]="'delete'" [dialogType]="1"
+            [iconTitle]="'k-icon k-i-warning'">
+            <div class="text-center">
+                Bạn có chắc chắn muốn xóa Tem Nhãn <br> <strong>{{dataSticker.StickName}}</strong>
+                <p class="content-sub">
+                    Tem Nhãn bị xóa sẽ <span style="color: red">KHÔNG</span> thể khôi phục lại.
+                </p>
+            </div>
+        </app-p-kendo-dialog>
+        <!-- END DIALOG DELETE -->
+
+    </kendo-drawer-container>
+
+    <app-folder-popup [pickFileCallback]="pickFileCallback" [GetFolderCallback]="GetFolderCallback"></app-folder-popup>
+</div>

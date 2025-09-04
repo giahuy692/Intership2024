@@ -1,0 +1,339 @@
+@import "../../../../../assets/scss/variable.scss";
+
+::ng-deep {
+    .k-drawer-wrapper {
+        scrollbar-color: unset !important;
+    }
+
+    app-config012-enterprise-sticker {
+
+        @mixin read-only {
+            opacity: 1 !important;
+            background-color: $gray-100 !important;
+            cursor: not-allowed !important;
+            pointer-events: none !important;
+        }
+
+        // START GENERAL
+        .disableInput {
+            &.k-textbox {
+                .k-input-inner {
+                    @include read-only();
+                }
+            }
+
+            &.k-dropdownlist {
+                &:read-only {
+                    @include read-only()
+                }
+            }
+        }
+
+        .k-treeview-leaf {
+            padding-left: 13px;
+
+            i {
+                padding-right: 13px;
+            }
+        }
+
+        .d-flex_around {
+            display: flex !important;
+            justify-content: space-around !important;
+            align-items: center !important;
+        }
+
+        .d-flex_between {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+        }
+
+        .font-w {
+            font-weight: 700;
+        }
+
+        .d-flex {
+            display: flex !important;
+            align-items: center;
+        }
+
+        .f-wrap {
+            flex-wrap: wrap;
+        }
+
+        .row-gap {
+            row-gap: 5px;
+        }
+
+        .col-gap {
+            column-gap: 5px;
+        }
+
+        .d-flex_both {
+            display: flex !important;
+            align-items: center !important;
+            column-gap: 5px;
+        }
+
+        .d-flex_column {
+            display: flex !important;
+            flex-direction: column !important;
+            row-gap: 5px;
+        }
+
+        .mt-10 {
+            margin-top: 10px;
+        }
+
+        .pr-30 {
+            padding-left: 30px;
+        }
+
+        .d-block {
+            display: block;
+        }
+
+        .custom-gap {
+            column-gap: 5px;
+        }
+
+        .Drawer-right {
+            .k-drawer-container {
+                display: block !important;
+
+                .k-overlay {
+                    position: absolute;
+
+                }
+
+                kendo-drawer {
+                    position: absolute !important;
+
+                    .wrapper-drawer-right {
+                        width: 400px;
+                        display: flex;
+                        flex-direction: column;
+                        height: 100%;
+
+                        .header-drawer-right {
+                            display: flex;
+                            align-items: center;
+                            height: 40px;
+                            border-bottom: 1px solid $black;
+                            column-gap: 10px;
+                        }
+
+                        h3 {
+                            margin: 0;
+                            color: $dark-green;
+                            font-size: 13px;
+                            font-weight: 700;
+                        }
+                    }
+
+                    .content-drawer-right {
+                        height: calc(100vh - 176px);
+                        overflow: hidden;
+                        overflow-y: auto;
+                        padding: 10px 16px 10px 16px;
+
+                        .customLabel:has(.VNName .ng-invalid.ng-touched, .VNName .ng-invalid.ng-dirty) {
+                            .lable {
+                                .name {
+                                    color: $bad-red;
+                                }
+                            }
+                        }
+
+                        .customLabel:has(.BieftRequire .ng-invalid.ng-touched, .BieftRequire .ng-invalid.ng-dirty) {
+                            .lable {
+                                .name {
+                                    color: $bad-red;
+                                }
+                            }
+                        }
+
+                        .customLabel {
+                            margin-bottom: 10px;
+
+                            .uploadFile{
+
+                                .labelUpload {
+                                    font-weight: 700;
+                                    color: #343A40;
+                                    gap: 5px;
+                                    margin-bottom: 5px;
+                                }
+
+                                .k-i-export {
+                                    margin-top: -3.5px;
+                                    padding-left: 20px;
+                                }
+
+                                .k-icon {
+                          font-size: 19px;
+                          cursor: pointer;
+
+                          &.k-i-export {
+                            color: $dark-green;
+                          }
+
+                          &.k-i-minus-outline {
+                            color: $bad-red;
+                            position: absolute;
+                            right: 0;
+                            top: 40px;
+                          }
+                        }
+                            }
+
+                            .lable {
+                                margin-bottom: 5px;
+                                display: flex;
+                                justify-content: space-between;
+                                align-items: center;
+
+                                .labelName {
+                                    font-weight: 700;
+                                    color: #343A40;
+
+                                    .symbol {
+                                        padding-left: 5px;
+                                        color: $dark-red;
+                                        font-weight: bold;
+                                    }
+
+                                    .line {
+                                        font-size: 17px;
+                                    }
+
+
+                                }
+
+                                .labelSystem {
+                                    .isSystem {
+                                        font-weight: 700;
+                                        color: #343A40;
+                                    }
+                                }
+                            }
+
+                            .k-textarea {
+                                textarea {
+                                    min-height: 68px !important;
+                                }
+                            }
+                        }
+
+                        kendo-label {
+                            display: block;
+
+                            .k-label {
+                                margin-bottom: 5px;
+                                font-weight: 700;
+                            }
+                        }
+
+                    }
+
+                    .impose {
+                        font-weight: 700;
+                        color: $bad-red;
+                        margin: 5px 16px;
+                    }
+
+                    .footer-drawer-right {
+                        display: flex;
+                        align-items: center;
+                        height: 50px;
+                        padding: 10px 16px 10px 16px;
+                        column-gap: 10px;
+                        border-top: 1px solid #5a6276;
+                        margin-top: 10px;
+
+                        .hachi-secondary {
+                            color: $dark-green;
+                            border-color: $dark-green;
+                        }
+
+                        .hachi-danger {
+                            background-color: $bad-red;
+                        }
+                    }
+
+                    kendo-textarea {
+                        height: 100%;
+                        max-height: unset;
+                        padding: 0;
+
+                        textarea {
+                            min-height: 100px;
+                        }
+                    }
+
+
+                }
+
+                // Body content
+                .k-drawer-content {
+
+                    .config012-enterprise-sticker {
+
+                        // START HEADER
+                        .header-1 {
+                            display: flex;
+                            justify-content: space-between;
+                            padding-right: 10px;
+                            padding-left: 5px;
+
+                        }
+
+                        .header-2 {
+                            padding-left: 15px !important;
+
+                        }
+
+                        .header {
+                            .nav-crud {
+                                margin-left: auto;
+
+                                .onAddBtn {
+                                    height: 32px;
+                                    margin-top: auto;
+                                    background-color: $dark-green !important;
+                                    color: $white;
+                                    font-size: 11px;
+                                    font-weight: bold;
+                                    min-width: 78px;
+                                }
+                            }
+                        }
+
+                        .grid-wrapper {
+                            margin: 0 5px;
+
+                            app-p-kendo-grid {
+                                .myCustomGrid {
+                                    height: calc(100vh - 215px);
+
+                                    .k-grid {
+                                        tr:not(.k-grouping-row) td:first-child {
+                                            padding-left: 0 !important;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // END HEADER
+                    }
+                }
+            }
+            app-folder-popup {
+                    position: absolute;
+                    z-index: 10002;
+                }
+        }
+    }
+}
