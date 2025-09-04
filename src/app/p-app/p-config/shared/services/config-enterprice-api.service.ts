@@ -542,4 +542,69 @@ export class ConfigEnterpriceApiService {
         );
     });
   }
+
+   GetListPackingUnit(gridState?: State) {
+    let that = this;
+    return new Observable<DTOResponse>((obs) => {
+      that.api.connect(
+        that.config.getAPIList().GetListPackingUnit.method,
+        that.config.getAPIList().GetListPackingUnit.url,
+        JSON.stringify(toDataSourceRequest(gridState))
+      ).subscribe((res: any) => {
+        obs.next(res);
+        obs.complete();
+      },
+        (errors) => {
+          obs.error(errors);
+          obs.complete();
+        }
+      );
+    });
+  }
+
+  // Cập nhật đơn vị tính
+  UpdatePackingUnit(dto: DTOPackingUnit) {
+    let that = this;
+
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().UpdatePackingUnit.method,
+          that.config.getAPIList().UpdatePackingUnit.url,
+          JSON.stringify(dto)
+        )
+        .subscribe(
+          (res: any) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
+
+  DeletePackingUnit(dtos: DTOPackingUnit[]) {
+    let that = this;
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().DeletePackingUnit.method,
+          that.config.getAPIList().DeletePackingUnit.url,
+          JSON.stringify(dtos)
+        )
+        .subscribe(
+          (res: any) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
 }
