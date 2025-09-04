@@ -11,8 +11,7 @@
         }
       }
   }
-  
-  // end
+
   #config010-enterprise-adminunit {
   
         .mat-drawer-content {
@@ -61,20 +60,22 @@
         // Header
         .header {
           overflow-x: scroll;
-          // overflow-y: hidden;
           gap: 30px;
+          //breadcumb
           .breadcumb{
             min-width: 300px;
             .k-breadcrumb-container{
                 padding-left: 0 !important;
             }
           }
+          // checkbox
           .checkbox {
             margin-left: auto;
             margin-top: auto;
             display: flex;
             .checkbox0 {margin: 0 20px;}
           }
+          // Button
           .nav-crud {
             margin-left: auto;
             margin-top: auto;

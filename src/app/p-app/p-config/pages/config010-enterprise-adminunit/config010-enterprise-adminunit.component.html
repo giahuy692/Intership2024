@@ -74,7 +74,7 @@
             <!-- TreeList -->
             <div class="treelist-wrapper">
                 <kendo-treelist #myTreeList [data]="rootData" [fetchChildren]="fetchChildren" [hasChildren]="hasChildren" 
-                kendoTreeListSelectable [selectable]="settingsTreelist" [loading]="loading" [hideHeader]="true"
+                kendoTreeListSelectable [selectable]="settingsTreelist" [loading]="isLoading" [hideHeader]="true"
                 (selectionChange)="onSelectionChange($event)" [initiallyExpanded]="true" [(expandedKeys)]="collapsedIds"
                 kendoTreeListExpandable
                 >
@@ -186,6 +186,7 @@
                             </div>
                         </div>
                 </div>
+                <!-- Footer Form -->
                 <div class="form-footer">
                     <div class="required-note" *ngIf="isImpose">
                         <i><span class="impose">(*) Thông tin bắt buộc nhập</span></i>
@@ -206,7 +207,7 @@
                         </div>
                         <div *ngIf="isBtnHide">
                             <ng-container >
-                                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="openDialogProvince()" *ngIf="apiProvinceForm.controls['Code'].value > 0">
+                                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="onOpenDialogProvince()" *ngIf="apiProvinceForm.controls['Code'].value > 0">
                                     Xóa
                                 </button>
                             </ng-container>
@@ -299,6 +300,7 @@
                     </div>
                 </div>
     
+                <!-- Footer Form -->
                 <div class="form-footer">
                     <div class="required-note" *ngIf="isImpose">
                         <i><span class="impose">(*) Thông tin bắt buộc nhập</span></i>
@@ -319,7 +321,7 @@
                         </div>
                         <div *ngIf="isBtnHide">
                             <ng-container >
-                                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="openDialogDistrict()" *ngIf="apiDistrictFrom.controls['Code'].value > 0">
+                                <button kendoButton class="k-button btn-hachi deleteBtn" (click)="onOpenDialogDistrict()" *ngIf="apiDistrictFrom.controls['Code'].value > 0">
                                     XÓA
                                 </button>
                             </ng-container>
@@ -331,8 +333,10 @@
         </mat-drawer>
 
     </mat-drawer-container>
-    <app-p-kendo-dialog *ngIf="dialogProvince" class="dialog" [title]="'Xác nhận Xóa Đơn vị Tỉnh Thành'"
-    (close)="closeDialogProvince()" (handleButton)="onDeleteProvince()"
+
+    <!-- Dialog tỉnh thành -->
+    <app-p-kendo-dialog *ngIf="isDialogProvince" class="dialog" [title]="'Xác nhận Xóa Đơn vị Tỉnh Thành'"
+    (close)="onCloseDialogProvince()" (handleButton)="onDeleteProvince()"
     [cancelText]="'KHÔNG'"
     [actionText]="'CÓ'"
     [dialogType]="1"
@@ -343,8 +347,9 @@
         </div>
     </app-p-kendo-dialog>
 
-    <app-p-kendo-dialog *ngIf="dialogDistrict" class="dialog" [title]="'Xác nhận Xóa Đơn vị Phường Xã'"
-    (close)="closeDialogDistrict()" (handleButton)="onDeleteDistrict()"
+    <!-- Dialog phường xã -->
+    <app-p-kendo-dialog *ngIf="isDialogDistrict" class="dialog" [title]="'Xác nhận Xóa Đơn vị Phường Xã'"
+    (close)="onCloseDialogDistrict()" (handleButton)="onDeleteDistrict()"
     [cancelText]="'KHÔNG'"
     [actionText]="'CÓ'"
     [dialogType]="1"
@@ -355,6 +360,7 @@
         </div>
     </app-p-kendo-dialog>
 
+    <!-- Popup -->
     <kendo-popup #stylePopup *ngIf="popupShow" class="stylePopup" [style.visibility]="isPopupVisible()" [anchor]="getAnchor()"
         [anchorAlign]="{ horizontal:'left', vertical: 'top'}" [popupAlign]="{ horizontal:'right', vertical: topValue}">
 
