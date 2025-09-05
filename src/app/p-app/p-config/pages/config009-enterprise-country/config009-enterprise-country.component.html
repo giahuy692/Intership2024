@@ -28,7 +28,7 @@
                             </div>
 
                             <app-p-textbox class=" VNName" [propName]="'VNName'" formControlName="VNName"
-                                [disabled]="isAction === 2 || !(isAllPers || isCanCreate)" required>
+                                [disabled]="TypeAction === 2 || !(isAllPers || isCanCreate)" required>
                             </app-p-textbox>
                         </kendo-label>
 
@@ -39,7 +39,7 @@
                                 </span>
                             </div>
                             <app-p-textbox class="JPName" [propName]="'JPName'" formControlName="JPName"
-                                [disabled]="isAction === 2 || !(isAllPers || isCanCreate)">
+                                [disabled]="TypeAction === 2 || !(isAllPers || isCanCreate)">
                             </app-p-textbox>
                         </kendo-label>
 
@@ -50,7 +50,7 @@
                                 </span>
                             </div>
                             <app-p-textbox class="ENName" [propName]="'ENName'" formControlName="ENName"
-                                [disabled]="isAction === 2 || !(isAllPers || isCanCreate)">
+                                [disabled]="TypeAction === 2 || !(isAllPers || isCanCreate)">
                             </app-p-textbox>
                         </kendo-label>
 
@@ -64,7 +64,7 @@
                             </div>
 
                             <app-p-textbox class="VNOrigin" [propName]="'VNOrigin'" formControlName="VNOrigin"
-                                [disabled]="isAction === 2 || !(isAllPers || isCanCreate)" required>
+                                [disabled]="TypeAction === 2 || !(isAllPers || isCanCreate)" required>
                             </app-p-textbox>
                         </kendo-label>
 
@@ -78,7 +78,7 @@
                             </div>
 
                             <app-p-textbox class="CountryID" [propName]="'CountryID'" formControlName="CountryID"
-                                [disabled]="isAction === 1 || isAction === 2 || !(isAllPers || isCanCreate)" required>
+                                [disabled]="TypeAction === 1 || TypeAction === 2 || !(isAllPers || isCanCreate)" required>
                             </app-p-textbox>
                         </kendo-label>
 
@@ -91,7 +91,7 @@
                             </div>
 
                             <app-p-textbox class="OrderBy" [propName]="'OrderBy'" formControlName="OrderBy"
-                                [disabled]="isAction === 2 || !(isAllPers || isCanCreate)">
+                                [disabled]="TypeAction === 2 || !(isAllPers || isCanCreate)">
                             </app-p-textbox>
                         </kendo-label>
 
@@ -105,11 +105,11 @@
                         <button class="btn-hachi hachi-secondary" kendoButton (click)=" onOpendDrawer(3)">
                             ĐÓNG
                         </button>
-                        <button *ngIf="isAction !== 2" kendoButton class="btn-hachi hachi-primary"
+                        <button *ngIf="TypeAction !== 2" kendoButton class="btn-hachi hachi-primary"
                             (click)="onUpdateCountry()" [disabled]="!(isAllPers || isCanCreate)">
-                            {{isAction == 0 ? "TẠO MỚI" : "CẬP NHẬT"}}
+                            {{TypeAction == 0 ? "TẠO MỚI" : "CẬP NHẬT"}}
                         </button>
-                        <button *ngIf="isAction === 1" kendoButton class="btn-hachi hachi-danger"
+                        <button *ngIf="TypeAction === 1" kendoButton class="btn-hachi hachi-danger"
                             (click)="onActionDropdownClick({ Link: 'delete', Code: 'trash', Name: 'Xóa', Actived: true }, dataCountry)"
                             [disabled]="!(isAllPers || isCanCreate)">
                             XOÁ

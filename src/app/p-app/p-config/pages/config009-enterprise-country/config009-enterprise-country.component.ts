@@ -37,7 +37,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     filter: { filters: [], logic: 'and' },
   }
 
-  isAction: number = 0; //trạng thái hành động, 0=tạo mới, 1=chỉnh sửa, 2=xem
+  TypeAction: number = 0; //trạng thái hành động, 0=tạo mới, 1=chỉnh sửa, 2=xem
 
 
   formDataDefault = ({ //dữ liệu mặc định
@@ -129,13 +129,10 @@ export class Config009EnterpriseCountryComponent implements OnInit {
         this.justLoaded = false;
         this.actionPerm = distinct(res.ActionPermission, 'ActionType');
 
-        // this.isMaster = this.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
-        // this.isCreator = this.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
+        this.isMaster = this.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
+        this.isCreator = this.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
 
-        // this.MC = this.isMaster || this.isCreator;
-
-        this.isAllPers = true;
-        this.isCanCreate = false;
+        this.MC = this.isMaster || this.isCreator;
       }
     })
 
@@ -241,134 +238,79 @@ export class Config009EnterpriseCountryComponent implements OnInit {
 
   //#region Hàm cập nhật/tạo mới dữ liệu
   onUpdateCountry() {
-    const country: DTOCountry = this.CountryForm.getRawValue();
-    const isCreate = this.isAction === 0;
-    const ctx = `${isCreate ? 'tạo mới' : 'cập nhật'} thông tin Quốc Gia`;
+    const updateCountry: DTOCountry = this.CountryForm.getRawValue();
+    const isAddForm = Number(updateCountry.Code) === 0;
 
-    if (!Ps_UtilObjectService.hasValueString(country.VNName)) {
-      this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: Bạn chưa nhập Tên Tiếng Việt`);
-      return;
+    const ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Quốc gia`;
+
+    // Đặt touched để hiển thị validate lỗi
+    this.CountryForm.markAllAsTouched();
+
+    // Validate bắt buộc
+    const errorFields: string[] = [];
+    if (
+      this.CountryForm.get('VNName')?.hasError('required') ||
+      !Ps_UtilObjectService.hasValueString(updateCountry.VNName)
+    ) {
+      errorFields.push('Tên Tiếng Việt');
     }
 
-    if (!Ps_UtilObjectService.hasValueString(country.VNOrigin)) {
-      this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: Bạn chưa nhập Tên Xuất xứ`);
-      return;
+    if (
+      this.CountryForm.get('VNOrigin')?.hasError('required') ||
+      !Ps_UtilObjectService.hasValueString(updateCountry.VNOrigin)
+    ) {
+      errorFields.push('Tên Xuất xứ');
     }
 
-    if (isCreate && !Ps_UtilObjectService.hasValueString(country.CountryID)) {
-      this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: Bạn chưa nhập Mã hành chính`);
-      return;
+    if (
+      this.CountryForm.get('CountryID')?.hasError('required') ||
+      !Ps_UtilObjectService.hasValueString(updateCountry.CountryID)
+    ) {
+      errorFields.push('Mã hành chính');
     }
 
-    // Nếu là cập nhật → kiểm tra thay đổi
-    if (!isCreate) {
-      const isChanged = Object.keys(country).some((key) => {
-        const newVal = (country as any)[key]?.toString().trim() ?? '';
-        const oldVal = (this.dataCountry as any)[key]?.toString().trim() ?? '';
-        return newVal !== oldVal;
-      });
-
-      if (!isChanged) {
-        // this.layoutService.onWarning(`Đã xảy ra lỗi khi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật`);
-        return;
+    // Nếu có lỗi thì show cảnh báo
+    if (this.CountryForm.invalid || errorFields.length > 0) {
+      if (errorFields.length > 0) {
+        this.layoutService.onError(
+          `Đã xảy ra lỗi ${ctx}: Vui lòng nhập (${errorFields.join(', ')})`
+        );
+      } else {
+        this.layoutService.onError(
+          `Đã xảy ra lỗi ${ctx}: Vui lòng nhập đầy đủ thông tin bắt buộc`
+        );
       }
+      return;
     }
 
-    // Gọi API
-    this.APIUpdateCountry(country);
+    // Kiểm tra dữ liệu có thay đổi không
+    if (!isAddForm && JSON.stringify(updateCountry) === JSON.stringify(this.dataCountry)) {
+      this.layoutService.onWarning(
+        `Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`
+      );
+      return;
+    }
+
+    // Gọi API update
+    this.APIUpdateCountry(updateCountry);
   }
-//   onUpdateCountry() {
-//     // Đặt touched để hiển thị lỗi validate
-//     this.CountryForm.markAllAsTouched();
 
-//     // Enable tạm control đang disable (vd: CountryID khi edit)
-//     const reDisableKeys: string[] = [];
-//     Object.keys(this.CountryForm.controls).forEach(k => {
-//       const ctl = this.CountryForm.get(k);
-//       if (ctl && ctl.disabled) {
-//         reDisableKeys.push(k);
-//         ctl.enable({ emitEvent: false });
-//       }
-//     });
 
-//     // Cập nhật lại trạng thái form
-//     this.CountryForm.updateValueAndValidity({ emitEvent: false });
+  /**
+   * Thu thập danh sách control invalid trong form
+   */
+  collectInvalid(form: FormGroup): { key: string, errs: any }[] {
+    const invalids: { key: string, errs: any }[] = [];
 
-//     if (this.CountryForm.invalid) {
-//       // Thu thập lỗi
-//       const invalids = this.collectInvalid(this.CountryForm); // [{key, errs}]
-//       const first = invalids[0];
+    Object.keys(form.controls).forEach(key => {
+      const control = form.get(key);
+      if (control && control.invalid) {
+        invalids.push({ key, errs: control.errors });
+      }
+    });
 
-//       const errorFields = invalids.map(x => {
-//         const label = this.fieldLabels?.[x.key] || x.key;
-//         return `${label} ${x.key == 'CountryID' ? '(bắt buộc)' : ''}`;
-//       }).join(', ');
-
-//       this.layoutService.onWarning(`Vui lòng kiểm tra và điền đầy đủ: ${errorFields}`);
-
-//       this.focusFirstInvalid(first?.key);
-//       return;
-//     }
-
-//     const country: DTOCountry = this.CountryForm.getRawValue();
-//     const isCreate = this.isAction === 0;
-//     const ctx = `${isCreate ? 'tạo mới' : 'cập nhật'} thông tin Quốc Gia`;
-
-//     // Nếu là cập nhật → kiểm tra thay đổi
-//     if (!isCreate) {
-//       const isChanged = Object.keys(country).some((key) => {
-//         const newVal = (country as any)[key]?.toString().trim() ?? '';
-//         const oldVal = (this.dataCountry as any)[key]?.toString().trim() ?? '';
-//         return newVal !== oldVal;
-//       });
-
-//       if (!isChanged) {
-//         this.layoutService.onWarning(`Dữ liệu không có thay đổi, không cần cập nhật`);
-//         return;
-//       }
-//     }
-
-//     // Gọi API
-//     this.APIUpdateCountry(country);
-//   }
-
-//   /**
-//    * Thu thập danh sách control invalid trong form
-//    */
-//   collectInvalid(form: FormGroup): { key: string, errs: any }[] {
-//     const invalids: { key: string, errs: any }[] = [];
-
-//     Object.keys(form.controls).forEach(key => {
-//       const control = form.get(key);
-//       if (control && control.invalid) {
-//         invalids.push({ key, errs: control.errors });
-//       }
-//     });
-
-//     return invalids;
-//   }
-
-//   // ánh xạ tên field trong form → nhãn hiển thị cho thông báo lỗi
-//   fieldLabels: { [key: string]: string } = {
-//     CountryID: 'Mã hành chính',
-//     VNName: 'Tên Tiếng Việt',
-//     VNOrigin: 'Xuất xứ',
-//     JPName: 'Tên Tiếng Nhật',
-//     ENName: 'Tên Tiếng Anh',
-//     OrderBy: 'Thứ tự hiển thị',
-//     IsSystem: 'Hệ thống'
-//   };
-
-//   /**
-//  * Focus vào control invalid đầu tiên trong form
-//  */
-// focusFirstInvalid(key?: string) {
-//   if (!key) return;
-//   const el = document.querySelector(`[formControlName="${key}"]`) as HTMLElement;
-//   if (el) {
-//     el.focus();
-//   }
-// }
+    return invalids;
+  }
   //#endregion
 
   /**
@@ -404,20 +346,20 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     this.isOpenDrawer = true;
 
     if (type === 0) {
-      this.isAction = 0;
+      this.TypeAction = 0;
       this.CountryForm.reset(this.formDataDefault);
       this.CountryForm.get('CountryID')?.enable();
       this.dataCountry = new DTOCountry();
 
     } else if (type === 1 && Ps_UtilObjectService.hasValue(data)) {
-      this.isAction = 1;
+      this.TypeAction = 1;
       this.CountryForm.reset(); // clear state
       this.CountryForm.patchValue(data); // gán DTO vào form
       this.CountryForm.get('CountryID')?.disable();
       this.dataCountry = { ...data };
 
     } else if (type === 2 && Ps_UtilObjectService.hasValue(data)) {
-      this.isAction = 2;
+      this.TypeAction = 2;
       this.CountryForm.reset();
       this.CountryForm.patchValue(data);
       this.CountryForm.disable();
