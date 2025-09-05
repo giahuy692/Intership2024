@@ -159,11 +159,9 @@ export class Config010EnterpriseAdminunitComponent {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res: DTOPermission) => {
         if (Ps_UtilObjectService.hasValue(res) && that.justLoadedPer) {
-          // that.actionPerm = distinct(res.ActionPermission, 'ActionType');
-          // that.isAllPers =
-          //   that.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
-          // that.isCanCreate =
-          //   that.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
+          that.actionPerm = distinct(res.ActionPermission, 'ActionType');
+          that.isAllPers = that.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
+          that.isCanCreate = that.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
           //Set trạng thái nút thêm mới
           if (that.isAllPers || that.isCanCreate) {
             this.isBtnHide = true;
