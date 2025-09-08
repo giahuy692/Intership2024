@@ -161,33 +161,50 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   //=========================== SEARCH ===========================
   //#region Search
   onSearch(event: CompositeFilterDescriptor): void {
-    const rawValue = (event?.filters?.[0] as FilterDescriptor)?.value?.toString().trim() ?? '';
+  const rawValue = (event?.filters?.[0] as FilterDescriptor)?.value?.toString().trim() ?? '';
 
-    const keyword = rawValue
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '')
-      .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-      .toLowerCase();
+  const keyword = rawValue
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+    .toLowerCase();
 
-    if (!Ps_UtilObjectService.hasValueString(keyword)) {
-      this.gridCountries = [...this.allCountries]; // reset
-    } else {
-      this.gridCountries = this.allCountries.filter(c => {
-        const vnName = (c.VNName ?? '')
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-          .toLowerCase();
-        return vnName.includes(keyword);
-      });
-    }
+  if (!Ps_UtilObjectService.hasValueString(keyword)) {
+    // reset
+    this.gridCountries = [...this.allCountries];
+    this.APIGetListCountry(this.gridState);
+  } else {
+    // gọi API theo keyword gốc (có dấu)
+    const filter: State = {
+      ...this.gridState,
+      filter: {
+        logic: 'and',
+        filters: [
+          { field: 'VNName', operator: 'contains', value: rawValue }
+        ]
+      }
+    };
+
+    this.APIGetListCountry(filter);
+
+    // fallback local (không dấu) dựa vào dữ liệu hiện có trong allCountries
+    this.gridCountries = (this.allCountries ?? []).filter(c => {
+      const vnName = (c.VNName ?? '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+        .toLowerCase();
+      return vnName.includes(keyword);
+    });
   }
+}
 
   //#endregion
 
   onResetFilter() {
     this.keyword = '';
     this.reloadData();
+    this.APIGetListCountry({ ...this.gridState });
   }
 
   /**
@@ -275,19 +292,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
         this.layoutService.onError(
           `Đã xảy ra lỗi ${ctx}: Vui lòng nhập (${errorFields.join(', ')})`
         );
-      } else {
-        this.layoutService.onError(
-          `Đã xảy ra lỗi ${ctx}: Vui lòng nhập đầy đủ thông tin bắt buộc`
-        );
       }
-      return;
-    }
-
-    // Kiểm tra dữ liệu có thay đổi không
-    if (!isAddForm && JSON.stringify(updateCountry) === JSON.stringify(this.dataCountry)) {
-      this.layoutService.onWarning(
-        `Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`
-      );
       return;
     }
 
@@ -483,6 +488,19 @@ export class Config009EnterpriseCountryComponent implements OnInit {
       this.layoutService.onWarning('Dữ liệu quốc gia không hợp lệ');
       return;
     }
+
+    const isAddForm = Number(country.Code) === 0;
+
+    if (!isAddForm && this.dataCountry) {
+    const noChange =
+      (country.VNName ?? '').trim().toLowerCase() === (this.dataCountry.VNName ?? '').trim().toLowerCase() &&
+      (country.VNOrigin ?? '').trim().toLowerCase() === (this.dataCountry.VNOrigin ?? '').trim().toLowerCase() &&
+      (country.CountryID ?? '').trim().toLowerCase() === (this.dataCountry.CountryID ?? '').trim().toLowerCase();
+
+    if (noChange) {
+      return;
+    }
+  }
 
     this.isLoading = true;
 
