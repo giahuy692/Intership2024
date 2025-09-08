@@ -6,11 +6,12 @@ import { PS_HelperMenuService } from 'src/app/p-app/p-layout/services/p-menu.hel
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { Ps_UtilObjectService } from 'src/app/p-lib';
-import { CompositeFilterDescriptor, FilterDescriptor, State } from '@progress/kendo-data-query';
+import { distinct, FilterDescriptor, State } from '@progress/kendo-data-query';
 import { LayoutService } from 'src/app/p-app/p-layout/services/layout.service';
 import { ConfigEnterpriceApiService } from '../../shared/services/config-enterprice-api.service';
 import { MenuDataItem } from 'src/app/p-app/p-layout/dto/menu-data-item.dto';
 import { DTOPermission } from 'src/app/p-app/p-layout/dto/DTOPermission';
+import { DTOActionPermission } from 'src/app/p-app/p-layout/dto/DTOActionPermission';
 
 @Component({
   selector: 'app-config011-enterprise-unituom',
@@ -23,10 +24,10 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   @ViewChild('search', { static: false }) searchComponent: any;
 
   //Biến loading
-  loading: boolean = false
+  isLoading: boolean = false
 
   // Biến danh sách các đơn vị tính từ API
-  ListdataPackingUnit: DTOPackingUnit[] = [];
+  listDataPackingUnit: DTOPackingUnit[] = [];
 
   // Biến dữ liệu của một đơn vị tính hiện đang được chọn hoặc thao tác
   dataPackingUnit: DTOPackingUnit = new DTOPackingUnit()
@@ -38,7 +39,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   gridState: State = { filter: { logic: 'and', filters: [] } };
 
   // Biến DIALOG
-  dialog: boolean = false;
+  isDialog: boolean = false;
 
   // Biến Dropdown
   onActionDropdownClickCallback: Function
@@ -49,9 +50,10 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
 
   //phân quyền
   justLoadedPer: boolean = true;
+  actionPerm: DTOActionPermission[] = [];
   justLoadedChangePermissionAPI: boolean = true
   isAllPers: boolean = false
-  isCanCreate: boolean = true
+  isCanCreate: boolean = false 
 
   // Biến unsubcribe
   ngUnsubscribe$ = new Subject<void>();
@@ -82,11 +84,9 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
       .pipe(takeUntil(this.ngUnsubscribe$))
       .subscribe((res: DTOPermission) => {
         if (Ps_UtilObjectService.hasValue(res) && that.justLoadedPer) {
-          // that.actionPerm = distinct(res.ActionPermission, 'ActionType');
-          // that.isAllPers =
-          //   that.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
-          // that.isCanCreate =
-          //   that.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
+          that.actionPerm = distinct(res.ActionPermission, 'ActionType');
+          that.isAllPers = that.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
+          that.isCanCreate = that.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
           that.justLoadedPer = false;
         }
       });
@@ -172,17 +172,16 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   
   // Hàm đóng dialog
   closeDialogPakingUnit() {
-    this.dialog = false;
+    this.isDialog = false;
   } 
 
   /**
    * Tạo danh sách action cho dropdown dựa trên quyền của người dùng.
    *
    * @param moreActionDropdown Mảng chứa các action menu.
-   * @param dataItem Dữ liệu item hiện tại.
    * @returns Danh sách action menu sau khi xử lý.
    */
-  getActionDropdown(moreActionDropdown: MenuDataItem[], dataItem: any) {
+  getActionDropdown(moreActionDropdown: MenuDataItem[]) {
     moreActionDropdown = []
 
     if (this.isAllPers || this.isCanCreate) {
@@ -204,7 +203,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
     this.dataPackingUnit = item
     if (item.Code != 0) {
       if (menu.Link == 'delete' || menu.Code == 'trash') {
-        this.dialog = true;
+        this.isDialog = true;
       }
       else if (menu.Link == 'edit' || menu.Code == 'pencil') {
         this.onOpendDrawer(1, item)
@@ -217,14 +216,14 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
 
   // Hàm mở dilog
   openDialogPakingUnit() {
-    this.dialog = true
+    this.isDialog = true
   }
   //endregion
 
   //#region API GET LIST
   APIGetListPackingUnit (state: State) {
     let ctx = 'Lấy danh sách Đơn vị Tính'
-    this.loading = true;
+    this.isLoading = true;
 
     if (!state.filter) { state.filter = { logic: 'and', filters: [] }; }
 
@@ -237,14 +236,14 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
     this.configAPIService.GetListPackingUnit(state).pipe(takeUntil(this.ngUnsubscribe$)).subscribe((res: any) => {
       if ( Ps_UtilObjectService.hasValue(res) && res.StatusCode == 0) {
         const filteredData = res.ObjectReturn.Data;
-        this.ListdataPackingUnit = filteredData;
+        this.listDataPackingUnit = filteredData;
       } else {
         this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: ${res.ErrorString}`);
       }
-      this.loading = false;
+      this.isLoading = false;
       },
       (error) => {
-        this.loading = false;
+        this.isLoading = false;
         this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: ${error}`);
       }
     );
@@ -254,7 +253,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   //#region API DELETE
   APIDeletePackingUnit(dtos: DTOPackingUnit[]) {
     let ctx = `Xóa thông tin Đơn vị Tính`;
-    this.loading = true;
+    this.isLoading = true;
     this.configAPIService
       .DeletePackingUnit(dtos)
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -270,10 +269,10 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
             );
             this.APIGetListPackingUnit(this.gridState);
           }
-          this.loading = false;
+          this.isLoading = false;
         },
         (error) => {
-          this.loading = false;
+          this.isLoading = false;
           this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: ${error}`);
           this.APIGetListPackingUnit(this.gridState);
         }
@@ -284,7 +283,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   //#region API UPDATE
   APIUpdatePackingUnit(dto: DTOPackingUnit) {
     let ctx = `${dto.Code == 0 ?'Tạo mới' : "Cập nhật" } thông tin Đơn vị Tính`;
-    this.loading = true;
+    this.isLoading = true;
     this.configAPIService
       .UpdatePackingUnit(dto)
       .pipe(takeUntil(this.ngUnsubscribe$))
@@ -300,10 +299,10 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
             );
             this.APIGetListPackingUnit(this.gridState);
           }
-          this.loading = false;
+          this.isLoading = false;
         },
         (error) => {
-          this.loading = false;
+          this.isLoading = false;
           this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: ${error}`);
           this.APIGetListPackingUnit(this.gridState);
         }
@@ -360,12 +359,12 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   onDeletePackingUnit(type: number): void {
     if (!Ps_UtilObjectService.hasValue(this.dataPackingUnit)) {
       this.layoutService.onWarning('Không xoá được Đơn vị Tính');
-      this.dialog = false;
+      this.isDialog = false;
       return;
     }
 
     this.APIDeletePackingUnit([this.dataPackingUnit]);
-    this.dialog = false;
+    this.isDialog = false;
   }
   //endregion
 

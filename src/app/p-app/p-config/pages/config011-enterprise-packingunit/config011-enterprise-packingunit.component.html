@@ -25,7 +25,7 @@
 
             <!-- GRID LIST COMPANY -->
             <div class="grid-wrapper">
-                <app-p-kendo-grid class="grid" [data]="ListdataPackingUnit" [scrollable]="'none'" [loading]="loading" [pageable]="false"
+                <app-p-kendo-grid class="grid" [data]="listDataPackingUnit" [scrollable]="'none'" [loading]="isLoading" [pageable]="false"
                 [getActionDropdownCallback]="getActionDropdownCallback" [onActionDropdownClickCallback]="onActionDropdownClickCallback"> 
 
                     <kendo-grid-column field="VNPackingUnit" title="Tên Tiếng Việt" class="col_nameVN" headerClass="col_nameVN"
@@ -127,7 +127,7 @@
     </mat-drawer-container>
 
     <!-- START DIALOG DELETE -->
-    <app-p-kendo-dialog *ngIf="dialog" class="dialog" [title]="'Xác nhận Xóa Đơn vị tính'"
+    <app-p-kendo-dialog *ngIf="isDialog" class="dialog" [title]="'Xác nhận Xóa Đơn vị tính'"
     (close)="closeDialogPakingUnit()" (handleButton)="onDeletePackingUnit(0)"
     [cancelText]="'KHÔNG'"
     [actionText]="'CÓ'"
