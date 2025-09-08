@@ -20,13 +20,13 @@
                             <div class="lable">
                                 <span class="labelName">
                                     <span class="name">Tên tem nhãn</span>
-                                    <span class="symbol">(*)</span>
+                                    <span class="symbol" *ngIf="isAllPers || isCanCreate">(*)</span>
                                 </span>
 
                             </div>
 
                             <app-p-textbox class=" StickName" [propName]="'StickName'" formControlName="StickName"
-                                [disabled]="isAction === 2" required>
+                                [disabled]="TypeAction === 2" required>
                             </app-p-textbox>
                         </kendo-label>
                         <!-- stickerName end -->
@@ -38,7 +38,7 @@
                             </div>
                             <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
                             <app-p-textarea class="Remark" [propName]="'Remark'" formControlName="Remark"
-                                [disabled]="isAction === 2">
+                                [disabled]="TypeAction === 2">
                             </app-p-textarea>
                         </kendo-label>
                         <!-- remark end -->
@@ -47,16 +47,16 @@
                             <div class="uploadFile">
                                 <div class="labelUpload">
                                     <span class="name"> Tên File</span> 
-                                    <span class="k-icon k-i-export" (click)="onUploadFileName()"></span>
+                                    <span class="k-icon k-i-export" (click)="onUploadFileName()" *ngIf="isAllPers || isCanCreate"></span>
                                 </div>
                                 <app-p-textbox class=" FileName" [propName]="'FileName'" formControlName="FileName"
-                                    [disabled]="isAction === 1 || isAction === 2">
+                                    [disabled]="TypeAction === 1 || TypeAction === 2">
                                 </app-p-textbox>
                             </div>
                         </kendo-label>
                     </div>
 
-                    <i>
+                    <i *ngIf="isAllPers || isCanCreate">
                         <span class="impose">(*) Thông tin bắt buộc nhập </span>
                     </i>
 
@@ -65,11 +65,11 @@
                         <button class="btn-hachi hachi-secondary" kendoButton (click)=" onOpendDrawer(3)">
                             ĐÓNG
                         </button>
-                        <button *ngIf="isAction !== 2" kendoButton class="btn-hachi hachi-primary"
+                        <button *ngIf="TypeAction !== 2" kendoButton class="btn-hachi hachi-primary"
                             (click)="onUpdateSticker()">
-                            {{isAction == 0 ? "TẠO MỚI" : "CẬP NHẬT"}}
+                            {{TypeAction == 0 ? "TẠO MỚI" : "CẬP NHẬT"}}
                         </button>
-                        <button *ngIf="isAction === 1" kendoButton class="btn-hachi hachi-danger"
+                        <button *ngIf="TypeAction === 1" kendoButton class="btn-hachi hachi-danger"
                             (click)="onActionDropdownClick({ Link: 'delete', Code: 'trash', Name: 'Xóa', Actived: true }, dataSticker)">
                             XOÁ
                         </button>

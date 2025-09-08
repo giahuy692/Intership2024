@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CompositeFilterDescriptor, distinct, FilterDescriptor, State } from '@progress/kendo-data-query';
 import { DTOSticker } from '../../shared/dto/DTOSticker';
 import { Ps_UtilObjectService } from 'src/app/p-lib';
-import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, UntypedFormGroup, Validators } from '@angular/forms';
 import { LayoutService } from 'src/app/p-app/p-layout/services/layout.service';
 import { ConfigEnterpriceApiService } from '../../shared/services/config-enterprice-api.service';
 import { PS_HelperMenuService } from 'src/app/p-app/p-layout/services/p-menu.helper.service';
@@ -10,7 +10,7 @@ import { MenuDataItem } from 'src/app/p-app/p-layout/dto/menu-data-item.dto';
 import { DTOActionPermission } from 'src/app/p-app/p-layout/dto/DTOActionPermission';
 import { DTODataPermission } from '../../shared/dto/DTODataPermission';
 import { DTOPermission } from 'src/app/p-app/p-layout/dto/DTOPermission';
-import { takeUntil } from 'rxjs/operators';
+import { finalize, takeUntil } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
 import { MarNewsProductAPIService } from 'src/app/p-app/p-marketing/shared/services/marnewsproduct-api.service';
 import { DTOCFFile } from 'src/app/p-app/p-layout/dto/DTOCFFolder.dto';
@@ -67,11 +67,10 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   isOpenDrawer: boolean = false; // Có mở drawer hay không
   isautoCollapse: boolean = false; // Có tự động collapse drawer hay không
 
-  isAction: number = 0; //trạng thái hành động, 0=tạo mới, 1=chỉnh sửa, 2=xem
+  TypeAction: number = 0; //trạng thái hành động, 0=tạo mới, 1=chỉnh sửa, 2=xem
 
   StickerForm: UntypedFormGroup; // form reactive chính của sticker
   dataSticker: DTOSticker = new DTOSticker() // sticker hiện tại được chọn
-  dataStickerForm: any
 
   formDataDefault = ({ //dữ liệu mặc định
     Code: 0,
@@ -111,33 +110,19 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loading = true;
-
-    // mock data giả lập API trả về
-    this.allStickers = [
-      { Code: 1, StickName: 'A', Remark: 'Khổ tem A', FileName: '123.png' },
-      { Code: 2, StickName: 'HMP', Remark: 'Khổ tem Hóa Mỹ phẩm', FileName: '123.png' },
-      { Code: 3, StickName: 'L4', Remark: 'Khổ tem cửa hàng', FileName: '123.png' },
-    ] as DTOSticker[];
-
-    // gán cho gridStickers để hiển thị ra grid
-    this.gridStickers = [...this.allStickers];
-
-    this.loading = false;
-
     // Check permission
     let changePermissionSst = this.menuService.changePermission().pipe(takeUntil(this.destroy)).subscribe((res: DTOPermission) => {
       if (Ps_UtilObjectService.hasValue(res) && this.justLoaded) {
-        this.justLoaded = false;
-        this.actionPerm = distinct(res.ActionPermission, 'ActionType');
+        // this.justLoaded = false;
+        // this.actionPerm = distinct(res.ActionPermission, 'ActionType');
 
         // this.isMaster = this.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
         // this.isCreator = this.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
 
         // this.MC = this.isMaster || this.isCreator;
 
-        this.isAllPers = true;
-        this.isCanCreate = false;
+        this.isAllPers = false;
+        this.isCanCreate = true;
       }
     })
 
@@ -152,8 +137,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
     this.onActionDropdownClickCallback = this.onActionDropdownClick.bind(this)
     this.getActionDropdownCallback = this.getActionDropdown.bind(this)
     this.GetFolderCallback = this.GetFolderWithFile.bind(this)
-    this.pickFileCallback = this.pickFile.bind(this)
-
 
   }
 
@@ -163,7 +146,7 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   onLoadDefault() {
 
     this.onLoadFilter();
-    // this.APIGetListCountry(this.gridState);
+    this.APIGetListSticker(this.gridState);
 
     this.StickerForm = this.onLoadForm();
     this.StickerForm.patchValue(new DTOSticker);
@@ -231,6 +214,7 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   onResetFilter() {
     this.keyword = '';
     this.reloadData();
+    this.APIGetListSticker({ ...this.gridState });
   }
   //#endregion
 
@@ -239,6 +223,7 @@ export class Config012EnterpriseStickerComponent implements OnInit {
     this.searchComponent.value = '' //reset value trong input search
     this.keyword = ''
     this.gridState.filter.filters = [];
+    this.APIGetListSticker({ ...this.gridState });
   }
 
   //#region  DRAWER 
@@ -257,30 +242,21 @@ export class Config012EnterpriseStickerComponent implements OnInit {
     this.isOpenDrawer = true;
 
     if (type === 0) {
-      this.isAction = 0;
+      this.TypeAction = 0;
       this.StickerForm.reset(this.formDataDefault);
       this.StickerForm.get('StickName')?.enable();
       this.dataSticker = new DTOSticker();
 
     } else if (type === 1 && Ps_UtilObjectService.hasValue(data)) {
-      this.isAction = 1;
+      this.TypeAction = 1;
       this.StickerForm.reset();
-      // this.StickerForm.patchValue(data);
-      this.StickerForm.patchValue({
-        ...data,
-        FileName: data.FileName?.substring(0, data.FileName.lastIndexOf('.')) || data.FileName
-      });
+      this.StickerForm.patchValue(data);
       this.StickerForm.get('StickName')?.disable();
       this.dataSticker = { ...data };
     } else if (type === 2 && Ps_UtilObjectService.hasValue(data)) {
-      this.isAction = 2;
+      this.TypeAction = 2;
       this.StickerForm.reset();
-      // this.StickerForm.patchValue(data);
-      this.StickerForm.patchValue({
-        ...data,
-        FileName: data.FileName?.substring(0, data.FileName.lastIndexOf('.')) || data.FileName
-      });
-      this.StickerForm.disable();
+      this.StickerForm.patchValue(data);
       this.dataSticker = { ...data };
     }
 
@@ -294,70 +270,62 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   */
   handleCloseDrawer(): void {
     this.isOpenDrawer = false;
-    // this.CountryForm.reset();
+    this.StickerForm.reset();
   }
   //#endregion
 
   //#region Hàm cập nhật/tạo mới dữ liệu
   onUpdateSticker() {
-    const sticker: DTOSticker = this.StickerForm.getRawValue();
-    const isCreate = this.isAction === 0;
-    const ctx = `${isCreate ? 'tạo mới' : 'cập nhật'} thông tin Tem Nhãn`;
+    const updateSticker: DTOSticker = this.StickerForm.getRawValue();
+    const isAddForm = Number(updateSticker.Code) === 0;
+    const ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Tem Nhãn`;
 
-    if (!Ps_UtilObjectService.hasValueString(sticker.StickName)) {
-      this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: Bạn chưa nhập Tên tem nhãn`);
+    // Đặt touched để hiển thị validate lỗi
+    this.StickerForm.markAllAsTouched();
+
+    // Validate bắt buộc
+    const errorFields: string[] = [];
+
+    if (
+      this.StickerForm.get('StickName')?.hasError('required') ||
+      !Ps_UtilObjectService.hasValueString(updateSticker.StickName)
+    ) {
+      errorFields.push('Tên tem nhãn');
+    }
+
+    // Nếu có lỗi thì show cảnh báo
+    if (this.StickerForm.invalid || errorFields.length > 0) {
+      if (errorFields.length > 0) {
+        this.layoutService.onError(
+          `Đã xảy ra lỗi khi ${ctx}: Vui lòng nhập (${errorFields.join(', ')})`
+        );
+      }
       return;
     }
 
-    if (isCreate) {
-      // mock Code tự tăng
-      const newCode = this.allStickers.length > 0
-        ? Math.max(...this.allStickers.map(c => c.Code)) + 1
-        : 1;
+    // Nếu là cập nhật → kiểm tra thay đổi
+    if (!isAddForm) {
+      const fieldsToCheck: (keyof DTOSticker)[] = ['StickName', 'Remark', 'FileName'];
+      const isChanged = fieldsToCheck.some(
+        field => (updateSticker[field] ?? '').toString().trim() !== (this.dataSticker[field] ?? '').toString().trim()
+      );
 
-      const newSticker = { ...sticker, Code: newCode };
-      this.allStickers.push(newSticker);
-      this.layoutService.onSuccess('Thêm mới thành công');
-    } else {
-      // tìm item cần update
-      const index = this.allStickers.findIndex(c => c.Code === this.dataSticker.Code);
-      if (index > -1) {
-        this.allStickers[index] = { ...this.allStickers[index], ...sticker };
-        this.layoutService.onSuccess('Cập nhật thành công');
-      } else {
-        this.layoutService.onError('Không tìm thấy tem nhãn để cập nhật');
+      if (!isChanged) {
+        return;
       }
     }
 
-    // gán lại gridStickers để hiển thị (clone để Angular detect)
-    this.gridStickers = [...this.allStickers];
-
-    // đóng drawer
-    this.handleCloseDrawer();
-
-    // Nếu là cập nhật → kiểm tra thay đổi
-    // if (!isCreate) {
-    //   const fieldsToCheck: (keyof DTOSticker)[] = [
-    //     'StickName'
-    //   ];
-
-    //   const isChanged = fieldsToCheck.some(
-    //     field => (sticker[field] ?? '').toString().trim() !== (this.dataSticker[field] ?? '').toString().trim()
-    //   );
-
-    //   if (!isChanged) {
-    //     this.layoutService.onWarning(`Đã xảy ra lỗi khi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật`);
-    //     return;
-    //   }
-    // }
-
-    // Gọi API
-    // this.APIUpdateCountry(country);
+    // Gọi API create/update
+    if (isAddForm) {
+      this.APIUpdateSticker(updateSticker);
+    } else {
+      this.APIUpdateSticker(updateSticker);
+    }
   }
   //#endregion
 
   //#region DROPDOWN 
-  getActionDropdown(moreActionDropdown: MenuDataItem[], dataItem: any) {  //hàm thêm option vào dropdown
+  getActionDropdown(moreActionDropdown: MenuDataItem[]) {  //hàm thêm option vào dropdown
     moreActionDropdown = []
 
     if (this.isAllPers || this.isCanCreate) {
@@ -397,36 +365,19 @@ export class Config012EnterpriseStickerComponent implements OnInit {
    * @returns 
    */
   onDeleteDialog(type: number): void {
-    // if (type !== 0) {
-    //   this.opened = false;
-    //   return;
-    // }
-
-    // if (!Ps_UtilObjectService.hasValue(this.dataSticker?.Code)) {
-    //   this.layoutService.onWarning('Không xoá được Quốc gia');
-    //   this.opened = false;
-    //   return;
-    // }
-
-    // // this.APIDeleteCountry([this.dataSticker]);
-    // this.opened = false;
-
     if (type !== 0) {
       this.opened = false;
       return;
     }
 
     if (!Ps_UtilObjectService.hasValue(this.dataSticker?.Code)) {
-      this.layoutService.onWarning('Không xoá được tem nhãn');
+      this.layoutService.onWarning('Không xoá được Quốc gia');
       this.opened = false;
       return;
     }
 
-    // Xóa khỏi mảng allStickers
-    this.allStickers = this.allStickers.filter(c => c.Code !== this.dataSticker.Code);
-
-    // Gán lại gridStickers để refresh UI
-    this.gridStickers = [...this.allStickers];
+    this.APIDeleteSticker([this.dataSticker]);
+    this.opened = false;
 
     this.layoutService.onSuccess('Xoá thành công');
     this.opened = false;
@@ -434,25 +385,162 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   }
   //#endregion
 
+  //#region API GET LIST
+  /**
+   * 
+   * @param filter Cấu hình state của Kendo Grid (bao gồm skip, take, sort, filter,...)
+   */
+  APIGetListSticker(filter: State) {
+    this.loading = true;
+
+    this.arrUnsubscribe.push(
+      this.apiServiceConf.GetListSticker(filter)
+        .pipe(takeUntil(this.ngUnsubscribe$))
+        .subscribe(
+          (res: any) => {
+            this.loading = false;
+
+            if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
+              this.gridStickers = res.ObjectReturn.Data;
+              this.allStickers = res.ObjectReturn.Data;
+            } else {
+              this.layoutService.onError(
+                `Đã xảy ra lỗi khi lấy Danh sách tem nhãn: ${res?.ErrorString ?? 'Không xác định'}`
+              );
+              this.gridStickers = [];
+              this.allStickers = [];
+            }
+          },
+          (error) => {
+            this.loading = false;
+            this.layoutService.onError(
+              `Đã xảy ra lỗi khi lấy Danh sách tem nhãn: ${error?.Message ?? error}`
+            );
+            this.gridStickers = [];
+            this.allStickers = [];
+          }
+        )
+    );
+  }
+
+  collectInvalid(form: FormGroup): { key: string, errs: any }[] {
+    const invalids: { key: string, errs: any }[] = [];
+
+    Object.keys(form.controls).forEach(key => {
+      const control = form.get(key);
+      if (control && control.invalid) {
+        invalids.push({ key, errs: control.errors });
+      }
+    });
+
+    return invalids;
+  }
+  //#endregion
+
+
+  //#region API Update Sticker
+  APIUpdateSticker(sticker: DTOSticker): void {
+    if (!sticker) {
+      this.layoutService.onWarning('Dữ liệu tem nhãn không hợp lệ');
+      return;
+    }
+
+    const isAddForm = Number(sticker.Code) === 0;
+
+    // Nếu là cập nhật thì kiểm tra thay đổi
+    if (!isAddForm && this.dataSticker) {
+      const noChange =
+        (sticker.StickName ?? '').trim().toLowerCase() === (this.dataSticker.StickName ?? '').trim().toLowerCase() &&
+        (sticker.Remark ?? '').trim().toLowerCase() === (this.dataSticker.Remark ?? '').trim().toLowerCase() &&
+        (sticker.FileName ?? '').trim().toLowerCase() === (this.dataSticker.FileName ?? '').trim().toLowerCase();
+
+      if (noChange) {
+        return;
+      }
+    }
+
+    this.loading = true;
+
+    this.arrUnsubscribe.push(
+      this.apiServiceConf.UpdateSticker(sticker)
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            this.APIGetListSticker({ ...this.gridState }); // reload lại danh sách
+          })
+        )
+        .subscribe(
+          (res: any) => {
+            if (res?.StatusCode === 0) {
+              this.layoutService.onSuccess(
+                sticker.Code ? 'Cập nhật tem nhãn thành công' : 'Tạo mới tem nhãn thành công'
+              );
+              this.handleCloseDrawer();
+            } else {
+              this.layoutService.onError(
+                `Đã xảy ra lỗi khi cập nhật tem nhãn: ${res?.ErrorString ?? 'không xác định'}`
+              );
+            }
+          },
+          (error) => {
+            this.layoutService.onError(
+              `Không thể gọi API cập nhật tem nhãn: ${error}`
+            );
+          }
+        )
+    );
+  }
+  //#endregion
+
+  //#region API Delete Sticker
+  APIDeleteSticker(listDelete: DTOSticker[] = []): void {
+  if (!listDelete?.length) {
+    this.layoutService.onWarning('Không tìm thấy Tem nhãn để xoá');
+    return;
+  }
+
+  this.loading = true;
+
+  this.arrUnsubscribe.push(
+    this.apiServiceConf.DeleteSticker(listDelete.map(x => ({ Code: x.Code } as DTOSticker)))
+      .pipe(
+        finalize(() => {
+          this.loading = false;
+          this.APIGetListSticker({ ...this.gridState }); // reload lại grid sau khi xoá
+        })
+      )
+      .subscribe(
+        (res: any) => {
+          if (res?.StatusCode === 0) {
+            this.layoutService.onSuccess('Xoá Tem nhãn thành công');
+            this.handleCloseDrawer();
+          } else {
+            this.layoutService.onError(
+              `Xoá không thành công: ${res?.ErrorString ?? 'không có bản ghi bị ảnh hưởng'}`
+            );
+          }
+        },
+        (error) => {
+          this.layoutService.onError(
+            `Không thể gọi API xoá Tem nhãn: ${error}`
+          );
+        }
+      )
+  );
+}
+//#endregion
+
+
   //#region hàm mở folder
   onUploadFileName() {
     this.layoutService.folderDialogOpened = true;
   }
 
-  pickFile(e: DTOCFFile, width, height) {
-
-    // this.dataCompanyForm.URLLogo = e?.PathFile.replace('~', '')
-    // this.formData.value.URLLogo =  e?.PathFile.replace('~', '')
-    // this.formData.value.URLLogo = this.dataCompany.URLLogo
-    // this.formData.patchValue({
-    //   URLLogo: this.dataCompany.URLLogo
-    // });
-    this.layoutService.setFolderDialog(false)
-  }
-
   // lấy foler chứa ảnh 
   GetFolderWithFile(childPath) {
+    console.log('aaa');
     if (this.layoutService.getFolderDialog()) {
+      console.log('bbb');
       return this.MarServiceAPI.GetFolderWithFile(childPath, 7);
     }
   }
@@ -466,7 +554,7 @@ export class Config012EnterpriseStickerComponent implements OnInit {
       // Gán vào FormControl FileName
       this.StickerForm.get('FileName')?.setValue(nameWithoutExt);
 
-      // Nếu bạn cần giữ file để upload backend
+      // Nếu cần giữ file để upload backend
       this.selectedFile = file;
     }
   }
