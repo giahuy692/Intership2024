@@ -18,6 +18,7 @@ import { DTOProvince } from '../dto/DTOProvince';
 import { DTODistrict } from '../dto/DTODistrict';
 import { DTOCFFolder } from 'src/app/p-app/p-layout/dto/DTOCFFolder.dto';
 import { DTOPackingUnit } from '../dto/DTOPackingUnit';
+import { DTOSticker } from '../dto/DTOSticker';
 
 @Injectable({
   providedIn: 'root',
@@ -593,6 +594,72 @@ export class ConfigEnterpriceApiService {
         .connect(
           that.config.getAPIList().DeletePackingUnit.method,
           that.config.getAPIList().DeletePackingUnit.url,
+          JSON.stringify(dtos)
+        )
+        .subscribe(
+          (res: any) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
+
+  GetListSticker(gridState?: State) {
+    let that = this;
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().GetListSticker.method,
+          that.config.getAPIList().GetListSticker.url,
+          JSON.stringify(toDataSourceRequest(gridState))
+        )
+        .subscribe(
+          (res: any) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
+
+  UpdateSticker(dtos: DTOSticker) {
+    let that = this;
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().UpdateSticker.method,
+          that.config.getAPIList().UpdateSticker.url,
+          JSON.stringify(dtos)
+        )
+        .subscribe(
+          (res: any) => {
+            obs.next(res);
+            obs.complete();
+          },
+          (errors) => {
+            obs.error(errors);
+            obs.complete();
+          }
+        );
+    });
+  }
+
+  DeleteSticker(dtos: DTOSticker[]) {
+    let that = this;
+    return new Observable<DTOResponse>((obs) => {
+      that.api
+        .connect(
+          that.config.getAPIList().DeleteSticker.method,
+          that.config.getAPIList().DeleteSticker.url,
           JSON.stringify(dtos)
         )
         .subscribe(

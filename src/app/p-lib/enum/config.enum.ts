@@ -111,4 +111,8 @@ export class EnumConfig {
 
     static GetFolderWithFile: string;
 
+    static GetListSticker: string;
+    static UpdateSticker: string;
+    static DeleteSticker: string;
+
 }

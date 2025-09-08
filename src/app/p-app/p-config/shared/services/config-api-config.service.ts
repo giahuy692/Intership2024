@@ -392,7 +392,19 @@ export class ConfigApiConfigService {
       DeletePackingUnit: new DTOAPI({
         method: ApiMethodType.post,
         url: EnumConfig.DeletePackingUnit,
-      })
+      }),
+      GetListSticker: new DTOAPI({
+        method: ApiMethodType.post,
+        url: EnumConfig.GetListSticker,
+      }),
+      UpdateSticker: new DTOAPI({
+        method: ApiMethodType.post,
+        url: EnumConfig.UpdateSticker,
+      }),
+      DeleteSticker: new DTOAPI({
+        method: ApiMethodType.post,
+        url: EnumConfig.DeleteSticker,
+      }),
       //#endregion
     };
   }

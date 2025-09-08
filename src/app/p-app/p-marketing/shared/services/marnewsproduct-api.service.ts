@@ -144,6 +144,7 @@ export class MarNewsProductAPIService {
       'ID': Ps_UtilObjectService.hasValueString(childPath) ? 0 : id,//news = 8
       'Folder': childPath
     }
+    console.log(that.config.getAPIList().GetFolderWithFile.url);
     return new Observable<DTOCFFolder>(obs => {
       that.api.connect(that.config.getAPIList().GetFolderWithFile.method,
         that.config.getAPIList().GetFolderWithFile.url, JSON.stringify(param)).subscribe(
