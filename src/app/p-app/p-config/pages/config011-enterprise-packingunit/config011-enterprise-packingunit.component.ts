@@ -189,7 +189,6 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
       moreActionDropdown.push({ Name: "Chỉnh sửa", Code: "pencil", Link: "edit", Actived: true })
       moreActionDropdown.push({ Name: "Xóa", Code: "trash", Link: "delete", Actived: true })
     } else {
-
       moreActionDropdown.push({ Name: "Xem chi tiết", Code: "eye", Link: "view", Actived: true })
     }
     return moreActionDropdown
@@ -341,12 +340,21 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
       return;
     }
 
-    if (!isAddForm && JSON.stringify(updatePackingUnit) === JSON.stringify(this.dataPackingUnit)) {
+    if (!isAddForm && this.isPackingUnitEqual(updatePackingUnit, this.dataPackingUnit)) {
       this.layoutService.onWarning(`Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`);
       return;
     }
     this.APIUpdatePackingUnit(updatePackingUnit);
   } 
+
+  isPackingUnitEqual(a: DTOPackingUnit, b: DTOPackingUnit): boolean {
+    return a.Code === b.Code &&
+      a.VNPackingUnit === b.VNPackingUnit &&
+      a.ENPackingUnit === b.ENPackingUnit &&
+      a.JPPackingUnit === b.JPPackingUnit &&
+      a.OrderBy === b.OrderBy &&
+      a.TypeData === b.TypeData;
+  }
 
   // Hàm xử lý xóa đơn vị tính
   onDeletePackingUnit(type: number): void {
