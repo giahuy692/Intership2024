@@ -2041,8 +2041,8 @@ export const ModuleDataAdmin: Array<any> = [
                     {
                         Name: "Đơn vị tính",
                         Actived: false,
-                        Code: "config011-enterprise-unituom",
-                        Link: "/config/config011-enterprise-unituom",
+                        Code: "config011-enterprise-packingunit",
+                        Link: "/config/config011-enterprise-packingunit",
                         Type: 'function',
                         LstChild: []
                     },

@@ -6,9 +6,9 @@
             <!-- HEADER 1: BREAD CUM AND BUTTON CREATE -->
             <div class="header header-1">
                 <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
-                <div class="nav-btn nav-crud">
-                    <button *ngIf="isBtnHide" kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
-                    (click)="onOpendDrawer(0)" [disabled]="">
+                <div class="nav-btn nav-crud" >
+                    <button *ngIf="(isAllPers || isCanCreate)" kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
+                    (click)="onOpendDrawer(0)">
                     TẠO MỚI
                     </button>
                 </div>
@@ -25,7 +25,7 @@
 
             <!-- GRID LIST COMPANY -->
             <div class="grid-wrapper">
-                <app-p-kendo-grid class="grid" [data]="dataUnitUom" [scrollable]="'none'" [loading]="loading" [pageable]="false"
+                <app-p-kendo-grid class="grid" [data]="ListdataPackingUnit" [scrollable]="'none'" [loading]="loading" [pageable]="false"
                 [getActionDropdownCallback]="getActionDropdownCallback" [onActionDropdownClickCallback]="onActionDropdownClickCallback"> 
 
                     <kendo-grid-column field="VNPackingUnit" title="Tên Tiếng Việt" class="col_nameVN" headerClass="col_nameVN"
@@ -66,7 +66,7 @@
                             <div class="item item1">
                                 <div class="label-impose">
                                     <div class="label-item"> Tên Tiếng Việt </div>
-                                    <div *ngIf="isImpose">
+                                    <div *ngIf="(isAllPers || isCanCreate)">
                                         <ng-container >
                                             <span class="impose"> (*) </span>
                                         </ng-container>
@@ -93,14 +93,14 @@
                     </div>
 
                     <div class="form-footer">
-                    <div class="required-note" *ngIf="isImpose" >
+                    <div class="required-note" *ngIf="(isAllPers || isCanCreate)" >
                         <i><span class="impose">(*) Thông tin bắt buộc nhập</span></i>
                     </div>
                     <div class="k-form-buttons">
                         <button kendoButton class="k-button btn-hachi closeBtn" (click)="onCloseForm()">
                             Đóng
                         </button>
-                        <div *ngIf="isBtnHide">
+                        <div *ngIf="(isAllPers || isCanCreate)">
                             <ng-container >
                                 <button kendoButton class="k-button btn-hachi updateBtn" (click)="onUpdatePackingUnit()">
                                     {{apiPackingUnitForm.controls['Code'].value > 0
@@ -110,7 +110,7 @@
                                 </button>
                             </ng-container>
                         </div>
-                        <div *ngIf="isBtnHide">
+                        <div *ngIf="(isAllPers || isCanCreate)">
                             <ng-container >
                                 <button kendoButton class="k-button btn-hachi deleteBtn" (click)="openDialogPakingUnit()" *ngIf="apiPackingUnitForm.controls['Code'].value > 0">
                                     XÓA

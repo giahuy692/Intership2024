@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { DTOPackingUnit } from '../../shared/dto/DTOPackingUnit';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDrawer } from '@angular/material/sidenav';
 import { PS_HelperMenuService } from 'src/app/p-app/p-layout/services/p-menu.helper.service';
 import { takeUntil } from 'rxjs/operators';
@@ -14,10 +14,10 @@ import { DTOPermission } from 'src/app/p-app/p-layout/dto/DTOPermission';
 
 @Component({
   selector: 'app-config011-enterprise-unituom',
-  templateUrl: './config011-enterprise-unituom.component.html',
-  styleUrls: ['./config011-enterprise-unituom.component.scss']
+  templateUrl: './config011-enterprise-packingunit.component.html',
+  styleUrls: ['./config011-enterprise-packingunit.component.scss']
 })
-export class Config011EnterpriseUnituomComponent implements OnInit{
+export class Config011EnterprisePackingUnitComponent implements OnInit{
 
   @ViewChild('formDrawer') public drawer: MatDrawer;
   @ViewChild('search', { static: false }) searchComponent: any;
@@ -26,13 +26,10 @@ export class Config011EnterpriseUnituomComponent implements OnInit{
   loading: boolean = false
 
   // Biến danh sách các đơn vị tính từ API
-  dataUnitUom: DTOPackingUnit[] = [];
+  ListdataPackingUnit: DTOPackingUnit[] = [];
 
   // Biến dữ liệu của một đơn vị tính hiện đang được chọn hoặc thao tác
   dataPackingUnit: DTOPackingUnit = new DTOPackingUnit()
-
-  // Biến dữ liệu gốc
-  originalPackingUnittData: DTOPackingUnit | null = null;
 
   /**
   * Trạng thái dữ liệu (State) của Grid
@@ -47,10 +44,8 @@ export class Config011EnterpriseUnituomComponent implements OnInit{
   onActionDropdownClickCallback: Function
   getActionDropdownCallback: Function
 
-  // Trạng thái ẩn/hiện button
-  isBtnHide: boolean = false
+  // Trạng thái ẩn/hiện của trường
   isFeildDisabled: boolean = false
-  isImpose: boolean = false
 
   //phân quyền
   justLoadedPer: boolean = true;
@@ -64,7 +59,7 @@ export class Config011EnterpriseUnituomComponent implements OnInit{
   //dto form Packing Unit
   apiPackingUnitForm: FormGroup = new FormGroup({
     Code: new FormControl(0),
-    VNPackingUnit: new FormControl(''),
+    VNPackingUnit: new FormControl('', [Validators.required]),
     JPPackingUnit: new FormControl(''),
     ENPackingUnit: new FormControl(''),
     OrderBy: new FormControl(null), 
@@ -92,11 +87,6 @@ export class Config011EnterpriseUnituomComponent implements OnInit{
           //   that.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
           // that.isCanCreate =
           //   that.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
-          // Set trạng thái nút thêm mới
-          if (that.isAllPers || that.isCanCreate) {
-            this.isBtnHide = true;
-            this.isImpose = true;
-          }
           that.justLoadedPer = false;
         }
       });
@@ -115,7 +105,7 @@ export class Config011EnterpriseUnituomComponent implements OnInit{
   // breadcrumb
   reloadData() {
     this.searchComponent.value = '';
-    this.gridState.filter.filters = []
+    this.gridState.filter.filters = [];
     this.APIGetListPackingUnit(this.gridState);
   }
 
@@ -145,6 +135,8 @@ export class Config011EnterpriseUnituomComponent implements OnInit{
   //endregion
   
   //#region Hành động trên form
+
+  // Xử lý đóng form
   onCloseForm() {
     this.drawer.close()
   }
@@ -158,7 +150,7 @@ export class Config011EnterpriseUnituomComponent implements OnInit{
  */
   onOpendDrawer(type: number, data: DTOPackingUnit = new DTOPackingUnit()) {
     if (type === 0) {
-      this.apiPackingUnitForm.reset({Code: 0, OrderBy: 1, TypeData: 1});
+      this.apiPackingUnitForm.reset({Code: 0, OrderBy: 1, TypeData: 1, JPPackingUnit: '', ENPackingUnit: ''});
       this.dataPackingUnit = new DTOPackingUnit();
       this.drawer.open();
     } else if (type === 1 && Ps_UtilObjectService.hasValue(data)) {
@@ -246,7 +238,7 @@ export class Config011EnterpriseUnituomComponent implements OnInit{
     this.configAPIService.GetListPackingUnit(state).pipe(takeUntil(this.ngUnsubscribe$)).subscribe((res: any) => {
       if ( Ps_UtilObjectService.hasValue(res) && res.StatusCode == 0) {
         const filteredData = res.ObjectReturn.Data;
-        this.dataUnitUom = filteredData;
+        this.ListdataPackingUnit = filteredData;
       } else {
         this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: ${res.ErrorString}`);
       }
@@ -307,7 +299,6 @@ export class Config011EnterpriseUnituomComponent implements OnInit{
             this.layoutService.onError(
               `Đã xảy ra lỗi khi ${ctx}: ${res.ErrorString}`
             );
-            console.error(`Error in ${ctx}:`, res.ErrorString);
             this.APIGetListPackingUnit(this.gridState);
           }
           this.loading = false;
@@ -325,36 +316,46 @@ export class Config011EnterpriseUnituomComponent implements OnInit{
 
   // Hàm xử lý cập nhật đơn vị tính
   onUpdatePackingUnit() {
+    this.apiPackingUnitForm.markAllAsTouched();
     const updatePackingUnit: DTOPackingUnit = this.apiPackingUnitForm.getRawValue();
     const isAddForm = Number(updatePackingUnit.Code) === 0;
-
     let ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Đơn vị Tính`;
-    if (!Ps_UtilObjectService.hasValueString(updatePackingUnit.VNPackingUnit)) {
-      this.layoutService.onError(`Đã xảy ra lỗi ${ctx}: Bạn chưa nhập Tên Tiếng Việt`);
+
+    if ( this.apiPackingUnitForm.invalid || !Ps_UtilObjectService.hasValueString(updatePackingUnit.VNPackingUnit))
+    {
+      const errorFields: string[] = [];
+      if (
+        this.apiPackingUnitForm.get('VNPackingUnit')?.hasError('required') ||
+        !Ps_UtilObjectService.hasValueString(updatePackingUnit.VNPackingUnit)
+      ) {
+        errorFields.push('Tên Tiếng Việt');
+      }
+
+      if (errorFields.length > 0) {
+        this.layoutService.onError(
+          `Đã xảy ra lỗi ${ctx}: Vui lòng nhập ( ${errorFields.join(', ')} )`
+        );
+      } else {
+        this.layoutService.onError(`Đã xảy ra lỗi ${ctx}: Vui lòng nhập đầy đủ thông tin bắt buộc`);
+      }
       return;
     }
 
-    if (!isAddForm && JSON.stringify(updatePackingUnit) === JSON.stringify(this.originalPackingUnittData)) {
+    if (!isAddForm && JSON.stringify(updatePackingUnit) === JSON.stringify(this.dataPackingUnit)) {
       this.layoutService.onWarning(`Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`);
       return;
     }
-    // this.APIUpdatePackingUnit(updatePackingUnit);
+    this.APIUpdatePackingUnit(updatePackingUnit);
   } 
 
   // Hàm xử lý xóa đơn vị tính
   onDeletePackingUnit(type: number): void {
-    if (type !== 0) {
-      this.dialog = false;
-      return;
-    }
-
-    if (!Ps_UtilObjectService.hasValue(this.dataPackingUnit?.Code)) {
+    if (!Ps_UtilObjectService.hasValue(this.dataPackingUnit)) {
       this.layoutService.onWarning('Không xoá được Đơn vị Tính');
       this.dialog = false;
       return;
     }
 
-    // const payload: DTOCountry[] = [{ Code: this.dataCountry?.Code } as DTOCountry];
     this.APIDeletePackingUnit([this.dataPackingUnit]);
     this.dialog = false;
   }
