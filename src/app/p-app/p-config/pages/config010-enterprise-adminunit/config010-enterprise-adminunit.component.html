@@ -28,7 +28,7 @@
 
                 <!-- Button Thêm mới Tỉnh Thành, Phường Xã -->
                 <div class="nav-btn nav-crud" >
-                    <div *ngIf="isBtnHide" class="contain-btn">
+                    <div *ngIf="(isAllPers || isCanCreate)" class="contain-btn">
                         <ng-container >
                             <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
                                 imageUrl="assets/img/icon/icon_city.svg"
@@ -135,7 +135,7 @@
                             <div class="item item1">
                                 <div class="label-impose">
                                     <div class="label-item"> Tên Tiếng Việt </div>
-                                    <div *ngIf="isImpose">
+                                    <div *ngIf="(isAllPers || isCanCreate)">
                                         <ng-container >
                                             <span class="impose"> (*) </span>
                                         </ng-container>
@@ -157,7 +157,7 @@
                             <div class="item item4">
                                 <div class="label-impose">
                                     <div class="label-item"> Mã hành chính </div>
-                                    <div *ngIf="isImpose">
+                                    <div *ngIf="(isAllPers || isCanCreate)">
                                         <ng-container >
                                             <span class="impose"> (*) </span>
                                         </ng-container>
@@ -188,14 +188,14 @@
                 </div>
                 <!-- Footer Form -->
                 <div class="form-footer">
-                    <div class="required-note" *ngIf="isImpose">
+                    <div class="required-note" *ngIf="(isAllPers || isCanCreate)">
                         <i><span class="impose">(*) Thông tin bắt buộc nhập</span></i>
                     </div>
                     <div class="k-form-buttons">
                         <button kendoButton class="k-button btn-hachi closeBtn" (click)="onCloseForm()">
                             Đóng
                         </button>
-                        <div *ngIf="isBtnHide">
+                        <div *ngIf="(isAllPers || isCanCreate)">
                             <ng-container >
                                 <button kendoButton class="k-button btn-hachi updateBtn" (click)="onUpdateProvince()">
                                     {{apiProvinceForm.controls['Code'].value > 0
@@ -205,7 +205,7 @@
                                 </button>
                             </ng-container>
                         </div>
-                        <div *ngIf="isBtnHide">
+                        <div *ngIf="(isAllPers || isCanCreate)">
                             <ng-container >
                                 <button kendoButton class="k-button btn-hachi deleteBtn" (click)="onOpenDialogProvince()" *ngIf="apiProvinceForm.controls['Code'].value > 0">
                                     Xóa
@@ -226,7 +226,7 @@
                         <div class="item item1">
                             <div class="label-impose">
                                 <div class="label-item">Tên Tiếng Việt </div> 
-                                <div *ngIf="isImpose">
+                                <div *ngIf="(isAllPers || isCanCreate)">
                                     <ng-container >
                                         <span class="impose"> (*) </span>
                                     </ng-container>
@@ -248,7 +248,7 @@
                         <div class="item item4">
                             <div class="label-impose">
                                 <div class="label-item"> Mã hành chính </div>
-                                <div *ngIf="isImpose">
+                                <div *ngIf="(isAllPers || isCanCreate)">
                                     <ng-container >
                                         <span class="impose"> (*) </span>
                                     </ng-container>
@@ -260,7 +260,7 @@
                         <div class="item item4">
                             <div class="label-impose">
                                 <div class="label-item"> Tỉnh thành </div>
-                                <div *ngIf="isImpose">
+                                <div *ngIf="(isAllPers || isCanCreate)">
                                     <ng-container >
                                         <span class="impose"> (*) </span>
                                     </ng-container>
@@ -302,14 +302,14 @@
     
                 <!-- Footer Form -->
                 <div class="form-footer">
-                    <div class="required-note" *ngIf="isImpose">
+                    <div class="required-note" *ngIf="(isAllPers || isCanCreate)">
                         <i><span class="impose">(*) Thông tin bắt buộc nhập</span></i>
                     </div>
                     <div class="k-form-buttons">
                         <button kendoButton class="k-button btn-hachi closeBtn" (click)="onCloseForm()">
                             Đóng
                         </button>
-                        <div *ngIf="isBtnHide">
+                        <div *ngIf="(isAllPers || isCanCreate)">
                             <ng-container >
                                 <button kendoButton class="k-button btn-hachi updateBtn" (click)="onUpdateDistrict()">
                                     {{apiDistrictFrom.controls['Code'].value > 0
@@ -319,7 +319,7 @@
                                 </button>
                             </ng-container>
                         </div>
-                        <div *ngIf="isBtnHide">
+                        <div *ngIf="(isAllPers || isCanCreate)">
                             <ng-container >
                                 <button kendoButton class="k-button btn-hachi deleteBtn" (click)="onOpenDialogDistrict()" *ngIf="apiDistrictFrom.controls['Code'].value > 0">
                                     XÓA
