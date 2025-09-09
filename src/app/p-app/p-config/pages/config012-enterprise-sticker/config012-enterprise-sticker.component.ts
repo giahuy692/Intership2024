@@ -32,7 +32,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   isCanCreate: boolean = false
   justLoadedChangePermissionAPI: boolean = true
   justLoadedPer: boolean = true
-  dataPerm: DTODataPermission[] = [];
   actionPerm: DTOActionPermission[] = [];
 
   // varible of Dropdown
@@ -87,8 +86,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   arrUnsubscribe: Subscription[] = []; //mảng lưu sst để huỷ sau
   ngUnsubscribe$ = new Subject<void>(); //subject hỗ trợ takeUntil để unsubscribe
 
-  selectedFile: File | null = null;
-
   constructor(
     public layoutService: LayoutService,
     public apiServiceConf: ConfigEnterpriceApiService,
@@ -121,8 +118,8 @@ export class Config012EnterpriseStickerComponent implements OnInit {
 
         // this.MC = this.isMaster || this.isCreator;
 
-        this.isAllPers = false;
-        this.isCanCreate = true;
+        this.isAllPers = true;
+        this.isCanCreate = false;
       }
     })
 
@@ -136,8 +133,13 @@ export class Config012EnterpriseStickerComponent implements OnInit {
 
     this.onActionDropdownClickCallback = this.onActionDropdownClick.bind(this)
     this.getActionDropdownCallback = this.getActionDropdown.bind(this)
+    this.pickFileCallback = this.pickFile.bind(this)
     this.GetFolderCallback = this.GetFolderWithFile.bind(this)
+  }
 
+  //dùng này để tránh lỗi ng0100
+  ngAfterContentChecked(): void {
+    this.changeDetector.detectChanges();
   }
 
   /**
@@ -214,7 +216,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   onResetFilter() {
     this.keyword = '';
     this.reloadData();
-    this.APIGetListSticker({ ...this.gridState });
   }
   //#endregion
 
@@ -332,7 +333,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
       moreActionDropdown.push({ Name: "Chỉnh sửa", Code: "pencil", Link: "edit", Actived: true })
       moreActionDropdown.push({ Name: "Xóa", Code: "trash", Link: "delete", Actived: true })
     } else {
-
       moreActionDropdown.push({ Name: "Xem chi tiết", Code: "eye", Link: "view", Actived: true })
     }
     return moreActionDropdown
@@ -422,23 +422,24 @@ export class Config012EnterpriseStickerComponent implements OnInit {
         )
     );
   }
-
-  collectInvalid(form: FormGroup): { key: string, errs: any }[] {
-    const invalids: { key: string, errs: any }[] = [];
-
-    Object.keys(form.controls).forEach(key => {
-      const control = form.get(key);
-      if (control && control.invalid) {
-        invalids.push({ key, errs: control.errors });
-      }
-    });
-
-    return invalids;
-  }
   //#endregion
 
 
   //#region API Update Sticker
+  /**
+   * Gọi API để tạo mới hoặc cập nhật thông tin Tem Nhãn
+   *
+   * - Nếu `sticker.Code === 0` → hệ thống sẽ tạo mới tem nhãn.
+   * - Nếu `sticker.Code !== 0` → hệ thống sẽ kiểm tra thay đổi và cập nhật tem nhãn.
+   * - Trường hợp dữ liệu không thay đổi → bỏ qua, không gọi API.
+   * - Sau khi thành công sẽ reload lại danh sách tem nhãn và đóng Drawer.
+   * @param {DTOSticker} sticker 
+   *  Đối tượng Tem Nhãn cần tạo mới hoặc cập nhật.
+   *  Bao gồm các thuộc tính: 
+   *  - Code: mã tem nhãn (0 = tạo mới, khác 0 = cập nhật).
+   *  - StickName: tên tem nhãn.
+   *  - FileName: tên file ảnh/logo liên quan.
+   */
   APIUpdateSticker(sticker: DTOSticker): void {
     if (!sticker) {
       this.layoutService.onWarning('Dữ liệu tem nhãn không hợp lệ');
@@ -493,6 +494,17 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   //#endregion
 
   //#region API Delete Sticker
+  /**
+   * Gọi API để xoá một hoặc nhiều Tem Nhãn.
+   *
+   * - Nếu danh sách rỗng → show cảnh báo và không gọi API.
+   * - Nếu có dữ liệu → gọi API DeleteSticker với danh sách Code.
+   * - Sau khi thành công → hiển thị thông báo thành công, đóng Drawer và reload lại Grid.
+   * - Nếu thất bại → hiển thị lỗi trả về từ API hoặc lỗi hệ thống.
+   @param {DTOSticker[]} listDelete=[]
+   *        Danh sách Tem Nhãn cần xoá. 
+   *        Chỉ thuộc tính `Code` của mỗi DTOSticker được sử dụng khi gửi lên API
+   */
   APIDeleteSticker(listDelete: DTOSticker[] = []): void {
   if (!listDelete?.length) {
     this.layoutService.onWarning('Không tìm thấy Tem nhãn để xoá');
@@ -538,25 +550,24 @@ export class Config012EnterpriseStickerComponent implements OnInit {
 
   // lấy foler chứa ảnh 
   GetFolderWithFile(childPath) {
-    console.log('aaa');
     if (this.layoutService.getFolderDialog()) {
-      console.log('bbb');
       return this.MarServiceAPI.GetFolderWithFile(childPath, 7);
     }
   }
-  onFileSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input?.files && input.files.length > 0) {
-      const file = input.files[0];
-      const fileName = file.name;
-      const nameWithoutExt = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
 
-      // Gán vào FormControl FileName
-      this.StickerForm.get('FileName')?.setValue(nameWithoutExt);
-
-      // Nếu cần giữ file để upload backend
-      this.selectedFile = file;
+  //hàm chọn tên file
+  pickFile(e: DTOCFFile, width?: number, height?: number) {
+    if (!e || !Ps_UtilObjectService.hasValueString(e.PathFile)) {
+      this.layoutService.onError('Không tìm thấy file hợp lệ!');  
+      return;
     }
+
+    const fileName = e.PathFile.replace('~', '').split('/').pop() ?? '';
+   
+    this.StickerForm.patchValue({
+    FileName: fileName
+    });
+    this.layoutService.setFolderDialog(false);
   }
   //#endregion
 

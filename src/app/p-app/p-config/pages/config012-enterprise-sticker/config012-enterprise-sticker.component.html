@@ -36,7 +36,7 @@
                             <div class="lable">
                                 <span class="labelName">Ghi chú</span>
                             </div>
-                            <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
+                            <input type="file" #fileInput hidden/>
                             <app-p-textarea class="Remark" [propName]="'Remark'" formControlName="Remark"
                                 [disabled]="TypeAction === 2">
                             </app-p-textarea>
@@ -50,7 +50,7 @@
                                     <span class="k-icon k-i-export" (click)="onUploadFileName()" *ngIf="isAllPers || isCanCreate"></span>
                                 </div>
                                 <app-p-textbox class=" FileName" [propName]="'FileName'" formControlName="FileName"
-                                    [disabled]="TypeAction === 1 || TypeAction === 2">
+                                    [disabled]="true">
                                 </app-p-textbox>
                             </div>
                         </kendo-label>
