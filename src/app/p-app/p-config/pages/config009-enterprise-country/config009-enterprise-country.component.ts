@@ -186,16 +186,6 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     };
 
     this.APIGetListCountry(filter);
-
-    // fallback local (không dấu) dựa vào dữ liệu hiện có trong allCountries
-    this.gridCountries = (this.allCountries ?? []).filter(c => {
-      const vnName = (c.VNName ?? '')
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-        .toLowerCase();
-      return vnName.includes(keyword);
-    });
   }
 }
 
@@ -300,22 +290,6 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     this.APIUpdateCountry(updateCountry);
   }
 
-
-  /**
-   * Thu thập danh sách control invalid trong form
-   */
-  collectInvalid(form: FormGroup): { key: string, errs: any }[] {
-    const invalids: { key: string, errs: any }[] = [];
-
-    Object.keys(form.controls).forEach(key => {
-      const control = form.get(key);
-      if (control && control.invalid) {
-        invalids.push({ key, errs: control.errors });
-      }
-    });
-
-    return invalids;
-  }
   //#endregion
 
   /**
