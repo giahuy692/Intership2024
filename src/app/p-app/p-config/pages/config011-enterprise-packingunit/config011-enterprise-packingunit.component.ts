@@ -14,7 +14,7 @@ import { DTOPermission } from 'src/app/p-app/p-layout/dto/DTOPermission';
 import { DTOActionPermission } from 'src/app/p-app/p-layout/dto/DTOActionPermission';
 
 @Component({
-  selector: 'app-config011-enterprise-unituom',
+  selector: 'app-config011-enterprise-packingunit',
   templateUrl: './config011-enterprise-packingunit.component.html',
   styleUrls: ['./config011-enterprise-packingunit.component.scss']
 })
@@ -61,7 +61,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   //dto form Packing Unit
   apiPackingUnitForm: FormGroup = new FormGroup({
     Code: new FormControl(0),
-    VNPackingUnit: new FormControl('', [Validators.required]),
+    VNPackingUnit: new FormControl('', [Validators.required, Validators.pattern(/\S+/)]),
     JPPackingUnit: new FormControl(''),
     ENPackingUnit: new FormControl(''),
     OrderBy: new FormControl(0), 
@@ -317,23 +317,14 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
     const isAddForm = Number(updatePackingUnit.Code) === 0;
     let ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Đơn vị Tính`;
 
-    if ( this.apiPackingUnitForm.invalid || !Ps_UtilObjectService.hasValueString(updatePackingUnit.VNPackingUnit))
-    {
-      const errorFields: string[] = [];
-      if (
-        this.apiPackingUnitForm.get('VNPackingUnit')?.hasError('required') ||
-        !Ps_UtilObjectService.hasValueString(updatePackingUnit.VNPackingUnit)
-      ) {
-        errorFields.push('Tên Tiếng Việt');
-      }
+    const requiredFields = [{ name: 'VNPackingUnit', label: 'Tên Tiếng Việt' }];
 
-      if (errorFields.length > 0) {
-        this.layoutService.onError(
-          `Đã xảy ra lỗi ${ctx}: Vui lòng nhập ( ${errorFields.join(', ')} )`
-        );
-      } else {
-        this.layoutService.onError(`Đã xảy ra lỗi ${ctx}: Vui lòng nhập đầy đủ thông tin bắt buộc`);
-      }
+    if (this.apiPackingUnitForm.invalid) {
+      const errorFields = requiredFields.filter(f => this.apiPackingUnitForm.get(f.name)?.invalid).map(f => f.label);
+      const errorMessage = errorFields.length > 0
+        ? `Đã xảy ra lỗi ${ctx}: Vui lòng nhập ( ${errorFields.join(', ')} )`
+        : `Đã xảy ra lỗi ${ctx}: Vui lòng nhập đầy đủ thông tin bắt buộc`;
+      this.layoutService.onError(errorMessage);
       return;
     }
 
