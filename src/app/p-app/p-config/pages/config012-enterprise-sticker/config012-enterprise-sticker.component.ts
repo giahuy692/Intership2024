@@ -34,6 +34,12 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   justLoadedPer: boolean = true
   actionPerm: DTOActionPermission[] = [];
 
+  isMaster: boolean = false; // Toàn quyền
+  isCreator: boolean = false; // Quyền tạo
+  isApprover: boolean = false; // Quyền duyệt
+  MA: boolean = false; // Master hoặc Approver
+  MC: boolean = false; // Master hoặc Creator
+
   // varible of Dropdown
   onActionDropdownClickCallback: Function
   getActionDropdownCallback: Function
@@ -110,16 +116,13 @@ export class Config012EnterpriseStickerComponent implements OnInit {
     // Check permission
     let changePermissionSst = this.menuService.changePermission().pipe(takeUntil(this.destroy)).subscribe((res: DTOPermission) => {
       if (Ps_UtilObjectService.hasValue(res) && this.justLoaded) {
-        // this.justLoaded = false;
-        // this.actionPerm = distinct(res.ActionPermission, 'ActionType');
+        this.justLoaded = false;
+        this.actionPerm = distinct(res.ActionPermission, 'ActionType');
 
-        // this.isMaster = this.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
-        // this.isCreator = this.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
+        this.isMaster = this.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
+        this.isCreator = this.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
 
-        // this.MC = this.isMaster || this.isCreator;
-
-        this.isAllPers = true;
-        this.isCanCreate = false;
+        this.MC = this.isMaster || this.isCreator;
       }
     })
 
