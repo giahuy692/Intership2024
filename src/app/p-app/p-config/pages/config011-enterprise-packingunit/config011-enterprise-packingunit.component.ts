@@ -56,7 +56,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   isCanCreate: boolean = false 
 
   // Biến unsubcribe
-  ngUnsubscribe$ = new Subject<void>();
+  ngUnsubscribe = new Subject<void>();
 
   //dto form Packing Unit
   apiPackingUnitForm: FormGroup = new FormGroup({
@@ -64,7 +64,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
     VNPackingUnit: new FormControl('', [Validators.required]),
     JPPackingUnit: new FormControl(''),
     ENPackingUnit: new FormControl(''),
-    OrderBy: new FormControl(null), 
+    OrderBy: new FormControl(0), 
     TypeData: new FormControl(1),
   })
 
@@ -81,7 +81,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
     // phân quyền
     this.menuService
       .changePermission()
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe((res: DTOPermission) => {
         if (Ps_UtilObjectService.hasValue(res) && that.justLoadedPer) {
           that.actionPerm = distinct(res.ActionPermission, 'ActionType');
@@ -91,7 +91,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
         }
       });
 
-    this.menuService.changePermissionAPI().pipe(takeUntil(this.ngUnsubscribe$)).subscribe((res) => {
+    this.menuService.changePermissionAPI().pipe(takeUntil(this.ngUnsubscribe)).subscribe((res) => {
       if (Ps_UtilObjectService.hasValue(res) && this.justLoadedChangePermissionAPI) {
         this.justLoadedChangePermissionAPI = false
         this.APIGetListPackingUnit(this.gridState);
@@ -169,7 +169,6 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   //endregion
 
   //#region Dialog
-  
   // Hàm đóng dialog
   closeDialogPakingUnit() {
     this.isDialog = false;
@@ -233,10 +232,9 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
       value: 1
     });
 
-    this.configAPIService.GetListPackingUnit(state).pipe(takeUntil(this.ngUnsubscribe$)).subscribe((res: any) => {
+    this.configAPIService.GetListPackingUnit(state).pipe(takeUntil(this.ngUnsubscribe)).subscribe((res: any) => {
       if ( Ps_UtilObjectService.hasValue(res) && res.StatusCode == 0) {
-        const filteredData = res.ObjectReturn.Data;
-        this.listDataPackingUnit = filteredData;
+        this.listDataPackingUnit = res.ObjectReturn.Data;
       } else {
         this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: ${res.ErrorString}`);
       }
@@ -256,7 +254,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
     this.isLoading = true;
     this.configAPIService
       .DeletePackingUnit(dtos)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (res) => {
           if (Ps_UtilObjectService.hasValue(res) && res.StatusCode == 0) {
@@ -286,7 +284,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
     this.isLoading = true;
     this.configAPIService
       .UpdatePackingUnit(dto)
-      .pipe(takeUntil(this.ngUnsubscribe$))
+      .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (res) => {
           if (Ps_UtilObjectService.hasValue(res) && res.StatusCode == 0) {
@@ -358,7 +356,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   // Hàm xử lý xóa đơn vị tính
   onDeletePackingUnit(type: number): void {
     if (!Ps_UtilObjectService.hasValue(this.dataPackingUnit)) {
-      this.layoutService.onWarning('Không xoá được Đơn vị Tính');
+      this.layoutService.onWarning('Đã xảy ra lỗi xóa Đơn vị tính: Không xoá được Đơn vị Tính');
       this.isDialog = false;
       return;
     }
@@ -369,6 +367,6 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   //endregion
 
   ngOnDestroy(): void{
-    this.ngUnsubscribe$.unsubscribe();
+    this.ngUnsubscribe.unsubscribe();
   }
 }
