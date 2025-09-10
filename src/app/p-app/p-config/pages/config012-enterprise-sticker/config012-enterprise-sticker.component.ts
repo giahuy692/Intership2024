@@ -31,7 +31,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   isAllPers: boolean = false
   isCanCreate: boolean = false
   justLoadedChangePermissionAPI: boolean = true
-  justLoadedPer: boolean = true
   actionPerm: DTOActionPermission[] = [];
 
   isMaster: boolean = false; // Toàn quyền
@@ -52,7 +51,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   justLoaded: boolean = true
   skip: number = 0;
   keyword: string = ''
-  tempSearch: any
 
   gridState: State = { //cấu hình state cho grid (filter, logic,...)
     filter: { filters: [], logic: 'and' },
@@ -106,10 +104,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
 
   //=========================== FORM DATA ===========================
   loadFormData() {
-    this.StickerForm = this.formBuilder.group({
-      StickName: [''],
-      Remark: ['']
-    });
   }
 
   ngOnInit(): void {
@@ -174,7 +168,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
         this.formBuilder.control(value, key === 'Code' ? Validators.required : null)
       );
     });
-
     return form;
   }
 
@@ -255,7 +248,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
       this.TypeAction = 1;
       this.StickerForm.reset();
       this.StickerForm.patchValue(data);
-      this.StickerForm.get('StickName')?.disable();
       this.dataSticker = { ...data };
     } else if (type === 2 && Ps_UtilObjectService.hasValue(data)) {
       this.TypeAction = 2;
@@ -283,48 +275,23 @@ export class Config012EnterpriseStickerComponent implements OnInit {
     const updateSticker: DTOSticker = this.StickerForm.getRawValue();
     const isAddForm = Number(updateSticker.Code) === 0;
     const ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Tem Nhãn`;
-
     // Đặt touched để hiển thị validate lỗi
     this.StickerForm.markAllAsTouched();
 
     // Validate bắt buộc
     const errorFields: string[] = [];
-
-    if (
-      this.StickerForm.get('StickName')?.hasError('required') ||
-      !Ps_UtilObjectService.hasValueString(updateSticker.StickName)
-    ) {
-      errorFields.push('Tên tem nhãn');
-    }
+    if (this.StickerForm.get('StickName').invalid) errorFields.push('Tên Tem nhãn');
 
     // Nếu có lỗi thì show cảnh báo
     if (this.StickerForm.invalid || errorFields.length > 0) {
-      if (errorFields.length > 0) {
-        this.layoutService.onError(
-          `Đã xảy ra lỗi khi ${ctx}: Vui lòng nhập (${errorFields.join(', ')})`
-        );
-      }
+      this.layoutService.onError(
+        `Đã xảy ra lỗi khi ${ctx}: Vui lòng nhập (${errorFields.join(', ')})`
+      );
       return;
     }
 
-    // Nếu là cập nhật → kiểm tra thay đổi
-    if (!isAddForm) {
-      const fieldsToCheck: (keyof DTOSticker)[] = ['StickName', 'Remark', 'FileName'];
-      const isChanged = fieldsToCheck.some(
-        field => (updateSticker[field] ?? '').toString().trim() !== (this.dataSticker[field] ?? '').toString().trim()
-      );
-
-      if (!isChanged) {
-        return;
-      }
-    }
-
-    // Gọi API create/update
-    if (isAddForm) {
+    // Gọi API update
       this.APIUpdateSticker(updateSticker);
-    } else {
-      this.APIUpdateSticker(updateSticker);
-    }
   }
   //#endregion
 
@@ -374,7 +341,7 @@ export class Config012EnterpriseStickerComponent implements OnInit {
     }
 
     if (!Ps_UtilObjectService.hasValue(this.dataSticker?.Code)) {
-      this.layoutService.onWarning('Không xoá được Quốc gia');
+      this.layoutService.onWarning('Không có Tem nhãn để xoá');
       this.opened = false;
       return;
     }
@@ -406,12 +373,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
             if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
               this.gridStickers = res.ObjectReturn.Data;
               this.allStickers = res.ObjectReturn.Data;
-            } else {
-              this.layoutService.onError(
-                `Đã xảy ra lỗi khi lấy Danh sách tem nhãn: ${res?.ErrorString ?? 'Không xác định'}`
-              );
-              this.gridStickers = [];
-              this.allStickers = [];
             }
           },
           (error) => {
@@ -480,10 +441,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
                 sticker.Code ? 'Cập nhật tem nhãn thành công' : 'Tạo mới tem nhãn thành công'
               );
               this.handleCloseDrawer();
-            } else {
-              this.layoutService.onError(
-                `Đã xảy ra lỗi khi cập nhật tem nhãn: ${res?.ErrorString ?? 'không xác định'}`
-              );
             }
           },
           (error) => {
@@ -509,41 +466,37 @@ export class Config012EnterpriseStickerComponent implements OnInit {
    *        Chỉ thuộc tính `Code` của mỗi DTOSticker được sử dụng khi gửi lên API
    */
   APIDeleteSticker(listDelete: DTOSticker[] = []): void {
-  if (!listDelete?.length) {
-    this.layoutService.onWarning('Không tìm thấy Tem nhãn để xoá');
-    return;
-  }
+    if (!listDelete?.length) {
+      this.layoutService.onWarning('Không tìm thấy Tem nhãn để xoá');
+      return;
+    }
 
-  this.loading = true;
+    this.loading = true;
 
-  this.arrUnsubscribe.push(
-    this.apiServiceConf.DeleteSticker(listDelete.map(x => ({ Code: x.Code } as DTOSticker)))
-      .pipe(
-        finalize(() => {
-          this.loading = false;
-          this.APIGetListSticker({ ...this.gridState }); // reload lại grid sau khi xoá
-        })
-      )
-      .subscribe(
-        (res: any) => {
-          if (res?.StatusCode === 0) {
-            this.layoutService.onSuccess('Xoá Tem nhãn thành công');
-            this.handleCloseDrawer();
-          } else {
+    this.arrUnsubscribe.push(
+      this.apiServiceConf.DeleteSticker(listDelete.map(x => ({ Code: x.Code } as DTOSticker)))
+        .pipe(
+          finalize(() => {
+            this.loading = false;
+            this.APIGetListSticker({ ...this.gridState }); // reload lại grid sau khi xoá
+          })
+        )
+        .subscribe(
+          (res: any) => {
+            if (res?.StatusCode === 0) {
+              this.layoutService.onSuccess('Xoá Tem nhãn thành công');
+              this.handleCloseDrawer();
+            }
+          },
+          (error) => {
             this.layoutService.onError(
-              `Xoá không thành công: ${res?.ErrorString ?? 'không có bản ghi bị ảnh hưởng'}`
+              `Không thể gọi API xoá Tem nhãn: ${error}`
             );
           }
-        },
-        (error) => {
-          this.layoutService.onError(
-            `Không thể gọi API xoá Tem nhãn: ${error}`
-          );
-        }
-      )
-  );
-}
-//#endregion
+        )
+    );
+  }
+  //#endregion
 
 
   //#region hàm mở folder
@@ -559,16 +512,16 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   }
 
   //hàm chọn tên file
-  pickFile(e: DTOCFFile, width?: number, height?: number) {
+  pickFile(e: DTOCFFile) {
     if (!e || !Ps_UtilObjectService.hasValueString(e.PathFile)) {
-      this.layoutService.onError('Không tìm thấy file hợp lệ!');  
+      this.layoutService.onError('Không tìm thấy file hợp lệ!');
       return;
     }
 
     const fileName = e.PathFile.replace('~', '').split('/').pop() ?? '';
-   
+
     this.StickerForm.patchValue({
-    FileName: fileName
+      FileName: fileName
     });
     this.layoutService.setFolderDialog(false);
   }

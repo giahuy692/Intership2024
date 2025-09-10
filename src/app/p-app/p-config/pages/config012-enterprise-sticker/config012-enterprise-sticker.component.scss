@@ -313,14 +313,12 @@
                         .grid-wrapper {
                             margin: 0 5px;
 
-                            app-p-kendo-grid {
-                                .myCustomGrid {
-                                    height: calc(100vh - 215px);
+                            .myCustomGrid {
+                                height: calc(100vh - 215px);
 
-                                    .k-grid {
-                                        tr:not(.k-grouping-row) td:first-child {
-                                            padding-left: 0 !important;
-                                        }
+                                tr {
+                                    td[aria-colindex="1"] {
+                                        padding-left: 10px !important;
                                     }
                                 }
                             }
