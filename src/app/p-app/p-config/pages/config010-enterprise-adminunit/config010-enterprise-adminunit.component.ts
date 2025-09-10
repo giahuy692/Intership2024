@@ -117,8 +117,8 @@ export class Config010EnterpriseAdminunitComponent {
   //dto form Province
   apiProvinceForm: FormGroup = new FormGroup({
     Code: new FormControl(0),
-    ProvinceID: new FormControl('', Validators.required),
-    VNProvince: new FormControl('', Validators.required),
+    ProvinceID: new FormControl('', [Validators.required, Validators.pattern(/\S+/)]),
+    VNProvince: new FormControl('', [Validators.required, Validators.pattern(/\S+/)]),
     JPProvince: new FormControl(''),
     ENProvince: new FormControl(''),
     OrderBy: new FormControl(null),
@@ -130,13 +130,13 @@ export class Config010EnterpriseAdminunitComponent {
   //dto form District
   apiDistrictFrom: FormGroup = new FormGroup({
     Code: new FormControl(0),
-    DistrictID: new FormControl('', Validators.required),
-    VNDistrict: new FormControl('', Validators.required),
+    DistrictID: new FormControl('', [Validators.required, Validators.pattern(/\S+/)]),
+    VNDistrict: new FormControl('', [Validators.required, Validators.pattern(/\S+/)]),
     JPDistrict: new FormControl(''),
     ENDistrict: new FormControl(''),
     OrderBy: new FormControl(null),
     IsDelete: new FormControl(0),
-    Province: new FormControl(null, Validators.required),
+    Province: new FormControl(null,  [Validators.required, Validators.pattern(/\S+/)]),
   });
 
   constructor(
@@ -222,6 +222,8 @@ export class Config010EnterpriseAdminunitComponent {
       this.isStopped = checked;
     }
     this.loadData();
+    this.isProvinceSelected = false;
+    this.isDistrictSelected = false;
   }
 
   // Tìm kiếm trong cây
@@ -252,7 +254,6 @@ export class Config010EnterpriseAdminunitComponent {
    */
   onAddNewProvince() {
     this.selectedForm = 'province';
-    this.currentProvinceForm = null;
     this.apiProvinceForm.reset({ Code: 0, Country: 1, IsDelete: 0, OrderBy: 1 });
 
     this.isProvinceIdDisabled = false;
@@ -555,48 +556,41 @@ export class Config010EnterpriseAdminunitComponent {
 
   // hàm xử lý Update Province
   onUpdateProvince() {
+    this.apiProvinceForm.markAllAsTouched();
     const updateProvince: DTOProvince = this.apiProvinceForm.getRawValue();
     const isAddForm = Number(updateProvince.Code) === 0;
+    const ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Tỉnh thành`;
+    
+    const requiredFields = [
+      { name: 'VNProvince', label: 'Tên Tiếng Việt' },
+      { name: 'ProvinceID', label: 'Mã hành chính' }
+    ];
 
-    let ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Tỉnh thành`;
-    this.apiProvinceForm.markAllAsTouched();
+    if (this.apiProvinceForm.invalid) {
+      const errorFields = requiredFields
+        .filter(f => this.apiProvinceForm.get(f.name)?.invalid)
+        .map(f => f.label);
 
-    if (
-      this.apiProvinceForm.invalid ||
-      !Ps_UtilObjectService.hasValueString(updateProvince.VNProvince) ||
-      !Ps_UtilObjectService.hasValueString(updateProvince.ProvinceID)
-    ) {
-      const errorFields: string[] = [];
-      if (
-        this.apiProvinceForm.get('VNProvince')?.hasError('required') ||
-        !Ps_UtilObjectService.hasValueString(updateProvince.VNProvince)
-      ) {
-        errorFields.push('Tên Tiếng Việt');
-      }
+      const errorMessage = errorFields.length > 0
+        ? `Đã xảy ra lỗi ${ctx}: Vui lòng nhập ( ${errorFields.join(', ')} )`
+        : `Đã xảy ra lỗi ${ctx}: Vui lòng nhập đầy đủ thông tin bắt buộc`;
 
-      if (
-        this.apiProvinceForm.get('ProvinceID')?.hasError('required') ||
-        !Ps_UtilObjectService.hasValueString(updateProvince.ProvinceID)
-      ) {
-        errorFields.push('Mã hành chính');
-      }
-
-      if (errorFields.length > 0) {
-        this.layoutService.onError(
-          `Đã xảy ra lỗi ${ctx}: Vui lòng nhập ( ${errorFields.join(', ')} )`
-        );
-      } else {
-        this.layoutService.onError(`Đã xảy ra lỗi ${ctx}: Vui lòng nhập đầy đủ thông tin bắt buộc`);
-      }
+      this.layoutService.onError(errorMessage);
       return;
     }
 
     if (!isAddForm && JSON.stringify(updateProvince) === JSON.stringify(this.currentProvinceForm)) {
-      this.layoutService.onWarning(`Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`);
+      this.layoutService.onWarning(
+        `Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`
+      );
       return;
     }
+
     this.APIUpdateProvince(updateProvince);
+    this.isProvinceSelected = false;
+    this.isDistrictSelected = false;
   }
+
 
   // Api Update District
   APIUpdateDistrict(dto: DTODistrict) {
@@ -629,55 +623,39 @@ export class Config010EnterpriseAdminunitComponent {
 
   // Hàm xử lý Update District
   onUpdateDistrict() {
+    this.apiDistrictFrom.markAllAsTouched();
     const updateDistrict: DTODistrict = this.apiDistrictFrom.getRawValue();
     const isAddForm = Number(updateDistrict.Code) === 0;
+    const ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Phường xã`;
+    const requiredFields = [
+      { name: 'VNDistrict', label: 'Tên Tiếng Việt' },
+      { name: 'DistrictID', label: 'Mã hành chính' },
+      { name: 'Province', label: 'Tỉnh thành' }
+    ];
 
-    let ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Phường xã`;
-    this.apiDistrictFrom.markAllAsTouched();
+    if (this.apiDistrictFrom.invalid) {
+      const errorFields = requiredFields
+        .filter(f => this.apiDistrictFrom.get(f.name)?.invalid)
+        .map(f => f.label);
 
-    if (
-      this.apiDistrictFrom.invalid ||
-      !Ps_UtilObjectService.hasValueString(updateDistrict.VNDistrict) ||
-      !Ps_UtilObjectService.hasValueString(updateDistrict.DistrictID) ||
-      !Ps_UtilObjectService.hasValueString(updateDistrict.Province)
-    ) {
-      const errorFields: string[] = [];
-      if (
-        this.apiDistrictFrom.get('VNDistrict')?.hasError('required') ||
-        !Ps_UtilObjectService.hasValueString(updateDistrict.VNDistrict)
-      ) {
-        errorFields.push('Tên Tiếng Việt');
-      }
+      const errorMessage = errorFields.length > 0
+        ? `Đã xảy ra lỗi ${ctx}: Vui lòng nhập ( ${errorFields.join(', ')} )`
+        : `Đã xảy ra lỗi ${ctx}: Vui lòng nhập đầy đủ thông tin bắt buộc`;
 
-      if (
-        this.apiDistrictFrom.get('DistrictID')?.hasError('required') ||
-        !Ps_UtilObjectService.hasValueString(updateDistrict.DistrictID)
-      ) {
-        errorFields.push('Mã hành chính');
-      }
-
-      if (
-        this.apiDistrictFrom.get('Province')?.hasError('required') ||
-        !Ps_UtilObjectService.hasValueString(updateDistrict.Province)
-      ) {
-        errorFields.push('Tỉnh thành');
-      }
-
-      if (errorFields.length > 0) {
-        this.layoutService.onError(
-          `Đã xảy ra lỗi ${ctx}: Vui lòng nhập ( ${errorFields.join(', ')} )`
-        );
-      } else {
-        this.layoutService.onError(`Đã xảy ra lỗi ${ctx}: Vui lòng nhập đầy đủ thông tin bắt buộc`);
-      }
+      this.layoutService.onError(errorMessage);
       return;
     }
 
     if (!isAddForm && JSON.stringify(updateDistrict) === JSON.stringify(this.currentDistrictForm)) {
-      this.layoutService.onWarning(`Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`);
+      this.layoutService.onWarning(
+        `Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`
+      );
       return;
     }
+
     this.APIUpdateDistrict(updateDistrict);
+    this.isProvinceSelected = false;
+    this.isDistrictSelected = false;
   }
 
 

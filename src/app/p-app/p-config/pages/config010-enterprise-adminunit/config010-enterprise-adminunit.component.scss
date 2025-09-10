@@ -370,6 +370,11 @@
                   padding-bottom: 5px;
                 }
               }
+              .item5{
+                app-p-numeric-textbox input {
+                  text-align: left !important;
+                }
+              }
               .item6{
                 padding-bottom: 20px;
                 .label {
@@ -384,10 +389,12 @@
                     .radio-item {
                       display: flex;
                       align-items: center;
-                      
-                      input[type="radio"]{
-                        margin-right: 10px;
-                        accent-color: $worse-green;
+                      .k-radio-label {
+                        padding-top: 10px;
+                        input[type="radio"]{
+                          padding-right: 10px;
+                          accent-color: $worse-green;
+                        }
                       }
                     }
                 }
