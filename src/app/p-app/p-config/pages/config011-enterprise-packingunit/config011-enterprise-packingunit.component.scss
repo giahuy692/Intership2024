@@ -1,7 +1,7 @@
 @import "../../../../../assets/scss/variable.scss";
 
 ::ng-deep {
-  app-config011-enterprise-unituom {
+  app-config011-enterprise-packingunit {
 
     #config011-enterprise-unituom {
 
@@ -111,6 +111,11 @@
                   color: #343A40;
                   font-weight: 700;
                   padding-bottom: 5px;
+                }
+              }
+              .item4{
+                app-p-numeric-textbox input {
+                  text-align: left !important;
                 }
               }
             }

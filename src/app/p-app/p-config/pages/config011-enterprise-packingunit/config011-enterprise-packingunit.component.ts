@@ -14,7 +14,7 @@ import { DTOPermission } from 'src/app/p-app/p-layout/dto/DTOPermission';
 import { DTOActionPermission } from 'src/app/p-app/p-layout/dto/DTOActionPermission';
 
 @Component({
-  selector: 'app-config011-enterprise-unituom',
+  selector: 'app-config011-enterprise-packingunit',
   templateUrl: './config011-enterprise-packingunit.component.html',
   styleUrls: ['./config011-enterprise-packingunit.component.scss']
 })
@@ -61,7 +61,7 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   //dto form Packing Unit
   apiPackingUnitForm: FormGroup = new FormGroup({
     Code: new FormControl(0),
-    VNPackingUnit: new FormControl('', [Validators.required]),
+    VNPackingUnit: new FormControl('', [Validators.required, Validators.pattern(/\S+/)]),
     JPPackingUnit: new FormControl(''),
     ENPackingUnit: new FormControl(''),
     OrderBy: new FormControl(0), 
@@ -72,7 +72,6 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
     public menuService: PS_HelperMenuService,
     private configAPIService: ConfigEnterpriceApiService,
     public layoutService: LayoutService,
-    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -220,6 +219,10 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   //endregion
 
   //#region API GET LIST
+  /**
+   *  Lấy danh sách Đơn vị Tính từ API với các bộ lọc và xử lý dữ liệu trả về.
+   * @param {State} state - Trạng thái hiện tại, bao gồm các thông tin về bộ lọc và sắp xếp dữ liệu.
+   */
   APIGetListPackingUnit (state: State) {
     let ctx = 'Lấy danh sách Đơn vị Tính'
     this.isLoading = true;
@@ -279,6 +282,10 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   //endregion
 
   //#region API UPDATE
+  /**
+  * Xóa một hoặc nhiều đơn vị tính (Packing Unit) khỏi hệ thống.
+  * @param dtos - Danh sách các đơn vị tính cần xóa.
+  */
   APIUpdatePackingUnit(dto: DTOPackingUnit) {
     let ctx = `${dto.Code == 0 ?'Tạo mới' : "Cập nhật" } thông tin Đơn vị Tính`;
     this.isLoading = true;
@@ -311,29 +318,23 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   //#region Xử lý cập nhật và xóa dữ liệu
 
   // Hàm xử lý cập nhật đơn vị tính
+  /**
+   * Xử lý sự kiện cập nhật hoặc tạo mới Đơn vị Tính (Packing Unit).
+   */
   onUpdatePackingUnit() {
     this.apiPackingUnitForm.markAllAsTouched();
     const updatePackingUnit: DTOPackingUnit = this.apiPackingUnitForm.getRawValue();
     const isAddForm = Number(updatePackingUnit.Code) === 0;
     let ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Đơn vị Tính`;
 
-    if ( this.apiPackingUnitForm.invalid || !Ps_UtilObjectService.hasValueString(updatePackingUnit.VNPackingUnit))
-    {
-      const errorFields: string[] = [];
-      if (
-        this.apiPackingUnitForm.get('VNPackingUnit')?.hasError('required') ||
-        !Ps_UtilObjectService.hasValueString(updatePackingUnit.VNPackingUnit)
-      ) {
-        errorFields.push('Tên Tiếng Việt');
-      }
+    const requiredFields = [{ name: 'VNPackingUnit', label: 'Tên Tiếng Việt' }];
 
-      if (errorFields.length > 0) {
-        this.layoutService.onError(
-          `Đã xảy ra lỗi ${ctx}: Vui lòng nhập ( ${errorFields.join(', ')} )`
-        );
-      } else {
-        this.layoutService.onError(`Đã xảy ra lỗi ${ctx}: Vui lòng nhập đầy đủ thông tin bắt buộc`);
-      }
+    if (this.apiPackingUnitForm.invalid) {
+      const errorFields = requiredFields.filter(f => this.apiPackingUnitForm.get(f.name)?.invalid).map(f => f.label);
+      const errorMessage = errorFields.length > 0
+        ? `Đã xảy ra lỗi ${ctx}: Vui lòng nhập ( ${errorFields.join(', ')} )`
+        : `Đã xảy ra lỗi ${ctx}: Vui lòng nhập đầy đủ thông tin bắt buộc`;
+      this.layoutService.onError(errorMessage);
       return;
     }
 
@@ -344,6 +345,19 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
     this.APIUpdatePackingUnit(updatePackingUnit);
   } 
 
+  /**
+   * So sánh hai đối tượng Đơn vị Tính để xác định dữ liệu có thay đổi không.
+   *
+   * @param {DTOPackingUnit} a - Đối tượng Đơn vị Tính thứ nhất (thường là dữ liệu form hiện tại).
+   * @param {DTOPackingUnit} b - Đối tượng Đơn vị Tính thứ hai (thường là dữ liệu gốc).
+   * @returns {boolean} Trả về `true` nếu hai đối tượng giống nhau, ngược lại `false`.
+   *
+   * @example
+   * const a: DTOPackingUnit = { Code: 1, VNPackingUnit: 'Hộp', ENPackingUnit: 'Box', ... };
+   * const b: DTOPackingUnit = { Code: 1, VNPackingUnit: 'Hộp', ENPackingUnit: 'Box', ... };
+   *
+   * this.isPackingUnitEqual(a, b); // true
+   */
   isPackingUnitEqual(a: DTOPackingUnit, b: DTOPackingUnit): boolean {
     return a.Code === b.Code &&
       a.VNPackingUnit === b.VNPackingUnit &&
