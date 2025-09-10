@@ -30,7 +30,7 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   //permission 
   isAllPers: boolean = false
   isCanCreate: boolean = false
-  justLoadedChangePermissionAPI: boolean = true
+  isJustLoadedChangePermissionAPI: boolean = true
   actionPerm: DTOActionPermission[] = [];
 
   isMaster: boolean = false; // Toàn quyền
@@ -47,8 +47,8 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   opened: boolean = false;
 
   // varible of grid
-  loading: boolean = false
-  justLoaded: boolean = true
+  isLoading: boolean = false
+  isJustLoaded: boolean = true
   skip: number = 0;
   keyword: string = ''
 
@@ -109,8 +109,8 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   ngOnInit(): void {
     // Check permission
     let changePermissionSst = this.menuService.changePermission().pipe(takeUntil(this.destroy)).subscribe((res: DTOPermission) => {
-      if (Ps_UtilObjectService.hasValue(res) && this.justLoaded) {
-        this.justLoaded = false;
+      if (Ps_UtilObjectService.hasValue(res) && this.isJustLoaded) {
+        this.isJustLoaded = false;
         this.actionPerm = distinct(res.ActionPermission, 'ActionType');
 
         this.isMaster = this.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
@@ -121,8 +121,8 @@ export class Config012EnterpriseStickerComponent implements OnInit {
     })
 
     let permissionAPI = this.menuService.changePermissionAPI().subscribe((res) => {
-      if (Ps_UtilObjectService.hasValue(res) && this.justLoadedChangePermissionAPI) {
-        this.justLoadedChangePermissionAPI = false
+      if (Ps_UtilObjectService.hasValue(res) && this.isJustLoadedChangePermissionAPI) {
+        this.isJustLoadedChangePermissionAPI = false
         this.onLoadDefault();
       }
     })
@@ -198,14 +198,16 @@ export class Config012EnterpriseStickerComponent implements OnInit {
     if (!Ps_UtilObjectService.hasValueString(keyword)) {
       this.gridStickers = [...this.allStickers]; // reset
     } else {
-      this.gridStickers = this.allStickers.filter(c => {
-        const vnName = (c.StickName ?? '')
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-          .toLowerCase();
-        return vnName.includes(keyword);
-      });
+      const filter: State = {
+        ...this.gridState,
+        filter: {
+          logic: 'and',
+          filters: [
+            { field: 'StickName', operator: 'contains', value: rawValue }
+          ]
+        }
+      };
+      this.APIGetListSticker(filter); 
     }
   }
 
@@ -361,14 +363,14 @@ export class Config012EnterpriseStickerComponent implements OnInit {
    * @param filter Cấu hình state của Kendo Grid (bao gồm skip, take, sort, filter,...)
    */
   APIGetListSticker(filter: State) {
-    this.loading = true;
+    this.isLoading = true;
 
     this.arrUnsubscribe.push(
       this.apiServiceConf.GetListSticker(filter)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
           (res: any) => {
-            this.loading = false;
+            this.isLoading = false;
 
             if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
               this.gridStickers = res.ObjectReturn.Data;
@@ -376,7 +378,7 @@ export class Config012EnterpriseStickerComponent implements OnInit {
             }
           },
           (error) => {
-            this.loading = false;
+            this.isLoading = false;
             this.layoutService.onError(
               `Đã xảy ra lỗi khi lấy Danh sách tem nhãn: ${error?.Message ?? error}`
             );
@@ -424,13 +426,13 @@ export class Config012EnterpriseStickerComponent implements OnInit {
       }
     }
 
-    this.loading = true;
+    this.isLoading = true;
 
     this.arrUnsubscribe.push(
       this.apiServiceConf.UpdateSticker(sticker)
         .pipe(
           finalize(() => {
-            this.loading = false;
+            this.isLoading = false;
             this.APIGetListSticker({ ...this.gridState }); // reload lại danh sách
           })
         )
@@ -471,13 +473,13 @@ export class Config012EnterpriseStickerComponent implements OnInit {
       return;
     }
 
-    this.loading = true;
+    this.isLoading = true;
 
     this.arrUnsubscribe.push(
       this.apiServiceConf.DeleteSticker(listDelete.map(x => ({ Code: x.Code } as DTOSticker)))
         .pipe(
           finalize(() => {
-            this.loading = false;
+            this.isLoading = false;
             this.APIGetListSticker({ ...this.gridState }); // reload lại grid sau khi xoá
           })
         )
