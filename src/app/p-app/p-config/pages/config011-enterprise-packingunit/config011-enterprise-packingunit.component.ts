@@ -252,6 +252,11 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
   //endregion
 
   //#region API DELETE
+
+  /**
+  * APi xóa để Xóa một hoặc nhiều đơn vị tính (Packing Unit) khỏi hệ thống.
+  * @param dtos - Danh sách các đơn vị tính cần xóa.
+  */
   APIDeletePackingUnit(dtos: DTOPackingUnit[]) {
     let ctx = `Xóa thông tin Đơn vị Tính`;
     this.isLoading = true;
@@ -283,8 +288,8 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
 
   //#region API UPDATE
   /**
-  * Xóa một hoặc nhiều đơn vị tính (Packing Unit) khỏi hệ thống.
-  * @param dtos - Danh sách các đơn vị tính cần xóa.
+  * API để cập nhật hoặc tạo mới đơn vị tính
+  * @param dtos - Đơn vị tính
   */
   APIUpdatePackingUnit(dto: DTOPackingUnit) {
     let ctx = `${dto.Code == 0 ?'Tạo mới' : "Cập nhật" } thông tin Đơn vị Tính`;
