@@ -294,18 +294,12 @@
                         .grid-wrapper {
                             margin: 0 5px;
 
-                            app-p-kendo-grid {
-                                .myCustomGrid {
-                                    height: calc(100vh - 215px);
+                            .myCustomGrid {
+                                height: calc(100vh - 215px);
 
-                                    .k-grid {
-                                        tr {
-                                            &:not(.k-grouping-row) {
-                                                td:first-child {
-                                                    padding-left: 12px !important;
-                                                }
-                                            }
-                                        }
+                                tr {
+                                    td[aria-colindex="1"] {
+                                        padding-left: 10px !important;
                                     }
                                 }
                             }
@@ -317,16 +311,17 @@
 
                 app-p-kendo-dialog {
                     .k-dialog {
-                        transform: scale(1);         // mặc định
-                        transform-origin: center;    // scale từ giữa dialog
+                        transform: scale(1); // mặc định
+                        transform-origin: center; // scale từ giữa dialog
                     }
+
                     .k-dialog-content {
-                        font-size: 18px;      // chữ to hơn
+                        font-size: 18px; // chữ to hơn
                         line-height: 1.5;
                     }
 
                     .k-dialog-titlebar {
-                        font-size: 20px;      // tiêu đề dialog
+                        font-size: 20px; // tiêu đề dialog
                         font-weight: bold
                     }
 

@@ -161,33 +161,33 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   //=========================== SEARCH ===========================
   //#region Search
   onSearch(event: CompositeFilterDescriptor): void {
-  const rawValue = (event?.filters?.[0] as FilterDescriptor)?.value?.toString().trim() ?? '';
+    const rawValue = (event?.filters?.[0] as FilterDescriptor)?.value?.toString().trim() ?? '';
 
-  const keyword = rawValue
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/đ/g, 'd').replace(/Đ/g, 'D')
-    .toLowerCase();
+    const keyword = rawValue
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd').replace(/Đ/g, 'D')
+      .toLowerCase();
 
-  if (!Ps_UtilObjectService.hasValueString(keyword)) {
-    // reset
-    this.gridCountries = [...this.allCountries];
-    this.APIGetListCountry(this.gridState);
-  } else {
-    // gọi API theo keyword gốc (có dấu)
-    const filter: State = {
-      ...this.gridState,
-      filter: {
-        logic: 'and',
-        filters: [
-          { field: 'VNName', operator: 'contains', value: rawValue }
-        ]
-      }
-    };
+    if (!Ps_UtilObjectService.hasValueString(keyword)) {
+      // reset
+      this.gridCountries = [...this.allCountries];
+      this.APIGetListCountry(this.gridState);
+    } else {
+      // gọi API theo keyword gốc (có dấu)
+      const filter: State = {
+        ...this.gridState,
+        filter: {
+          logic: 'and',
+          filters: [
+            { field: 'VNName', operator: 'contains', value: rawValue }
+          ]
+        }
+      };
 
-    this.APIGetListCountry(filter);
+      this.APIGetListCountry(filter);
+    }
   }
-}
 
   //#endregion
 
@@ -253,38 +253,19 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     // Đặt touched để hiển thị validate lỗi
     this.CountryForm.markAllAsTouched();
 
-    // Validate bắt buộc
+    // Thu thập field nào invalid để show lỗi
     const errorFields: string[] = [];
-    if (
-      this.CountryForm.get('VNName')?.hasError('required') ||
-      !Ps_UtilObjectService.hasValueString(updateCountry.VNName)
-    ) {
-      errorFields.push('Tên Tiếng Việt');
-    }
-
-    if (
-      this.CountryForm.get('VNOrigin')?.hasError('required') ||
-      !Ps_UtilObjectService.hasValueString(updateCountry.VNOrigin)
-    ) {
-      errorFields.push('Tên Xuất xứ');
-    }
-
-    if (
-      this.CountryForm.get('CountryID')?.hasError('required') ||
-      !Ps_UtilObjectService.hasValueString(updateCountry.CountryID)
-    ) {
-      errorFields.push('Mã hành chính');
-    }
+    if (this.CountryForm.get('VNName')?.invalid) errorFields.push('Tên Tiếng Việt');
+    if (this.CountryForm.get('VNOrigin')?.invalid) errorFields.push('Tên Xuất xứ');
+    if (this.CountryForm.get('CountryID')?.invalid) errorFields.push('Mã hành chính');
 
     // Nếu có lỗi thì show cảnh báo
     if (this.CountryForm.invalid || errorFields.length > 0) {
-      if (errorFields.length > 0) {
-        this.layoutService.onError(
-          `Đã xảy ra lỗi ${ctx}: Vui lòng nhập (${errorFields.join(', ')})`
-        );
-      }
-      return;
-    }
+    this.layoutService.onError(
+      `Đã xảy ra lỗi khi ${ctx}: Vui lòng nhập (${errorFields.join(', ')})`
+    );
+    return;
+  }
 
     // Gọi API update
     this.APIUpdateCountry(updateCountry);
@@ -309,7 +290,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     this.APIGetListCountry(this.gridState);
   }
 
-  //=========================== DRAWER ===========================
+  //#region  DRAWER 
   /**
    * 
    * @param type Loại hành động thực hiện 0:tạo mới, 1:chỉnh sửa, 2:xem, 3:đóng
@@ -349,6 +330,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
       this.CountryForm.disable();
     }
   }
+  ////#endregion
 
 
   //#region  DIALOG 
@@ -368,12 +350,11 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     }
 
     if (!Ps_UtilObjectService.hasValue(this.dataCountry?.Code)) {
-      this.layoutService.onWarning('Không xoá được Quốc gia');
+      this.layoutService.onWarning('Không có Quốc gia để xoá');
       this.opened = false;
       return;
     }
 
-    // const payload: DTOCountry[] = [{ Code: this.dataCountry?.Code } as DTOCountry];
     this.APIDeleteCountry([this.dataCountry]);
     this.opened = false;
 
@@ -381,7 +362,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   }
   //#endregion
 
-  // =========================== DROPDOWN ===========================
+  //#region  DROPDOWN 
   getActionDropdown(moreActionDropdown: MenuDataItem[], dataItem: any) {  //hàm thêm option vào dropdown
     moreActionDropdown = []
 
@@ -409,6 +390,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
       }
     }
   }
+  //#endregion
 
   // =========================== CAll ALL API ===========================
   getApi() {
@@ -435,13 +417,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
             if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
               this.gridCountries = res.ObjectReturn.Data;
               this.allCountries = res.ObjectReturn.Data;
-            } else {
-              this.layoutService.onError(
-                `Đã xảy ra lỗi khi lấy Danh sách quốc gia: ${res?.ErrorString ?? 'Không xác định'}`
-              );
-              this.gridCountries = [];
-              this.allCountries = [];
-            }
+            } 
           },
           (error) => {
             this.loading = false;
@@ -466,15 +442,15 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     const isAddForm = Number(country.Code) === 0;
 
     if (!isAddForm && this.dataCountry) {
-    const noChange =
-      (country.VNName ?? '').trim().toLowerCase() === (this.dataCountry.VNName ?? '').trim().toLowerCase() &&
-      (country.VNOrigin ?? '').trim().toLowerCase() === (this.dataCountry.VNOrigin ?? '').trim().toLowerCase() &&
-      (country.CountryID ?? '').trim().toLowerCase() === (this.dataCountry.CountryID ?? '').trim().toLowerCase();
+      const noChange =
+        (country.VNName ?? '').trim().toLowerCase() === (this.dataCountry.VNName ?? '').trim().toLowerCase() &&
+        (country.VNOrigin ?? '').trim().toLowerCase() === (this.dataCountry.VNOrigin ?? '').trim().toLowerCase() &&
+        (country.CountryID ?? '').trim().toLowerCase() === (this.dataCountry.CountryID ?? '').trim().toLowerCase();
 
-    if (noChange) {
-      return;
+      if (noChange) {
+        return;
+      }
     }
-  }
 
     this.isLoading = true;
 
@@ -492,11 +468,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
               country.Code ? 'Cập nhật thành công' : 'Tạo mới thành công'
             );
             this.handleCloseDrawer();
-          } else {
-            this.layoutService.onError(
-              `Đã xảy ra lỗi khi cập nhật quốc gia: ${res?.ErrorString ?? 'không xác định'}`
-            );
-          }
+          } 
         }, (error) => {
           this.layoutService.onError(
             `Không thể gọi API cập nhật quốc gia: ${error}`
@@ -514,7 +486,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
    */
   APIDeleteCountry(listDelete: DTOCountry[] = []): void {
     if (!listDelete?.length) {
-      this.layoutService.onWarning('Không tìm thấy Quốc gia để xoá');
+      this.layoutService.onWarning('Vui lòng chọn Quốc gia để xoá');
       return;
     }
 
@@ -532,11 +504,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
           if (res?.StatusCode === 0) {
             this.layoutService.onSuccess('Xoá Quốc gia thành công');
             this.handleCloseDrawer();
-          } else {
-            this.layoutService.onError(
-              `Xoá không thành công: ${res?.ErrorString ?? 'không có bản ghi bị ảnh hưởng'}`
-            );
-          }
+          } 
         }, (error) => {
           this.layoutService.onError(
             `Không thể gọi API xoá Quốc gia: ${error}`
