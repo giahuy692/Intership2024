@@ -74,8 +74,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   formData: FormGroup;
 
   // varible of grid
-  loading: boolean = false
-  justLoaded: boolean = true
+  isJustLoaded: boolean = true
   skip: number = 0;
   keyword: string = ''
   tempSearch: any
@@ -106,7 +105,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   //permission 
   isAllPers: boolean = false
   isCanCreate: boolean = false
-  justLoadedChangePermissionAPI: boolean = true
+  isJustLoadedChangePermissionAPI: boolean = true
   justLoadedPer: boolean = true
   dataPerm: DTODataPermission[] = [];
   actionPerm: DTOActionPermission[] = [];
@@ -125,8 +124,8 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   ngOnInit(): void {
     // Check permission
     let changePermissionSst = this.menuService.changePermission().pipe(takeUntil(this.destroy)).subscribe((res: DTOPermission) => {
-      if (Ps_UtilObjectService.hasValue(res) && this.justLoaded) {
-        this.justLoaded = false;
+      if (Ps_UtilObjectService.hasValue(res) && this.isJustLoaded) {
+        this.isJustLoaded = false;
         this.actionPerm = distinct(res.ActionPermission, 'ActionType');
 
         this.isMaster = this.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
@@ -137,8 +136,8 @@ export class Config009EnterpriseCountryComponent implements OnInit {
     })
 
     let permissionAPI = this.menuService.changePermissionAPI().subscribe((res) => {
-      if (Ps_UtilObjectService.hasValue(res) && this.justLoadedChangePermissionAPI) {
-        this.justLoadedChangePermissionAPI = false
+      if (Ps_UtilObjectService.hasValue(res) && this.isJustLoadedChangePermissionAPI) {
+        this.isJustLoadedChangePermissionAPI = false
         this.onLoadDefault();
       }
     })
@@ -194,7 +193,6 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   onResetFilter() {
     this.keyword = '';
     this.reloadData();
-    this.APIGetListCountry({ ...this.gridState });
   }
 
   /**
@@ -405,14 +403,14 @@ export class Config009EnterpriseCountryComponent implements OnInit {
    * @param filter Cấu hình state của Kendo Grid (bao gồm skip, take, sort, filter,...)
    */
   APIGetListCountry(filter: State) {
-    this.loading = true;
+    this.isLoading = true;
 
     this.arrUnsubscribe.push(
       this.apiServiceConf.GetListCountry(filter)
         .pipe(takeUntil(this.ngUnsubscribe$))
         .subscribe(
           (res: any) => {
-            this.loading = false;
+            this.isLoading = false;
 
             if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
               this.gridCountries = res.ObjectReturn.Data;
@@ -420,7 +418,7 @@ export class Config009EnterpriseCountryComponent implements OnInit {
             } 
           },
           (error) => {
-            this.loading = false;
+            this.isLoading = false;
             this.layoutService.onError(
               `Đã xảy ra lỗi khi lấy Danh sách quốc gia: ${error?.Message ?? error}`
             );
