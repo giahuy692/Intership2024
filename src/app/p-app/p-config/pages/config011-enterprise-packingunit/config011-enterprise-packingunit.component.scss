@@ -61,6 +61,11 @@
         app-p-kendo-grid {
           .myCustomGrid {
             height: calc(100vh - 215px);
+            tr {
+              td[aria-colindex="1"] {
+                  padding-left: 10px !important;
+              }
+            }
         }
     }
   }
