@@ -344,7 +344,6 @@ export class Config011EnterprisePackingUnitComponent implements OnInit{
     }
 
     if (!isAddForm && this.isPackingUnitEqual(updatePackingUnit, this.dataPackingUnit)) {
-      this.layoutService.onWarning(`Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`);
       return;
     }
     this.APIUpdatePackingUnit(updatePackingUnit);
