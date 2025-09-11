@@ -197,6 +197,7 @@ export class Config012EnterpriseStickerComponent implements OnInit {
 
     if (!Ps_UtilObjectService.hasValueString(keyword)) {
       this.gridStickers = [...this.allStickers]; // reset
+      this.APIGetListSticker(this.gridState);
     } else {
       const filter: State = {
         ...this.gridState,
