@@ -24,6 +24,7 @@ import { DecisionTypePipe, HrBoardingListComponent } from './shared/components/h
 import { HrBoardingDetailComponent } from './shared/components/hr-boarding-detail/hr-boarding-detail.component';
 import { CommonModule } from '@angular/common';
 import { HrTaskBoardingComponent } from './shared/components/hr-task-boarding/hr-task-boarding.component';
+import { Hri006DepartmentListComponent } from './pages/hri006-department-list/hri006-department-list.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { HrTaskBoardingComponent } from './shared/components/hr-task-boarding/hr
     HrTaskBoardingComponent,
     //- Pipe
     DecisionTypePipe,
+    Hri006DepartmentListComponent,
   ],
   imports: [PHriRoutingModule, PLayoutModule, CommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
