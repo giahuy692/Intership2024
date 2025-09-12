@@ -100,6 +100,9 @@ export class Config010EnterpriseAdminunitComponent {
   // Biến để quản lý form hiện tại
   currentProvinceForm: DTOProvince = new DTOProvince();
   currentDistrictForm: DTODistrict = new DTODistrict();
+  // Biến để quản lý form từ popup
+  popupProvinceForm: DTOProvince = new DTOProvince();
+  popupDistrictForm: DTODistrict = new DTODistrict();
 
   // search
   searchValue: State = { filter: { filters: [], logic: 'or' } };
@@ -212,6 +215,8 @@ export class Config010EnterpriseAdminunitComponent {
   onSearchValueName(e) {
     this.searchValue.filter.filters = e.filters;
     this.loadData();
+    this.isProvinceSelected = false;
+    this.isDistrictSelected = false;
   }
 
   // Xử lý checkbox filter
@@ -260,25 +265,36 @@ export class Config010EnterpriseAdminunitComponent {
     this.drawer.open();
   }
 
-  // Hàm mở form add district
-  onAddNewDistrict(districtItem?: DTODistrict) {
+  // Hàm mở form thêm phường xã bằng button thêm mới phường xã
+  onAddNewDistrictFromHeader() {
     this.selectedForm = 'district';
-    this.currentDistrictForm = null;
+    this.apiDistrictFrom.reset({
+      Code: 0,
+      IsDelete: 0,
+      OrderBy: 1,
+      Province: this.currentProvinceForm ? this.currentProvinceForm.Code : null
+    });
+
+    this.isDistrictIdDisabled = false;
+    this.drawer.open();
+  }
+
+  // Mở form thêm mới phường xã từ POPUP menu
+  onAddNewDistrictFromPopup(districtItem?: DTODistrict) {
+    this.selectedForm = 'district';
 
     let provinceCode: number | null = null;
 
     if (Ps_UtilObjectService.hasValue(districtItem)) {
       // Nếu truyền vào District cụ thể thì tìm Province chứa nó
       provinceCode = this.findProvinceIdByDistrict(districtItem);
-    } else if (Ps_UtilObjectService.hasValue(this.currentProvinceForm)) {
+    } else if (Ps_UtilObjectService.hasValue(this.popupProvinceForm)) {
       // Nếu đang chọn Province thì lấy Code luôn
-      provinceCode = this.currentProvinceForm.Code;
-    } else if (Ps_UtilObjectService.hasValue(this.currentDistrictForm)) {
+      provinceCode = this.popupProvinceForm.Code;
+    } else if (Ps_UtilObjectService.hasValue(this.popupProvinceForm)) {
       // Nếu đang chọn District thì tìm Province chứa District đó
       provinceCode = this.findProvinceIdByDistrict(this.currentDistrictForm);
     }
-
-    // Reset form, set Province cho District mới
     this.apiDistrictFrom.reset({
       Code: 0,
       IsDelete: 0,
@@ -289,7 +305,6 @@ export class Config010EnterpriseAdminunitComponent {
     this.isDistrictIdDisabled = false;
     this.drawer.open();
   }
-
 
   // Hàm đóng form
   onCloseForm() {
@@ -345,6 +360,7 @@ export class Config010EnterpriseAdminunitComponent {
     if (dataItem.hasOwnProperty('DistrictID')) {
       this.currentDistrictForm = dataItem as DTODistrict;
       this.currentProvinceForm = this.listProvinceTree.find((p: DTOProvince) => p.Code === this.currentDistrictForm.Province) || null;
+      this.popupProvinceForm = this.listProvinceTree.find((p: DTOProvince) => p.Code === this.popupDistrictForm.Province) || null;
       this.isProvinceSelected = false;
       this.isDistrictSelected = true;
       this.selectedForm = 'district';
@@ -579,10 +595,8 @@ export class Config010EnterpriseAdminunitComponent {
       return;
     }
 
-    if (!isAddForm && JSON.stringify(updateProvince) === JSON.stringify(this.currentProvinceForm)) {
-      this.layoutService.onWarning(
-        `Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`
-      );
+    if (!isAddForm && JSON.stringify(updateProvince) === JSON.stringify(this.currentProvinceForm) ||
+    JSON.stringify(updateProvince) === JSON.stringify(this.popupProvinceForm)) {
       return;
     }
 
@@ -646,10 +660,8 @@ export class Config010EnterpriseAdminunitComponent {
       return;
     }
 
-    if (!isAddForm && JSON.stringify(updateDistrict) === JSON.stringify(this.currentDistrictForm)) {
-      this.layoutService.onWarning(
-        `Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`
-      );
+    if (!isAddForm && JSON.stringify(updateDistrict) === JSON.stringify(this.currentDistrictForm) || 
+    JSON.stringify(updateDistrict) === JSON.stringify(this.popupDistrictForm)) {
       return;
     }
 
@@ -745,6 +757,8 @@ export class Config010EnterpriseAdminunitComponent {
       this.APIDeleteDistrict([deleteDistrict]);
       this.isDialogDistrict = false;
     }
+    this.isProvinceSelected = false;
+    this.isDistrictSelected = false;
   }
   //endRegion
 
@@ -803,7 +817,7 @@ export class Config010EnterpriseAdminunitComponent {
       this.popupShow = !this.popupShow;
     }
     if (this.popupShow) {
-      this.currentProvinceForm = item;
+      this.popupProvinceForm = item;
       this.getSelectedMenuDropdown(item);
     }
 
@@ -816,8 +830,8 @@ export class Config010EnterpriseAdminunitComponent {
     this.menuItemList = [];
     if (this.isAllPers || this.isCanCreate) {
       if ('ProvinceID' in dataItem) {
-        this.currentProvinceForm = dataItem as DTOProvince;
-        this.currentDistrictForm = null;
+        this.popupProvinceForm = dataItem as DTOProvince;
+        this.popupDistrictForm = null;
         this.selectedForm = 'province';
 
         this.apiProvinceForm.patchValue(dataItem);
@@ -829,8 +843,8 @@ export class Config010EnterpriseAdminunitComponent {
           { id: 0, iconName: 'delete', text: 'Xóa tỉnh thành' }
         );
       } else if ('DistrictID' in dataItem) {
-        this.currentDistrictForm = dataItem as DTODistrict;
-        this.currentProvinceForm = null;
+        this.popupDistrictForm = dataItem as DTODistrict;
+        this.popupProvinceForm = null;
         this.selectedForm = 'district';
 
         this.apiDistrictFrom.patchValue({ ...dataItem });
@@ -843,8 +857,8 @@ export class Config010EnterpriseAdminunitComponent {
       }
     } else {
       if ('ProvinceID' in dataItem) {
-        this.currentProvinceForm = dataItem as DTOProvince;
-        this.currentDistrictForm = null;
+        this.popupProvinceForm = dataItem as DTOProvince;
+        this.popupDistrictForm = null;
         this.selectedForm = 'province';
 
         this.apiProvinceForm.patchValue(dataItem);
@@ -853,8 +867,8 @@ export class Config010EnterpriseAdminunitComponent {
           { id: 6, iconName: 'preview', text: 'Xem chi tiết' }
         );
       } else if ('DistrictID' in dataItem) {
-        this.currentDistrictForm = dataItem as DTODistrict;
-        this.currentProvinceForm = null;
+        this.popupDistrictForm = dataItem as DTODistrict;
+        this.popupProvinceForm = null;
         this.selectedForm = 'district';
 
         this.apiDistrictFrom.patchValue({ ...dataItem });
@@ -891,37 +905,37 @@ export class Config010EnterpriseAdminunitComponent {
   onClickMenuDropdownItem(item: any) {
     if (item) {
       const id = item.id;
-      if (Ps_UtilObjectService.hasValue(this.currentProvinceForm)) {
+      if (Ps_UtilObjectService.hasValue(this.popupProvinceForm)) {
         if (id == 1) {
           this.apiProvinceForm.reset();
-          this.currentProvinceForm = this.searchTree(
+          this.popupProvinceForm = this.searchTree(
             this.listProvinceTree,
-            this.currentProvinceForm.Code
+            this.popupProvinceForm.Code
           );
           this.apiProvinceForm.patchValue({
-            ...this.currentProvinceForm,
-            Code: this.currentProvinceForm.Code,
-            IsDelete: Number(this.currentProvinceForm.IsDelete),
+            ...this.popupProvinceForm,
+            Code: this.popupProvinceForm.Code,
+            IsDelete: Number(this.popupProvinceForm.IsDelete),
           });
-          this.currentProvinceForm = JSON.parse(JSON.stringify(this.apiProvinceForm.getRawValue()));
+          this.popupProvinceForm = JSON.parse(JSON.stringify(this.apiProvinceForm.getRawValue()));
           this.isProvinceIdDisabled = true;
           this.drawer.open();
         } else if (id == 2) {
           this.onAddNewProvince();
         } else if (id == 3) {
-          this.onAddNewDistrict(this.currentDistrictForm);
+          this.onAddNewDistrictFromPopup(this.popupDistrictForm);
         } else if (id == 0) {
           this.onOpenDialogProvince();
         } else if (id == 6) {
           this.apiProvinceForm.reset();
-          this.currentProvinceForm = this.searchTree(
+          this.popupProvinceForm = this.searchTree(
             this.listProvinceTree,
-            this.currentProvinceForm.Code
+            this.popupProvinceForm.Code
           );
           this.apiProvinceForm.patchValue({
-            ...this.currentProvinceForm,
-            Code: this.currentProvinceForm.Code,
-            IsDelete: Number(this.currentProvinceForm.IsDelete),
+            ...this.popupProvinceForm,
+            Code: this.popupProvinceForm.Code,
+            IsDelete: Number(this.popupProvinceForm.IsDelete),
           });
           this.isProvinceIdDisabled = true;
           this.isFeildDisabled = true;
@@ -932,44 +946,44 @@ export class Config010EnterpriseAdminunitComponent {
         if (id == 4) {
           this.apiDistrictFrom.reset();
 
-          if (this.currentDistrictForm) {
-            this.currentDistrictForm = this.searchTree(
+          if (this.popupDistrictForm) {
+            this.popupDistrictForm = this.searchTree(
               this.listProvinceTree,
-              this.currentDistrictForm.Code
+              this.popupDistrictForm.Code
             );
 
             this.apiDistrictFrom.patchValue({
-              ...this.currentDistrictForm,
-              Code: this.currentDistrictForm.Code,
-              IsDelete: Number(this.currentDistrictForm.IsDelete),
+              ...this.popupDistrictForm,
+              Code: this.popupDistrictForm.Code,
+              IsDelete: Number(this.popupDistrictForm.IsDelete),
               Province:
-                this.findProvinceIdByDistrict(this.currentDistrictForm) ?? null,
+                this.findProvinceIdByDistrict(this.popupDistrictForm) ?? null,
             });
 
-            this.currentDistrictForm = JSON.parse(JSON.stringify(this.apiDistrictFrom.getRawValue()));
+            this.popupDistrictForm = JSON.parse(JSON.stringify(this.apiDistrictFrom.getRawValue()));
             this.selectedForm = 'district';
             this.isDistrictIdDisabled = true;
             this.drawer.open();
           }
         } else if (id == 3) {
-          this.onAddNewDistrict(this.currentDistrictForm);
+          this.onAddNewDistrictFromPopup(this.popupDistrictForm);
         } else if (id == 5) {
           this.onOpenDialogDistrict();
         } else if (id == 7) {
           this.apiDistrictFrom.reset();
 
           if (this.currentDistrictForm) {
-            this.currentDistrictForm = this.searchTree(
+            this.popupDistrictForm = this.searchTree(
               this.listProvinceTree,
-              this.currentDistrictForm.Code
+              this.popupDistrictForm.Code
             );
 
             this.apiDistrictFrom.patchValue({
-              ...this.currentDistrictForm,
-              Code: this.currentDistrictForm.Code,
-              IsDelete: Number(this.currentDistrictForm.IsDelete),
+              ...this.popupDistrictForm,
+              Code: this.popupDistrictForm.Code,
+              IsDelete: Number(this.popupDistrictForm.IsDelete),
               Province:
-                this.findProvinceIdByDistrict(this.currentDistrictForm) ?? null,
+                this.findProvinceIdByDistrict(this.popupDistrictForm) ?? null,
             });
 
             this.selectedForm = 'district';
