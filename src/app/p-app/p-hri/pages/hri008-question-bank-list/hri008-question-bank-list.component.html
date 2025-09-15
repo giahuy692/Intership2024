@@ -1,0 +1,105 @@
+<div id="hri008-question-bank-list" class="app-drawer-container">
+    <!-- HEADER 1: BREAD CUM AND BUTTON CREATE -->
+    <div class="header header-1">
+        <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
+        <div class="nav-btn nav-crud" >
+            <button kendoButton class="upload k-button" [icon]="'upload'"
+            (click)="onOpendDrawer()">
+            </button>
+
+            <button kendoButton class="template k-button" [icon]="'download'"
+            (click)="onOpendDrawer()">
+            Template
+            </button>
+
+            <button kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
+            (click)="onOpendDrawer()">
+            THÊM MỚI
+            </button>
+        </div>
+    </div>
+
+    <!-- HEADER 2: SEARCH -->
+    <div class="header header-2">
+        <div id="functionbar">
+            <app-search-filter-group placeholder="Tìm theo mã và câu hỏi" [fields]="['']" (valueChange)="onSearch($event)"
+            (onReset)="onResetFilter()" #search>
+            </app-search-filter-group>
+        </div>
+
+        <div class="checkbox">
+            <div class="checkbox0">
+                <app-checkbox-button-group
+                [title]="'Đang soạn thảo'"
+                [checked]=""
+                (selectedChange)="onFilterCheckboxChange()"
+                ></app-checkbox-button-group>
+            </div>
+            <div class="checkbox1">
+                <app-checkbox-button-group
+                [title]="'Gửi duyệt'"
+                [checked]=""
+                (selectedChange)="onFilterCheckboxChange()"
+                ></app-checkbox-button-group>
+            </div>
+            <div class="checkbox2">
+                <app-checkbox-button-group
+                [title]="'Đã duyệt'"
+                [checked]=""
+                (selectedChange)="onFilterCheckboxChange()"
+                ></app-checkbox-button-group>
+            </div>
+            <div class="checkbox3">
+                <app-checkbox-button-group
+                [title]="'Ngừng áp dụng'"
+                [checked]=""
+                (selectedChange)="onFilterCheckboxChange()"
+                ></app-checkbox-button-group>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-wrapper">
+        <app-p-kendo-grid class="grid" [data]="gridData" [scrollable]="'none'" [loading]="isLoading" [selectable]="{ enabled: true, checkboxOnly: true, mode: 'multiple' }" [pageSize]="25"
+        [pageable]="true" [skip]="gridState.skip" [getActionDropdownCallback]="getActionDropdownCallback" [onActionDropdownClickCallback]="onActionDropdownClickCallback" [onPageChangeCallback]="onPageChange.bind(this)"> 
+
+            <kendo-grid-checkbox-column [width]="50" [showSelectAll]="true"></kendo-grid-checkbox-column>
+
+            <kendo-grid-column field="Remark" title="Câu hỏi" class="col_Remark" headerClass="col_Remark"
+            [width]="600">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-question">
+                        <div class="text-remark" title="{{dataItem.Remark}}">{{dataItem.Remark}}</div>
+                        <div class="text-typeOfQuestionName">
+                            <div class="text-questionid" title="{{dataItem.QuestionID}}">{{dataItem.QuestionID}}</div>
+                            <span>|</span>
+                            <div class="text-typeOfQuestionName"title="{{dataItem.TypeOfQuestionName}}">{{dataItem.TypeOfQuestionName}}</div>
+                        </div>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column field="CategoryName" title="Phân nhóm" class="col_CategoryName" headerClass="col_CategoryName"
+            [width]="500">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-ellipsis" title="{{dataItem.CategoryName}}">{{dataItem.CategoryName}}</div>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column field="Duration" title="Thời gian làm" class="col_Duration" headerClass="col_Duration"
+            [width]="300">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-ellipsis" title="{{dataItem.Duration}}">{{dataItem.Duration}}</div>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column field="StatusName" title="Tình trạng" class="col_StatusName" headerClass="col_StatusName"
+            [width]="300">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-ellipsis" title="{{dataItem.StatusName}}">{{dataItem.StatusName}}</div>
+                </ng-template>
+            </kendo-grid-column>
+
+        </app-p-kendo-grid>
+    </div>
+</div>
