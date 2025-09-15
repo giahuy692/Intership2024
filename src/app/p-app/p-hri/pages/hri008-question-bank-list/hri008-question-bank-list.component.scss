@@ -1,0 +1,50 @@
+@import "../../../../../assets/scss/variable.scss";
+
+::ng-deep {
+    app-hri008-question-bank-list {
+
+        #hri008-question-bank-list {
+            padding: 0 15px;
+            //HEADER
+            .header-1 {
+                height: 50px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                .k-breadcrumb-container{
+                    padding-left: 0 !important;
+                }
+            }
+            .header-2 {
+                padding-left: 0px !important;
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-end;
+
+                .checkbox {
+                    padding-bottom: 4px;
+                    display: flex;
+                    gap: 12px;
+                }
+            }
+            .grid-wrapper {
+                    table thead tr th:first-child{
+                        padding-left: 30px;
+                    }
+                
+                app-p-kendo-grid {
+                    .text-remark {
+                        font-weight: 600;
+                    }
+                    .text-question {
+                        .text-typeOfQuestionName {
+                            display: flex;
+
+                            span { padding: 0 4px;}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
