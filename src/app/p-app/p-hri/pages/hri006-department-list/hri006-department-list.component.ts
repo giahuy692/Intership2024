@@ -103,7 +103,7 @@ export class Hri006DepartmentListComponent implements OnInit {
   collapsedIds: any[];
 
   //dto form Department
-  apiProvinceForm: FormGroup = new FormGroup({
+  apiDepartmentForm: FormGroup = new FormGroup({
     Code: new FormControl(0),
     ParentID: new FormControl(null),
     ParentCode: new FormControl(''),
@@ -271,7 +271,7 @@ export class Hri006DepartmentListComponent implements OnInit {
    */
   onAddNewProvince() {
     this.selectedForm = 'department';
-    this.apiProvinceForm.reset({ Code: 0, Country: 1, IsDelete: 0, OrderBy: 1 });
+    this.apiDepartmentForm.reset({ Code: 0, Country: 1, IsDelete: 0, OrderBy: 1 });
 
     this.isDepartmentIdDisabled = false;
     this.drawer.open();
@@ -311,7 +311,7 @@ export class Hri006DepartmentListComponent implements OnInit {
   // Hàm đóng form
   onCloseForm() {
     this.drawer.close();
-    this.apiProvinceForm.reset()
+    this.apiDepartmentForm.reset()
     this.apiPositionFrom.reset()
   }
 
@@ -421,57 +421,76 @@ export class Hri006DepartmentListComponent implements OnInit {
   loadData(): void {
     this.isLoading = true;
     setTimeout(() => {
-      const allData = this.listDepartmentTree;
-      const filteredDataFilter = allData.filter(this.filterFunction);
+      const applyRecursiveFilter = (items: any[]): any[] => {
+        return (items || [])
+          .map(item => {
+            const children = this.fetchChildren(item);
+            const filteredChildren = applyRecursiveFilter(children);
 
-      if (
-        Ps_UtilObjectService.hasListValue(this.searchValue.filter.filters) &&
-        this.findSearchValue(this.searchValue.filter)
-      ) {
+            // Nếu bản thân item hoặc con của nó hợp lệ thì giữ lại
+            if (this.filterFunction(item) || filteredChildren.length > 0) {
+              if (Array.isArray(item.ListDepartment)) {
+                return { ...item, ListDepartment: filteredChildren };
+              }
+              if (Array.isArray(item.ListPosition)) {
+                return { ...item, ListPosition: filteredChildren };
+              }
+              return { ...item };
+            }
+            return null;
+          })
+          .filter(Boolean);
+      };
+
+      const filteredTree = applyRecursiveFilter(this.listDepartmentTree);
+
+      // Áp dụng tìm kiếm nếu có
+      if (Ps_UtilObjectService.hasListValue(this.searchValue.filter.filters) &&
+        this.findSearchValue(this.searchValue.filter)) {
         const searchTerm = this.findSearchValue(this.searchValue.filter)
           .toLowerCase()
           .replace(/[\/.]/g, '');
 
-        this.rootData = filteredDataFilter
-          .map((department) => {
-            if (this.sanitizeAndCheck(department.Department, searchTerm)) {
-              return { ...department };
-            }
-            const filteredPostions = (department.ListPosition || []).filter(
-              (position) => this.sanitizeAndCheck(position.Position, searchTerm)
+        this.rootData = filteredTree
+          .map(dep => {
+            if (this.sanitizeAndCheck(dep.Department, searchTerm)) return dep;
+            const filteredPositions = (dep.ListPosition || []).filter(pos =>
+              this.sanitizeAndCheck(pos.Position, searchTerm)
             );
-            if (filteredPostions.length > 0) {
-              return { ...department, ListPosition: filteredPostions };
+            if (filteredPositions.length > 0) {
+              return { ...dep, ListPosition: filteredPositions };
             }
             return null;
           })
           .filter(Boolean);
       } else {
-        this.rootData = filteredDataFilter;
+        this.rootData = filteredTree;
       }
+
       this.isLoading = false;
     });
   }
 
   // Hàm lọc dữ liệu
   filterFunction = (item: any): boolean => {
-    if (!this.isApproved && !this.isStopped) return true;
+    const statusFilters: number[] = [];
+    if (this.isNew) statusFilters.push(0);       // Đang soạn thảo
+    if (this.isSent) statusFilters.push(1);      // Gửi duyệt
+    if (this.isApproved) statusFilters.push(2);  // Đã duyệt
+    if (this.isStopped) statusFilters.push(3);   // Ngưng áp dụng
 
-    // Áp dụng: IsDelete === 0 hoặc false
-    if ((item.IsDelete === 0 || item.IsDelete === false) && this.isApproved) {
-      return true;
-    }
-    // Ngưng áp dụng: IsDelete === 1 hoặc true
-    if ((item.IsDelete === 1 || item.IsDelete === true) && this.isStopped) {
-      return true;
-    }
+    // nếu không chọn gì thì return all
+    if (statusFilters.length === 0) return true;
+
+    // nếu item có StatusID nằm trong filter thì true
+    if (statusFilters.includes(item.StatusID)) return true;
+
+    // check children (ListPosition/ListDepartment)
     if (item && 'ListPosition' in item) {
       const children = this.fetchChildren(item);
-      return (
-        children.length > 0 &&
-        children.some((child) => this.filterFunction(child))
-      );
+      return children.some(child => this.filterFunction(child));
     }
+
     return false;
   };
 
@@ -560,8 +579,8 @@ export class Hri006DepartmentListComponent implements OnInit {
 
   // hàm xử lý Update Province
   onUpdateDepartment() {
-    this.apiProvinceForm.markAllAsTouched();
-    const updateProvince: DTODepartment = this.apiProvinceForm.getRawValue();
+    this.apiDepartmentForm.markAllAsTouched();
+    const updateProvince: DTODepartment = this.apiDepartmentForm.getRawValue();
     const isAddForm = Number(updateProvince.Code) === 0;
     const ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Bộ phận`;
 
@@ -570,9 +589,9 @@ export class Hri006DepartmentListComponent implements OnInit {
       { name: 'ProvinceID', label: 'Mã hành chính' }
     ];
 
-    if (this.apiProvinceForm.invalid) {
+    if (this.apiDepartmentForm.invalid) {
       const errorFields = requiredFields
-        .filter(f => this.apiProvinceForm.get(f.name)?.invalid)
+        .filter(f => this.apiDepartmentForm.get(f.name)?.invalid)
         .map(f => f.label);
 
       const errorMessage = errorFields.length > 0
@@ -692,7 +711,7 @@ export class Hri006DepartmentListComponent implements OnInit {
 
   // Hàm xử lý xóa Province
   onDeleteDepartment() {
-    const deleteDepartment: DTODepartment = this.apiProvinceForm.getRawValue();
+    const deleteDepartment: DTODepartment = this.apiDepartmentForm.getRawValue();
 
     if (
       Ps_UtilObjectService.hasListValue(deleteDepartment.ListPosition)
@@ -821,7 +840,7 @@ export class Hri006DepartmentListComponent implements OnInit {
         this.currentPositionForm = null;
         this.selectedForm = 'department';
 
-        this.apiProvinceForm.patchValue(dataItem);
+        this.apiDepartmentForm.patchValue(dataItem);
 
         this.menuItemList.push(
           { id: 1, iconName: 'pencil', text: 'Chỉnh sửa' },
@@ -848,7 +867,7 @@ export class Hri006DepartmentListComponent implements OnInit {
         this.currentPositionForm = null;
         this.selectedForm = 'department';
 
-        this.apiProvinceForm.patchValue(dataItem);
+        this.apiDepartmentForm.patchValue(dataItem);
 
         this.menuItemList.push(
           { id: 6, iconName: 'preview', text: 'Xem chi tiết' }
@@ -894,16 +913,16 @@ export class Hri006DepartmentListComponent implements OnInit {
       const id = item.id;
       if (Ps_UtilObjectService.hasValue(this.currentDepartmentForm)) {
         if (id == 1) {
-          this.apiProvinceForm.reset();
+          this.apiDepartmentForm.reset();
           this.currentDepartmentForm = this.searchTree(
             this.listDepartmentTree,
             this.currentDepartmentForm.Code
           );
-          this.apiProvinceForm.patchValue({
+          this.apiDepartmentForm.patchValue({
             ...this.currentDepartmentForm,
             Code: this.currentDepartmentForm.Code,
           });
-          this.currentDepartmentForm = JSON.parse(JSON.stringify(this.apiProvinceForm.getRawValue()));
+          this.currentDepartmentForm = JSON.parse(JSON.stringify(this.apiDepartmentForm.getRawValue()));
           this.isDepartmentIdDisabled = true;
           this.drawer.open();
         } else if (id == 2) {
@@ -913,18 +932,18 @@ export class Hri006DepartmentListComponent implements OnInit {
         } else if (id == 0) {
           this.onOpenDialogDepartment();
         } else if (id == 6) {
-          this.apiProvinceForm.reset();
+          this.apiDepartmentForm.reset();
           this.currentDepartmentForm = this.searchTree(
             this.listDepartmentTree,
             this.currentDepartmentForm.Code
           );
-          this.apiProvinceForm.patchValue({
+          this.apiDepartmentForm.patchValue({
             ...this.currentDepartmentForm,
             Code: this.currentDepartmentForm.Code,
           });
           this.isDepartmentIdDisabled = true;
           this.isFeildDisabled = true;
-          this.apiProvinceForm.get('IsDelete')?.disable();
+          this.apiDepartmentForm.get('IsDelete')?.disable();
           this.drawer.open();
         }
       } else {

@@ -13,27 +13,27 @@
                     <div *ngIf="(isAllPers || isCanCreate)" class="contain-btn">
                         <ng-container>
                             <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                                imageUrl="assets/img/icon/icon_city.svg" (click)="onAddNewProvince()"
+                                imageUrl="assets/img/icon/icon_department.svg" (click)="onAddNewProvince()"
                                 *ngIf="!isDepartmentSelected && !isPositionSelected">
-                                THÊM MỚI TỈNH THÀNH
+                                THÊM MỚI BỘ PHẬN
                             </button>
 
                             <ng-container *ngIf="isDepartmentSelected">
                                 <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                                    imageUrl="assets/img/icon/icon_city.svg" (click)="onAddNewProvince()">
-                                    THÊM MỚI TỈNH THÀNH
+                                    imageUrl="assets/img/icon/icon_department.svg" (click)="onAddNewProvince()">
+                                    THÊM MỚI BỘ PHẬN
                                 </button>
 
                                 <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                                    imageUrl="assets/img/icon/icon_house.svg" (click)="onAddNewDistrict()">
-                                    THÊM MỚI PHƯỜNG XÃ
+                                    imageUrl="assets/img/icon/icon_department.svg" (click)="onAddNewDistrict()">
+                                    THÊM MỚI BỘ PHẬN CON
                                 </button>
                             </ng-container>
 
                             <ng-container *ngIf="isPositionSelected">
                                 <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                                    imageUrl="assets/img/icon/icon_house.svg" (click)="onAddNewDistrict()">
-                                    THÊM MỚI PHƯỜNG XÃ
+                                    imageUrl="assets/img/icon/icon_people.svg" (click)="onAddNewDistrict()">
+                                    THÊM MỚI CHỨC DANH
                                 </button>
                             </ng-container>
                         </ng-container>
@@ -81,9 +81,12 @@
                         </kendo-treelist-column>
                         <ng-template kendoTreeListCellTemplate let-dataItem>
                             <span class="iconImg">
-                                <img loading="lazy"
-                                    [src]="dataItem.DepartmentID ? 'assets/img/icon/icon_city.svg' : 'assets/img/icon/icon_house.svg'"
-                                    alt="">
+                                <ng-container *ngIf="dataItem.Position || dataItem.PositionID; else departmentIcon">
+                                    <i class="fa-solid fa-user"></i>
+                                </ng-container>
+                                <ng-template #departmentIcon>
+                                    <img loading="lazy" src="assets/img/icon/icon_departmentGray.svg" alt="">
+                                </ng-template>
                             </span>
                             <!-- Department hiển thị in đậm -->
                             <span *ngIf="dataItem.Department" class="department-name">
@@ -98,10 +101,16 @@
                     </kendo-treelist-span-column>
 
                     <!-- COLUMN 2 -->
-                    <kendo-treelist-column field="IsDelete" [width]="40">
+                    <kendo-treelist-column field="StatusID" [width]="40">
                         <ng-template kendoTreeListCellTemplate let-dataItem>
-                            <span class="titleIsDelete" [ngClass]="dataItem.IsDelete ? 'color-red' : 'color-green'">
-                                {{ dataItem.IsDelete ? 'Ngừng áp dụng' : 'Áp dụng' }}
+                            <span class="titleStatus" [ngClass]="{
+                                                                    'color-green': dataItem.StatusID === 2,
+                                                                    'color-red': dataItem.StatusID === 3,
+                                                                    'color-orange': dataItem.StatusID === 4
+                                                                }">
+                                {{ dataItem.StatusID === 2 ? 'Duyệt áp dụng' :
+                                dataItem.StatusID === 3 ? 'Ngưng áp dụng' :
+                                dataItem.StatusID === 4 ? 'Trả về' : 'Đang soạn thảo' }}
                             </span>
                         </ng-template>
                     </kendo-treelist-column>
@@ -123,7 +132,7 @@
         <!-- Drawer Tỉnh Thành-->
         <mat-drawer #formDrawer [mode]="'over'" position="end" disableClose>
 
-            <div class="formInfo k-form" [formGroup]="apiProvinceForm" *ngIf="selectedForm === 'department'">
+            <div class="formInfo k-form" [formGroup]="apiDepartmentForm" *ngIf="selectedForm === 'department'">
                 <ng-container>
                     <!-- PROVINCE FORM -->
                     <!-- <legend>THÔNG TIN TỈNH THÀNH</legend>
@@ -200,9 +209,9 @@
                                 <ng-container>
                                     <button kendoButton class="k-button btn-hachi updateBtn"
                                         (click)="onUpdateDepartment()">
-                                        {{apiProvinceForm.controls['Code'].value > 0
+                                        {{apiDepartmentForm.controls['Code'].value > 0
                                         ? "CẬP NHẬT"
-                                        : apiProvinceForm.controls['Code'].value == 0
+                                        : apiDepartmentForm.controls['Code'].value == 0
                                         ? "TẠO MỚI" : ""}}
                                     </button>
                                 </ng-container>
@@ -211,7 +220,7 @@
                                 <ng-container>
                                     <button kendoButton class="k-button btn-hachi deleteBtn"
                                         (click)="onOpenDialogDepartment()"
-                                        *ngIf="apiProvinceForm.controls['Code'].value > 0">
+                                        *ngIf="apiDepartmentForm.controls['Code'].value > 0">
                                         Xóa
                                     </button>
                                 </ng-container>
@@ -353,7 +362,7 @@
         [actionText]="'CÓ'" [dialogType]="1">
         <div>
             <p>Bạn có chắc chắn muốn xóa đơn vị Tỉnh thành <span
-                    class="color-green">{{apiProvinceForm.controls['VNProvince'].value}}</span> này? </p>
+                    class="color-green">{{apiDepartmentForm.controls['VNProvince'].value}}</span> này? </p>
             <p>Đơn vị xóa sẽ <span class="color-red">KHÔNG</span> thể khôi phục lại.</p>
         </div>
     </app-p-kendo-dialog>
