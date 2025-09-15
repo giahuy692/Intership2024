@@ -31,29 +31,29 @@
             <div class="checkbox0">
                 <app-checkbox-button-group
                 [title]="'Đang soạn thảo'"
-                [checked]=""
-                (selectedChange)="onFilterCheckboxChange()"
+                [checked]="isCheckedStatus0"
+                (selectedChange)="onFilterCheckboxChange('dangSoanThao')"
                 ></app-checkbox-button-group>
             </div>
             <div class="checkbox1">
                 <app-checkbox-button-group
                 [title]="'Gửi duyệt'"
-                [checked]=""
-                (selectedChange)="onFilterCheckboxChange()"
+                [checked]="isCheckedStatus1"
+                (selectedChange)="onFilterCheckboxChange('guiDuyet')"
                 ></app-checkbox-button-group>
             </div>
             <div class="checkbox2">
                 <app-checkbox-button-group
                 [title]="'Đã duyệt'"
-                [checked]=""
-                (selectedChange)="onFilterCheckboxChange()"
+                [checked]="isCheckedStatus2"
+                (selectedChange)="onFilterCheckboxChange('daDuyet')"
                 ></app-checkbox-button-group>
             </div>
             <div class="checkbox3">
                 <app-checkbox-button-group
                 [title]="'Ngừng áp dụng'"
-                [checked]=""
-                (selectedChange)="onFilterCheckboxChange()"
+                [checked]="isCheckedStatus3"
+                (selectedChange)="onFilterCheckboxChange('ngungApDung')"
                 ></app-checkbox-button-group>
             </div>
         </div>
