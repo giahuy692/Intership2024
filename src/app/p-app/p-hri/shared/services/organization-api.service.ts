@@ -54,11 +54,11 @@ export class OrganizationAPIService {
 
 	UpdateDepartment(obj: DTODepartment) {
 		let that = this;
-		return new Observable<DTODepartment>(obs => {
+		return new Observable<DTOResponse>(obs => {
 			that.api.connect(that.config.getAPIList().UpdateDepartment.method,
 				that.config.getAPIList().UpdateDepartment.url,
 				JSON.stringify(obj)).subscribe(
-					(res: DTODepartment) => {
+					(res: DTOResponse) => {
 						obs.next(res);
 						obs.complete();
 					}, errors => {
