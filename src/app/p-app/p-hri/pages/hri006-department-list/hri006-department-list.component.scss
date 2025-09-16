@@ -100,7 +100,7 @@
                   width: 16px; // chỉnh size icon
                   height: 16px;
                   margin-right: 6px; // khoảng cách với text
-                  filter: $white; // đổi icon sang màu trắng
+                  filter: brightness(0) invert(1); // đổi icon sang màu trắng
                 }
               }
             }
@@ -137,7 +137,35 @@
           }
   
           td {
-            padding: unset;
+            // padding: unset;
+            vertical-align: middle;
+            padding: 0 8px;
+
+            .cell-wrapper {
+                display: flex;
+                align-items: center;
+                gap: 6px; // khoảng cách giữa icon và text
+              }
+
+            // style riêng cho Department
+            .department-name {
+              font-weight: 700;     // in đậm
+              color: #26282e;       // màu chữ
+            }
+
+            // style riêng cho Position
+            .position-name {
+              font-style: italic;   // in nghiêng
+              font-weight: 300 !important;
+              color: #5a6276;       // xám đậm
+            }
+
+            .codeData {
+              font-weight: 300 !important;
+              color: #26282e;
+              padding-left: 50px;
+            }
+
             .iconImg{
               padding: 0 15px;
               
@@ -153,9 +181,9 @@
                 width: 32px;
               }
               
-            }
-            
+            } 
           }
+          
   
           tr.k-alt {
             background-color: $white;

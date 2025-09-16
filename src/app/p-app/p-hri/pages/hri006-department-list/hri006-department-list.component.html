@@ -12,27 +12,44 @@
                 <div class="nav-btn nav-crud">
                     <div *ngIf="(isAllPers || isCanCreate)" class="contain-btn">
                         <ng-container>
-                            <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                                imageUrl="assets/img/icon/icon_department.svg" (click)="onAddNewProvince()"
-                                *ngIf="!isDepartmentSelected && !isPositionSelected">
+                            <!-- Khi Reload Page -->
+                            <button *ngIf="!isDepartmentSelected && !isPositionSelected"
+                            kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
+                                    imageUrl="assets/img/icon/icon_department.svg"
+                                    (click)="onAddNewDepartment()">
                                 THÊM MỚI BỘ PHẬN
                             </button>
 
+                            <!-- Khi chọn Department -->
                             <ng-container *ngIf="isDepartmentSelected">
-                                <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                                    imageUrl="assets/img/icon/icon_department.svg" (click)="onAddNewProvince()">
+                                <button kendoButton
+                                        class="k-button btn-hachi hachi-primary onAddBtn"
+                                        imageUrl="assets/img/icon/icon_department.svg"
+                                        (click)="onAddNewDepartment()">
                                     THÊM MỚI BỘ PHẬN
                                 </button>
 
-                                <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                                    imageUrl="assets/img/icon/icon_department.svg" (click)="onAddNewDistrict()">
+                                <button kendoButton
+                                        class="k-button btn-hachi hachi-primary onAddBtn"
+                                        imageUrl="assets/img/icon/icon_department.svg"
+                                        (click)="onAddNewDepartment()">
                                     THÊM MỚI BỘ PHẬN CON
+                                </button>
+
+                                <button kendoButton
+                                        class="k-button btn-hachi hachi-primary onAddBtn"
+                                        imageUrl="assets/img/icon/icon_userGray.svg"
+                                        (click)="onAddNewPosition()">
+                                    THÊM MỚI CHỨC DANH
                                 </button>
                             </ng-container>
 
+                            <!-- Khi chọn Position -->
                             <ng-container *ngIf="isPositionSelected">
-                                <button kendoButton class="k-button btn-hachi hachi-primary onAddBtn"
-                                    imageUrl="assets/img/icon/icon_people.svg" (click)="onAddNewDistrict()">
+                                <button kendoButton
+                                        class="k-button btn-hachi hachi-primary onAddBtn"
+                                        imageUrl="assets/img/icon/icon_userGray.svg"
+                                        (click)="onAddNewPosition()">
                                     THÊM MỚI CHỨC DANH
                                 </button>
                             </ng-container>
@@ -82,7 +99,7 @@
                         <ng-template kendoTreeListCellTemplate let-dataItem>
                             <span class="iconImg">
                                 <ng-container *ngIf="dataItem.Position || dataItem.PositionID; else departmentIcon">
-                                    <i class="fa-solid fa-user"></i>
+                                    <img loading="lazy" src="assets/img/icon/icon_userGray.svg" alt="">
                                 </ng-container>
                                 <ng-template #departmentIcon>
                                     <img loading="lazy" src="assets/img/icon/icon_departmentGray.svg" alt="">
@@ -97,16 +114,40 @@
                             <span *ngIf="dataItem.Position" class="position-name">
                                 {{ dataItem.Position }}
                             </span>
+
+                            <!-- Code -->
+                            <span class="codeData">
+                                <div *ngIf="dataItem.Department">{{dataItem.DepartmentID}}</div>
+                                <div *ngIf="dataItem.Position">{{dataItem.PositionID}}</div>
+                            </span>
                         </ng-template>
                     </kendo-treelist-span-column>
 
-                    <!-- COLUMN 2 -->
+                    <!-- COLUMN 2: IsLeader -->
+                    <kendo-treelist-column field="IsLeader" [width]="40" class="column-2">
+                        <ng-template kendoTreeListCellTemplate let-dataItem>
+                            <span class="leaderData" *ngIf="dataItem.IsLeader">
+                                Trưởng đơn vị
+                            </span>
+                        </ng-template>
+                    </kendo-treelist-column>
+
+                    <!-- COLUMN 2: IsSupervivor -->
+                    <kendo-treelist-column field="IsSupervivor" [width]="40" class="column-3">
+                        <ng-template kendoTreeListCellTemplate let-dataItem>
+                            <span class="supervivorData" *ngIf="dataItem.IsSupervivor">
+                                Q.ly điểm làm việc
+                            </span>
+                        </ng-template>
+                    </kendo-treelist-column>
+
+                    <!-- COLUMN 4 -->
                     <kendo-treelist-column field="StatusID" [width]="40">
                         <ng-template kendoTreeListCellTemplate let-dataItem>
                             <span class="titleStatus" [ngClass]="{
-                                                                    'color-green': dataItem.StatusID === 2,
-                                                                    'color-red': dataItem.StatusID === 3,
-                                                                    'color-orange': dataItem.StatusID === 4
+                                                        'color-green': dataItem.StatusID === 2,
+                                                        'color-red': dataItem.StatusID === 3,
+                                                        'color-orange': dataItem.StatusID === 4
                                                                 }">
                                 {{ dataItem.StatusID === 2 ? 'Duyệt áp dụng' :
                                 dataItem.StatusID === 3 ? 'Ngưng áp dụng' :
@@ -115,7 +156,7 @@
                         </ng-template>
                     </kendo-treelist-column>
 
-                    <!-- COKUMN 3 - action -->
+                    <!-- COKUMN 5 - action -->
                     <kendo-treelist-column title="Size" [width]="10" class="btn-action">
                         <ng-template kendoTreeListCellTemplate let-dataItem let-rowIndex="rowIndex">
                             <div class="horizontal">
@@ -124,7 +165,6 @@
                             </div>
                         </ng-template>
                     </kendo-treelist-column>
-
                 </kendo-treelist>
             </div>
         </mat-drawer-content>
@@ -135,7 +175,7 @@
             <div class="formInfo k-form" [formGroup]="apiDepartmentForm" *ngIf="selectedForm === 'department'">
                 <ng-container>
                     <!-- PROVINCE FORM -->
-                    <!-- <legend>THÔNG TIN TỈNH THÀNH</legend>
+                    <legend>THÔNG TIN TỈNH THÀNH</legend>
                 <div class="field">
                         <div class="formProvinceAndDistrict">
                             <div class="item item1">
@@ -195,7 +235,7 @@
                                     </div>
                             </div>
                         </div>
-                </div> -->
+                </div>
                     <!-- Footer Form -->
                     <div class="form-footer">
                         <div class="required-note" *ngIf="(isAllPers || isCanCreate)">

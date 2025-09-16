@@ -269,7 +269,7 @@ export class Hri006DepartmentListComponent implements OnInit {
    * - Reset form province
    * - Mở drawer chứa form nhập liệu.
    */
-  onAddNewProvince() {
+  onAddNewDepartment() {
     this.selectedForm = 'department';
     this.apiDepartmentForm.reset({ Code: 0, Country: 1, IsDelete: 0, OrderBy: 1 });
 
@@ -278,7 +278,7 @@ export class Hri006DepartmentListComponent implements OnInit {
   }
 
   // Hàm mở form add district
-  onAddNewDistrict(positionItem?: DTOPosition) {
+  onAddNewPosition(positionItem?: DTOPosition) {
     this.selectedForm = 'position';
     this.currentPositionForm = null;
 
@@ -926,9 +926,9 @@ export class Hri006DepartmentListComponent implements OnInit {
           this.isDepartmentIdDisabled = true;
           this.drawer.open();
         } else if (id == 2) {
-          this.onAddNewProvince();
+          this.onAddNewDepartment();
         } else if (id == 3) {
-          this.onAddNewDistrict(this.currentPositionForm);
+          this.onAddNewPosition(this.currentPositionForm);
         } else if (id == 0) {
           this.onOpenDialogDepartment();
         } else if (id == 6) {
@@ -969,7 +969,7 @@ export class Hri006DepartmentListComponent implements OnInit {
             this.drawer.open();
           }
         } else if (id == 3) {
-          this.onAddNewDistrict(this.currentPositionForm);
+          this.onAddNewPosition(this.currentPositionForm);
         } else if (id == 5) {
           this.onOpenDialogPosition();
         } else if (id == 7) {
