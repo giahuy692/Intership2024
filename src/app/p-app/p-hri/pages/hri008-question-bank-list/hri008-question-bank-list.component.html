@@ -3,17 +3,17 @@
     <div class="header header-1">
         <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
         <div class="nav-btn nav-crud" >
-            <button kendoButton class="upload k-button" [icon]="'upload'"
-            (click)="onOpendDrawer()">
+            <button kendoButton class="upload k-button" (click)="onOpenDetail()">
+                <span class="k-button-icon k-icon k-i-export ng-star-inserted"></span>
             </button>
 
-            <button kendoButton class="template k-button" [icon]="'download'"
-            (click)="onOpendDrawer()">
-            Template
+            <button kendoButton class="template k-button" (click)="onOpenDetail()">
+                <span class="k-button-icon k-icon k-i-import ng-star-inserted"></span>
+                Template
             </button>
 
             <button kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
-            (click)="onOpendDrawer()">
+            (click)="onOpenDetail()">
             THÊM MỚI
             </button>
         </div>
@@ -82,21 +82,29 @@
             <kendo-grid-column field="CategoryName" title="Phân nhóm" class="col_CategoryName" headerClass="col_CategoryName"
             [width]="500">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="text-ellipsis" title="{{dataItem.CategoryName}}">{{dataItem.CategoryName}}</div>
+                    <div class="text-CategoryName" title="{{dataItem.CategoryName}}">{{dataItem.CategoryName}}</div>
                 </ng-template>
             </kendo-grid-column>
 
             <kendo-grid-column field="Duration" title="Thời gian làm" class="col_Duration" headerClass="col_Duration"
             [width]="300">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="text-ellipsis" title="{{dataItem.Duration}}">{{dataItem.Duration}}</div>
+                    <div class="text-time" title="{{dataItem.Duration}}">{{dataItem.Duration}}</div>
                 </ng-template>
             </kendo-grid-column>
 
             <kendo-grid-column field="StatusName" title="Tình trạng" class="col_StatusName" headerClass="col_StatusName"
-            [width]="300">
+            [width]="300" class="colStatus">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="text-ellipsis" title="{{dataItem.StatusName}}">{{dataItem.StatusName}}</div>
+                    <div class="text-status" title="{{dataItem.StatusName}}"
+                        [ngClass]="{
+                        'color-red': dataItem.StatusName === 'Ngưng áp dụng',
+                        'color-green': dataItem.StatusName === 'Duyệt áp dụng',
+                        'color-yellow': dataItem.StatusName === 'Trả về',
+                        'color-blue': dataItem.StatusName === 'Gởi duyệt'
+                        }">
+                        {{dataItem.StatusName}}
+                    </div>
                 </ng-template>
             </kendo-grid-column>
 

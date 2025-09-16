@@ -88,7 +88,7 @@ export class Hri008QuestionBankListComponent{
     this.APIGetListQuestion(this.gridState)
   }
 
-  onOpendDrawer() {
+  onOpenDetail() {
 
   }
 
@@ -224,5 +224,11 @@ export class Hri008QuestionBankListComponent{
     this.APIGetListQuestion(this.gridState);
   }
 
+
+  //
+  // APIGetListQuestionGroupTree (filter: State) {
+  //   let ctx = 'Lấy danh sách câu hỏi'
+  //   this.isLoading = true;
+  // }
 
 }
