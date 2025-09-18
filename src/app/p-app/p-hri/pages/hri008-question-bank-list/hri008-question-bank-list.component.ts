@@ -57,6 +57,8 @@ export class Hri008QuestionBankListComponent  implements OnInit {
   // Biến Dropdown
   onActionDropdownClickCallback: Function
   getActionDropdownCallback: Function
+  onPageChangeCallback: Function
+  onSelectCallback: Function;
 
   // Biến phân quyền
   justLoadedChangePermissionAPI: boolean = true
@@ -69,6 +71,9 @@ export class Hri008QuestionBankListComponent  implements OnInit {
     Duration: new FormControl(0),
     StatusName: new FormControl(0), 
   })
+
+  // Biến disabled
+  isFilterActive: boolean = true;
 
   // Biến unsubcribe
   ngUnsubscribe = new Subject<void>();
@@ -91,6 +96,8 @@ export class Hri008QuestionBankListComponent  implements OnInit {
 
     this.onActionDropdownClickCallback = this.onActionDropdownClick.bind(this)
     this.getActionDropdownCallback = this.getActionDropdown.bind(this)
+    this.onPageChangeCallback = this.onPageChange.bind(this)
+    this.onSelectCallback = this.onSelectChange.bind(this)
   }
 
   // Hàm xử lý khi ấn vào breadcrumb
@@ -277,6 +284,10 @@ export class Hri008QuestionBankListComponent  implements OnInit {
     }
 
     return moreActionDropdown;
+  }
+
+  onSelectChange(isSelectedRowitemDialogVisible) {
+    this.isFilterActive = !isSelectedRowitemDialogVisible;
   }
 
   getSelectionPopupCallback = (selectedRows: any[]) => {

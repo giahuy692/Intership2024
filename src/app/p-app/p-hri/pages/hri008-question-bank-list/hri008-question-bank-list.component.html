@@ -3,16 +3,16 @@
     <div class="header header-1">
         <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
         <div class="nav-btn nav-crud" >
-            <button kendoButton class="upload k-button" (click)="onOpenDetail()">
+            <button kendoButton class="upload k-button" (click)="onOpenDetail()"  [disabled]="!isFilterActive">
                 <span class="k-button-icon k-icon k-i-export ng-star-inserted"></span>
             </button>
 
-            <button kendoButton class="template k-button" (click)="onOpenDetail()">
+            <button kendoButton class="template k-button" (click)="onOpenDetail()"  [disabled]="!isFilterActive">
                 <span class="k-button-icon k-icon k-i-import ng-star-inserted"></span>
                 Template
             </button>
 
-            <button kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"
+            <button kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"  [disabled]="!isFilterActive"
             (click)="onOpenDetail()">
             THÊM MỚI
             </button>
@@ -23,7 +23,7 @@
     <div class="header header-2">
         <div id="functionbar">
             <app-search-filter-group class="search-btn" placeholder="Tìm theo mã và câu hỏi" [fields]="['']" (valueChange)="onSearch($event)"
-            (onReset)="onResetFilter()" #search>
+            (onReset)="onResetFilter()" #search [disabled]="!isFilterActive">
             </app-search-filter-group>
         </div>
 
@@ -33,6 +33,7 @@
                 [title]="'Đang soạn thảo'"
                 [checked]="isCheckedStatus0"
                 (selectedChange)="onFilterCheckboxChange('dangSoanThao')"
+                [disabled]="!isFilterActive"
                 ></app-checkbox-button-group>
             </div>
             <div class="checkbox1">
@@ -40,6 +41,7 @@
                 [title]="'Gửi duyệt'"
                 [checked]="isCheckedStatus1"
                 (selectedChange)="onFilterCheckboxChange('guiDuyet')"
+                [disabled]="!isFilterActive"
                 ></app-checkbox-button-group>
             </div>
             <div class="checkbox2">
@@ -47,6 +49,7 @@
                 [title]="'Đã duyệt'"
                 [checked]="isCheckedStatus2"
                 (selectedChange)="onFilterCheckboxChange('daDuyet')"
+                [disabled]="!isFilterActive"
                 ></app-checkbox-button-group>
             </div>
             <div class="checkbox3">
@@ -54,6 +57,7 @@
                 [title]="'Ngừng áp dụng'"
                 [checked]="isCheckedStatus3"
                 (selectedChange)="onFilterCheckboxChange('ngungApDung')"
+                [disabled]="!isFilterActive"
                 ></app-checkbox-button-group>
             </div>
         </div>
@@ -62,8 +66,8 @@
     <div class="grid-wrapper">
         <app-p-kendo-grid class="grid" [data]="gridData" [scrollable]="'none'" [loading]="isLoading" [selectable]="selectable" [pageSize]="25" 
         [pageable]="true" [skip]="gridState.skip" [getActionDropdownCallback]="getActionDropdownCallback" [onActionDropdownClickCallback]="onActionDropdownClickCallback" 
-        [onPageChangeCallback]="onPageChange.bind(this)" [allowedMoreActionDropdown]="allowActionDropdown"
-        [getSelectionPopupCallback]="getSelectionPopupCallback"> 
+        [onPageChangeCallback]="onPageChangeCallback" [allowedMoreActionDropdown]="allowActionDropdown"
+        [getSelectionPopupCallback]="getSelectionPopupCallback" [onSelectCallback]="onSelectCallback"> 
 
             <kendo-grid-checkbox-column [width]="50" [showSelectAll]="true"></kendo-grid-checkbox-column>
 
@@ -98,14 +102,7 @@
             <kendo-grid-column field="StatusName" title="Tình trạng" class="col_StatusName" headerClass="col_StatusName"
             [width]="300" class="colStatus">
                 <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="text-status" title="{{dataItem.StatusName}}"
-                        [ngClass]="{
-                        'color-red': dataItem.StatusName === 'Ngưng áp dụng',
-                        'color-green': dataItem.StatusName === 'Duyệt áp dụng',
-                        'color-yellow': dataItem.StatusName === 'Trả về',
-                        'color-blue': dataItem.StatusName === 'Gởi duyệt'
-                        }">
-                        {{dataItem.StatusName}}
+                    <div class = "text-status" [innerHTML]="dataItem.StatusName | colorStatus:dataItem.StatusID">
                     </div>
                 </ng-template>
             </kendo-grid-column>
