@@ -26,6 +26,7 @@ import { CommonModule } from '@angular/common';
 import { HrTaskBoardingComponent } from './shared/components/hr-task-boarding/hr-task-boarding.component';
 import { Hri006DepartmentListComponent } from './pages/hri006-department-list/hri006-department-list.component';
 import { Hri008QuestionBankListComponent } from './pages/hri008-question-bank-list/hri008-question-bank-list.component';
+import { Hri008QuestionBankDetailComponent } from './pages/hri008-question-bank-detail/hri008-question-bank-detail.component';
 
 @NgModule({
   declarations: [
@@ -50,11 +51,13 @@ import { Hri008QuestionBankListComponent } from './pages/hri008-question-bank-li
     HrOffboardDecisionDetailComponent,
     HrOffboardDecisionListComponent,
     HrTaskBoardingComponent,
+    
     //- Pipe
     DecisionTypePipe,
     //
     Hri006DepartmentListComponent,
     Hri008QuestionBankListComponent,
+    Hri008QuestionBankDetailComponent,
   ],
   imports: [PHriRoutingModule, PLayoutModule, CommonModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
