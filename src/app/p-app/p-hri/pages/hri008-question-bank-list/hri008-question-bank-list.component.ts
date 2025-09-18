@@ -2,14 +2,15 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DTOQuestion } from '../../shared/dto/DTOQuestion.dto';
 import { PS_HelperMenuService } from 'src/app/p-app/p-layout/services/p-menu.helper.service';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Ps_UtilObjectService } from 'src/app/p-lib';
 import { FilterDescriptor, State } from '@progress/kendo-data-query';
 import { LayoutService } from 'src/app/p-app/p-layout/services/layout.service';
 import { QuestionGroupAPIService } from '../../shared/services/question-api.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { GridDataResult, SelectableSettings } from '@progress/kendo-angular-grid';
-import { MenuDataItem } from 'src/app/p-app/p-layout/dto/menu-data-item.dto';
+import { MenuDataItem, ModuleDataItem } from 'src/app/p-app/p-layout/dto/menu-data-item.dto';
+import { PayslipService } from '../../shared/services/payslip.service';
 
 @Component({
   selector: 'app-hri008-question-bank-list',
@@ -54,6 +55,9 @@ export class Hri008QuestionBankListComponent  implements OnInit {
   };
   allowActionDropdown = ['detail'];
 
+  // Biến move question
+  changeModuleData: Subscription;
+
   // Biến Dropdown
   onActionDropdownClickCallback: Function
   getActionDropdownCallback: Function
@@ -82,6 +86,7 @@ export class Hri008QuestionBankListComponent  implements OnInit {
       public menuService: PS_HelperMenuService,
       private hriAPIService: QuestionGroupAPIService,
       public layoutService: LayoutService,
+      public servicePayslip: PayslipService,
   ) {}
 
   ngOnInit(): void { 
@@ -110,8 +115,45 @@ export class Hri008QuestionBankListComponent  implements OnInit {
     this.APIGetListQuestion(this.gridState)
   }
 
-  onOpenDetail() {
+  onAdd() {
+    this.dataQuestion = new DTOQuestion();
+    this.onOpenDetail();
+  }
 
+  onOpenDetail() {
+     this.changeModuleData = this.menuService
+      .changeModuleData()
+      .subscribe((item: ModuleDataItem) => {
+        this.servicePayslip.setCacheQuestion(this.dataQuestion);
+        var parent = item.ListMenu.find(
+          (f) =>
+            f.Code.includes('hriCompetency')
+        );
+
+        if (
+          Ps_UtilObjectService.hasValue(parent) &&
+          Ps_UtilObjectService.hasListValue(parent.LstChild)
+        ) {
+          var detail = parent.LstChild.find(
+            (f) =>
+              f.Code.includes('hri008-question-bank-list') ||
+              f.Link.includes('hr008-question-bank-list')
+          );
+
+          if (
+            Ps_UtilObjectService.hasValue(detail) &&
+            Ps_UtilObjectService.hasListValue(detail.LstChild)
+          ) {
+            var detail2 = detail.LstChild.find(
+              (f) =>
+                f.Code.includes('hri008-question-bank-detail') ||
+                f.Link.includes('hri008-question-bank-detail')
+            );
+            this.menuService.activeMenu(detail2);
+
+          }
+        }
+      });
   }
 
   // Hàm xử lý reset
