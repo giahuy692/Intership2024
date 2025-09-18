@@ -22,7 +22,7 @@
     <!-- HEADER 2: SEARCH -->
     <div class="header header-2">
         <div id="functionbar">
-            <app-search-filter-group placeholder="Tìm theo mã và câu hỏi" [fields]="['']" (valueChange)="onSearch($event)"
+            <app-search-filter-group class="search-btn" placeholder="Tìm theo mã và câu hỏi" [fields]="['']" (valueChange)="onSearch($event)"
             (onReset)="onResetFilter()" #search>
             </app-search-filter-group>
         </div>
@@ -60,8 +60,10 @@
     </div>
 
     <div class="grid-wrapper">
-        <app-p-kendo-grid class="grid" [data]="gridData" [scrollable]="'none'" [loading]="isLoading" [selectable]="{ enabled: true, checkboxOnly: true, mode: 'multiple' }" [pageSize]="25"
-        [pageable]="true" [skip]="gridState.skip" [getActionDropdownCallback]="getActionDropdownCallback" [onActionDropdownClickCallback]="onActionDropdownClickCallback" [onPageChangeCallback]="onPageChange.bind(this)"> 
+        <app-p-kendo-grid class="grid" [data]="gridData" [scrollable]="'none'" [loading]="isLoading" [selectable]="selectable" [pageSize]="25" 
+        [pageable]="true" [skip]="gridState.skip" [getActionDropdownCallback]="getActionDropdownCallback" [onActionDropdownClickCallback]="onActionDropdownClickCallback" 
+        [onPageChangeCallback]="onPageChange.bind(this)" [allowedMoreActionDropdown]="allowActionDropdown"
+        [getSelectionPopupCallback]="getSelectionPopupCallback"> 
 
             <kendo-grid-checkbox-column [width]="50" [showSelectAll]="true"></kendo-grid-checkbox-column>
 

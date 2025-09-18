@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DTOQuestion } from '../../shared/dto/DTOQuestion.dto';
 import { PS_HelperMenuService } from 'src/app/p-app/p-layout/services/p-menu.helper.service';
 import { takeUntil } from 'rxjs/operators';
@@ -8,14 +8,15 @@ import { FilterDescriptor, State } from '@progress/kendo-data-query';
 import { LayoutService } from 'src/app/p-app/p-layout/services/layout.service';
 import { QuestionGroupAPIService } from '../../shared/services/question-api.service';
 import { FormControl, FormGroup } from '@angular/forms';
-import { GridDataResult } from '@progress/kendo-angular-grid';
+import { GridDataResult, SelectableSettings } from '@progress/kendo-angular-grid';
+import { MenuDataItem } from 'src/app/p-app/p-layout/dto/menu-data-item.dto';
 
 @Component({
   selector: 'app-hri008-question-bank-list',
   templateUrl: './hri008-question-bank-list.component.html',
   styleUrls: ['./hri008-question-bank-list.component.scss']
 })
-export class Hri008QuestionBankListComponent{
+export class Hri008QuestionBankListComponent  implements OnInit {
 
   @ViewChild('search', { static: false }) searchComponent: any;
 
@@ -31,8 +32,7 @@ export class Hri008QuestionBankListComponent{
 
   gridData: GridDataResult = { data: [], total: 0 };
 
-
-  listDataQuestion: DTOQuestion[] = []
+  dataQuestion: DTOQuestion = new DTOQuestion();
 
   // Biến loading
   isLoading: boolean = false
@@ -46,10 +46,22 @@ export class Hri008QuestionBankListComponent{
   isCheckedStatus2: boolean = false;
   isCheckedStatus3: boolean = false;
 
+  selectable: SelectableSettings = {
+    enabled: true,
+    mode: 'multiple',
+    drag: false,
+    checkboxOnly: true,
+  };
+  allowActionDropdown = ['detail'];
+
+  // Biến Dropdown
+  onActionDropdownClickCallback: Function
+  getActionDropdownCallback: Function
+
   // Biến phân quyền
   justLoadedChangePermissionAPI: boolean = true
 
-  //dto form Packing Unit
+  //dto form
   apiQuestionForm: FormGroup = new FormGroup({
     Code: new FormControl(0),
     Remark: new FormControl(''),
@@ -76,6 +88,9 @@ export class Hri008QuestionBankListComponent{
         this.APIGetListQuestion(this.gridState);
       }
     });
+
+    this.onActionDropdownClickCallback = this.onActionDropdownClick.bind(this)
+    this.getActionDropdownCallback = this.getActionDropdown.bind(this)
   }
 
   // Hàm xử lý khi ấn vào breadcrumb
@@ -184,11 +199,6 @@ export class Hri008QuestionBankListComponent{
     }
   }
 
-
-  getActionDropdownCallback() {}
-
-  onActionDropdownClickCallback() {}
-
   // API lấy grid question
   APIGetListQuestion (state: State) {
     let ctx = 'Lấy danh sách câu hỏi'
@@ -224,11 +234,101 @@ export class Hri008QuestionBankListComponent{
     this.APIGetListQuestion(this.gridState);
   }
 
+  /**
+   * Xử lý khi người dùng chọn action từ dropdown.
+   *
+   * @param menu Action được chọn.
+   * @param item Dữ liệu đơn vị đóng gói liên quan.
+   */
+  onActionDropdownClick(menu: MenuDataItem, item: DTOQuestion) { 
+    console.log("Chọn action:", menu, "cho câu hỏi:", item);
+  }
 
-  //
-  // APIGetListQuestionGroupTree (filter: State) {
-  //   let ctx = 'Lấy danh sách câu hỏi'
-  //   this.isLoading = true;
-  // }
+  /**
+   * Tạo danh sách action cho dropdown dựa trên quyền của người dùng.
+   *
+   * @param moreActionDropdown Mảng chứa các action menu.
+   * @returns Danh sách action menu sau khi xử lý.
+   */
+  getActionDropdown(moreActionDropdown: MenuDataItem[], dataItem: DTOQuestion) {
+    moreActionDropdown = [];
+     this.dataQuestion = { ...dataItem };
+    var statusID = this.dataQuestion.StatusID;
+    const ctx = 'câu hỏi';
+
+    if (statusID === 0) {
+      moreActionDropdown.push({ Name: "Chỉnh sửa", Code: "pencil", Link: "edit", Actived: true, LstChild: [], });
+      moreActionDropdown.push({ Name: "Gửi duyệt", Code: "redo", Link: "redo", Actived: true });
+      moreActionDropdown.push({ Name: "Xóa", Code: "trash", Link: "delete", Actived: true });
+    } else if (statusID === 1) {
+      moreActionDropdown.push({ Name: "Chỉnh sửa", Code: "pencil", Link: "edit", Actived: true });
+      moreActionDropdown.push({ Name: "Phê duyệt", Code: "check-outline", Link: "check-outline", Actived: true });
+      moreActionDropdown.push({ Name: "Trả về", Code: "undo", Link: "undo", Actived: true });
+    } else if (statusID === 2) {
+      moreActionDropdown.push({ Name: "Xem chi tiết", Code: "eye", Link: "view", Actived: true });
+      moreActionDropdown.push({ Name: "Ngưng áp dụng", Code: "minus-outline", Link: "minus-outline", Actived: true });
+    } else if (statusID === 3) {
+      moreActionDropdown.push({ Name: "Xem chi tiết", Code: "eye", Link: "view", Actived: true });
+      moreActionDropdown.push({ Name: "Phê duyệt", Code: "eye", Link: "view", Actived: true });
+      moreActionDropdown.push({ Name: "Trả về", Code: "undo", Link: "undo", Actived: true });
+    } else if (statusID === 4) {
+      moreActionDropdown.push({ Name: "Chỉnh sửa", Code: "pencil", Link: "edit", Actived: true });
+      moreActionDropdown.push({ Name: "Gửi duyệt", Code: "redo", Link: "redo", Actived: true });
+    }
+
+    return moreActionDropdown;
+  }
+
+  getSelectionPopupCallback = (selectedRows: any[]) => {
+    const btnList: MenuDataItem[] = [];
+
+    if (!selectedRows || selectedRows.length === 0) {
+      return btnList;
+    }
+
+    // Duyệt qua tất cả row được chọn
+    selectedRows.forEach(row => {
+      const status = row.StatusID;
+      let actions: MenuDataItem[] = [];
+
+      if (status === 0) {
+        actions = [
+          { Name: "Gửi duyệt", Code: "redo", Link: "redo", Actived: true },
+          { Name: "Xóa", Code: "trash", Link: "delete", Actived: true }
+        ];
+      } else if (status === 1) {
+        actions = [
+          { Name: "Phê duyệt", Code: "check-outline", Link: "check-outline", Actived: true },
+          { Name: "Trả về", Code: "undo", Link: "undo", Actived: true }
+        ];
+      } else if (status === 2) {
+        actions = [
+          { Name: "Ngưng áp dụng", Code: "minus-outline", Link: "minus-outline", Actived: true }
+        ];
+      } else if (status === 3) {
+        actions = [
+          { Name: "Phê duyệt", Code: "check-outline", Link: "check-outline", Actived: true },
+          { Name: "Trả về", Code: "undo", Link: "undo", Actived: true  }
+        ];
+      } else if (status === 4) {
+        actions = [
+          { Name: "Gửi duyệt", Code: "redo", Link: "redo", Actived: true },
+        ]
+      }
+
+      // Gộp action lại, tránh trùng
+      actions.forEach(a => {
+        if (!btnList.find(b => b.Link === a.Link)) {
+          btnList.push(a);
+        }
+      });
+    });
+
+    return btnList;
+  };
+
+  ngOnDestroy(): void {
+    this.ngUnsubscribe.unsubscribe();
+  }
 
 }
