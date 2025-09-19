@@ -9,11 +9,12 @@ import { DTOPosition } from '../../shared/dto/DTOPosition.dto';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { PS_HelperMenuService } from 'src/app/p-app/p-layout/services/p-menu.helper.service';
 import { LayoutService } from 'src/app/p-app/p-layout/services/layout.service';
-import { HriApiConfigService } from '../../shared/services/hri-api-config.service';
 import { takeUntil } from 'rxjs/operators';
 import { Ps_UtilObjectService } from 'src/app/p-lib';
 import { DTOPermission } from 'src/app/p-app/p-layout/dto/DTOPermission';
 import { OrganizationAPIService } from '../../shared/services/organization-api.service';
+import { DTOAction } from 'src/app/p-app/p-developer/shared/dto/DTOAction';
+import { DTOModule } from 'src/app/p-app/p-developer/shared/dto/DTOModule';
 
 @Component({
   selector: 'app-hri006-department-list',
@@ -30,6 +31,17 @@ export class Hri006DepartmentListComponent implements OnInit {
 
   // Biến để quản lý popup
   popupShow: boolean = false;
+
+  // data
+  listActionTree: DTOAction[] = []
+  listModuleTree: DTOModule[] = []
+  fullListModuleTree: DTOModule[] = []
+  defaultParent: any = { Code: null, Department: 'Không lựa chọn' };
+
+  // Danh sách điểm làm việc (data cho dropdown)
+  ListDepartment: Array<{ Code: number, Name: string }> = [];
+
+  ListStatus: Array<{ Code: number, StatusName: string }> = [];
 
   // Biến trạng thái để hiển thị dialog Bộ phận và Chức danh
   isDialogDepartment: boolean = false;
@@ -80,6 +92,7 @@ export class Hri006DepartmentListComponent implements OnInit {
   // Biến để quản lý form hiện tại
   currentDepartmentForm: DTODepartment = new DTODepartment();
   currentPositionForm: DTOPosition = new DTOPosition();
+  currentDrawer: string = null; // drawer hiện tại
 
   // Biến để quản lý dữ liệu gốc và dữ liệu đã lọc
   rootData: Array<DTODepartment | DTOPosition> = [];
@@ -177,7 +190,8 @@ export class Hri006DepartmentListComponent implements OnInit {
           this.justLoadedChangePermissionAPI
         ) {
           this.justLoadedChangePermissionAPI = false;
-          this.loadDepartment()
+          this.loadDepartment();
+          this.loadListDepartment();
         }
       });
   }
@@ -223,25 +237,25 @@ export class Hri006DepartmentListComponent implements OnInit {
 
   // Xử lý checkbox filter
   onFilterCheckboxChange(type: 'new' | 'sent' | 'approved' | 'stopped', checked: boolean) {
-  switch (type) {
-    case 'new':
-      this.isNew = checked;
-      break;
-    case 'sent':
-      this.isSent = checked;
-      break;
-    case 'approved':
-      this.isApproved = checked;
-      break;
-    case 'stopped':
-      this.isStopped = checked;
-      break;
-  }
+    switch (type) {
+      case 'new':
+        this.isNew = checked;
+        break;
+      case 'sent':
+        this.isSent = checked;
+        break;
+      case 'approved':
+        this.isApproved = checked;
+        break;
+      case 'stopped':
+        this.isStopped = checked;
+        break;
+    }
 
-  this.loadData();
-  this.isDepartmentSelected = false;
-  this.isPositionSelected = false;
-}
+    this.loadData();
+    this.isDepartmentSelected = false;
+    this.isPositionSelected = false;
+  }
 
 
   // Tìm kiếm trong cây
@@ -271,7 +285,31 @@ export class Hri006DepartmentListComponent implements OnInit {
    */
   onAddNewDepartment() {
     this.selectedForm = 'department';
-    this.apiDepartmentForm.reset({ Code: 0, Country: 1, IsDelete: 0, OrderBy: 1 });
+
+    this.apiDepartmentForm.reset({
+      Code: 0,
+      DepartmentID: '',
+      Department: '',
+      ParentID: this.defaultParent, // patch mặc định
+      StatusID: 0,
+      StatusName: 'Tạo mới'
+    });
+
+    this.isDepartmentIdDisabled = false;
+    this.drawer.open();
+  }
+
+  onAddNewChildDepartment() {
+    this.selectedForm = 'department';
+
+    this.apiDepartmentForm.reset({
+      Code: 0,
+      DepartmentID: '',
+      Department: '',
+      ParentID: this.currentDepartmentForm ?? this.defaultParent, 
+      StatusID: 0,
+      StatusName: 'Tạo mới'
+    });
 
     this.isDepartmentIdDisabled = false;
     this.drawer.open();
@@ -282,31 +320,29 @@ export class Hri006DepartmentListComponent implements OnInit {
     this.selectedForm = 'position';
     this.currentPositionForm = null;
 
-    let provinceCode: number | null = null;
+    let departmentCode: number | null = null;
 
     if (Ps_UtilObjectService.hasValue(positionItem)) {
-      // Nếu truyền vào District cụ thể thì tìm Province chứa nó
-      provinceCode = this.findProvinceIdByDistrict(positionItem);
+      // Nếu truyền vào Position cụ thể thì tìm Department chứa nó
+      departmentCode = this.findDepartmentIdByPosition(positionItem);
     } else if (Ps_UtilObjectService.hasValue(this.currentDepartmentForm)) {
-      // Nếu đang chọn Province thì lấy Code luôn
-      provinceCode = this.currentDepartmentForm.Code;
+      // Nếu đang chọn Department thì lấy Code luôn
+      departmentCode = this.currentDepartmentForm.Code;
     } else if (Ps_UtilObjectService.hasValue(this.currentPositionForm)) {
-      // Nếu đang chọn District thì tìm Province chứa District đó
-      provinceCode = this.findProvinceIdByDistrict(this.currentPositionForm);
+      // Nếu đang chọn Position thì tìm Department chứa Position đó
+      departmentCode = this.findDepartmentIdByPosition(this.currentPositionForm);
     }
 
-    // Reset form, set Province cho District mới
+    // Reset form, set Department cho Position mới
     this.apiPositionFrom.reset({
       Code: 0,
-      IsDelete: 0,
       OrderBy: 1,
-      Province: provinceCode,
+      DepartmentID: departmentCode,
     });
 
     this.isPositionIdDisabled = false;
     this.drawer.open();
   }
-
 
   // Hàm đóng form
   onCloseForm() {
@@ -324,9 +360,7 @@ export class Hri006DepartmentListComponent implements OnInit {
    * @param event Mã Code của province được chọn từ dropdown.
    */
   onSelectedDropdownList(event: number) {
-    this.apiPositionFrom.patchValue({
-      Province: event, // chỉ lưu Code trong FormControl
-    });
+    this.apiDepartmentForm.patchValue({ ParentID: event });
   }
 
   // Xử lý sự kiện mở và đóng dialog Province
@@ -347,7 +381,7 @@ export class Hri006DepartmentListComponent implements OnInit {
   //endRegion
 
   //#region  Xử lý sự kiện khi chọn item trong treelist
-  onSelectionChange(e: any) {
+  onSelectionChange(e: { items: { dataItem: DTODepartment | DTOPosition }[] }) {
     if (!e.items || e.items.length === 0) {
       this.currentDepartmentForm = null;
       this.currentPositionForm = null;
@@ -358,17 +392,19 @@ export class Hri006DepartmentListComponent implements OnInit {
 
     const dataItem = e.items[0].dataItem;
 
-    // Nếu chọn Position
-    if (dataItem.hasOwnProperty('PositionID')) {
-      this.currentPositionForm = dataItem as DTOPosition;
-      this.currentDepartmentForm = this.listDepartmentTree.find((p: DTODepartment) => p.Code === this.currentPositionForm.DepartmentID) || null;
+    if ('PositionID' in dataItem) {
+      const position = dataItem as DTOPosition;
+      this.currentPositionForm = position;
+      this.currentDepartmentForm = this.listDepartmentTree.find(
+        (p: DTODepartment) => p.Code === position.DepartmentID
+      ) || null;
+
       this.isDepartmentSelected = false;
       this.isPositionSelected = true;
       this.selectedForm = 'position';
-    }
-    // Nếu chọn Department
-    else if (dataItem.hasOwnProperty('DepartmentID')) {
-      this.currentDepartmentForm = dataItem as DTODepartment;
+    } else if ('DepartmentID' in dataItem) {
+      const dept = dataItem as DTODepartment;
+      this.currentDepartmentForm = dept;
       this.isDepartmentSelected = true;
       this.isPositionSelected = false;
       this.selectedForm = 'department';
@@ -378,37 +414,51 @@ export class Hri006DepartmentListComponent implements OnInit {
       this.isPositionSelected = false;
       this.isDepartmentSelected = false;
     }
+
     this.popupShow = false;
   }
+
   //#endregion
 
   //#region API
 
   // Lấy API Danh sách cây hành chính
   APIGetListDepartmentTree() {
-    let ctx = `Lấy danh sách Province District`;
+    let ctx = `Lấy danh sách Bộ phận`;
     this.isLoading = true;
+
     this.organizationAPIService
       .GetListDepartmentTree(this.treeStateDepartment)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe(
         (res) => {
-          if (
-            Ps_UtilObjectService.hasValue(res) &&
-            res.StatusCode == 0
-          ) {
+          this.isLoading = false;
+
+          if (Ps_UtilObjectService.hasValue(res) && res.StatusCode == 0) {
+
             this.listDepartmentTree = res.ObjectReturn.map((d: any) => ({
               ...d,
               ListLocation: [],   // xoá location
             }));
+            this.listDepartmentTree.unshift(this.defaultParent);
+
             this.rootData = this.listDepartmentTree;
             this.loadData();
+
+            const allStatus = res.ObjectReturn.map((d: any) => ({
+              Code: d.StatusID,
+              StatusName: d.StatusName
+            }));
+
+            this.ListStatus = allStatus.filter(
+              (value, index, self) =>
+                index === self.findIndex((t) => t.Code === value.Code)
+            );
           } else {
             this.layoutService.onError(
               `Đã xảy ra lỗi khi ${ctx}: ${res.ErrorString}`
             );
           }
-          this.isLoading = false;
         },
         (error) => {
           this.isLoading = false;
@@ -580,16 +630,22 @@ export class Hri006DepartmentListComponent implements OnInit {
   // hàm xử lý Update Province
   onUpdateDepartment() {
     this.apiDepartmentForm.markAllAsTouched();
-    const updateProvince: DTODepartment = this.apiDepartmentForm.getRawValue();
-    const isAddForm = Number(updateProvince.Code) === 0;
+
+    // Lấy dữ liệu form
+    let dto: DTODepartment = this.apiDepartmentForm.getRawValue();
+
+    dto.ParentID = (dto as any).ParentID?.Code ?? dto.ParentID ?? null;
+
+    const isAddForm = Number(dto.Code) === 0;
     const ctx = `${isAddForm ? 'tạo mới' : 'cập nhật'} thông tin Bộ phận`;
 
-    const requiredFields = [
-      { name: 'VNProvince', label: 'Tên Tiếng Việt' },
-      { name: 'ProvinceID', label: 'Mã hành chính' }
-    ];
-
+    // Validate bắt buộc
     if (this.apiDepartmentForm.invalid) {
+      const requiredFields = [
+        { name: 'Department', label: 'Tên Bộ phận' },
+        { name: 'DepartmentID', label: 'Mã Bộ phận' }
+      ];
+
       const errorFields = requiredFields
         .filter(f => this.apiDepartmentForm.get(f.name)?.invalid)
         .map(f => f.label);
@@ -602,14 +658,16 @@ export class Hri006DepartmentListComponent implements OnInit {
       return;
     }
 
-    if (!isAddForm && JSON.stringify(updateProvince) === JSON.stringify(this.currentDepartmentForm)) {
+    // Check dữ liệu có thay đổi không
+    if (!isAddForm && JSON.stringify(dto) === JSON.stringify(this.currentDepartmentForm)) {
       this.layoutService.onWarning(
         `Đã xảy ra lỗi ${ctx}: Dữ liệu không có thay đổi, không cần cập nhật.`
       );
       return;
     }
 
-    this.APIUpdateDepartment(updateProvince);
+    // Gọi API
+    this.APIUpdateDepartment(dto);
     this.isDepartmentSelected = false;
     this.isPositionSelected = false;
   }
@@ -768,6 +826,41 @@ export class Hri006DepartmentListComponent implements OnInit {
     }
   }
 
+  loadListDepartment() {
+    const dto: DTODepartment = new DTODepartment();
+    this.isLoading = true;
+
+    this.organizationAPIService
+      .GetListDepartment(dto)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (res: any) => {
+          this.isLoading = false;
+          if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
+            // gom tất cả ListLocation trong các department
+            let allDepartments: any[] = [];
+            res.ObjectReturn.forEach((dept: any) => {
+              if (Array.isArray(dept.ListLocation)) {
+                allDepartments = [
+                  ...allDepartments,
+                  ...dept.ListLocation.map((loc: any) => ({
+                    Code: loc.Code,
+                    Department: dept.Department,     
+                    LocationName: loc.LocationName   
+                  }))
+                ];
+              }
+            });
+            this.ListDepartment = allDepartments;
+          }
+        },
+        (error) => {
+          this.isLoading = false;
+          this.layoutService.onError(`Lỗi API GetListDepartment: ${error}`);
+        }
+      );
+  }
+
   // region Popup
   // Hiển thị trạng thái của popup
   isPopupVisible() {
@@ -834,171 +927,103 @@ export class Hri006DepartmentListComponent implements OnInit {
   //HANDLE TOGGLE FORM khi nhấn menu dropdown
   getSelectedMenuDropdown(dataItem: DTODepartment | DTOPosition) {
     this.menuItemList = [];
+
     if (this.isAllPers || this.isCanCreate) {
-      if ('ProvinceID' in dataItem) {
-        this.currentDepartmentForm = dataItem as DTODepartment;
+      if ('DepartmentID' in dataItem) {
+        const dept = dataItem as DTODepartment;
+        this.currentDepartmentForm = dept;
         this.currentPositionForm = null;
         this.selectedForm = 'department';
 
-        this.apiDepartmentForm.patchValue(dataItem);
+        this.apiDepartmentForm.patchValue({ ...dept });
 
-        this.menuItemList.push(
-          { id: 1, iconName: 'pencil', text: 'Chỉnh sửa' },
-          { id: 2, iconName: 'plus', text: 'Thêm mới tỉnh thành' },
-          { id: 3, iconName: 'plus', text: 'Thêm mới phường xã' },
-          { id: 0, iconName: 'delete', text: 'Xóa tỉnh thành' }
-        );
-      } else if ('DistrictID' in dataItem) {
-        this.currentPositionForm = dataItem as DTOPosition;
+        this.menuItemList = [
+          { id: 1, iconName: 'plus', text: 'Thêm mới Bộ phận' },
+          { id: 2, iconName: 'plus', text: 'Thêm mới Bộ phận con' },
+          { id: 3, iconName: 'plus', text: 'Thêm mới Chức danh' }
+        ];
+      } else if ('PositionID' in dataItem) {
+        const position = dataItem as DTOPosition;
+        this.currentPositionForm = position;
         this.currentDepartmentForm = null;
         this.selectedForm = 'position';
 
-        this.apiPositionFrom.patchValue({ ...dataItem });
+        this.apiPositionFrom.patchValue({ ...position });
 
-        this.menuItemList.push(
-          { id: 4, iconName: 'pencil', text: 'Chỉnh sửa' },
-          { id: 3, iconName: 'plus', text: 'Thêm mới phường xã' },
-          { id: 5, iconName: 'delete', text: 'Xóa phường xã' }
-        );
+        this.menuItemList = [
+          { id: 3, iconName: 'plus', text: 'Thêm mới Chức danh' }
+        ];
       }
-    } else {
-      if ('ProvinceID' in dataItem) {
-        this.currentDepartmentForm = dataItem as DTODepartment;
-        this.currentPositionForm = null;
-        this.selectedForm = 'department';
-
-        this.apiDepartmentForm.patchValue(dataItem);
-
-        this.menuItemList.push(
-          { id: 6, iconName: 'preview', text: 'Xem chi tiết' }
-        );
-      } else if ('DistrictID' in dataItem) {
-        this.currentPositionForm = dataItem as DTOPosition;
-        this.currentDepartmentForm = null;
-        this.selectedForm = 'position';
-
-        this.apiPositionFrom.patchValue({ ...dataItem });
-
-        this.menuItemList.push(
-          { id: 7, iconName: 'preview', text: 'Xem chi tiết' },
-        );
-      }
-
-      this.menuItemList = [...this.menuItemList];
     }
+
+    this.menuItemList = [...this.menuItemList];
   }
 
   /**
-   * Xử lý khi người dùng click chọn 1 item trong menu dropdown.
-   *
-   * - Nếu đang chọn Province (`currentProvinceForm` có giá trị):
-   *   + id = 1 → Mở form chỉnh sửa Province (reset + patchValue dữ liệu cũ, disable ID, mở drawer).
-   *   + id = 2 → Thêm mới Province.
-   *   + id = 3 → Thêm mới District thuộc Province.
-   *   + id = 0 → Mở dialog xác nhận xóa Province.
-   *   + id = 6 → Xem chi tiết Province (disable tất cả các trường, mở drawer).
-   *
-   * - Nếu đang chọn District (`currentDistrictForm` có giá trị):
-   *   + id = 4 → Mở form chỉnh sửa District (reset + patchValue dữ liệu cũ, disable ID, mở drawer).
-   *   + id = 3 → Thêm mới District.
-   *   + id = 5 → Mở dialog xác nhận xóa District.
-   *   + id = 7 → Xem chi tiết District (disable tất cả các trường, mở drawer).
-   *
-   * Sau khi xử lý xong thì ẩn popup dropdown.
-   *
-   * @param item Item menu dropdown được click (bao gồm id, icon, text).
-   */
+ * Xử lý khi người dùng click chọn 1 item trong menu dropdown.
+ *
+ * - Nếu đang chọn Department (`currentDepartmentForm` có giá trị):
+ *   + id = 1 → Chỉnh sửa Department (reset + patchValue dữ liệu cũ, disable ID, mở drawer).
+ *   + id = 2 → Thêm mới Department.
+ *   + id = 3 → Thêm mới Position thuộc Department.
+ *   + id = 0 → Mở dialog xác nhận xóa Department.
+ *   + id = 6 → Xem chi tiết Department (disable tất cả các trường, mở drawer).
+ *
+ * - Nếu đang chọn Position (`currentPositionForm` có giá trị):
+ *   + id = 4 → Chỉnh sửa Position (reset + patchValue dữ liệu cũ, disable ID, mở drawer).
+ *   + id = 3 → Thêm mới Position.
+ *   + id = 5 → Mở dialog xác nhận xóa Position.
+ *   + id = 7 → Xem chi tiết Position (disable tất cả các trường, mở drawer).
+ *
+ * Sau khi xử lý xong thì ẩn popup dropdown.
+ *
+ * @param item Item menu dropdown được click (bao gồm id, icon, text).
+ */
   onClickMenuDropdownItem(item: any) {
-    if (item) {
-      const id = item.id;
-      if (Ps_UtilObjectService.hasValue(this.currentDepartmentForm)) {
-        if (id == 1) {
-          this.apiDepartmentForm.reset();
-          this.currentDepartmentForm = this.searchTree(
-            this.listDepartmentTree,
-            this.currentDepartmentForm.Code
-          );
-          this.apiDepartmentForm.patchValue({
-            ...this.currentDepartmentForm,
-            Code: this.currentDepartmentForm.Code,
-          });
-          this.currentDepartmentForm = JSON.parse(JSON.stringify(this.apiDepartmentForm.getRawValue()));
-          this.isDepartmentIdDisabled = true;
-          this.drawer.open();
-        } else if (id == 2) {
+    if (!item) return;
+    const id = item.id;
+
+    // Nếu đang thao tác với Department
+    if (Ps_UtilObjectService.hasValue(this.currentDepartmentForm)) {
+      switch (id) {
+        case 1: // Thêm mới bộ phận
           this.onAddNewDepartment();
-        } else if (id == 3) {
-          this.onAddNewPosition(this.currentPositionForm);
-        } else if (id == 0) {
-          this.onOpenDialogDepartment();
-        } else if (id == 6) {
-          this.apiDepartmentForm.reset();
-          this.currentDepartmentForm = this.searchTree(
-            this.listDepartmentTree,
-            this.currentDepartmentForm.Code
-          );
-          this.apiDepartmentForm.patchValue({
-            ...this.currentDepartmentForm,
-            Code: this.currentDepartmentForm.Code,
+          break;
+
+        case 2: // Thêm mới bộ phận con
+          this.apiDepartmentForm.reset({
+            Code: 0,
+            DepartmentID: '',
+            Department: '',
+            ParentID: this.currentDepartmentForm, // gán parent = bộ phận hiện tại
+            StatusID: 0,
+            StatusName: 'Tạo mới'
           });
-          this.isDepartmentIdDisabled = true;
-          this.isFeildDisabled = true;
-          this.apiDepartmentForm.get('IsDelete')?.disable();
+          this.selectedForm = 'department';
           this.drawer.open();
-        }
-      } else {
-        if (id == 4) {
-          this.apiPositionFrom.reset();
+          break;
 
-          if (this.currentPositionForm) {
-            this.currentPositionForm = this.searchTree(
-              this.listDepartmentTree,
-              this.currentPositionForm.Code
-            );
+        case 3: // Thêm mới chức danh trong bộ phận hiện tại
+          this.onAddNewPosition();
+          break;
+      }
+    }
 
-            this.apiPositionFrom.patchValue({
-              ...this.currentPositionForm,
-              Code: this.currentPositionForm.Code,
-              Department:
-                this.findProvinceIdByDistrict(this.currentPositionForm) ?? null,
-            });
-
-            this.currentPositionForm = JSON.parse(JSON.stringify(this.apiPositionFrom.getRawValue()));
-            this.selectedForm = 'position';
-            this.isPositionIdDisabled = true;
-            this.drawer.open();
-          }
-        } else if (id == 3) {
-          this.onAddNewPosition(this.currentPositionForm);
-        } else if (id == 5) {
-          this.onOpenDialogPosition();
-        } else if (id == 7) {
-          this.apiPositionFrom.reset();
-
-          if (this.currentPositionForm) {
-            this.currentPositionForm = this.searchTree(
-              this.listDepartmentTree,
-              this.currentPositionForm.Code
-            );
-
-            this.apiPositionFrom.patchValue({
-              ...this.currentPositionForm,
-              Code: this.currentPositionForm.Code,
-              Province:
-                this.findProvinceIdByDistrict(this.currentPositionForm) ?? null,
-            });
-
-            this.selectedForm = 'position';
-            this.isPositionIdDisabled = true;
-            this.isFeildDisabled = true;
-            this.drawer.open();
-          }
-        }
+    // Nếu đang thao tác với Position → chỉ có thêm mới chức danh
+    else if (Ps_UtilObjectService.hasValue(this.currentPositionForm)) {
+      if (id === 3) {
+        this.onAddNewPosition();
       }
     }
 
     this.popupShow = false;
   }
+
+  onSelectedStatus(event: number) {
+  this.apiDepartmentForm.patchValue({
+    StatusID: event
+  });
+}
 
   /**
      * Tìm mã Code của department dựa vào một position.
@@ -1006,11 +1031,11 @@ export class Hri006DepartmentListComponent implements OnInit {
      * @param position Đối tượng position cần tìm department chứa nó.
      * @returns Mã Code của department nếu tìm thấy, ngược lại trả về null.
      */
-  findProvinceIdByDistrict(position: DTOPosition): number | null {
-    const province = this.listDepartmentTree.find((p) =>
+  findDepartmentIdByPosition(position: DTOPosition): number | null {
+    const department = this.listDepartmentTree.find((p) =>
       p.ListPosition?.some((d) => d.PositionID === position.PositionID)
     );
-    return province ? province.Code : null;
+    return department ? department.Code : null;
   }
 
 }
