@@ -160,15 +160,15 @@
             </div>
         </mat-drawer-content>
 
-        <!-- Drawer Tỉnh Thành-->
+        <!-- Drawer Bộ Phận-->
         <mat-drawer #formDrawer [mode]="'over'" position="end" disableClose>
 
             <div class="formInfo k-form" [formGroup]="apiDepartmentForm" *ngIf="selectedForm === 'department'">
                 <ng-container>
-                    <!-- PROVINCE FORM -->
+                    <!-- DEPARTMENT FORM -->
                     <legend>THÔNG TIN BỘ PHẬN</legend>
                     <div class="field">
-                        <div class="formProvinceAndDistrict">
+                        <div class="formDepartmentAndPosition">
                             <div class="item item1">
                                 <div class="label-impose">
                                     <div class="label-item"> Tên Đơn vị </div>
@@ -271,7 +271,8 @@
                                 <div class="lable">
                                     <span class="labelName">Thứ tự</span>
                                 </div>
-                                <kendo-numerictextbox [decimals]="0" format="n0" [step]="1" [min]="0"></kendo-numerictextbox>
+                                <kendo-numerictextbox [decimals]="0" format="n0" [step]="1"
+                                    [min]="0"></kendo-numerictextbox>
                             </div>
 
                             <div class="item item8">
@@ -280,9 +281,8 @@
                                 </div>
                                 <kendo-dropdownlist [loading]="isLoading" name="StatusName" fillMode="flat"
                                     [data]="ListStatus" textField="StatusName" valueField="Code"
-                                    formControlName="StatusID"
-                                    [defaultItem]="{StatusName: '-- Chọn --', Code: null }" [filterable]="true"
-                                    [valuePrimitive]="true" [popupSettings]="{appendTo:'component'}"
+                                    formControlName="StatusID" [defaultItem]="{StatusName: '-- Chọn --', Code: null }"
+                                    [filterable]="true" [valuePrimitive]="true" [popupSettings]="{appendTo:'component'}"
                                     (valueChange)="onSelectedDropdownList($event)"></kendo-dropdownlist>
                             </div>
                         </div>
@@ -323,89 +323,130 @@
 
             <div class="formInfo k-form" [formGroup]="apiPositionFrom" *ngIf="selectedForm === 'position'">
                 <ng-container>
-                    <!-- WARRD FORM -->
-                    <legend>THÔNG TIN PHƯỜNG XÃ</legend>
+                    <!-- POSITION FORM -->
+                    <legend>THÔNG TIN CHỨC DANH</legend>
                     <div class="field">
-                        <div class="formProvinceAndDistrict">
+                        <div class="formDepartmentAndPosition">
                             <div class="item item1">
                                 <div class="label-impose">
-                                    <div class="label-item">Tên Tiếng Việt </div>
+                                    <div class="label-item"> Tên chức danh </div>
                                     <div *ngIf="(isAllPers || isCanCreate)">
                                         <ng-container>
                                             <span class="impose"> (*) </span>
                                         </ng-container>
                                     </div>
                                 </div>
-                                <app-p-textbox formControlName="VNDistrict" propName="VNDistrict"
-                                    [disabled]="isFeildDisabled" #VNDistrict></app-p-textbox>
+                                <app-p-textbox formControlName="Position" propName="Position"
+                                    [disabled]="isFeildDisabled" #Department></app-p-textbox>
                             </div>
 
-                            <div class="item item2">
-                                <div class="label">Tên 日本語 </div>
-                                <app-p-textbox formControlName="JPDistrict" propName="JPDistrict"
-                                    [disabled]="isFeildDisabled" #JPDistrict></app-p-textbox>
+                            <div class="item-row">
+                                <div class="item">
+                                    <div class="label-impose">
+                                        <div class="label-item">Mã chức danh</div>
+                                        <div *ngIf="(isAllPers || isCanCreate)">
+                                            <ng-container>
+                                                <span class="impose"> (*) </span>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                    <app-p-textbox formControlName="PositionID" propName="PositionID"
+                                        [disabled]="isFeildDisabled"></app-p-textbox>
+                                </div>
+
+                                <div class="item checkbox-group">
+                                    <label>
+                                        <input type="checkbox" kendoCheckBox />
+                                        Là trưởng đơn vị
+                                    </label>
+
+                                    <label>
+                                        <input type="checkbox" kendoCheckBox />
+                                        Là q.lý điểm làm việc
+                                    </label>
+                                </div>
                             </div>
 
-                            <div class="item item3">
-                                <div class="label">Tên English </div>
-                                <app-p-textbox formControlName="ENDistrict" propName="ENDistrict"
-                                    [disabled]="isFeildDisabled" #ENDistrict></app-p-textbox>
+                            <div class="item">
+                                <div class="label">Bộ phận trực thuộc </div>
+
+                                <kendo-dropdowntree kendoDropDownTreeExpandable
+                                    [kendoDropDownTreeHierarchyBinding]="listDepartmentTree" textField="Department"
+                                    valueField="Code" childrenField="ListDepartment" formControlName="DepartmentID"
+                                    [filterable]="true" [expandOnFilter]="true"
+                                    (valueChange)="onSelectedDropdownList($event)"
+                                    [popupSettings]="{ appendTo: 'component' }" [loading]="isLoading">
+
+                                    <ng-template kendoDropDownTreeNodeTemplate let-dataItem>
+                                        <div [ngClass]="{'nullItem': dataItem.Code === null}">
+                                            <img loading="lazy" class="colName-icon"
+                                                src="assets/img/icon/icon_departmentGray.svg" />
+                                            {{ dataItem.Department }}
+                                        </div>
+                                    </ng-template>
+                                </kendo-dropdowntree>
                             </div>
 
-                            <div class="item item4">
+                            <div class="item item8">
+                                <div class="label">
+                                    <div class="labelName"> Chức danh quản lý hành chính </div>
+                                </div>
+                                <kendo-dropdownlist [loading]="isLoading" name="Position" fillMode="flat"
+                                    [data]="listPosition" textField="Position" valueField="Code"
+                                    formControlName="PositionID" [defaultItem]="{Position: '-- Chọn --', Code: null }"
+                                    [filterable]="true" [valuePrimitive]="true" [popupSettings]="{appendTo:'component'}"
+                                    (valueChange)="onSelectedPosition($event)"></kendo-dropdownlist>
+                            </div>
+
+                            <div class="item item1">
                                 <div class="label-impose">
-                                    <div class="label-item"> Mã hành chính </div>
+                                    <div class="label-item"> Phân nhóm </div>
                                     <div *ngIf="(isAllPers || isCanCreate)">
                                         <ng-container>
                                             <span class="impose"> (*) </span>
                                         </ng-container>
                                     </div>
                                 </div>
-                                <app-p-textbox formControlName="DistrictID" propName="DistrictID"
-                                    [disabled]="isPositionIdDisabled" #DistrictID></app-p-textbox>
+                                <kendo-dropdownlist [loading]="isLoading" name="PositionGroup" fillMode="flat"
+                                    [data]="listPositionGroup" textField="ListName" valueField="Code"
+                                    formControlName="PositionID" [defaultItem]="{ListName: '-- Chọn --', Code: null }"
+                                    [filterable]="true" [valuePrimitive]="true" [popupSettings]="{appendTo:'component'}"
+                                    (valueChange)="onSelectedPosition($event)"></kendo-dropdownlist>
                             </div>
 
-                            <div class="item item4">
+                            <div class="item item1">
                                 <div class="label-impose">
-                                    <div class="label-item"> Tỉnh thành </div>
+                                    <div class="label-item"> Vai trò sử dụng tài nguyên hệ thống </div>
                                     <div *ngIf="(isAllPers || isCanCreate)">
                                         <ng-container>
                                             <span class="impose"> (*) </span>
                                         </ng-container>
                                     </div>
                                 </div>
-                                <p-kendo-dropdownlist [data]="listDepartmentTree" formControlName="Province"
-                                    [textField]="'VNProvince'" [valueField]="'Code'" [valuePrimitive]="true"
-                                    [filterable]="true" (valueChange)="onSelectedDropdownList($event)"
-                                    [disabled]="isFeildDisabled">
-                                </p-kendo-dropdownlist>
+                                <kendo-dropdownlist [loading]="isLoading" name="PositionRole" fillMode="flat"
+                                    [data]="listPositionRole" textField="RoleName" valueField="Code"
+                                    formControlName="PositionID" [defaultItem]="{RoleName: '-- Chọn --', Code: null }"
+                                    [filterable]="true" [valuePrimitive]="true" [popupSettings]="{appendTo:'component'}"
+                                    (valueChange)="onSelectedPosition($event)"></kendo-dropdownlist>
                             </div>
 
-                            <div class="item item5">
-                                <div class="label">Thứ tự hiển thị</div>
-                                <app-p-numeric-textbox formControlName="OrderBy" propName="OrderBy" [format]="'n0'"
-                                    [spinners]="false" [min]="0" [disabled]="isFeildDisabled"
-                                    #OrderBy></app-p-numeric-textbox>
-                            </div>
-
-                            <div class="item item6">
-                                <div class="label">Tình trạng</div>
-                                <div class="radio-group">
-                                    <div class="radio-item">
-                                        <label class="k-radio-label">
-                                            <input type="radio" formControlName="IsDelete" [value]="0" #IsDelete
-                                                class="k-radio" />
-                                            <span>Áp dụng</span>
-                                        </label>
-                                    </div>
-                                    <div class="radio-item">
-                                        <label class="k-radio-label">
-                                            <input type="radio" formControlName="IsDelete" [value]="1" #IsDelete
-                                                class="k-radio" placeholder="Ngưng áp dụng" />
-                                            <span>Ngưng áp dụng</span>
-                                        </label>
-                                    </div>
+                            <div class="item item7">
+                                <div class="lable">
+                                    <span class="labelName">Thứ tự</span>
                                 </div>
+                                <kendo-numerictextbox [decimals]="0" format="n0" [step]="1"
+                                    [min]="0"></kendo-numerictextbox>
+                            </div>
+
+                            <div class="item item8">
+                                <div class="label">
+                                    <div class="labelName"> Tình trạng </div>
+                                </div>
+                                <kendo-dropdownlist [loading]="isLoading" name="StatusName" fillMode="flat"
+                                    [data]="ListStatus" textField="StatusName" valueField="Code"
+                                    formControlName="StatusID" [defaultItem]="{StatusName: '-- Chọn --', Code: null }"
+                                    [filterable]="true" [valuePrimitive]="true" [popupSettings]="{appendTo:'component'}"
+                                    (valueChange)="onSelectedDropdownList($event)"></kendo-dropdownlist>
                             </div>
                         </div>
                     </div>

@@ -419,7 +419,7 @@
           flex: 1;
           overflow-y: auto;
 
-          .formProvinceAndDistrict {
+          .formDepartmentAndPosition {
             height: 100%;
             padding: 10px 15px 0 15px;
             display: flex;
@@ -478,6 +478,20 @@
                       display: none;
                     }
                   }
+                }
+              }
+
+              .checkbox-group {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+
+                label {
+                  display: flex;
+                  align-items: center;
+                  gap: 3px; 
+                  font-weight: 500;
+                  color: #343A40;
                 }
               }
             }
@@ -593,20 +607,20 @@
                 align-items: center;
               }
 
-               .labelName {
-                  font-weight: 700;
-                  color: #343A40;
+              .labelName {
+                font-weight: 700;
+                color: #343A40;
 
-                  .symbol {
-                    padding-left: 5px;
-                    color: $dark-red;
-                    font-weight: bold;
-                  }
-
-                  .line {
-                    font-size: 17px;
-                  }
+                .symbol {
+                  padding-left: 5px;
+                  color: $dark-red;
+                  font-weight: bold;
                 }
+
+                .line {
+                  font-size: 17px;
+                }
+              }
             }
           }
         }
