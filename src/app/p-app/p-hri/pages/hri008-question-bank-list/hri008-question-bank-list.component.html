@@ -1,112 +1,235 @@
 <div id="hri008-question-bank-list" class="app-drawer-container">
-    <!-- HEADER 1: BREAD CUM AND BUTTON CREATE -->
-    <div class="header header-1">
-        <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
-        <div class="nav-btn nav-crud" >
-            <button kendoButton class="upload k-button" (click)="onAdd()"  [disabled]="!isFilterActive">
-                <span class="k-button-icon k-icon k-i-export ng-star-inserted"></span>
-            </button>
+  <!-- HEADER 1: BREAD CUM AND BUTTON CREATE -->
+  <div class="header header-1">
+    <app-p-kendo-breadcrumb (loadData)="reloadData()"></app-p-kendo-breadcrumb>
+    <div class="nav-btn nav-crud">
+      <button
+        kendoButton
+        class="upload k-button"
+        (click)="onUploadFile()"
+        [disabled]="!isFilterActive"
+      >
+        <span class="k-button-icon k-icon k-i-export ng-star-inserted"></span>
+      </button>
 
-            <button kendoButton class="template k-button" (click)="onAdd()"  [disabled]="!isFilterActive">
-                <span class="k-button-icon k-icon k-i-import ng-star-inserted"></span>
-                Template
-            </button>
+      <button
+        kendoButton
+        class="template k-button"
+        (click)="onDownloadFile()"
+        [disabled]="!isFilterActive"
+      >
+        <span class="k-button-icon k-icon k-i-import ng-star-inserted"></span>
+        Template
+      </button>
 
-            <button kendoButton class=" onAddBtn k-button btn-hachi hachi-primary" [icon]="'plus'"  [disabled]="!isFilterActive"
-            (click)="onAdd()">
-            THÊM MỚI
-            </button>
-        </div>
+      <button
+        kendoButton
+        class="onAddBtn k-button btn-hachi hachi-primary"
+        [icon]="'plus'"
+        [disabled]="!isFilterActive"
+        (click)="onAdd()"
+      >
+        THÊM MỚI
+      </button>
+    </div>
+  </div>
+
+  <!-- HEADER 2: SEARCH -->
+  <div class="header header-2">
+    <div id="functionbar">
+      <app-search-filter-group
+        class="search-btn"
+        placeholder="Tìm theo mã và câu hỏi"
+        [fields]="['']"
+        (valueChange)="onSearch($event)"
+        (onReset)="onResetFilter()"
+        #search
+        [disabled]="!isFilterActive"
+      >
+      </app-search-filter-group>
     </div>
 
-    <!-- HEADER 2: SEARCH -->
-    <div class="header header-2">
-        <div id="functionbar">
-            <app-search-filter-group class="search-btn" placeholder="Tìm theo mã và câu hỏi" [fields]="['']" (valueChange)="onSearch($event)"
-            (onReset)="onResetFilter()" #search [disabled]="!isFilterActive">
-            </app-search-filter-group>
-        </div>
-
-        <div class="checkbox">
-            <div class="checkbox0">
-                <app-checkbox-button-group
-                [title]="'Đang soạn thảo'"
-                [checked]="isCheckedStatus0"
-                (selectedChange)="onFilterCheckboxChange('dangSoanThao')"
-                [disabled]="!isFilterActive"
-                ></app-checkbox-button-group>
-            </div>
-            <div class="checkbox1">
-                <app-checkbox-button-group
-                [title]="'Gửi duyệt'"
-                [checked]="isCheckedStatus1"
-                (selectedChange)="onFilterCheckboxChange('guiDuyet')"
-                [disabled]="!isFilterActive"
-                ></app-checkbox-button-group>
-            </div>
-            <div class="checkbox2">
-                <app-checkbox-button-group
-                [title]="'Đã duyệt'"
-                [checked]="isCheckedStatus2"
-                (selectedChange)="onFilterCheckboxChange('daDuyet')"
-                [disabled]="!isFilterActive"
-                ></app-checkbox-button-group>
-            </div>
-            <div class="checkbox3">
-                <app-checkbox-button-group
-                [title]="'Ngừng áp dụng'"
-                [checked]="isCheckedStatus3"
-                (selectedChange)="onFilterCheckboxChange('ngungApDung')"
-                [disabled]="!isFilterActive"
-                ></app-checkbox-button-group>
-            </div>
-        </div>
+    <div class="checkbox">
+      <div class="checkbox0">
+        <app-checkbox-button-group
+          [title]="'Đang soạn thảo'"
+          [checked]="isCheckedStatus0"
+          (selectedChange)="onFilterCheckboxChange('dangSoanThao')"
+          [disabled]="!isFilterActive"
+        ></app-checkbox-button-group>
+      </div>
+      <div class="checkbox1">
+        <app-checkbox-button-group
+          [title]="'Gửi duyệt'"
+          [checked]="isCheckedStatus1"
+          (selectedChange)="onFilterCheckboxChange('guiDuyet')"
+          [disabled]="!isFilterActive"
+        ></app-checkbox-button-group>
+      </div>
+      <div class="checkbox2">
+        <app-checkbox-button-group
+          [title]="'Đã duyệt'"
+          [checked]="isCheckedStatus2"
+          (selectedChange)="onFilterCheckboxChange('daDuyet')"
+          [disabled]="!isFilterActive"
+        ></app-checkbox-button-group>
+      </div>
+      <div class="checkbox3">
+        <app-checkbox-button-group
+          [title]="'Ngừng áp dụng'"
+          [checked]="isCheckedStatus3"
+          (selectedChange)="onFilterCheckboxChange('ngungApDung')"
+          [disabled]="!isFilterActive"
+        ></app-checkbox-button-group>
+      </div>
     </div>
+  </div>
 
-    <div class="grid-wrapper">
-        <app-p-kendo-grid class="grid" [data]="gridData" [scrollable]="'none'" [loading]="isLoading" [selectable]="selectable" [pageSize]="25" 
-        [pageable]="true" [skip]="gridState.skip" [getActionDropdownCallback]="getActionDropdownCallback" [onActionDropdownClickCallback]="onActionDropdownClickCallback" 
-        [onPageChangeCallback]="onPageChangeCallback" [allowedMoreActionDropdown]="allowActionDropdown"
-        [getSelectionPopupCallback]="getSelectionPopupCallback" [onSelectCallback]="onSelectCallback"> 
+  <div class="grid-wrapper">
+    <app-p-kendo-grid
+      class="grid"
+      [data]="gridData"
+      [scrollable]="'none'"
+      [loading]="isLoading"
+      [selectable]="selectable"
+      [pageSize]="25"
+      [pageable]="true"
+      [skip]="gridState.skip"
+      [getActionDropdownCallback]="getActionDropdownCallback"
+      [onActionDropdownClickCallback]="onActionDropdownClickCallback"
+      [onPageChangeCallback]="onPageChangeCallback"
+      [allowedMoreActionDropdown]="allowActionDropdown"
+      [onSelectedPopupBtnCallback]="onSelectedPopupBtnCallback"
+      [getSelectionPopupCallback]="getSelectionPopupCallback"
+      [onSelectCallback]="onSelectCallback"
+    >
+      <kendo-grid-checkbox-column
+        [width]="50"
+        [showSelectAll]="true"
+      ></kendo-grid-checkbox-column>
 
-            <kendo-grid-checkbox-column [width]="50" [showSelectAll]="true"></kendo-grid-checkbox-column>
+      <kendo-grid-column
+        field="Remark"
+        title="Câu hỏi"
+        class="col_Remark"
+        headerClass="col_Remark"
+        [width]="600"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="text-question">
+            <div class="text-remark" title="{{ dataItem.Remark }}">
+              {{ dataItem.Remark }}
+            </div>
+            <div class="text-typeOfQuestionName">
+              <div class="text-questionid" title="{{ dataItem.QuestionID }}">
+                {{ dataItem.QuestionID }}
+              </div>
+              <span>|</span>
+              <div
+                class="text-typeOfQuestionName"
+                title="{{ dataItem.TypeOfQuestionName }}"
+              >
+                {{ dataItem.TypeOfQuestionName }}
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </kendo-grid-column>
 
-            <kendo-grid-column field="Remark" title="Câu hỏi" class="col_Remark" headerClass="col_Remark"
-            [width]="600">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="text-question">
-                        <div class="text-remark" title="{{dataItem.Remark}}">{{dataItem.Remark}}</div>
-                        <div class="text-typeOfQuestionName">
-                            <div class="text-questionid" title="{{dataItem.QuestionID}}">{{dataItem.QuestionID}}</div>
-                            <span>|</span>
-                            <div class="text-typeOfQuestionName"title="{{dataItem.TypeOfQuestionName}}">{{dataItem.TypeOfQuestionName}}</div>
-                        </div>
-                    </div>
-                </ng-template>
-            </kendo-grid-column>
+      <kendo-grid-column
+        field="CategoryName"
+        title="Phân nhóm"
+        class="col_CategoryName"
+        headerClass="col_CategoryName"
+        [width]="500"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="text-CategoryName" title="{{ dataItem.CategoryName }}">
+            {{ dataItem.CategoryName }}
+          </div>
+        </ng-template>
+      </kendo-grid-column>
 
-            <kendo-grid-column field="CategoryName" title="Phân nhóm" class="col_CategoryName" headerClass="col_CategoryName"
-            [width]="500">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="text-CategoryName" title="{{dataItem.CategoryName}}">{{dataItem.CategoryName}}</div>
-                </ng-template>
-            </kendo-grid-column>
+      <kendo-grid-column
+        field="Duration"
+        title="Thời gian làm"
+        class="col_Duration"
+        headerClass="col_Duration"
+        [width]="300"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div class="text-time" title="{{ dataItem.Duration }}">
+            {{ dataItem.Duration }}
+          </div>
+        </ng-template>
+      </kendo-grid-column>
 
-            <kendo-grid-column field="Duration" title="Thời gian làm" class="col_Duration" headerClass="col_Duration"
-            [width]="300">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class="text-time" title="{{dataItem.Duration}}">{{dataItem.Duration}}</div>
-                </ng-template>
-            </kendo-grid-column>
+      <kendo-grid-column
+        field="StatusName"
+        title="Tình trạng"
+        class="col_StatusName"
+        headerClass="col_StatusName"
+        [width]="300"
+        class="colStatus"
+      >
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <div
+            class="text-status"
+            [innerHTML]="dataItem.StatusName | colorStatus : dataItem.StatusID"
+          ></div>
+        </ng-template>
+      </kendo-grid-column>
+    </app-p-kendo-grid>
+  </div>
 
-            <kendo-grid-column field="StatusName" title="Tình trạng" class="col_StatusName" headerClass="col_StatusName"
-            [width]="300" class="colStatus">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                    <div class = "text-status" [innerHTML]="dataItem.StatusName | colorStatus:dataItem.StatusID">
-                    </div>
-                </ng-template>
-            </kendo-grid-column>
+  <!-- Start: Dialog verify -->
+  <kendo-dialog
+    *ngIf="openedDialog"
+    (close)="onCloseDialog()"
+    [minWidth]="250"
+    [width]="450"
+    [minHeight]="150"
+    class="wrapper-dialog"
+  >
+    <!-- Start: header dialog  -->
+    <kendo-dialog-titlebar>
+      <div class="title-delete d-flex">
+        <span class="btn-title-dialog"
+          ><img src="assets/img/icon/icon_warning.svg" alt=""
+        /></span>
+        <span>XÓA CÂU HỎI?</span>
+      </div>
+    </kendo-dialog-titlebar>
+    <!-- End: header dialog  -->
 
-        </app-p-kendo-grid>
-    </div>
+    <!-- Start: Body dialog  -->
+    <kendo-dialog-messages>
+        <div class="content-primary">
+          <strong><p>Bạn chắc chắn muốn xóa các câu hỏi này không?</p></strong>
+        </div>
+        <p class="content-sub">
+          Câu hỏi bị xóa sẽ <span style="color: red">KHÔNG</span> thể khôi phục
+          lại.
+        </p>
+    </kendo-dialog-messages>
+    <!-- Emd: Body dialog  -->
+
+    <!-- Start: action dialog  -->
+    <kendo-dialog-actions>
+      <button kendoButton (click)="onCloseDialog()" class="cancel">
+        KHÔNG XÓA
+      </button>
+      <button
+        kendoButton
+        imageUrl="assets/img/icon/icon_bin.svg"
+        (click)="onDeleteDialog('yes')"
+        class="delete"
+      >
+        XÓA
+      </button>
+    </kendo-dialog-actions>
+    <!-- End: action dialog  -->
+  </kendo-dialog>
+  <!-- End: Dialog  -->
 </div>
+<app-import-popup [uploadEventHandlerCallback]="uploadEventHandlerCallback"></app-import-popup>
