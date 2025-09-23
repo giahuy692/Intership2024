@@ -205,13 +205,14 @@
 
                             <div class="item">
                                 <div class="label">Bộ phận trực thuộc </div>
-
+                                {{listDepartmentTree[0].Code}}
                                 <kendo-dropdowntree kendoDropDownTreeExpandable
                                     [kendoDropDownTreeHierarchyBinding]="listDepartmentTree" textField="Department"
                                     valueField="Code" childrenField="ListDepartment" formControlName="ParentID"
                                     [filterable]="true" [expandOnFilter]="true"
                                     (valueChange)="onSelectedDropdownList($event)"
-                                    [popupSettings]="{ appendTo: 'component' }" [loading]="isLoading">
+                                    [popupSettings]="{ appendTo: 'component' }" [loading]="isLoading" [valuePrimitive]="true" 
+                                    [defaultItem]="{ Code: null, Department: '-- Không lựa chọn --' }">
 
                                     <ng-template kendoDropDownTreeNodeTemplate let-dataItem>
                                         <div [ngClass]="{'nullItem': dataItem.Code === null}">

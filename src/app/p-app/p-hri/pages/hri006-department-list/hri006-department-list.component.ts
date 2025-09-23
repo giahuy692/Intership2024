@@ -36,7 +36,7 @@ export class Hri006DepartmentListComponent implements OnInit {
   listActionTree: DTOAction[] = []
   listModuleTree: DTOModule[] = []
   fullListModuleTree: DTOModule[] = []
-  defaultParent: any = { Code: null, Department: 'Không lựa chọn' };
+  defaultParent: any = { Code: -1, Department: 'Không lựa chọn' };
 
   // Danh sách điểm làm việc (data cho dropdown)
   ListDepartment: Array<{ Code: number, Name: string }> = [];
@@ -136,7 +136,7 @@ export class Hri006DepartmentListComponent implements OnInit {
     ListLocationCode: new FormControl(''),
     ListDepartment: new FormControl([]),
     ListPosition: new FormControl([]),
-    ListLocation: new FormControl([], [Validators.required, Validators.pattern(/\S+/)]),
+    ListLocation: new FormControl(null, [Validators.required]),
   });
 
   //dto form Position
@@ -293,10 +293,15 @@ export class Hri006DepartmentListComponent implements OnInit {
       Code: 0,
       DepartmentID: '',
       Department: '',
-      ParentID: this.defaultParent, // patch mặc định
+      ParentID: null, // patch mặc định
       StatusID: 0,
       StatusName: 'Tạo mới'
     });
+
+    // this.apiDepartmentForm.patchValue({
+    //   ParentID: this.listDepartmentTree[0].Code
+    // })
+    console.log(this.apiDepartmentForm.getRawValue());
 
     this.isDepartmentIdDisabled = false;
     this.drawer.open();
@@ -309,7 +314,7 @@ export class Hri006DepartmentListComponent implements OnInit {
       Code: 0,
       DepartmentID: '',
       Department: '',
-      ParentID: this.currentDepartmentForm ?? this.defaultParent,
+      ParentID: this.currentDepartmentForm?.Code ?? null,
       StatusID: 0,
       StatusName: 'Tạo mới'
     });
@@ -352,6 +357,7 @@ export class Hri006DepartmentListComponent implements OnInit {
 
   // Hàm đóng form
   onCloseForm() {
+    console.log(this.apiDepartmentForm.getRawValue());
     this.drawer.close();
     this.apiDepartmentForm.reset()
     this.apiPositionFrom.reset()
@@ -453,10 +459,16 @@ export class Hri006DepartmentListComponent implements OnInit {
 
           if (Ps_UtilObjectService.hasValue(res) && res.StatusCode == 0) {
 
-            this.listDepartmentTree = res.ObjectReturn.map((d: any) => ({
+            // this.listDepartmentTree = res.ObjectReturn.map((d: any) => ({
+            //   ...d,
+            //   ListLocation: [],   // xoá location
+            // }));
+            const departments = res.ObjectReturn.map((d: any) => ({
               ...d,
               ListLocation: [],   // xoá location
             }));
+            console.log(this.listDepartmentTree);
+            this.listDepartmentTree = departments;
             this.listDepartmentTree.unshift(this.defaultParent);
 
             this.rootData = this.listDepartmentTree;
@@ -470,10 +482,6 @@ export class Hri006DepartmentListComponent implements OnInit {
             this.ListStatus = allStatus.filter(
               (value, index, self) =>
                 index === self.findIndex((t) => t.Code === value.Code)
-            );
-          } else {
-            this.layoutService.onError(
-              `Đã xảy ra lỗi khi ${ctx}: ${res.ErrorString}`
             );
           }
         },
@@ -644,7 +652,7 @@ export class Hri006DepartmentListComponent implements OnInit {
       );
   }
 
-  // hàm xử lý Update Province
+  // hàm xử lý Update Department
   onUpdateDepartment() {
     this.apiDepartmentForm.markAllAsTouched();
 
@@ -660,7 +668,8 @@ export class Hri006DepartmentListComponent implements OnInit {
     if (this.apiDepartmentForm.invalid) {
       const requiredFields = [
         { name: 'Department', label: 'Tên Bộ phận' },
-        { name: 'DepartmentID', label: 'Mã Bộ phận' }
+        { name: 'DepartmentID', label: 'Mã Bộ phận' },
+        { name: 'ListLocation', label: 'Điểm làm việc' },
       ];
 
       const errorFields = requiredFields
@@ -926,26 +935,26 @@ export class Hri006DepartmentListComponent implements OnInit {
   }
 
   APIGetListPositionRole() {
-  this.isLoading = true;
-  this.organizationAPIService
-    .GetListPositionRole()
-    .pipe(takeUntil(this.ngUnsubscribe))
-    .subscribe(
-      (res: any) => {
-        this.isLoading = false;
-        if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
-          this.listPositionRole = res.ObjectReturn.map((r: any) => ({
-            Code: r.Code,
-            RoleName: r.RoleName
-          }));
+    this.isLoading = true;
+    this.organizationAPIService
+      .GetListPositionRole()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe(
+        (res: any) => {
+          this.isLoading = false;
+          if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
+            this.listPositionRole = res.ObjectReturn.map((r: any) => ({
+              Code: r.Code,
+              RoleName: r.RoleName
+            }));
+          }
+        },
+        (error) => {
+          this.isLoading = false;
+          this.layoutService.onError(`Lỗi API GetListPositionRole: ${error}`);
         }
-      },
-      (error) => {
-        this.isLoading = false;
-        this.layoutService.onError(`Lỗi API GetListPositionRole: ${error}`);
-      }
-    );
-}
+      );
+  }
 
   // region Popup
   // Hiển thị trạng thái của popup
@@ -1081,7 +1090,7 @@ export class Hri006DepartmentListComponent implements OnInit {
             Code: 0,
             DepartmentID: '',
             Department: '',
-            ParentID: this.currentDepartmentForm, // gán parent = bộ phận hiện tại
+            ParentID: this.currentDepartmentForm.Code ?? null, // gán parent = bộ phận hiện tại
             StatusID: 0,
             StatusName: 'Tạo mới'
           });
