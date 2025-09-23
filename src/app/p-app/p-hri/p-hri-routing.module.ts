@@ -20,17 +20,11 @@ const routes: Routes = [
       },
       {
         path: 'hri008-question-bank-list/:idCompany',
-        component: Hri008QuestionBankListComponent,
-        children: [
-          {
-            path: '',
-            component: PHriComponent,
-          },
-          {
-            path: 'hri008-question-bank-detail/:idCompany',
-            component: Hri008QuestionBankDetailComponent,
-          }
-        ]
+        component: Hri008QuestionBankListComponent
+      },
+      {
+        path: 'hri008-question-bank-detail/:idCompany',
+        component: Hri008QuestionBankDetailComponent,
       }
     ],
   },

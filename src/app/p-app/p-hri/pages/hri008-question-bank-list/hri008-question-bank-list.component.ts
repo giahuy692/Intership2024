@@ -2,14 +2,16 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { DTOQuestion } from '../../shared/dto/DTOQuestion.dto';
 import { PS_HelperMenuService } from 'src/app/p-app/p-layout/services/p-menu.helper.service';
 import { takeUntil } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { Ps_UtilObjectService } from 'src/app/p-lib';
 import { FilterDescriptor, State } from '@progress/kendo-data-query';
 import { LayoutService } from 'src/app/p-app/p-layout/services/layout.service';
 import { QuestionGroupAPIService } from '../../shared/services/question-api.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import { GridDataResult, SelectableSettings } from '@progress/kendo-angular-grid';
-import { MenuDataItem } from 'src/app/p-app/p-layout/dto/menu-data-item.dto';
+import { MenuDataItem, ModuleDataItem } from 'src/app/p-app/p-layout/dto/menu-data-item.dto';
+import { PayslipService } from '../../shared/services/payslip.service';
+import { MarBannerAPIService } from 'src/app/p-app/p-marketing/shared/services/marbanner-api.service';
 
 @Component({
   selector: 'app-hri008-question-bank-list',
@@ -32,10 +34,14 @@ export class Hri008QuestionBankListComponent  implements OnInit {
 
   gridData: GridDataResult = { data: [], total: 0 };
 
+  // Biến data của DTO Question
   dataQuestion: DTOQuestion = new DTOQuestion();
 
   // Biến loading
   isLoading: boolean = false
+
+  // Biến Import & Export
+  excelValid: boolean = true
 
   // Biến xử lý tìm kiếm
   searchKey: string = ''
@@ -54,9 +60,17 @@ export class Hri008QuestionBankListComponent  implements OnInit {
   };
   allowActionDropdown = ['detail'];
 
+  // Biến move question
+  changeModuleData: Subscription;
+
   // Biến Dropdown
   onActionDropdownClickCallback: Function
   getActionDropdownCallback: Function
+  onPageChangeCallback: Function
+  onSelectCallback: Function
+  onSelectedPopupBtnCallback: Function
+  getSelectionPopupCallback: Function
+  uploadEventHandlerCallback: Function
 
   // Biến phân quyền
   justLoadedChangePermissionAPI: boolean = true
@@ -70,13 +84,25 @@ export class Hri008QuestionBankListComponent  implements OnInit {
     StatusName: new FormControl(0), 
   })
 
+  // Biến disabled
+  isFilterActive: boolean = true;
+
+  // Biến danh sách question
+  arrQuestion: DTOQuestion [] = []
+
   // Biến unsubcribe
   ngUnsubscribe = new Subject<void>();
+
+  // Biến dialog
+  openedDialog: boolean = false;
 
   constructor( 
       public menuService: PS_HelperMenuService,
       private hriAPIService: QuestionGroupAPIService,
       public layoutService: LayoutService,
+      public servicePayslip: PayslipService,
+      private questionApiService: QuestionGroupAPIService,
+      public apiService: MarBannerAPIService,
   ) {}
 
   ngOnInit(): void { 
@@ -91,6 +117,11 @@ export class Hri008QuestionBankListComponent  implements OnInit {
 
     this.onActionDropdownClickCallback = this.onActionDropdownClick.bind(this)
     this.getActionDropdownCallback = this.getActionDropdown.bind(this)
+    this.onPageChangeCallback = this.onPageChange.bind(this)
+    this.onSelectCallback = this.onSelectChange.bind(this)
+    this.onSelectedPopupBtnCallback = this.onSelectedPopupBtnClick.bind(this)
+    this.getSelectionPopupCallback = this.onGetSelectionPopup.bind(this);
+    this.uploadEventHandlerCallback = this.onUploadEventHandler.bind(this);
   }
 
   // Hàm xử lý khi ấn vào breadcrumb
@@ -102,9 +133,48 @@ export class Hri008QuestionBankListComponent  implements OnInit {
     this.isCheckedStatus3 = false;
     this.APIGetListQuestion(this.gridState)
   }
+  
+  // Hàm xử lý khi ấn btn thêm mới
+  onAdd() {
+    this.dataQuestion = new DTOQuestion();
+    this.onOpenDetail();
+  }
 
+  // Hàm điều hướng qua trang khác
   onOpenDetail() {
+    this.changeModuleData = this.menuService
+      .changeModuleData()
+      .subscribe((item: ModuleDataItem) => {
+        this.servicePayslip.setCacheQuestion(this.dataQuestion);
+        var parent = item.ListMenu.find(
+          (f) =>
+            f.Code.includes('hriCompetency')
+        );
 
+        if (
+          Ps_UtilObjectService.hasValue(parent) &&
+          Ps_UtilObjectService.hasListValue(parent.LstChild)
+        ) {
+          var detail = parent.LstChild.find(
+            (f) =>
+              f.Code.includes('hri008-question-bank-list') ||
+              f.Link.includes('hr008-question-bank-list')
+          );
+
+          if (
+            Ps_UtilObjectService.hasValue(detail) &&
+            Ps_UtilObjectService.hasListValue(detail.LstChild)
+          ) {
+            var detail2 = detail.LstChild.find(
+              (f) =>
+                f.Code.includes('hri008-question-bank-detail') ||
+                f.Link.includes('hri008-question-bank-detail')
+            );
+            this.menuService.activeMenu(detail2);
+
+          }
+        }
+      });
   }
 
   // Hàm xử lý reset
@@ -235,51 +305,125 @@ export class Hri008QuestionBankListComponent  implements OnInit {
   }
 
   /**
-   * Xử lý khi người dùng chọn action từ dropdown.
-   *
-   * @param menu Action được chọn.
-   * @param item Dữ liệu đơn vị đóng gói liên quan.
-   */
-  onActionDropdownClick(menu: MenuDataItem, item: DTOQuestion) { 
-    console.log("Chọn action:", menu, "cho câu hỏi:", item);
-  }
-
-  /**
-   * Tạo danh sách action cho dropdown dựa trên quyền của người dùng.
-   *
-   * @param moreActionDropdown Mảng chứa các action menu.
-   * @returns Danh sách action menu sau khi xử lý.
-   */
-  getActionDropdown(moreActionDropdown: MenuDataItem[], dataItem: DTOQuestion) {
+  * Tạo danh sách action cho dropdown dựa trên row (DTOQuestion).
+  *
+  * @param moreActionDropdown Mảng chứa các action menu.
+  * @param item Câu hỏi đang chọn.
+  * @returns Danh sách action menu sau khi xử lý.
+  */
+  getActionDropdown(moreActionDropdown: MenuDataItem[], item: DTOQuestion) {
     moreActionDropdown = [];
-     this.dataQuestion = { ...dataItem };
-    var statusID = this.dataQuestion.StatusID;
-    const ctx = 'câu hỏi';
+
+    if (!item) {
+      return moreActionDropdown;
+    }
+
+    const statusID = item.StatusID;
 
     if (statusID === 0) {
-      moreActionDropdown.push({ Name: "Chỉnh sửa", Code: "pencil", Link: "edit", Actived: true, LstChild: [], });
-      moreActionDropdown.push({ Name: "Gửi duyệt", Code: "redo", Link: "redo", Actived: true });
-      moreActionDropdown.push({ Name: "Xóa", Code: "trash", Link: "delete", Actived: true });
+      moreActionDropdown.push(
+        { Name: "Chỉnh sửa", Code: "pencil", Link: "edit", Actived: true, Type: "StatusID" },
+        { Name: "Gửi duyệt", Code: "redo", Link: "1", Actived: true, Type: "StatusID" },
+        { Name: "Xóa", Code: "trash", Link: "delete", Actived: true, Type: "StatusID" }
+      );
     } else if (statusID === 1) {
-      moreActionDropdown.push({ Name: "Chỉnh sửa", Code: "pencil", Link: "edit", Actived: true });
-      moreActionDropdown.push({ Name: "Phê duyệt", Code: "check-outline", Link: "check-outline", Actived: true });
-      moreActionDropdown.push({ Name: "Trả về", Code: "undo", Link: "undo", Actived: true });
+      moreActionDropdown.push(
+        { Name: "Chỉnh sửa", Code: "pencil", Link: "edit", Actived: true, Type: "StatusID" },
+        { Name: "Phê duyệt", Code: "check-outline", Link: "2", Actived: true, Type: "StatusID" },
+        { Name: "Trả về", Code: "undo", Link: "4", Actived: true, Type: "StatusID" }
+      );
     } else if (statusID === 2) {
-      moreActionDropdown.push({ Name: "Xem chi tiết", Code: "eye", Link: "view", Actived: true });
-      moreActionDropdown.push({ Name: "Ngưng áp dụng", Code: "minus-outline", Link: "minus-outline", Actived: true });
+      moreActionDropdown.push(
+        { Name: "Xem chi tiết", Code: "eye", Link: "view", Actived: true, Type: "StatusID" },
+        { Name: "Ngưng áp dụng", Code: "minus-outline", Link: "3", Actived: true, Type: "StatusID" }
+      );
     } else if (statusID === 3) {
-      moreActionDropdown.push({ Name: "Xem chi tiết", Code: "eye", Link: "view", Actived: true });
-      moreActionDropdown.push({ Name: "Phê duyệt", Code: "eye", Link: "view", Actived: true });
-      moreActionDropdown.push({ Name: "Trả về", Code: "undo", Link: "undo", Actived: true });
+      moreActionDropdown.push(
+        { Name: "Xem chi tiết", Code: "eye", Link: "view", Actived: true, Type: "StatusID" },
+        { Name: "Phê duyệt", Code: "check-outline", Link: "2", Actived: true, Type: "StatusID" },
+        { Name: "Trả về", Code: "undo", Link: "4", Actived: true, Type: "StatusID" }
+      );
     } else if (statusID === 4) {
-      moreActionDropdown.push({ Name: "Chỉnh sửa", Code: "pencil", Link: "edit", Actived: true });
-      moreActionDropdown.push({ Name: "Gửi duyệt", Code: "redo", Link: "redo", Actived: true });
+      moreActionDropdown.push(
+        { Name: "Chỉnh sửa", Code: "pencil", Link: "edit", Actived: true, Type: "StatusID" },
+        { Name: "Gửi duyệt", Code: "redo", Link: "1", Actived: true, Type: "StatusID" }
+      );
     }
 
     return moreActionDropdown;
   }
 
-  getSelectionPopupCallback = (selectedRows: any[]) => {
+  /**
+   * Xử lý khi người dùng chọn action từ dropdown.
+   *
+   * @param menu Action được chọn.
+   * @param item Dữ liệu đơn vị đóng gói liên quan.
+   */
+  // Action dropdownlist
+  onActionDropdownClick(menu: MenuDataItem, item: DTOQuestion) {
+    if (!menu?.Code) return;
+
+    if (menu.Link === 'delete' || menu.Code === 'trash') {
+      if (item?.StatusID === 0) {
+        this.arrQuestion = [item];
+        this.openedDialog = true;
+      }
+      return;
+    }
+
+    // Xử lý mở detail
+    if (menu.Link === 'edit' || menu.Code === 'pencil' || menu.Code === 'eye' || menu.Link === 'view') {
+      this.dataQuestion = item;
+      this.onOpenDetail();
+    }
+
+    // Xử lý cập nhật trạng thái
+    if (menu.Type === 'StatusID') {
+      this.dataQuestion = { ...item, StatusID: parseInt(menu.Link, 10) };
+
+      let listdataUpdate: DTOQuestion[] = [];
+
+      switch (menu.Link) {
+        case '1': // Gửi duyệt: chỉ StatusID 0 | 4
+          if (item.StatusID === 0 || item.StatusID === 4) {
+            listdataUpdate.push(this.dataQuestion);
+          }
+          break;
+
+        case '2': // Phê duyệt: chỉ StatusID 1 | 3
+          if (item.StatusID === 1 || item.StatusID === 3) {
+            listdataUpdate.push(this.dataQuestion);
+          }
+          break;
+
+        case '3': // Ngưng áp dụng: chỉ StatusID 2
+          if (item.StatusID === 2) {
+            listdataUpdate.push(this.dataQuestion);
+            console.log(listdataUpdate);
+          }
+          break;
+
+        case '4': // Trả về: chỉ StatusID 1 | 3
+          if (item.StatusID === 1 || item.StatusID === 3) {
+            listdataUpdate.push(this.dataQuestion);
+          }
+          break;
+      }
+
+      if (listdataUpdate.length > 0) {
+        this.APIUpdateQuestionStatus(listdataUpdate, this.dataQuestion.StatusID);
+      }
+      return;
+    }
+  }
+
+  // Hàm xử lý khi chọn page
+  onSelectChange(isSelectedRowitemDialogVisible) {
+    this.isFilterActive = !isSelectedRowitemDialogVisible;
+  }
+
+  // Hàm xử lý hiện popup khi chọn row
+  onGetSelectionPopup = (selectedRows: DTOQuestion[]) => {
     const btnList: MenuDataItem[] = [];
 
     if (!selectedRows || selectedRows.length === 0) {
@@ -293,26 +437,26 @@ export class Hri008QuestionBankListComponent  implements OnInit {
 
       if (status === 0) {
         actions = [
-          { Name: "Gửi duyệt", Code: "redo", Link: "redo", Actived: true },
-          { Name: "Xóa", Code: "trash", Link: "delete", Actived: true }
+          { Name: "Gửi duyệt", Code: "redo", Link: "1", Actived: true, Type: "StatusID" },
+          { Name: "Xóa", Code: "trash", Link: "delete", Actived: true, Type: "StatusID" }
         ];
       } else if (status === 1) {
         actions = [
-          { Name: "Phê duyệt", Code: "check-outline", Link: "check-outline", Actived: true },
-          { Name: "Trả về", Code: "undo", Link: "undo", Actived: true }
+          { Name: "Phê duyệt", Code: "check-outline", Link: "2", Actived: true, Type: "StatusID" },
+          { Name: "Trả về", Code: "undo", Link: "4", Actived: true, Type: "StatusID" }
         ];
       } else if (status === 2) {
         actions = [
-          { Name: "Ngưng áp dụng", Code: "minus-outline", Link: "minus-outline", Actived: true }
+          { Name: "Ngưng áp dụng", Code: "minus-outline", Link: "3", Actived: true, Type: "StatusID" }
         ];
       } else if (status === 3) {
         actions = [
-          { Name: "Phê duyệt", Code: "check-outline", Link: "check-outline", Actived: true },
-          { Name: "Trả về", Code: "undo", Link: "undo", Actived: true  }
+          { Name: "Phê duyệt", Code: "check-outline", Link: "2", Actived: true, Type: "StatusID" },
+          { Name: "Trả về", Code: "undo", Link: "4", Actived: true, Type: "StatusID" }
         ];
       } else if (status === 4) {
         actions = [
-          { Name: "Gửi duyệt", Code: "redo", Link: "redo", Actived: true },
+          { Name: "Gửi duyệt", Code: "redo", Link: "1", Actived: true, Type: "StatusID" },
         ]
       }
 
@@ -326,6 +470,175 @@ export class Hri008QuestionBankListComponent  implements OnInit {
 
     return btnList;
   };
+
+  onSelectedPopupBtnClick(btnType: string, list: any[], value: any) {
+    if (!list || list.length === 0) return;
+
+    // Nếu nút là Xóa
+    if (value === 'delete' || value === 'trash') {
+      const listDataDelete = list.filter(
+        item => item.StatusID === 0 && item.ListCompetence.length === 0
+      );
+
+      if (listDataDelete.length > 0) {
+        this.arrQuestion = listDataDelete;
+        this.openedDialog = true;
+      }
+    } 
+    // Nếu nút là update trạng thái
+    else {
+      const status = parseInt(value, 10);
+      let validStatuses: number[] = [];
+
+      switch (status) {
+        case 1: validStatuses = [0, 4]; break;  // Gửi duyệt
+        case 2: validStatuses = [1, 3]; break;  // Phê duyệt
+        case 3: validStatuses = [2]; break;     // Ngưng áp dụng
+        case 4: validStatuses = [1, 3]; break;  // Trả về
+      }
+
+      const listDataUpdate = list.filter(item => validStatuses.includes(item.StatusID));
+      if (listDataUpdate.length > 0) {
+        this.APIUpdateQuestionStatus(listDataUpdate, status);
+      }
+    }
+  }
+
+
+
+  //#region dialog
+  //Hàm đóng dialog
+  public onCloseDialog(): void {
+    this.openedDialog = false;
+  }
+
+  // Hàm xử lý xóa dialog
+  onDeleteDialog(status: string): void {
+    if (status == 'yes') {
+      this.APIDeleteQuestion(this.arrQuestion);
+      this.openedDialog = false;
+    } else {
+      this.openedDialog = false;
+    }
+  }
+
+  //#endregion
+
+  //#region API
+  // Hàm gọi api update question status
+  APIUpdateQuestionStatus(dto: DTOQuestion[], statusID: number) {
+    this.isLoading = true;
+    this.questionApiService
+      .UpdateQuestionStatus(dto, statusID)
+      .subscribe(
+        (res: any) => {
+          if (res.ErrorString != null && res.StatusCode !== 0) {
+            this.isLoading = false;
+            this.layoutService.onError(`Đã xảy ra lỗi khi cập nhật trạng thái của câu hỏi: ${res.ErrorString}`);
+            this.APIGetListQuestion(this.gridState);
+          }
+          if (
+            Ps_UtilObjectService.hasValue(res) &&
+            Ps_UtilObjectService.hasValue(res.ObjectReturn) &&
+            res.StatusCode == 0
+          ) {
+            this.isLoading = false;
+            this.layoutService.onSuccess(
+              'Cập nhật trạng thái câu hỏi thành công!'
+            );
+            this.layoutService.getSelectionPopupComponent().closeSelectedRowitemDialog();
+            this.APIGetListQuestion(this.gridState);
+          }
+        },
+        (error) => {
+          this.isLoading = false;
+          this.layoutService.onError(`Đã xảy ra lỗi khi cập nhật trạng thái của câu hỏi: ${error}`);
+          this.APIGetListQuestion(this.gridState);
+        }
+      );
+  }
+
+  // Hàm gọi api xóa question
+  APIDeleteQuestion(arr: DTOQuestion[]) {
+    this.isLoading = true;
+    this.questionApiService
+      .DeleteQuestion(arr)
+      .subscribe(
+        (res: any) => {
+          if (res.ErrorString != null && res.StatusCode !== 0) {
+            this.isLoading = false;
+            this.layoutService.onError(`Đã xảy ra lỗi khi xóa câu hỏi: ${res.ErrorString}`);
+            this.APIGetListQuestion(this.gridState);
+          }
+          if (
+            Ps_UtilObjectService.hasValue(res) &&
+            Ps_UtilObjectService.hasValue(res.ObjectReturn) &&
+            res.StatusCode == 0
+          ) {
+            this.layoutService.onSuccess('Xóa câu hỏi thành công');
+            this.layoutService.getSelectionPopupComponent().closeSelectedRowitemDialog();
+            this.APIGetListQuestion(this.gridState);
+          }
+          this.isLoading = false;
+        },
+        (error) => {
+          this.isLoading = false;
+          this.layoutService.onError(`Đã xảy ra lỗi khi xóa câu hỏi: ${error}`);
+          this.APIGetListQuestion(this.gridState);
+        }
+      );
+  }
+
+  //#endregion
+
+  // Hàm mở popup upload file
+  onUploadFile() {
+    this.layoutService.setImportDialog(true)
+    this.layoutService.setExcelValid(this.excelValid)
+  }
+
+  // Hàm gọi api download file
+  onDownloadFile() {
+    var ctx = "Download Excel Template"
+    var getfilename = "QuestionBankTemplate.xlsx"
+    this.layoutService.onInfo(`Đang xử lý ${ctx}`)
+      this.apiService.GetTemplate(getfilename).subscribe(res => {
+      if (res != null) {
+        Ps_UtilObjectService.getFile(res)
+        this.layoutService.onSuccess(`${ctx} thành công`);
+      }
+      this.isLoading = false;
+    }, f => {
+      this.layoutService.onError(`Xảy ra lỗi khi ${ctx}. ` + f.error.ExceptionMessage)
+      this.isLoading = false;
+    });
+  }
+
+  // Hàm xử lý sự kiện upload file
+  onUploadEventHandler(e: File) {
+    this.APIImportExcelQuestionBank(e);
+  }
+
+  // Hàm gọi API Import file
+  APIImportExcelQuestionBank(file) {
+    this.isLoading = true
+    var ctx = "Import Excel"
+    this.questionApiService.ImportExcelQuestionBank(file).subscribe(res => {
+      if (Ps_UtilObjectService.hasValue(res)) {
+        this.APIGetListQuestion(this.gridState);
+        this.layoutService.onSuccess(`${ctx} thành công`);
+        this.layoutService.setImportDialogMode(1);
+        this.layoutService.setImportDialog(false);
+        this.layoutService.getImportDialogComponent().inputBtnDisplay();
+      } else {
+        this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: ${res.ErrorString}`);
+      }
+      this.isLoading = false;
+    }, (err) => {
+      this.layoutService.onError(`Đã xảy ra lỗi khi ${ctx}: ${err}`)
+      this.isLoading = false; 
+    })
+  }
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.unsubscribe();

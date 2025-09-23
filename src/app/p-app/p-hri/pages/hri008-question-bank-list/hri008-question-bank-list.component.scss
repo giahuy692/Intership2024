@@ -1,71 +1,148 @@
 @import "../../../../../assets/scss/variable.scss";
 
 ::ng-deep {
-    app-hri008-question-bank-list {
-
-        #hri008-question-bank-list {
-            padding: 0 15px;
-            //HEADER
-            .header-1 {
-                height: 50px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                .k-breadcrumb-container{
-                    padding-left: 0 !important;
-                }
-            }
-            .header-2 {
-                padding-left: 0px !important;
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-end;
-
-                #functionbar .search-btn .k-textbox {
-                    width: 222px;
-                }
-
-                .checkbox {
-                    padding-bottom: 4px;
-                    display: flex;
-                    gap: 10px;
-                }
-            }
-            .grid-wrapper {
-                table tr th:first-child{
-                    padding-left: 30px;
-                }
-                
-                app-p-kendo-grid {
-                    .text-remark, .text-CategoryName, .text-time {
-                        font-weight: 600;
-                    }
-                    .text-question {
-                        .text-typeOfQuestionName {
-                            display: flex;
-                            span { padding: 0 4px;}
-                        }
-                    }
-                    .col_Duration {
-                        justify-items: center;
-                    }
-                    .text-time {
-                        display: flex;
-                        justify-content: center;
-                    }
-                    .col_StatusName {
-                        padding-right: 20px;
-                        display: flex;
-                        justify-content: flex-end;
-
-                    }
-                    .text-status {
-                        padding-right: 12px;
-                        display: flex;
-                        justify-content: flex-end;
-                    }
-                }
-            }
+  app-hri008-question-bank-list {
+    #hri008-question-bank-list {
+      padding: 0 15px;
+      //HEADER
+      .header-1 {
+        height: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .k-breadcrumb-container {
+          padding-left: 0 !important;
         }
+      }
+      .header-2 {
+        padding-left: 0px !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        #functionbar .search-btn .k-textbox {
+          width: 222px;
+        }
+
+        .checkbox {
+          padding-bottom: 4px;
+          display: flex;
+          gap: 10px;
+        }
+      }
+      .grid-wrapper {
+        table tr th:first-child {
+          padding-left: 30px;
+        }
+
+        app-p-kendo-grid {
+          .text-remark,
+          .text-CategoryName,
+          .text-time {
+            font-weight: 600;
+          }
+          .text-question {
+            .text-typeOfQuestionName {
+              display: flex;
+              span {
+                padding: 0 4px;
+              }
+            }
+          }
+          .col_Duration {
+            justify-items: center;
+          }
+          .text-time {
+            display: flex;
+            justify-content: center;
+          }
+          .col_StatusName {
+            padding-right: 20px;
+            display: flex;
+            justify-content: flex-end;
+          }
+          .text-status {
+            padding-right: 12px;
+            display: flex;
+            justify-content: flex-end;
+          }
+        }
+      }
+      kendo-dialog {
+        height: 90%;
+        kendo-dialog-titlebar {
+          display: flex;
+          align-items: center;
+          background-color: #fff;
+          color: #fd7676;
+          span {
+            justify-content: center;
+            align-content: center;
+            .title-delete {
+              gap: 10px;
+            }
+          }
+          div {
+            button {
+              display: none;
+            }
+          }
+        }
+        .k-window-content {
+          background: white;
+          kendo-dialog-messages {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            .content-primary {
+                display: flex;
+                justify-content: center;
+            }
+            .content-sub {
+              justify-content: center;
+              display: flex;
+              gap: 4px;
+            }
+          }
+        }
+
+        kendo-dialog-actions {
+          width: 100%;
+          padding: 0;
+          button{
+            height: 100%;
+          }
+        }
+        .k-dialog .k-dialog-content{
+            padding: 0;
+        }
+        .body_dialog {
+          text-align: center;
+          padding: 0;
+        }
+        .k-dialog-actions {
+          display: flex;
+          top: 10%;
+          padding: 0;
+          gap: 0;
+          height: 50px;
+          .cancel {
+            flex: 1;
+            background: #ffffff;
+            color: #959db3;
+          }
+          .delete {
+            flex: 1;
+            background-color: #fd7676;
+            color: #fff;
+          }
+        }
+      }
     }
+  }
 }
