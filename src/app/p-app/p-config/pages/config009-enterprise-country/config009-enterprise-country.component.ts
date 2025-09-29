@@ -77,38 +77,31 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   isJustLoaded: boolean = true
   skip: number = 0;
   keyword: string = ''
-  tempSearch: any
 
   filterStatus: CompositeFilterDescriptor = {
     logic: "or",
     filters: []
   }
 
-  isMaster: boolean = false; // Toàn quyền
-  isCreator: boolean = false; // Quyền tạo
-  isApprover: boolean = false; // Quyền duyệt
-  MA: boolean = false; // Master hoặc Approver
-  MC: boolean = false; // Master hoặc Creator
-
   CountryForm: UntypedFormGroup; // form reactive chính của country
 
   isLoading: boolean = false;
-  isCreate: boolean = false; // Có tạo mới hay không
-  isEdit: boolean = false; // Có chỉnh sửa hay không
-  isUpdateButton: boolean = false; // Có hiện nút cập nhật hay không
   isOpenDrawer: boolean = false; // Có mở drawer hay không
-  isFilterActive: boolean = true // Có check filter status không
-  isAutoCollapse: boolean = false; // Có tự động đóng drawer khi click ra ngoài không
 
   dataCountry: DTOCountry = new DTOCountry() // quốc gia hiện tại được chọn
 
   //permission 
   isAllPers: boolean = false
   isCanCreate: boolean = false
-  isJustLoadedChangePermissionAPI: boolean = true
   justLoadedPer: boolean = true
   dataPerm: DTODataPermission[] = [];
   actionPerm: DTOActionPermission[] = [];
+
+  // Biến để quản lý sự kiện thay đổi quyền API
+  justLoadedChangePermissionAPI: boolean = true;
+
+  // Biến để quản lý việc hủy đăng ký các Observable
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     public layoutService: LayoutService,
@@ -122,26 +115,31 @@ export class Config009EnterpriseCountryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Check permission
-    let changePermissionSst = this.menuService.changePermission().pipe(takeUntil(this.destroy)).subscribe((res: DTOPermission) => {
-      if (Ps_UtilObjectService.hasValue(res) && this.isJustLoaded) {
-        this.isJustLoaded = false;
-        this.actionPerm = distinct(res.ActionPermission, 'ActionType');
+    let that = this;
+    // phân quyền
+    this.menuService
+      .changePermission()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res: DTOPermission) => {
+        if (Ps_UtilObjectService.hasValue(res) && that.justLoadedPer) {
+          that.actionPerm = distinct(res.ActionPermission, 'ActionType');
+          that.isAllPers = that.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
+          that.isCanCreate = that.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
+          that.justLoadedPer = false;
+        }
+      });
 
-        this.isMaster = this.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
-        this.isCreator = this.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
+    this.menuService
+      .changePermissionAPI()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        if (Ps_UtilObjectService.hasValue(res) && this.justLoadedChangePermissionAPI) {
+          this.justLoadedChangePermissionAPI = false;
 
-        this.MC = this.isMaster || this.isCreator;
-      }
-    })
-
-    let permissionAPI = this.menuService.changePermissionAPI().subscribe((res) => {
-      if (Ps_UtilObjectService.hasValue(res) && this.isJustLoadedChangePermissionAPI) {
-        this.isJustLoadedChangePermissionAPI = false
-        this.onLoadDefault();
-      }
-    })
-    this.arrUnsubscribe.push(changePermissionSst, permissionAPI);
+          // Gọi API lấy danh sách quốc gia
+          this.APIGetListCountry(this.gridState);
+        }
+      });
 
     this.onActionDropdownClickCallback = this.onActionDropdownClick.bind(this)
     this.getActionDropdownCallback = this.getActionDropdown.bind(this)
