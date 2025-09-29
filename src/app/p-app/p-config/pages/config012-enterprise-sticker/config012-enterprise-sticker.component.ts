@@ -8,7 +8,6 @@ import { ConfigEnterpriceApiService } from '../../shared/services/config-enterpr
 import { PS_HelperMenuService } from 'src/app/p-app/p-layout/services/p-menu.helper.service';
 import { MenuDataItem } from 'src/app/p-app/p-layout/dto/menu-data-item.dto';
 import { DTOActionPermission } from 'src/app/p-app/p-layout/dto/DTOActionPermission';
-import { DTODataPermission } from '../../shared/dto/DTODataPermission';
 import { DTOPermission } from 'src/app/p-app/p-layout/dto/DTOPermission';
 import { finalize, takeUntil } from 'rxjs/operators';
 import { Subject, Subscription } from 'rxjs';
@@ -22,22 +21,14 @@ import { DTOCFFile } from 'src/app/p-app/p-layout/dto/DTOCFFolder.dto';
 })
 export class Config012EnterpriseStickerComponent implements OnInit {
 
-  destroy = new Subject<any>(); // sử dụng để unsubscribe các observable
-
   gridStickers: DTOSticker[] = []; //dữ liệu hiển thị trên grid
   private allStickers: DTOSticker[] = []; //danh sách tất cả quốc gia (không filter)
 
   //permission 
   isAllPers: boolean = false
   isCanCreate: boolean = false
-  isJustLoadedChangePermissionAPI: boolean = true
+  justLoadedPer: boolean = true
   actionPerm: DTOActionPermission[] = [];
-
-  isMaster: boolean = false; // Toàn quyền
-  isCreator: boolean = false; // Quyền tạo
-  isApprover: boolean = false; // Quyền duyệt
-  MA: boolean = false; // Master hoặc Approver
-  MC: boolean = false; // Master hoặc Creator
 
   // varible of Dropdown
   onActionDropdownClickCallback: Function
@@ -48,7 +39,6 @@ export class Config012EnterpriseStickerComponent implements OnInit {
 
   // varible of grid
   isLoading: boolean = false
-  isJustLoaded: boolean = true
   skip: number = 0;
   keyword: string = ''
 
@@ -88,7 +78,12 @@ export class Config012EnterpriseStickerComponent implements OnInit {
 
   // variable of unsubcribe
   arrUnsubscribe: Subscription[] = []; //mảng lưu sst để huỷ sau
-  ngUnsubscribe$ = new Subject<void>(); //subject hỗ trợ takeUntil để unsubscribe
+
+  // Biến để quản lý sự kiện thay đổi quyền API
+  justLoadedChangePermissionAPI: boolean = true;
+
+  // Biến để quản lý việc hủy đăng ký các Observable
+  ngUnsubscribe = new Subject<void>();
 
   constructor(
     public layoutService: LayoutService,
@@ -107,26 +102,31 @@ export class Config012EnterpriseStickerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Check permission
-    let changePermissionSst = this.menuService.changePermission().pipe(takeUntil(this.destroy)).subscribe((res: DTOPermission) => {
-      if (Ps_UtilObjectService.hasValue(res) && this.isJustLoaded) {
-        this.isJustLoaded = false;
-        this.actionPerm = distinct(res.ActionPermission, 'ActionType');
+    let that = this;
+    // phân quyền
+    this.menuService
+      .changePermission()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res: DTOPermission) => {
+        if (Ps_UtilObjectService.hasValue(res) && that.justLoadedPer) {
+          that.actionPerm = distinct(res.ActionPermission, 'ActionType');
+          that.isAllPers = that.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
+          that.isCanCreate = that.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
+          that.justLoadedPer = false;
+        }
+      });
 
-        this.isMaster = this.actionPerm.findIndex((s) => s.ActionType == 1) > -1 || false;
-        this.isCreator = this.actionPerm.findIndex((s) => s.ActionType == 2) > -1 || false;
+    this.menuService
+      .changePermissionAPI()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe((res) => {
+        if (Ps_UtilObjectService.hasValue(res) && this.justLoadedChangePermissionAPI) {
+          this.justLoadedChangePermissionAPI = false;
 
-        this.MC = this.isMaster || this.isCreator;
-      }
-    })
-
-    let permissionAPI = this.menuService.changePermissionAPI().subscribe((res) => {
-      if (Ps_UtilObjectService.hasValue(res) && this.isJustLoadedChangePermissionAPI) {
-        this.isJustLoadedChangePermissionAPI = false
-        this.onLoadDefault();
-      }
-    })
-    this.arrUnsubscribe.push(changePermissionSst, permissionAPI);
+          // Gọi API lấy danh sách quốc gia
+          this.APIGetListSticker(this.gridState);
+        }
+      });
 
     this.onActionDropdownClickCallback = this.onActionDropdownClick.bind(this)
     this.getActionDropdownCallback = this.getActionDropdown.bind(this)
@@ -368,7 +368,7 @@ export class Config012EnterpriseStickerComponent implements OnInit {
 
     this.arrUnsubscribe.push(
       this.apiServiceConf.GetListSticker(filter)
-        .pipe(takeUntil(this.ngUnsubscribe$))
+        .pipe(takeUntil(this.ngUnsubscribe))
         .subscribe(
           (res: any) => {
             this.isLoading = false;
