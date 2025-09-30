@@ -205,14 +205,13 @@
 
                             <div class="item">
                                 <div class="label">Bộ phận trực thuộc </div>
-                                {{listDepartmentTree[0].Code}}
                                 <kendo-dropdowntree kendoDropDownTreeExpandable
                                     [kendoDropDownTreeHierarchyBinding]="listDepartmentTree" textField="Department"
                                     valueField="Code" childrenField="ListDepartment" formControlName="ParentID"
                                     [filterable]="true" [expandOnFilter]="true"
                                     (valueChange)="onSelectedDropdownList($event)"
-                                    [popupSettings]="{ appendTo: 'component' }" [loading]="isLoading" [valuePrimitive]="true" 
-                                    [defaultItem]="{ Code: null, Department: '-- Không lựa chọn --' }">
+                                    [popupSettings]="{ appendTo: 'component' }" [loading]="isLoading" 
+                                    [defaultItem]="{ Code: null, Department: '-- Không lựa chọn --' }" [disabled]="isFeildDisabled">
 
                                     <ng-template kendoDropDownTreeNodeTemplate let-dataItem>
                                         <div [ngClass]="{'nullItem': dataItem.Code === null}">
@@ -234,18 +233,18 @@
                                     </div>
                                 </div>
                                 <kendo-dropdownlist #Department [loading]="isLoading" name="Department" fillMode="flat"
-                                    [data]="ListDepartment" textField="LocationName" valueField="Code"
+                                    [data]="ListLocation" textField="LocationName" valueField="Code"
                                     formControlName="Department"
                                     [defaultItem]="{LocationName: '-- Chọn --', Code: null }" [filterable]="true"
                                     [valuePrimitive]="true" [popupSettings]="{appendTo:'component'}"
-                                    (valueChange)="onSelectedDropdownList($event)"></kendo-dropdownlist>
+                                    (valueChange)="onSelectedLocation($event)" [disabled]="isFeildDisabled"></kendo-dropdownlist>
                             </div>
 
                             <div class="item item4">
                                 <div class="label">Điện thoại</div>
                                 <kendo-label>
                                     <kendo-maskedtextbox formControlName="Phone" name="Phone" [mask]="'000 000 0000'"
-                                        [promptChar]="'_'" [valuePrimitive]="true" [disabled]="isDepartmentIdDisabled">
+                                        [promptChar]="'_'" [valuePrimitive]="true" [disabled]="isFeildDisabled">
                                     </kendo-maskedtextbox>
                                 </kendo-label>
                             </div>
@@ -254,7 +253,7 @@
                                 <div class="label">Fax</div>
                                 <kendo-label>
                                     <kendo-maskedtextbox formControlName="Fax" name="Fax" [mask]="'000 000 0000'"
-                                        [promptChar]="'_'" [valuePrimitive]="true" [disabled]="isDepartmentIdDisabled">
+                                        [promptChar]="'_'" [valuePrimitive]="true" [disabled]="isFeildDisabled">
                                     </kendo-maskedtextbox>
                                 </kendo-label>
                             </div>
@@ -264,7 +263,7 @@
                                     <span class="labelName">Chức năng, nhiệm vụ</span>
                                 </div>
                                 <input type="file" #fileInput hidden />
-                                <app-p-textarea class="Remark" [propName]="'Remark'" formControlName="Remark">
+                                <app-p-textarea class="Remark" [propName]="'Remark'" formControlName="Remark" [disabled]="isFeildDisabled">
                                 </app-p-textarea>
                             </div>
 
@@ -273,7 +272,7 @@
                                     <span class="labelName">Thứ tự</span>
                                 </div>
                                 <kendo-numerictextbox [decimals]="0" format="n0" [step]="1"
-                                    [min]="0"></kendo-numerictextbox>
+                                    [min]="0" [disabled]="isFeildDisabled"></kendo-numerictextbox>
                             </div>
 
                             <div class="item item8">
@@ -281,10 +280,10 @@
                                     <div class="labelName"> Tình trạng </div>
                                 </div>
                                 <kendo-dropdownlist [loading]="isLoading" name="StatusName" fillMode="flat"
-                                    [data]="ListStatus" textField="StatusName" valueField="Code"
-                                    formControlName="StatusID" [defaultItem]="{StatusName: '-- Chọn --', Code: null }"
+                                    [data]="ListStatus" textField="StatusName" valueField="OrderBy"
+                                    formControlName="StatusID"
                                     [filterable]="true" [valuePrimitive]="true" [popupSettings]="{appendTo:'component'}"
-                                    (valueChange)="onSelectedDropdownList($event)"></kendo-dropdownlist>
+                                    (valueChange)="onSelectedDropdownList($event)" [itemDisabled]="isStatusDisabled" [disabled]="isFeildDisabled"></kendo-dropdownlist>
                             </div>
                         </div>
                     </div>
@@ -297,8 +296,8 @@
                             <button kendoButton class="k-button btn-hachi closeBtn" (click)="onCloseForm()">
                                 Đóng
                             </button>
-                            <div *ngIf="(isAllPers || isCanCreate)">
-                                <ng-container>
+                            <div *ngIf="!isDetailMode">
+                                <ng-container *ngIf="(isAllPers || isCanCreate)">
                                     <button kendoButton class="k-button btn-hachi updateBtn"
                                         (click)="onUpdateDepartment()">
                                         {{apiDepartmentForm.controls['Code'].value > 0
@@ -308,8 +307,8 @@
                                     </button>
                                 </ng-container>
                             </div>
-                            <div *ngIf="(isAllPers || isCanCreate)">
-                                <ng-container>
+                            <div *ngIf="!isDetailMode">
+                                <ng-container *ngIf="(isAllPers || isCanCreate)">
                                     <button kendoButton class="k-button btn-hachi deleteBtn"
                                         (click)="onOpenDialogDepartment()"
                                         *ngIf="apiDepartmentForm.controls['Code'].value > 0">
