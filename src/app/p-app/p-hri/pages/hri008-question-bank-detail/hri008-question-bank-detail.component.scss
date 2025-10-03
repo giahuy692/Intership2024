@@ -286,83 +286,79 @@
                 padding-top: 10px;
                 color: #891828 !important;
             }
-        }
-
-        kendo-dialog {
-        height: 90%;
-        kendo-dialog-titlebar {
-          display: flex;
-          align-items: center;
-          background-color: #fff;
-          color: #fd7676;
-          span {
-            justify-content: center;
-            align-content: center;
-            .title-delete {
-              gap: 10px;
-            }
-          }
-          div {
-            button {
-              display: none;
-            }
-          }
-        }
-        .k-window-content {
-          background: white;
-          kendo-dialog-messages {
+            kendo-dialog {
+            height: 90%;
+            kendo-dialog-titlebar {
             display: flex;
+            align-items: center;
+            background-color: #fff;
+            color: #fd7676;
+            span {
+                justify-content: center;
+                align-content: center;
+                .title-delete {
+                gap: 10px;
+                }
+            }
+            div {
+                button {
+                display: none;
+                }
+            }
+            }
+            .body_dialog {
+            background: white;
+            display: flex;
+            align-items: center;
             flex-direction: column;
             justify-content: center;
-            width: 100%;
-            position: absolute;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            min-height: 124px;
             .content-primary {
                 display: flex;
                 justify-content: center;
+                padding-top: 20px;
+                width: 100%;
             }
             .content-sub {
-              justify-content: center;
-              display: flex;
-              gap: 4px;
+                justify-content: center;
+                }
             }
-          }
-        }
 
-        kendo-dialog-actions {
-          width: 100%;
-          padding: 0;
-          button{
-            height: 100%;
-          }
-        }
-        .k-dialog .k-dialog-content{
+            .k-dialog-actions {
+            width: 100%;
             padding: 0;
+            button{
+                height: 100%;
+            }
+            }
+            .k-dialog .k-dialog-content{
+                padding: 0;
+            }
+            .body_dialog {
+            text-align: center;
+            padding: 0;
+            }
+            .k-dialog-actions {
+            width: 100%;
+            display: flex;
+            padding: 0;
+            -moz-column-gap: 0;
+            column-gap: 0;
+            position: absolute;
+            bottom: 0;
+            height: 50px;
+            .cancel {
+                flex: 1;
+                background: #ffffff;
+                color: #959db3;
+            }
+            .delete {
+                flex: 1;
+                background-color: #fd7676;
+                color: #fff;
+            }
+            }
         }
-        .body_dialog {
-          text-align: center;
-          padding: 0;
         }
-        .k-dialog-actions {
-          display: flex;
-          top: 10%;
-          padding: 0;
-          gap: 0;
-          height: 50px;
-          .cancel {
-            flex: 1;
-            background: #ffffff;
-            color: #959db3;
-          }
-          .delete {
-            flex: 1;
-            background-color: #fd7676;
-            color: #fff;
-          }
-        }
-      }
-    
     }
 }

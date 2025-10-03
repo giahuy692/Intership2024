@@ -558,9 +558,8 @@
         <p class="symbol"><i>(*) Trường bắt buộc nhập.</i></p>
   
     </div>
-</div>
 
-<!-- Start: Dialog Xóa -->
+  <!-- Start: Dialog Xóa -->
 <kendo-dialog
   *ngIf="openedDialog"
   (close)="onCloseDialog()"
@@ -570,7 +569,6 @@
   class="wrapper-dialog"
   [actionsLayout]="'stretched'"
 >
-  <!-- Start: header dialog  -->
   <kendo-dialog-titlebar>
     <div class="title-delete d-flex">
       <span
@@ -581,21 +579,16 @@
       <span>XÓA CÂU HỎI?</span>
     </div>
   </kendo-dialog-titlebar>
-  <!-- End: header dialog  -->
 
-  <!-- Start: Body dialog  -->
   <div class="body_dialog">
     <div class="content-primary">
-      <p>Bạn chắc chắn muốn xóa câu hỏi:</p>
-      <strong>{{ valueQuestionName }}</strong>
+      <p class="content-p">Bạn chắc chắn muốn xóa câu hỏi</p>
     </div>
     <p class="content-sub">
-      Câu hỏi bị xóa sẽ <span style="color: red">KHÔNG</span> thể khôi phục lại.
+      Câu hỏi bị xóa sẽ <span style="color: red"> KHÔNG </span> thể khôi phục lại.
     </p>
   </div>
-  <!-- Emd: Body dialog  -->
-
-  <!-- Start: action dialog  -->
+ 
   <div class="k-dialog-actions">
     <button
       kendoButton
@@ -614,7 +607,6 @@
       ĐỒNG Ý
     </button>
   </div>
-  <!-- End: action dialog  -->
 </kendo-dialog>
 <!-- End: Dialog  -->
 
@@ -627,7 +619,6 @@
   [minHeight]="250"
   class="wrapper-dialog"
 >
-  <!-- Start: header dialog  -->
   <kendo-dialog-titlebar>
     <div class="title-delete d-flex">
       <span
@@ -638,9 +629,6 @@
       <span style="font-weight: 700">Bạn thay đổi loại câu hỏi?</span>
     </div>
   </kendo-dialog-titlebar>
-  <!-- End: header dialog  -->
-
-  <!-- Start: Body dialog  -->
   <div class="body_dialog">
     <div class="content-primary">
       <p>Bạn chắc chắn muốn chuyển loại câu hỏi không?</p>
@@ -651,9 +639,6 @@
       <span style="color: red">tất cả các câu trả lời</span> sẽ bị thay đổi.
     </p>
   </div>
-  <!-- Emd: Body dialog  -->
-
-  <!-- Start: action dialog  -->
   <div class="k-dialog-actions">
     <button kendoButton (click)="onCloseDialogTypeQuestion()" class="cancel">
       HỦY BỎ
@@ -667,7 +652,6 @@
       ĐỒNG Ý
     </button>
   </div>
-  <!-- End: action dialog  -->
 </kendo-dialog>
 <!-- End: Dialog  -->
 
@@ -680,7 +664,6 @@
   [minHeight]="250"
   class="wrapper-dialog"
 >
-  <!-- Start: header dialog  -->
   <kendo-dialog-titlebar>
     <div class="title-delete d-flex">
       <span
@@ -691,9 +674,6 @@
       <span style="font-weight: 700">Bạn thay đổi mức độ khó không không?</span>
     </div>
   </kendo-dialog-titlebar>
-  <!-- End: header dialog  -->
-
-  <!-- Start: Body dialog  -->
   <div class="body_dialog">
     <div class="content-primary">
       <p>Bạn chắc chắn muốn thay đổi mức độ khó không không?</p>
@@ -704,9 +684,6 @@
       <span style="color: red">khía cạnh thuộc mức độ này sẽ bị thay đổi</span> sẽ bị thay đổi.
     </p>
   </div>
-  <!-- Emd: Body dialog  -->
-
-  <!-- Start: action dialog  -->
   <div class="k-dialog-actions">
     <button kendoButton (click)="onCloseDialogLevel()" class="cancel">
       HỦY BỎ
@@ -720,7 +697,6 @@
       ĐỒNG Ý
     </button>
   </div>
-  <!-- End: action dialog  -->
 </kendo-dialog>
 <!-- End: Dialog  -->
 
@@ -734,7 +710,6 @@
   [minHeight]="250"
   class="wrapper-dialog"
 >
-  <!-- Start: header dialog  -->
   <kendo-dialog-titlebar>
     <div class="title-delete d-flex">
       <span
@@ -745,9 +720,6 @@
       <span style="font-weight: 700">XÓA KHÍA CẠNH CÂU HỎI ?</span>
     </div>
   </kendo-dialog-titlebar>
-  <!-- End: header dialog  -->
-
-  <!-- Start: Body dialog  -->
   <div class="body_dialog">
     <div class="content-primary">
       <p>Bạn chắc chắn muốn xóa khía cạnh câu hỏi không?</p>
@@ -758,9 +730,6 @@
       <span style="color: red">KHÔNG</span> thể khôi phục lại.
     </p>
   </div>
-  <!-- Emd: Body dialog  -->
-
-  <!-- Start: action dialog  -->
   <div class="k-dialog-actions">
     <button kendoButton (click)="onCloseDialogCompetence()" class="cancel">
       HỦY BỎ
@@ -774,9 +743,10 @@
       ĐỒNG Ý
     </button>
   </div>
-  <!-- End: action dialog  -->
 </kendo-dialog>
 <!-- End: Dialog  -->
 
 <app-folder-popup [pickFileCallback]="getFileCallback" [GetFolderCallback]="getFolderCallback" [canResize]="true">
 </app-folder-popup>
+</div>
+

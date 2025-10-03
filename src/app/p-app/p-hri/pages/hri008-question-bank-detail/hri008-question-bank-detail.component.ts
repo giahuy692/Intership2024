@@ -299,6 +299,7 @@ export class Hri008QuestionBankDetailComponent {
         break;
       case 6: 
         this.dataQuestion = new DTOQuestion();
+        this.onShowBtnStatus();
         break;
     }
   }
@@ -317,7 +318,7 @@ export class Hri008QuestionBankDetailComponent {
       this.layoutService.onError('Vui lòng nhập thời gian làm bài')
       isValid = false;
     }
-    if (this.dataQuestion.TypeOfQuestion == 1) {
+    if (this.dataQuestion.TypeOfQuestion == 1 || this.dataQuestion.TypeOfQuestion == 4) {
       if (!Ps_UtilObjectService.hasListValue(this.realListAnser)) {
         this.layoutService.onError('Vui lòng tạo câu trả lời cho câu hỏi');
         return false;
@@ -329,7 +330,33 @@ export class Hri008QuestionBankDetailComponent {
       }
 
       if (!this.realListAnser.some(x => x.IsRight)) {
-        this.layoutService.onError('Vui lòng chọn ít nhất 1 đáp án đúng');
+        this.layoutService.onError('Vui lòng chọn đáp án đúng');
+        return false;
+      }
+    }
+    if (this.dataQuestion.TypeOfQuestion == 2 ) {
+      if (this.dataQuestion.TypeOfEvaluation == 1 ||
+          this.dataQuestion.TypeOfEvaluation == 2 ||
+          this.dataQuestion.TypeOfEvaluation == 3) {
+        if (!Ps_UtilObjectService.hasListValue(this.realListAnser)) {
+          this.layoutService.onError('Vui lòng tạo câu trả lời cho câu hỏi');
+          return false;
+        }
+
+        if (this.realListAnser.some(x => !Ps_UtilObjectService.hasValueString(x.Answer))) {
+          this.layoutService.onError('Vui lòng nhập đầy đủ nội dung cho các câu trả lời');
+          return false;
+        }
+
+        if (!this.realListAnser.some(x => x.IsRight)) {
+          this.layoutService.onError('Vui lòng chọn ít nhất 1 đáp án đúng');
+          return false;
+        }
+      }
+    }
+    if (this.dataQuestion.TypeOfQuestion == 3 ) {
+      if (!Ps_UtilObjectService.hasValue(this.dataQuestion.RefAnswer)) {
+        this.layoutService.onError('Vui lòng nhập đáp án gợi ý cho câu hỏi!');
         return false;
       }
     }
@@ -344,9 +371,9 @@ export class Hri008QuestionBankDetailComponent {
       this.layoutService.onError('Vui lòng chọn mức độ khó!')
       isValid = false;
     }
-    // if(!Ps_UtilObjectService.hasValue(this.dataQuestionCompetence.Pa)) {
-    //   this.layoutService.onError('Vui lòng chọn năng lực')
-    // }
+    if(this.dataQuestion.ListCompetence.length == 0) {
+      this.layoutService.onError('Vui lòng chọn năng lực')
+    }
 
     return isValid;
   }
@@ -570,8 +597,6 @@ export class Hri008QuestionBankDetailComponent {
             this.APIGetQuestion(this.dataQuestion);
             // this.layoutService.getSelectionPopupComponent().closeSelectedRowitemDialog();
             // this.APIGetListQuestion(this.gridState);
-          } else {
-            this.layoutService.onError(`${res}`)
           }
         },
         (error) => {
