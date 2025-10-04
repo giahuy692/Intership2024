@@ -310,6 +310,10 @@ export class Hri008QuestionBankDetailComponent {
       this.layoutService.onError('Vui lòng nhập tóm tắt câu hỏi')
       isValid = false;
     }
+    if (!Ps_UtilObjectService.hasValueString(this.dataQuestion.Question)) {
+      this.layoutService.onError('Vui lòng nhập mô tả chi tiết câu hỏi')
+      isValid = false;
+    }
     if (!Ps_UtilObjectService.hasValue(this.dataQuestion.CategoryName)) {
       this.layoutService.onError('Vui lòng chọn phân nhóm câu hỏi')
       isValid = false;
@@ -394,41 +398,8 @@ export class Hri008QuestionBankDetailComponent {
     } else {
       this.dataQuestion.LevelID = this.valueChangeLevel;
       this.APIUpdateQuestion(this.dataQuestion, ['LevelID']);
-      //this.onLoadFilter(this.dataQuestion);
     }
   }
-
-  // Hàm xử lý khi load filter
-  // onLoadFilter(res: DTOQuestion) {
-  //   var compositeFilter: CompositeFilterDescriptor = {
-  //     logic: 'and',
-  //     filters: [],
-  //   };
-  //   if (res.ListCompetence.length !== 0) {
-  //     res.ListCompetence.forEach((v) => {
-  //       var competenceFilter: FilterDescriptor = {
-  //         field: 'Competence',
-  //         operator: 'neq',
-  //         value: v.Competence,
-  //         ignoreCase: true,
-  //       };
-  //       compositeFilter.filters.push(competenceFilter);
-  //     });
-  //   }
-
-  //   const LevelIDFilter: FilterDescriptor = {
-  //     field: 'LevelID',
-  //     operator: 'eq',
-  //     value: res.LevelID,
-  //     ignoreCase: true,
-  //   };
-  //   compositeFilter.filters.push(LevelIDFilter);
-
-  //   this.CompetenceState.filter = compositeFilter;
-
-  //   this.APIGetListQuestionCompetence(this.CompetenceState);
-  // }
-
 
   // #region API
   // Hàm gọi API Cây danh sách nhóm câu hỏi
@@ -608,57 +579,53 @@ export class Hri008QuestionBankDetailComponent {
   }
 
   // Lấy danh sách đáp án theo câu hỏi
-  APIGetListAnswer(dtoQuestion: DTOQuestion) {
-    this.isLoading = true;
-    var ctx = `Đã xảy ra lỗi khi lấy danh sách câu trả lời của câu hỏi`
-    let GetListAnswer: any;
-    if (this.dataQuestion.TypeOfQuestion !== 3) {
-      GetListAnswer = this.serviceQuestionApi.GetListAnswer(dtoQuestion)
-        .subscribe(
-          res => {
-            if (
-              Ps_UtilObjectService.hasValue(res) &&
-              res.StatusCode == 0
-            ) {
-              this.isLoading = false;
-              this.ListAnswer = res.ObjectReturn;
-              
-              // Đồng bộ reviewListAnser cho tất cả loại câu hỏi có đáp án
-              this.reviewListAnser = Array.isArray(res.ObjectReturn) 
-                ? res.ObjectReturn.map((a: DTOAnswer) => ({ ...a }))
-                : [];
-              
-              // Đồng bộ mảng Yes/No hiển thị nếu là câu hỏi Yes/No
-              if (this.dataQuestion.TypeOfQuestion === 4) {
-                this.answersYesNo = this.reviewListAnser.map(x => ({ ...x }));
-              }
-              
-              this.realListAnser = res.ObjectReturn.slice();
-              if (this.dataQuestion.TypeOfQuestion !== 4) {
-                for (let i = this.ListAnswer.length; i < 4; i++) {
-                  this.ListAnswer.push({
-                    Code: 0, Company: 1, Answer: '',
-                    ColumnID: null, Question: this.dataQuestion.Code, IsRight: false,
-                    Mark: 0, MarkID: 0, RowID: null, IsRow: true, Remark: '',
-                    CreateBy: null, CreateTime: null, LastModifiedBy: null, LastModifiedTime: null, RefID: null
-                  });
-                }
-              }
-              this.onShowBtnStatus();
-              this.handleArrMark();
+ APIGetListAnswer(dtoQuestion: DTOQuestion) {
+  this.isLoading = true;
+  const ctx = `Đã xảy ra lỗi khi lấy danh sách câu trả lời của câu hỏi`;
+
+  if (this.dataQuestion.TypeOfQuestion !== 3) {
+    this.serviceQuestionApi.GetListAnswer(dtoQuestion).subscribe({
+      next: res => {
+        this.isLoading = false;
+        if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
+          const data = Array.isArray(res.ObjectReturn) ? res.ObjectReturn : [];
+
+          // Giữ nguyên IsRight/Mark hiện tại trên FE nếu có
+          this.ListAnswer = data.map(a => {
+            const exist = this.ListAnswer?.find(l => l.Code === a.Code);
+            return exist ? { ...a, IsRight: exist.IsRight, Mark: exist.Mark } : { ...a };
+          });
+
+          this.reviewListAnser = this.ListAnswer.map(a => ({ ...a }));
+
+          // Pad đáp án trống nếu cần
+          if (this.dataQuestion.TypeOfQuestion !== 4) {
+            for (let i = this.ListAnswer.length; i < 4; i++) {
+              this.ListAnswer.push({
+                Code: 0, Company: 1, Answer: '',
+                ColumnID: null, Question: this.dataQuestion.Code, IsRight: false,
+                Mark: 0, MarkID: 0, RowID: null, IsRow: true, Remark: '',
+                CreateBy: null, CreateTime: null, LastModifiedBy: null, LastModifiedTime: null, RefID: null
+              });
             }
-          },
-          (error) => {
-            this.isLoading = false;
-            this.layoutService.onError(`${ctx}: ${error}`);
           }
-        );
-    } else {
-      this.isLoading = false;
-      // Reset reviewListAnser cho câu hỏi tự luận
-      this.reviewListAnser = [];
-    }
+
+          this.realListAnser = data.slice();
+          this.onShowBtnStatus();
+          this.handleArrMark();
+        }
+      },
+      error: err => {
+        this.isLoading = false;
+        this.layoutService.onError(`${ctx}: ${err}`);
+      }
+    });
+  } else {
+    this.isLoading = false;
+    this.reviewListAnser = [];
   }
+}
+
 
   // Hàm API gọi cập nhật đáp án
   APIUpdateAnswer(dtoAnswer: DTOAnswer, item?: any, skipReload: boolean = false) {
@@ -796,14 +763,14 @@ export class Hri008QuestionBankDetailComponent {
   }
 
   // Hàm gọi API UpdateMark và cập nhật reviewListAnser
-APIUpdateMarkMutil(dtoAnswer: DTOAnswer, item?: any, suppressNotify?: boolean) {
+APIUpdateMarkMutil(dtoAnswer: DTOAnswer) {
   this.isLoading = true;
 
   this.serviceQuestionApi.UpdateMark(dtoAnswer).subscribe({
     next: (res: any) => {
       this.isLoading = false;
       if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
-        if (!suppressNotify) this.layoutService.onSuccess(`Cập nhật điểm thành công`);
+         this.layoutService.onSuccess(`Cập nhật điểm thành công`);
         
         const updatedAnswer = res.ObjectReturn;
 
@@ -812,24 +779,16 @@ APIUpdateMarkMutil(dtoAnswer: DTOAnswer, item?: any, suppressNotify?: boolean) {
             ? { ...a, IsRight: updatedAnswer.IsRight, Mark: updatedAnswer.Mark }
             : a
         );
-
-        if (item) {
-          item.Mark = updatedAnswer.Mark ?? item.Mark;
-          // đồng bộ IsRight nếu có
-          if (updatedAnswer.IsRight !== undefined) item.IsRight = updatedAnswer.IsRight;
-        }
       } else {
-        if (!suppressNotify) {
           this.layoutService.onError(`Cập nhật điểm thất bại: ${res}`);
-        }
+        
       }
     },
     error: (error) => {
       this.isLoading = false;
-      if (!suppressNotify) {
         this.layoutService.onError(`Cập nhật điểm thất bại: ${error}`);
       }
-    }
+    
   });
 }
 
@@ -843,7 +802,7 @@ APIUpdateMarkMutil(dtoAnswer: DTOAnswer, item?: any, suppressNotify?: boolean) {
 
     arr.forEach(a => {
       // gọi APIUpdateMarkMutil nhưng tắt notify cho từng call
-      this.APIUpdateMarkMutil(a, a, true);
+      this.APIUpdateMarkMutil(a);
       // Bởi vì APIUpdateMarkMutil là bất đồng bộ, chúng ta cần đếm subscribe hoàn tất.
       // Nếu muốn chặt chẽ hơn, gọi serviceQuestionApi.UpdateMark trực tiếp và subscribe ở đây.
       this.serviceQuestionApi.UpdateMark(a).subscribe({
@@ -870,7 +829,7 @@ APIUpdateMarkMutil(dtoAnswer: DTOAnswer, item?: any, suppressNotify?: boolean) {
 
 
   // Hàm gọi API xóa điểm
- APIDeleteMark(arrAnswer: DTOAnswer[]) {
+ APIDeleteMark(arrAnswer: DTOAnswer[], done?: () => void) {
   if (!arrAnswer || arrAnswer.length === 0) return;
   this.isLoading = true;
 
@@ -880,20 +839,24 @@ APIUpdateMarkMutil(dtoAnswer: DTOAnswer, item?: any, suppressNotify?: boolean) {
       if (res && res.StatusCode === 0) {
         arrAnswer.forEach(a => {
           a.Mark = 0;
+          a.IsRight = false;
+          a.MarkID = 0;
+          a.RefID = null;
         });
 
         this.ListAnswer = this.ListAnswer.map(l =>
-          arrAnswer.some(a => a.Code === l.Code) ? { ...l, IsRight: false, Mark: 0 } : l
+          arrAnswer.some(a => a.Code === l.Code)
+            ? { ...l, IsRight: false, Mark: 0, MarkID: 0, RefID: null }
+            : l
         );
 
         this.reviewListAnser = this.reviewListAnser.map(r =>
-          arrAnswer.some(a => a.Code === r.Code) ? { ...r, IsRight: false, Mark: 0 } : r
+          arrAnswer.some(a => a.Code === r.Code)
+            ? { ...r, IsRight: false, Mark: 0, MarkID: 0, RefID: null }
+            : r
         );
 
-        // Chỉ xử lý tính lại cho TypeOfEvaluation=3
-        if (this.dataQuestion.TypeOfEvaluation === 3) {
-            this.recalculateMarksType3();
-        }
+        if (done) done(); // gọi callback khi xóa xong
       } else {
         this.layoutService.onError('Xóa điểm thất bại');
       }
@@ -904,6 +867,8 @@ APIUpdateMarkMutil(dtoAnswer: DTOAnswer, item?: any, suppressNotify?: boolean) {
     }
   });
 }
+
+
 
   // Lấy danh sách khía cạnh/năng lực
   APIGetListQuestionCompetence(filter: State) {
@@ -991,30 +956,12 @@ APIUpdateMarkMutil(dtoAnswer: DTOAnswer, item?: any, suppressNotify?: boolean) {
           }
         );
     }
-    
-
-  // Reset lại toàn bộ danh sách đáp án khi đổi loại câu hỏi
-  resetReviewAll() {
-    this.reviewListAnser = [];
-    this.answersOneChoice = [];
-    this.answersMultiChoice = [];
-    this.answersYesNo = [];
-  }
-
   // endregion
 
   // #region Xử lý Update
   // Hàm xử lý cập nhật câu hỏi
   handleUpdateQuestion(property: Array<string>, skipReloadAnswers: boolean = false) {
     if (!this.dataQuestion.QuestionID) return;
-
-    // if (property.includes("Remark") && this.dataQuestion.Remark.trim() === '') {
-    //   return;
-    // }
-
-    // if (property.includes("Duration")  && this.dataQuestion.Duration === 0 ) {
-    //   return;
-    // }
     
     if (this.dataQuestion.Code === 0) {
       this.dataQuestion.TypeOfQuestion = 1;
@@ -1253,68 +1200,6 @@ APIUpdateMarkMutil(dtoAnswer: DTOAnswer, item?: any, suppressNotify?: boolean) {
     }
   }
 
-  // Hàm xử lý khi thay đổi checkbox (cho câu hỏi đa lựa chọn)
-  handleCheckBoxChange(item: DTOAnswer) {
-    if (!item) return;
-
-      if (!item.IsRight) {
-        // Bỏ tick → xóa mark và reload danh sách từ server
-        item.Mark = 0;
-        this.APIDeleteMark([item]);
-        
-        // Reload danh sách đáp án để lấy dữ liệu mới từ server
-        setTimeout(() => {
-          this.APIGetListAnswer(this.dataQuestion);
-        }, 300);
-        return;
-      }
-
-    // Tick mới
-    if (this.dataQuestion.TypeOfEvaluation === 1) {
-      // Chỉ 1 đáp án đúng
-      this.ListAnswer.forEach(ans => {
-        ans.IsRight = ans.Code === item.Code;
-        ans.Mark = ans.Code === item.Code ? 100 : 0;
-      });
-      this.reviewListAnser.forEach(r => {
-        r.IsRight = r.Code === item.Code;
-        r.Mark = r.Code === item.Code ? 100 : 0;
-      });
-      this.APIUpdateMarkMutil(item, item);
-
-    } else if (this.dataQuestion.TypeOfEvaluation === 2) {
-      // Chia đều 100 điểm
-      const checked = this.ListAnswer.filter(a => a.IsRight);
-      if (checked.length > 0) {
-        const base = Math.floor(100 / checked.length);
-        let sum = 0;
-        checked.forEach((a, idx) => {
-          a.Mark = base;
-          sum += base;
-        });
-        if (sum < 100) checked[checked.length - 1].Mark += (100 - sum);
-
-        // Đồng bộ reviewList
-        this.reviewListAnser.forEach(r => {
-          const found = checked.find(c => c.Code === r.Code);
-          if (found) {
-            r.IsRight = true;
-            r.Mark = found.Mark;
-          } else {
-            r.IsRight = false;
-            r.Mark = 0;
-          }
-        });
-
-        // Cập nhật API
-        checked.forEach(a => this.APIUpdateMarkMutil(a, a, false));
-      }
-    } else if (this.dataQuestion.TypeOfEvaluation === 3) {
-      // Trừ các đáp án sai - tính lại toàn bộ
-      this.recalculateMarksType3();
-    }
-  }
-
   // Hàm xử lý khi thay đổi radio button Yes/No
   handleYesNoChange(selectedItem: DTOAnswer) {
     if (!selectedItem) return;
@@ -1324,7 +1209,7 @@ APIUpdateMarkMutil(dtoAnswer: DTOAnswer, item?: any, suppressNotify?: boolean) {
       if (answer.Code === selectedItem.Code) {
         answer.IsRight = true;
         answer.Mark = 100;
-        this.APIUpdateMarkMutil(answer, answer);
+        this.APIUpdateMarkSingle(answer, answer);
       } else {
         if (answer.IsRight) {
           // Bỏ chọn đáp án khác
@@ -1355,161 +1240,248 @@ APIUpdateMarkMutil(dtoAnswer: DTOAnswer, item?: any, suppressNotify?: boolean) {
 
   // Hàm xử lý tick / bỏ tick hoặc nhập điểm
   onCalculateMark(item: DTOAnswer, action: 'not' | 'input') {
-    if (!item) return;
+  const typeEval = this.dataQuestion.TypeOfEvaluation;
 
-    const typeEval = this.dataQuestion.TypeOfEvaluation;
+  // Lấy danh sách đã tick
+  let checkedAnswers = this.ListAnswer.filter(
+    a => a.IsRight && a.Answer && a.Answer.trim() !== ''
+  );
 
-    // TypeOfEvaluation = 1 → tick = 100, bỏ tick = 0
-    if (typeEval === 1) {
-      if (action === 'not') {
-        if (item.IsRight) {
-          item.Mark = 100;
-          this.updateMarksBatch([item], 'Cập nhật điểm thành công');
-        } else {
-          this.APIDeleteMark([item]);
-        }
-      }
-      if (action === 'input') {
-        // Nhập tay → update answer (APIUpdateAnswer) - bạn đã có
-        this.APIUpdateAnswer(item, item);
-      }
-      return;
-    }
+  // --- Chia điểm cho loại 1 & 2 ---
+  if (typeEval === 1) {
+    if (action === 'not') {
+      if (!item.IsRight) {
+        // Bỏ tick → gọi xóa điểm cho item
+        this.APIDeleteMark([item]);
 
-    // TypeOfEvaluation = 2 → chia đều 100
-    if (typeEval === 2) {
-      let checkedAnswers = this.ListAnswer.filter(a => a.IsRight && a.Answer && a.Answer.trim() !== '');
-
-      if (action === 'not') {
-        if (!item.IsRight) {
-          this.APIDeleteMark([item]);
-          checkedAnswers = this.ListAnswer.filter(a => a.IsRight && a.Answer && a.Answer.trim() !== '');
-        }
-        if (checkedAnswers.length > 0) {
-          const base = Math.floor(100 / checkedAnswers.length);
-          let sum = 0;
-          checkedAnswers.forEach((a, idx) => {
-            a.Mark = base;
-            sum += base;
-          });
-          if (sum < 100) {
-            checkedAnswers[checkedAnswers.length - 1].Mark += (100 - sum);
-          }
-          this.updateMarksBatch(checkedAnswers, 'Cập nhật điểm thành công');
-        }
-      }
-
-      if (action === 'input') {
-        // Khi người dùng nhập item.Mark -> chia phần còn lại cho các đáp án khác
-        if (!checkedAnswers.some(a => a.Code === item.Code)) {
-          checkedAnswers.push(item); // đảm bảo item thuộc checked
-        }
-        const others = checkedAnswers.filter(a => a.Code !== item.Code);
-        let remain = 100 - (item.Mark ?? 0);
-        if (remain < 0) remain = 0;
-
-        if (others.length > 0) {
-          const perOther = Math.floor(remain / others.length);
-          let sum = 0;
-          others.forEach((a, idx) => {
-            a.Mark = perOther;
-            sum += perOther;
-          });
-          const leftover = remain - sum;
-          if (leftover > 0) {
-            // cộng phần dư vào phần tử cuối
-            others[others.length - 1].Mark += leftover;
-          }
-          // batch update: update others và item
-          const toUpdate = [...others, item];
-          this.updateMarksBatch(toUpdate, 'Cập nhật điểm thành công');
-        } else {
-          // chỉ có 1 đáp án được tick -> item nhận 100 (người có thể nhập khác, nhưng đảm bảo tổng)
-          item.Mark = Math.min(100, item.Mark ?? 0);
-          this.updateMarksBatch([item], 'Cập nhật điểm thành công');
-        }
+        // Re-calc cho những đáp án còn lại
+        checkedAnswers = this.ListAnswer.filter(
+          a => a.IsRight && a.Answer && a.Answer.trim() !== ''
+        );
       }
     }
 
-    // TypeOfEvaluation = 3 → Trừ các đáp án sai
-    if (typeEval === 3) {
-      if (action === 'not') {
-        // Khi tick/bỏ tick → tính lại toàn bộ
-        this.recalculateMarksType3();
-      }
-      
-      if (action === 'input') {
-        // Khi nhập điểm thủ công
-        if (item.IsRight) {
-          // Đáp án đúng: chỉ cho phép nhập số dương
-          if (item.Mark < 0) {
-            item.Mark = 0;
-          }
-        } else {
-          // Đáp án sai: chỉ cho phép nhập số âm
-          if (item.Mark > 0) {
-            item.Mark = 0;
-          }
-        }
-        this.APIUpdateAnswer(item, item);
-      }
+    const count = checkedAnswers.length;
+    if (count > 0) {
+      const share = 100 / count;
+      this.ListAnswer.forEach(ans => {
+        ans.Mark = ans.IsRight ? share : 0;
+      });
+
+      // Update từng đáp án tick (vì API chỉ nhận 1)
+      checkedAnswers.forEach(ans => {
+        this.APIUpdateMarkMutil(ans); // suppressNotify=true để tránh notify spam
+      });
+
+    } else {
+      // Reset hết nếu không còn đáp án tick nào
+      this.ListAnswer.forEach(ans => (ans.Mark = 0));
     }
   }
+  
+  if (typeEval === 2) {
+  if (action === 'not' && item.IsRight) {
+    // 1️⃣ Lấy danh sách đáp án được tick
+    const checkedAnswers = this.ListAnswer.filter(
+      a => a.IsRight && a.Answer && a.Answer.trim() !== ''
+    );
+    const count = checkedAnswers.length;
 
- // Hàm xử lý khi thay đổi cách tính điểm cho TypeOfEvaluation = 3 (Trừ các đáp án sai)
- recalculateMarksType3() {
-   if (this.dataQuestion.TypeOfEvaluation !== 3) return;
+    if (count > 0) {
+      const baseMark = Math.floor(100 / count);
+      let total = 0;
+      checkedAnswers.forEach((a, idx) => {
+        if (idx === count - 1) {
+          a.Mark = 100 - total; // đáp án cuối cộng phần dư
+        } else {
+          a.Mark = baseMark;
+          total += baseMark;
+        }
+      });
+    }
 
-   const checked = this.ListAnswer.filter(a => a.IsRight && a.Answer && a.Answer.trim() !== '');
-   const unchecked = this.ListAnswer.filter(a => !a.IsRight && a.Answer && a.Answer.trim() !== '');
+    // 2️⃣ Reset điểm của các đáp án bỏ tick
+    const unChecked = this.ListAnswer.filter(a => !a.IsRight && a.Mark !== 0);
+    unChecked.forEach(a => (a.Mark = 0));
 
-   // --- xử lý nhóm tick (đáp án đúng) - chia đều 100 điểm ---
-   if (checked.length > 0) {
-     const base = Math.floor(100 / checked.length);
-     let sum = 0;
-     checked.forEach((a, i) => {
-       a.Mark = base;
-       sum += base;
-     });
-     // bù chênh lệch vào đáp án cuối
-     if (sum < 100) checked[checked.length - 1].Mark += (100 - sum);
-   }
+    // 3️⃣ Gom các item thay đổi để update
+    const arrUpdate = [...checkedAnswers, ...unChecked];
 
-   // --- xử lý nhóm không tick (đáp án sai) - chia đều -100 điểm ---
-   if (unchecked.length > 0) {
-     const base = Math.floor(-100 / unchecked.length);
-     let sum = 0;
-     unchecked.forEach((a, i) => {
-       a.Mark = base;
-       sum += base;
-     });
-     // bù chênh lệch vào đáp án cuối
-     if (sum > -100) unchecked[unchecked.length - 1].Mark += (-100 - sum);
-   }
+    // 4️⃣ Gọi API tuần tự
+    this.updateMarkSequential(arrUpdate, true).then(() => {
+      this.layoutService.onSuccess('Cập nhật điểm thành công');
+    });
 
-   // Đồng bộ reviewListAnser
-   this.reviewListAnser.forEach(r => {
-     const foundChecked = checked.find(c => c.Code === r.Code);
-     const foundUnchecked = unchecked.find(u => u.Code === r.Code);
-     
-     if (foundChecked) {
-       r.IsRight = true;
-       r.Mark = foundChecked.Mark;
-     } else if (foundUnchecked) {
-       r.IsRight = false;
-       r.Mark = foundUnchecked.Mark;
-     }
-   });
+    return;
+  }
 
-   // Gọi API update cho tất cả đáp án có thay đổi
-   const toUpdate = [...checked, ...unchecked];
-   toUpdate.forEach(a => this.APIUpdateMarkMutil(a, a, true));
- }
+  // Khi bỏ tick
+  if (action === 'not' && !item.IsRight) {
+    item.Mark = 0;
+    this.APIDeleteMark([item], () => {
+      const checkedAnswers = this.ListAnswer.filter(
+        a => a.IsRight && a.Answer && a.Answer.trim() !== ''
+      );
+      const count = checkedAnswers.length;
+
+      if (count > 0) {
+        const baseMark = Math.floor(100 / count);
+        let total = 0;
+        checkedAnswers.forEach((a, idx) => {
+          if (idx === count - 1) {
+            a.Mark = 100 - total;
+          } else {
+            a.Mark = baseMark;
+            total += baseMark;
+          }
+        });
+      }
+
+      this.updateMarkSequential(checkedAnswers, true).then(() => {
+        this.layoutService.onSuccess('Cập nhật điểm thành công');
+      });
+    });
+    return;
+  }
+   // --- Khi input trực tiếp điểm ---
+  if (action === 'input') {
+    const inputMark = item.Mark ?? 0;
+    item.Mark = Math.min(Math.max(inputMark, 0), 100); // đảm bảo 0-100
+
+    // Lấy các đáp án còn lại (không tính item vừa input)
+    const otherAnswers = this.ListAnswer.filter(
+      a => a !== item && a.IsRight && a.Answer && a.Answer.trim() !== ''
+    );
+
+    const sumOtherMarks = 100 - item.Mark;
+    const countOther = otherAnswers.length;
+
+    if (countOther > 0) {
+      const baseMark = Math.floor(sumOtherMarks / countOther);
+      let total = 0;
+      otherAnswers.forEach((a, idx) => {
+        if (idx === countOther - 1) {
+          a.Mark = sumOtherMarks - total; // đáp án cuối cộng phần dư
+        } else {
+          a.Mark = baseMark;
+          total += baseMark;
+        }
+      });
+    }
+
+    // Update toàn bộ đáp án tick (kể cả item vừa input)
+    const checkedAnswers = this.ListAnswer.filter(
+      a => a.IsRight && a.Answer && a.Answer.trim() !== ''
+    );
+
+    this.updateMarkSequential(checkedAnswers, true).then(() => {
+      this.layoutService.onSuccess('Cập nhật điểm thành công');
+    });
+  }
+  
+}
+  if (typeEval === 3) {
+  const checkedAnswers = this.ListAnswer.filter(a => a.IsRight && a.Answer?.trim() !== '');
+  const unCheckedAnswers = this.ListAnswer.filter(a => !a.IsRight && a.Answer?.trim() !== '');
+
+  // --- Khi tick hoặc bỏ tick checkbox ---
+  if (action === 'not') {
+    // Nhóm tick → tổng 100
+    if (checkedAnswers.length > 0) {
+      const baseMark = Math.floor(100 / checkedAnswers.length);
+      let total = 0;
+      checkedAnswers.forEach((a, idx) => {
+        if (idx === checkedAnswers.length - 1) a.Mark = 100 - total;
+        else { a.Mark = baseMark; total += baseMark; }
+      });
+    }
+
+    // Nhóm không tick → tổng -100
+    if (unCheckedAnswers.length > 0) {
+      const baseMark = Math.floor(-100 / unCheckedAnswers.length);
+      let total = 0;
+      unCheckedAnswers.forEach((a, idx) => {
+        if (idx === unCheckedAnswers.length - 1) a.Mark = -100 - total;
+        else { a.Mark = baseMark; total += baseMark; }
+      });
+    }
+
+    // Gọi API
+    const arrUpdate = [...checkedAnswers, ...unCheckedAnswers];
+    this.updateMarkSequential(arrUpdate, true).then(() => {
+      this.layoutService.onSuccess('Cập nhật điểm thành công');
+    });
+    return;
+  }
+
+  // --- Khi input numeric trực tiếp ---
+  if (action === 'input') {
+    if (item.IsRight) {
+      // Tick → chỉ được nhập >= 0
+      item.Mark = Math.max(item.Mark ?? 0, 0);
+
+      // Nhóm tick khác item → chia phần còn lại tổng = 100
+      const otherChecked = checkedAnswers.filter(a => a !== item);
+      const remaining = 100 - item.Mark;
+      if (otherChecked.length > 0) {
+        const baseMark = Math.floor(remaining / otherChecked.length);
+        let total = 0;
+        otherChecked.forEach((a, idx) => {
+          if (idx === otherChecked.length - 1) a.Mark = remaining - total;
+          else { a.Mark = baseMark; total += baseMark; }
+        });
+      }
+    } else {
+      // Không tick → chỉ được nhập <= 0
+      item.Mark = Math.min(item.Mark ?? 0, 0);
+
+      // Nhóm không tick còn lại → tổng -100
+      const otherUnChecked = unCheckedAnswers.filter(a => a !== item);
+      const remaining = -100 - item.Mark;
+      if (otherUnChecked.length > 0) {
+        const baseMark = Math.floor(remaining / otherUnChecked.length);
+        let total = 0;
+        otherUnChecked.forEach((a, idx) => {
+          if (idx === otherUnChecked.length - 1) a.Mark = remaining - total;
+          else { a.Mark = baseMark; total += baseMark; }
+        });
+      }
+    }
+
+    // Update toàn bộ ListAnswer
+    this.updateMarkSequential(this.ListAnswer, true).then(() => {
+      this.layoutService.onSuccess('Cập nhật điểm thành công');
+    });
+  }
+}
+
+}
+
+async updateMarkSequential(list: DTOAnswer[], suppressNotify = false): Promise<void> {
+  for (const ans of list) {
+    await new Promise<void>((resolve) => {
+      this.serviceQuestionApi.UpdateMark(ans).subscribe({
+        next: (res: any) => {
+          if (Ps_UtilObjectService.hasValue(res) && res.StatusCode === 0) {
+            const updated = res.ObjectReturn;
+            this.reviewListAnser = this.reviewListAnser.map(a =>
+              a.Code === updated.Code ? { ...a, Mark: updated.Mark, IsRight: updated.IsRight } : a
+            );
+          }
+          resolve();
+        },
+        error: () => resolve()
+      });
+    });
+  }
+}
+
+
+
   // Hàm xử lý khi focus điểm
   onFocusMark(item: DTOAnswer) {
     this.oldMarkValue = item.Mark; // lưu lại điểm cũ
   }
-
 
   // Khi blur khỏi textbox câu trả lời
   onInputAnswerChange(item: DTOAnswer) {
@@ -1534,19 +1506,18 @@ APIUpdateMarkMutil(dtoAnswer: DTOAnswer, item?: any, suppressNotify?: boolean) {
   }
 
   // Khi blur combobox
-onBlurComboBox() {
-  // Reset filter lại full list khi blur
-  this.dataQuestionCompetence = this.ListCompetence.slice();
-}
-
-// Khi focus combobox
-onFocusComboBox() {
-  // Có thể load lại dữ liệu nếu cần
-  if (!this.ListCompetence || this.ListCompetence.length === 0) {
-    this.APIGetListQuestionCompetence(this.CompetenceState);
+  onBlurComboBox() {
+    // Reset filter lại full list khi blur
+    this.dataQuestionCompetence = this.ListCompetence.slice();
   }
-}
 
+  // Khi focus combobox
+  onFocusComboBox() {
+    // Có thể load lại dữ liệu nếu cần
+    if (!this.ListCompetence || this.ListCompetence.length === 0) {
+      this.APIGetListQuestionCompetence(this.CompetenceState);
+    }
+  }
 
   // Hàm xử lý khi filter
   handleFilter(value: string) {
@@ -1586,7 +1557,7 @@ onFocusComboBox() {
   }
 
   onCloseDialogLevel() {
-    
+    this.openLevelDialog = false; 
   }
 
   onCloseDialog () {
@@ -1662,7 +1633,9 @@ onFocusComboBox() {
   }
   
   handleDialogLevel() {
-    
+    this.dataQuestion.LevelID = this.valueChangeLevel;
+    this.APIUpdateQuestion(this.dataQuestion, ['LevelID']);
+    this.openLevelDialog = false; // nếu cần đóng dialog
   }
 
   onCloseDialogCompetence() {

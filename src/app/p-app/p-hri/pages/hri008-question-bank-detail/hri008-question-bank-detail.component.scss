@@ -289,22 +289,24 @@
             kendo-dialog {
             height: 90%;
             kendo-dialog-titlebar {
-            display: flex;
-            align-items: center;
-            background-color: #fff;
-            color: #fd7676;
-            span {
-                justify-content: center;
-                align-content: center;
-                .title-delete {
-                gap: 10px;
+                display: flex;
+                align-items: center;
+                background-color: #fff;
+                color: #fd7676;
+                span {
+                    justify-content: center;
+                    align-content: center;
+                    .title-delete {
+                    gap: 10px;
+                    }
+                    .level {font-weight: 600;}
                 }
-            }
-            div {
-                button {
-                display: none;
+                
+                div {
+                    button {
+                    display: none;
+                    }
                 }
-            }
             }
             .body_dialog {
             background: white;
