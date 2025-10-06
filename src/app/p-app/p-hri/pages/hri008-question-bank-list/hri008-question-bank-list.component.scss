@@ -2,7 +2,7 @@
 
 ::ng-deep {
   app-hri008-question-bank-list {
-    #hri008-question-bank-list {
+    .app-container {
       padding: 0 15px;
       //HEADER
       .header-1 {
@@ -100,8 +100,8 @@
             left: 50%;
             transform: translate(-50%, -50%);
             .content-primary {
-                display: flex;
-                justify-content: center;
+              display: flex;
+              justify-content: center;
             }
             .content-sub {
               justify-content: center;
@@ -114,12 +114,12 @@
         kendo-dialog-actions {
           width: 100%;
           padding: 0;
-          button{
+          button {
             height: 100%;
           }
         }
-        .k-dialog .k-dialog-content{
-            padding: 0;
+        .k-dialog .k-dialog-content {
+          padding: 0;
         }
         .body_dialog {
           text-align: center;
